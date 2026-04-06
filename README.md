@@ -1,17 +1,43 @@
-# baseline
+# The Baseline
 
-A new Flutter project.
+Gentle self-care for depression, disability, chronic illness, or burnout.  
+No calories, no shame – just food & movement tracking.
 
-## Getting Started
+Built with Flatter
 
-This project is a starting point for a Flutter application.
+## Run
 
-A few resources to get you started if this is your first Flutter project:
+```
+flutter pub get  
+flutter run
+```
 
-- [Learn Flutter](https://docs.flutter.dev/get-started/learn-flutter)
-- [Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Flutter learning resources](https://docs.flutter.dev/reference/learning-resources)
+## Demo features
+- Nourishment: protein, greens, beans, fillers, sweet treat (battery visual +/‑)
+- Movement: walk or light workout (one tap completes)
+- State saved locally, resets daily
+- Help icons with explanations (TODO: add real references)
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+## Future plans
+- Sleep
+- Medication reminders
+- Path to get help
+
+## Anti-plans
+
+There will be:
+- No backend / cloud sync
+- No history tracking or past data
+- No analytics or usage tracking
+- No calorie counting or macro tracking
+- No gamification, streaks, or rewards
+- No social features or sharing
+- No notifications (except optional medication reminders)
+- No “perfect days” or performance scores
+
+If you want any of those, try (not sponsored, they are just good):
+
+- **Finch** – gamified pet self-care  
+- **Daylio** – mood & history  
+- **HabitKit** – streaks & analytics  
+- **Yazio** – calorie counting
