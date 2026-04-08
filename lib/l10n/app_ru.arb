@@ -1,0 +1,307 @@
+{
+  "@@locale": "ru",
+  "appTitle": "Baseline",
+  "@appTitle": {
+    "description": "The title of the application"
+  },
+  "settingsButtonLabel": "Настройки",
+  "@settingsButtonLabel": {
+    "description": "Label for the settings button"
+  },
+  "settingsScreenTitle": "Настройки",
+  "@settingsScreenTitle": {
+    "description": "Title of the settings screen"
+  },
+  "languageLabel": "Язык",
+  "@languageLabel": {
+    "description": "Label for language selection"
+  },
+  "languageEnglish": "Английский",
+  "@languageEnglish": {
+    "description": "Language option label for English"
+  },
+  "languageRussian": "Русский",
+  "@languageRussian": {
+    "description": "Language option label for Russian"
+  },
+  "themeLabel": "Тема",
+  "@themeLabel": {
+    "description": "Label for theme selection"
+  },
+  "themeLight1": "Светлая (Нейтральная)",
+  "@themeLight1": {
+    "description": "Light theme option - neutral"
+  },
+  "themeLight2": "Светлая (Теплая)",
+  "@themeLight2": {
+    "description": "Light theme option - warm"
+  },
+  "themeDark1": "Тёмная (Чёрная)",
+  "@themeDark1": {
+    "description": "Dark theme option - true black"
+  },
+  "themeDark2": "Тёмная (Мягкая)",
+  "@themeDark2": {
+    "description": "Dark theme option - soft contrast"
+  },
+  "modulesLabel": "Модули",
+  "@modulesLabel": {
+    "description": "Label for modules settings section"
+  },
+  "hereModuleLabel": "Я здесь",
+  "@hereModuleLabel": {
+    "description": "Label for the 'I'm here' module"
+  },
+  "hereModuleCustomizeLabel": "Изменить текст кнопки",
+  "@hereModuleCustomizeLabel": {
+    "description": "Label for customizing the 'I'm here' button text"
+  },
+  "foodModuleLabel": "Еда",
+  "@foodModuleLabel": {
+    "description": "Label for the Food module"
+  },
+  "foodProteinLabel": "Белок",
+  "@foodProteinLabel": {
+    "description": "Food category: Protein"
+  },
+  "foodGreensLabel": "Зелень",
+  "@foodGreensLabel": {
+    "description": "Food category: Greens"
+  },
+  "foodBeansLabel": "Бобовые",
+  "@foodBeansLabel": {
+    "description": "Food category: Beans and Chickpeas"
+  },
+  "foodFillersLabel": "Углеводы",
+  "@foodFillersLabel": {
+    "description": "Food category: Fillers / Carbs"
+  },
+  "foodTreatLabel": "Лакомство",
+  "@foodTreatLabel": {
+    "description": "Food category: Small enjoyable treat"
+  },
+  "foodSourcesTitle": "Почему это работает",
+  "@foodSourcesTitle": {
+    "description": "Title for food module sources/help"
+  },
+  "foodSourcesContent": "• Белок: обеспечивает чувство насыщения и стабильную энергию.\n• Зелень: клетчатка, витамины и растительное разнообразие.\n• Бобовые: клетчатка и растительный белок.\n• Углеводы: сложные углеводы для доступной энергии.\n• Лакомство: небольшое лакомство может способствовать поведенческой активации — удовольствие без необходимости его \"заработать\".\n\nЭто о балансе, а не об ограничениях. Без ограничений подход отдаёт предпочтение гибкости и заботе о себе перед правилами и чувством вины. Для персонализированных рекомендаций проконсультируйтесь со специалистом.",
+  "@foodSourcesContent": {
+    "description": "Detailed explanation of why the food categories work"
+  },
+  "movementModuleLabel": "Движение",
+  "@movementModuleLabel": {
+    "description": "Label for the Movement module"
+  },
+  "movementDefaultOptions": "Прогулка\nЛегкая тренировка",
+  "@movementDefaultOptions": {
+    "description": "Default movement options"
+  },
+  "movementAnyCountsHint": "любое движение считается",
+  "@movementAnyCountsHint": {
+    "description": "Hint text for movement module"
+  },
+  "sleepModuleLabel": "Сон",
+  "@sleepModuleLabel": {
+    "description": "Label for the Sleep module"
+  },
+  "sleepGoingToSleep": "Я иду спать",
+  "@sleepGoingToSleep": {
+    "description": "Action: going to sleep"
+  },
+  "sleepAwake": "Я проснулся",
+  "@sleepAwake": {
+    "description": "Action: woke up"
+  },
+  "medsModuleLabel": "Лекарства",
+  "@medsModuleLabel": {
+    "description": "Label for the Meds module"
+  },
+  "medsAddButtonLabel": "Добавить лекарство",
+  "@medsAddButtonLabel": {
+    "description": "Button to add a medication"
+  },
+  "mentalStateModuleLabel": "Психическое состояние",
+  "@mentalStateModuleLabel": {
+    "description": "Label for the Mental state module"
+  },
+  "mentalStateRightNow": "Прямо сейчас",
+  "@mentalStateRightNow": {
+    "description": "Mental state section: current feeling"
+  },
+  "mentalStateGoodThing": "Одно хорошее",
+  "@mentalStateGoodThing": {
+    "description": "Mental state section: one good thing"
+  },
+  "mentalStateThoughtLens": "Фильтр мышления",
+  "@mentalStateThoughtLens": {
+    "description": "Mental state section: cognitive distortion tool"
+  },
+  "dialogGotIt": "Ясно",
+  "@dialogGotIt": {
+    "description": "Dialog action button"
+  },
+  "dialogCancel": "Отмена",
+  "@dialogCancel": {
+    "description": "Dialog action button"
+  },
+  "dialogSave": "Сохранить",
+  "@dialogSave": {
+    "description": "Dialog action button"
+  },
+  "dialogDelete": "Удалить",
+  "@dialogDelete": {
+    "description": "Dialog action button"
+  },
+  "dialogClose": "Закрыть",
+  "@dialogClose": {
+    "description": "Dialog close button"
+  },
+  "dialogReset": "Очистить",
+  "@dialogReset": {
+    "description": "Dialog reset button"
+  },
+  "dialogWhyThisWorks": "Почему это работает",
+  "@dialogWhyThisWorks": {
+    "description": "Tooltip to show help/sources"
+  },
+  "dialogWhyThisHelps": "Почему это помогает",
+  "@dialogWhyThisHelps": {
+    "description": "Tooltip to show module help"
+  },
+  "nourishment": "Питание",
+  "@nourishment": {
+    "description": "Title for the food module dialog"
+  },
+  "resetAll": "Очистить всё",
+  "@resetAll": {
+    "description": "Button to reset all food categories"
+  },
+  "grounding": "Якорь",
+  "@grounding": {
+    "description": "Label for the grounding/here module"
+  },
+  "groundingAffirmation1": "Хорошо. Ты здесь.",
+  "@groundingAffirmation1": {
+    "description": "Grounding affirmation phrase"
+  },
+  "groundingAffirmation2": "Привет!",
+  "@groundingAffirmation2": {
+    "description": "Grounding affirmation phrase"
+  },
+  "groundingAffirmation3": "Один момент за раз.",
+  "@groundingAffirmation3": {
+    "description": "Grounding affirmation phrase"
+  },
+  "groundingAffirmation4": "Ты пришёл. Это важно.",
+  "@groundingAffirmation4": {
+    "description": "Grounding affirmation phrase"
+  },
+  "groundingAffirmation5": "Прямо здесь, прямо сейчас.",
+  "@groundingAffirmation5": {
+    "description": "Grounding affirmation phrase"
+  },
+  "movementTitle": "Движение",
+  "@movementTitle": {
+    "description": "Title for the movement module dialog"
+  },
+  "movementCompleted": "Ты завершил активность сегодня. Отлично! 💪",
+  "@movementCompleted": {
+    "description": "Message shown after completing movement activity"
+  },
+  "movementChoose": "Выбери одну лёгкую активность на сегодня:",
+  "@movementChoose": {
+    "description": "Instruction text for choosing a movement activity"
+  },
+  "movementGreatJob": "Отлично! 💪",
+  "@movementGreatJob": {
+    "description": "Congratulation message for movement"
+  },
+  "tapToOpen": "Нажми чтобы открыть",
+  "@tapToOpen": {
+    "description": "Instruction on module tile"
+  },
+  "placeholderModuleText": "Это тестовый модуль.",
+  "@placeholderModuleText": {
+    "description": "Message for placeholder modules"
+  },
+  "simulateAction": "Имитировать действие",
+  "@simulateAction": {
+    "description": "Button for placeholder module"
+  },
+  "modulesHelpText": "Включи или выключи модули. Дополнительные настройки появятся под каждым.",
+  "@modulesHelpText": {
+    "description": "Help text in settings for modules section"
+  },
+  "resetToday": "Очистить на сегодня",
+  "@resetToday": {
+    "description": "Button to reset today's data"
+  },
+  "todayReset": "На сегодня очищено",
+  "@todayReset": {
+    "description": "Confirmation message when today is reset"
+  },
+  "appPrivacyText": "Baseline — приложение для личной заботы о себе в настоящий момент.\\nНет истории. Нет отслеживания. Только сегодня.",
+  "@appPrivacyText": {
+    "description": "Privacy statement in settings"
+  },
+  "foodProteinSubtitle": "1–2 порции",
+  "@foodProteinSubtitle": {
+    "description": "Food category portion guide: Protein"
+  },
+  "foodGreensSubtitle": "3–5 порций (фрукты и овощи)",
+  "@foodGreensSubtitle": {
+    "description": "Food category portion guide: Greens"
+  },
+  "foodBeansSubtitle": "1–2 порции",
+  "@foodBeansSubtitle": {
+    "description": "Food category portion guide: Beans"
+  },
+  "foodFillersSubtitle": "1–3 порции (рис, паста, хлеб)",
+  "@foodFillersSubtitle": {
+    "description": "Food category portion guide: Fillers"
+  },
+  "foodTreatSubtitle": "1 порция (шоколад, десерт)",
+  "@foodTreatSubtitle": {
+    "description": "Food category portion guide: Treat"
+  },
+  "mentalStateHelp": "Это место только для сейчас: назови своё чувство, немного благодарности или якоря, и мягкие подсказки \"фильтра мышления\" вдохновлённые когнитивными подходами. Это не замена профессиональной помощи, когда она нужна.",
+  "@mentalStateHelp": {
+    "description": "Help text for mental state module"
+  },
+  "sleepHelp": "Сон влияет на настроение, энергию и саморегуляцию. Логирование \"ходу спать\" и \"проснулся\" с простой длительностью (только сегодня) поддерживает осознанность без отслеживания полос или оценки отдыха.",
+  "@sleepHelp": {
+    "description": "Help text for sleep module"
+  },
+  "medsHelp": "Минимальный чек-лист только на сегодня может уменьшить умственную нагрузку. Это не медицинский совет; используйте план своего врача и обратитесь за помощью при срочных проблемах.",
+  "@medsHelp": {
+    "description": "Help text for meds module"
+  },
+  "movementHelp": "Любое движение считается заботой и активацией. Без интенсивности или длительности — небольшой толчок лучше, чем \"всё или ничего\".",
+  "@movementHelp": {
+    "description": "Help text for movement module"
+  },
+  "groundingHelp": "Один тап, чтобы якориться в настоящем — Гештальт \"здесь и сейчас\". Нет отслеживания, нет памяти, нет оценки: самое маленькое возможное действие заботы.",
+  "@groundingHelp": {
+    "description": "Help text for grounding/here module"
+  },
+  "hereButtonHint": "Я здесь. Я жив.",
+  "@hereButtonHint": {
+    "description": "Hint text for the here module button customization field"
+  },
+  "movementChoicesLabel": "Выбор движений (по одному на строку)",
+  "@movementChoicesLabel": {
+    "description": "Label for movement choices field"
+  },
+  "movementDone": "Готово",
+  "@movementDone": {
+    "description": "Compact movement completed label"
+  },
+  "stateLabel": "Состояние:",
+  "@stateLabel": {
+    "description": "Label prefix for current state display"
+  },
+  "simulateActionResult": "Прикоснулся к {module}",
+  "@simulateActionResult": {
+    "description": "Template text for simulated action result"
+  }
+}

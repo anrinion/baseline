@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../l10n/app_localizations.dart';
 import '../modules/module_help.dart';
 import '../modules/module_ids.dart';
 import '../modules/movement_module.dart';
@@ -33,7 +34,8 @@ class ModuleTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final scheme = Theme.of(context).colorScheme;
-    final label = BaselineModuleId.label(moduleId);
+    final l10n = AppLocalizations.of(context)!;
+    final label = BaselineModuleId.localizedLabel(l10n, moduleId);
 
     return Card(
       margin: const EdgeInsets.all(12),
@@ -73,7 +75,7 @@ class ModuleTile extends StatelessWidget {
                       size: 20,
                       color: scheme.outline,
                     ),
-                    tooltip: 'Why this helps',
+                    tooltip: l10n.dialogWhyThisHelps,
                     padding: EdgeInsets.zero,
                     constraints: const BoxConstraints(
                       minWidth: 36,
@@ -85,7 +87,7 @@ class ModuleTile extends StatelessWidget {
               ),
               const Spacer(),
               Text(
-                'Tap to open',
+                l10n.tapToOpen,
                 textAlign: TextAlign.center,
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
@@ -122,7 +124,8 @@ class _ModulePlaceholderModal extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final appState = Provider.of<AppState>(context);
-    final label = BaselineModuleId.label(moduleId);
+    final l10n = AppLocalizations.of(context)!;
+    final label = BaselineModuleId.localizedLabel(l10n, moduleId);
 
     return AlertDialog(
       title: Text(label),
@@ -133,23 +136,23 @@ class _ModulePlaceholderModal extends StatelessWidget {
             alignment: Alignment.centerRight,
             child: TextButton.icon(
               icon: const Icon(Icons.help_outline, size: 18),
-              label: const Text('Why this helps'),
+              label: Text(l10n.dialogWhyThisHelps),
               onPressed: () => showModuleHelp(context, moduleId),
             ),
           ),
-          const Text('This is a placeholder module.'),
+          Text(l10n.placeholderModuleText),
           const SizedBox(height: 16),
           ElevatedButton(
             onPressed: () {
               appState.updateTodayState((state) {
-                state.cbtTemp = 'Touched $label';
+                state.cbtTemp = l10n.simulateActionResult(label);
               });
             },
-            child: const Text('Simulate action'),
+            child: Text(l10n.simulateAction),
           ),
           const SizedBox(height: 8),
           Text(
-            'State: ${appState.todayState.cbtTemp}',
+            '${l10n.stateLabel} ${appState.todayState.cbtTemp}',
             style: const TextStyle(fontSize: 12),
           ),
         ],
@@ -157,7 +160,7 @@ class _ModulePlaceholderModal extends StatelessWidget {
       actions: [
         TextButton(
           onPressed: () => Navigator.pop(context),
-          child: const Text('Close'),
+          child: Text(l10n.dialogClose),
         )
       ],
     );

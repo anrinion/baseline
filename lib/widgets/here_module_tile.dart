@@ -8,6 +8,7 @@ import 'package:provider/provider.dart';
 import '../modules/module_help.dart';
 import '../modules/module_ids.dart';
 import '../state/app_state.dart';
+import '../l10n/app_localizations.dart';
 
 /// Grounding anchor module — tap to affirm presence. Shows a random
 /// affirmation phrase, then the button reappears after 30 seconds.
@@ -21,15 +22,15 @@ class HereModuleTile extends StatefulWidget {
 
 class _HereModuleTileState extends State<HereModuleTile>
     with SingleTickerProviderStateMixin {
-  static const _phrases = [
-    "Good. You're here.",
-    'Hello there!',
-    'One moment at a time.',
-    'You showed up. That matters.',
-    'Right here, right now.',
-  ];
-
   static const _cooldown = Duration(seconds: 30);
+
+  List<String> _phrases(AppLocalizations l10n) => [
+        l10n.groundingAffirmation1,
+        l10n.groundingAffirmation2,
+        l10n.groundingAffirmation3,
+        l10n.groundingAffirmation4,
+        l10n.groundingAffirmation5,
+      ];
 
   final _random = Random();
 
@@ -60,10 +61,12 @@ class _HereModuleTileState extends State<HereModuleTile>
     super.dispose();
   }
 
-  void _onPressed() {
+  void _onPressed(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     HapticFeedback.lightImpact();
     setState(() {
-      _activePhrase = _phrases[_random.nextInt(_phrases.length)];
+      final phrases = _phrases(l10n);
+      _activePhrase = phrases[_random.nextInt(phrases.length)];
     });
     _fadeController
       ..reset()
@@ -81,6 +84,7 @@ class _HereModuleTileState extends State<HereModuleTile>
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final scheme = theme.colorScheme;
+    final l10n = AppLocalizations.of(context)!;
     final label = context.select<AppState, String>(
       (s) => s.settings.hereButtonText,
     );
@@ -104,7 +108,7 @@ class _HereModuleTileState extends State<HereModuleTile>
                   const SizedBox(width: 6),
                   Expanded(
                     child: Text(
-                      'Grounding',
+                      l10n.grounding,
                       style: theme.textTheme.titleSmall?.copyWith(
                         fontWeight: FontWeight.w600,
                         color: scheme.onSurface,
@@ -117,7 +121,7 @@ class _HereModuleTileState extends State<HereModuleTile>
                       size: 20,
                       color: scheme.outline,
                     ),
-                    tooltip: 'Why this helps',
+                    tooltip: l10n.dialogWhyThisHelps,
                     padding: EdgeInsets.zero,
                     constraints: const BoxConstraints(
                       minWidth: 36,
@@ -152,7 +156,7 @@ class _HereModuleTileState extends State<HereModuleTile>
       key: const ValueKey('btn'),
       width: double.infinity,
       child: ElevatedButton(
-        onPressed: _onPressed,
+        onPressed: () => _onPressed(context),
         style: ElevatedButton.styleFrom(
           minimumSize: const Size.fromHeight(52),
           backgroundColor: scheme.primaryContainer,

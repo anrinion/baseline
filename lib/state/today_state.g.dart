@@ -17,17 +17,17 @@ class TodayStateAdapter extends TypeAdapter<TodayState> {
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return TodayState()
-      ..proteinCount = (fields[11] as int?) ?? 0
-      ..greensCount = (fields[12] as int?) ?? 0
-      ..legumesCount = (fields[13] as int?) ?? 0
-      ..fillersCount = (fields[14] as int?) ?? 0
-      ..treatCount = (fields[15] as int?) ?? 0
-      ..moved = (fields[5] as bool?) ?? false
-      ..medsTaken = (fields[6] as bool?) ?? false
-      ..sleepStarted = (fields[7] as bool?) ?? false
-      ..hereTapped = (fields[8] as bool?) ?? false
-      ..cbtTemp = (fields[9] as String?) ?? ''
-      ..lastDayKey = (fields[10] as String?) ?? '';
+      ..proteinCount = fields[11] as int
+      ..greensCount = fields[12] as int
+      ..legumesCount = fields[13] as int
+      ..fillersCount = fields[14] as int
+      ..treatCount = fields[15] as int
+      ..moved = fields[5] as bool
+      ..medsTaken = fields[6] as bool
+      ..sleepStarted = fields[7] as bool
+      ..hereTapped = fields[8] as bool
+      ..cbtTemp = fields[9] as String
+      ..lastDayKey = fields[10] as String;
   }
 
   @override

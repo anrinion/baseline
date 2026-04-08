@@ -1,0 +1,307 @@
+{
+  "@@locale": "en",
+  "appTitle": "Baseline",
+  "@appTitle": {
+    "description": "The title of the application"
+  },
+  "settingsButtonLabel": "Settings",
+  "@settingsButtonLabel": {
+    "description": "Label for the settings button"
+  },
+  "settingsScreenTitle": "Settings",
+  "@settingsScreenTitle": {
+    "description": "Title of the settings screen"
+  },
+  "languageLabel": "Language",
+  "@languageLabel": {
+    "description": "Label for language selection"
+  },
+  "languageEnglish": "English",
+  "@languageEnglish": {
+    "description": "Language option label for English"
+  },
+  "languageRussian": "Русский",
+  "@languageRussian": {
+    "description": "Language option label for Russian"
+  },
+  "themeLabel": "Theme",
+  "@themeLabel": {
+    "description": "Label for theme selection"
+  },
+  "themeLight1": "Light (Neutral)",
+  "@themeLight1": {
+    "description": "Light theme option - neutral"
+  },
+  "themeLight2": "Light (Warm)",
+  "@themeLight2": {
+    "description": "Light theme option - warm"
+  },
+  "themeDark1": "Dark (True)",
+  "@themeDark1": {
+    "description": "Dark theme option - true black"
+  },
+  "themeDark2": "Dark (Soft)",
+  "@themeDark2": {
+    "description": "Dark theme option - soft contrast"
+  },
+  "modulesLabel": "Modules",
+  "@modulesLabel": {
+    "description": "Label for modules settings section"
+  },
+  "hereModuleLabel": "I'm here",
+  "@hereModuleLabel": {
+    "description": "Label for the 'I'm here' module"
+  },
+  "hereModuleCustomizeLabel": "Customize button text",
+  "@hereModuleCustomizeLabel": {
+    "description": "Label for customizing the 'I'm here' button text"
+  },
+  "foodModuleLabel": "Food",
+  "@foodModuleLabel": {
+    "description": "Label for the Food module"
+  },
+  "foodProteinLabel": "Protein",
+  "@foodProteinLabel": {
+    "description": "Food category: Protein"
+  },
+  "foodGreensLabel": "Greens",
+  "@foodGreensLabel": {
+    "description": "Food category: Greens"
+  },
+  "foodBeansLabel": "Beans & Chickpeas",
+  "@foodBeansLabel": {
+    "description": "Food category: Beans and Chickpeas"
+  },
+  "foodFillersLabel": "Fillers (Carbs)",
+  "@foodFillersLabel": {
+    "description": "Food category: Fillers / Carbs"
+  },
+  "foodTreatLabel": "Treat",
+  "@foodTreatLabel": {
+    "description": "Food category: Small enjoyable treat"
+  },
+  "foodSourcesTitle": "Why this works",
+  "@foodSourcesTitle": {
+    "description": "Title for food module sources/help"
+  },
+  "foodSourcesContent": "• Protein: supports satiety and steady energy.\n• Greens: fiber, vitamins, and plant variety.\n• Beans and chickpeas: fiber and plant protein.\n• Fillers: complex carbs for accessible energy.\n• Sweet treat: a small enjoyable bite can support behavioral activation — pleasure without \"earning\" it.\n\nThis is about balance, not restriction. Non-restrictive approaches favor flexibility and self-care over rules or guilt. For personalized guidance, ask a qualified professional.",
+  "@foodSourcesContent": {
+    "description": "Detailed explanation of why the food categories work"
+  },
+  "movementModuleLabel": "Movement",
+  "@movementModuleLabel": {
+    "description": "Label for the Movement module"
+  },
+  "movementDefaultOptions": "Go for a walk\nLight workout",
+  "@movementDefaultOptions": {
+    "description": "Default movement options"
+  },
+  "movementAnyCountsHint": "any movement counts",
+  "@movementAnyCountsHint": {
+    "description": "Hint text for movement module"
+  },
+  "sleepModuleLabel": "Sleep",
+  "@sleepModuleLabel": {
+    "description": "Label for the Sleep module"
+  },
+  "sleepGoingToSleep": "I'm going to sleep",
+  "@sleepGoingToSleep": {
+    "description": "Action: going to sleep"
+  },
+  "sleepAwake": "I'm awake",
+  "@sleepAwake": {
+    "description": "Action: woke up"
+  },
+  "medsModuleLabel": "Meds",
+  "@medsModuleLabel": {
+    "description": "Label for the Meds module"
+  },
+  "medsAddButtonLabel": "Add medication",
+  "@medsAddButtonLabel": {
+    "description": "Button to add a medication"
+  },
+  "mentalStateModuleLabel": "Mental state",
+  "@mentalStateModuleLabel": {
+    "description": "Label for the Mental state module"
+  },
+  "mentalStateRightNow": "Right now",
+  "@mentalStateRightNow": {
+    "description": "Mental state section: current feeling"
+  },
+  "mentalStateGoodThing": "One small good thing",
+  "@mentalStateGoodThing": {
+    "description": "Mental state section: one good thing"
+  },
+  "mentalStateThoughtLens": "Thought lens",
+  "@mentalStateThoughtLens": {
+    "description": "Mental state section: cognitive distortion tool"
+  },
+  "dialogGotIt": "Got it",
+  "@dialogGotIt": {
+    "description": "Dialog action button"
+  },
+  "dialogCancel": "Cancel",
+  "@dialogCancel": {
+    "description": "Dialog action button"
+  },
+  "dialogSave": "Save",
+  "@dialogSave": {
+    "description": "Dialog action button"
+  },
+  "dialogDelete": "Delete",
+  "@dialogDelete": {
+    "description": "Dialog action button"
+  },
+  "dialogClose": "Close",
+  "@dialogClose": {
+    "description": "Dialog close button"
+  },
+  "dialogReset": "Reset",
+  "@dialogReset": {
+    "description": "Dialog reset button"
+  },
+  "dialogWhyThisWorks": "Why this works",
+  "@dialogWhyThisWorks": {
+    "description": "Tooltip to show help/sources"
+  },
+  "dialogWhyThisHelps": "Why this helps",
+  "@dialogWhyThisHelps": {
+    "description": "Tooltip to show module help"
+  },
+  "nourishment": "Nourishment",
+  "@nourishment": {
+    "description": "Title for the food module dialog"
+  },
+  "resetAll": "Reset all",
+  "@resetAll": {
+    "description": "Button to reset all food categories"
+  },
+  "grounding": "Grounding",
+  "@grounding": {
+    "description": "Label for the grounding/here module"
+  },
+  "groundingAffirmation1": "Good. You're here.",
+  "@groundingAffirmation1": {
+    "description": "Grounding affirmation phrase"
+  },
+  "groundingAffirmation2": "Hello there!",
+  "@groundingAffirmation2": {
+    "description": "Grounding affirmation phrase"
+  },
+  "groundingAffirmation3": "One moment at a time.",
+  "@groundingAffirmation3": {
+    "description": "Grounding affirmation phrase"
+  },
+  "groundingAffirmation4": "You showed up. That matters.",
+  "@groundingAffirmation4": {
+    "description": "Grounding affirmation phrase"
+  },
+  "groundingAffirmation5": "Right here, right now.",
+  "@groundingAffirmation5": {
+    "description": "Grounding affirmation phrase"
+  },
+  "movementTitle": "Movement",
+  "@movementTitle": {
+    "description": "Title for the movement module dialog"
+  },
+  "movementCompleted": "You completed an activity today. That's wonderful! 💪",
+  "@movementCompleted": {
+    "description": "Message shown after completing movement activity"
+  },
+  "movementChoose": "Choose one gentle activity for today:",
+  "@movementChoose": {
+    "description": "Instruction text for choosing a movement activity"
+  },
+  "movementGreatJob": "Great job! 💪",
+  "@movementGreatJob": {
+    "description": "Congratulation message for movement"
+  },
+  "tapToOpen": "Tap to open",
+  "@tapToOpen": {
+    "description": "Instruction on module tile"
+  },
+  "placeholderModuleText": "This is a placeholder module.",
+  "@placeholderModuleText": {
+    "description": "Message for placeholder modules"
+  },
+  "simulateAction": "Simulate action",
+  "@simulateAction": {
+    "description": "Button for placeholder module"
+  },
+  "modulesHelpText": "Turn modules on or off. Optional settings appear under each one.",
+  "@modulesHelpText": {
+    "description": "Help text in settings for modules section"
+  },
+  "resetToday": "Reset today",
+  "@resetToday": {
+    "description": "Button to reset today's data"
+  },
+  "todayReset": "Today reset",
+  "@todayReset": {
+    "description": "Confirmation message when today is reset"
+  },
+  "appPrivacyText": "Baseline is a private, present-moment self-care app.\\nNo history. No tracking. Just today.",
+  "@appPrivacyText": {
+    "description": "Privacy statement in settings"
+  },
+  "foodProteinSubtitle": "1–2 portions",
+  "@foodProteinSubtitle": {
+    "description": "Food category portion guide: Protein"
+  },
+  "foodGreensSubtitle": "3–5 portions (fruits & veggies)",
+  "@foodGreensSubtitle": {
+    "description": "Food category portion guide: Greens"
+  },
+  "foodBeansSubtitle": "1–2 portions",
+  "@foodBeansSubtitle": {
+    "description": "Food category portion guide: Beans"
+  },
+  "foodFillersSubtitle": "1–3 portions (rice, pasta, bread)",
+  "@foodFillersSubtitle": {
+    "description": "Food category portion guide: Fillers"
+  },
+  "foodTreatSubtitle": "1 portion (chocolate, dessert)",
+  "@foodTreatSubtitle": {
+    "description": "Food category portion guide: Treat"
+  },
+  "mentalStateHelp": "This area is for right now only: naming how you feel, a tiny bit of gratitude or grounding, and gentle \"thought lens\" prompts inspired by cognitive approaches. It is not a substitute for care from a qualified professional when you need it.",
+  "@mentalStateHelp": {
+    "description": "Help text for mental state module"
+  },
+  "sleepHelp": "Sleep affects mood, energy, and regulation. Logging \"going to sleep\" and \"awake\" with simple duration (today only) supports awareness without tracking streaks or judging rest.",
+  "@sleepHelp": {
+    "description": "Help text for sleep module"
+  },
+  "medsHelp": "A minimal today-only checklist can reduce mental load. This is not medical advice; use your clinician's plan and seek help for urgent concerns.",
+  "@medsHelp": {
+    "description": "Help text for meds module"
+  },
+  "movementHelp": "Any movement counts toward care and activation. No intensity or duration — a small nudge beats \"all or nothing.\"",
+  "@movementHelp": {
+    "description": "Help text for movement module"
+  },
+  "groundingHelp": "A single tap to anchor yourself in the present — Gestalt \"here and now\". No tracking, no memory, no score: the smallest possible caring action.",
+  "@groundingHelp": {
+    "description": "Help text for grounding/here module"
+  },
+  "hereButtonHint": "I'm here. I'm alive.",
+  "@hereButtonHint": {
+    "description": "Hint text for the here module button customization field"
+  },
+  "movementChoicesLabel": "Movement choices (one per line)",
+  "@movementChoicesLabel": {
+    "description": "Label for movement choices field"
+  },
+  "movementDone": "Done",
+  "@movementDone": {
+    "description": "Compact movement completed label"
+  },
+  "stateLabel": "State:",
+  "@stateLabel": {
+    "description": "Label prefix for current state display"
+  },
+  "simulateActionResult": "Touched {module}",
+  "@simulateActionResult": {
+    "description": "Template text for simulated action result"
+  }
+}

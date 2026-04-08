@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../l10n/app_localizations.dart';
 import '../state/today_state.dart';
 
 enum FoodCategoryId {
@@ -12,15 +13,11 @@ enum FoodCategoryId {
 
 class FoodCategoryDef {
   final FoodCategoryId id;
-  final String title;
-  final String subtitle;
   final int maxPortions;
   final IconData icon;
 
   const FoodCategoryDef({
     required this.id,
-    required this.title,
-    required this.subtitle,
     required this.maxPortions,
     required this.icon,
   });
@@ -28,40 +25,60 @@ class FoodCategoryDef {
   static const List<FoodCategoryDef> all = [
     FoodCategoryDef(
       id: FoodCategoryId.protein,
-      title: 'Protein',
-      subtitle: '1–2 portions',
       maxPortions: 2,
       icon: Icons.egg_outlined,
     ),
     FoodCategoryDef(
       id: FoodCategoryId.greens,
-      title: 'Greens',
-      subtitle: '3–5 portions (fruits & veggies)',
       maxPortions: 5,
       icon: Icons.eco_outlined,
     ),
     FoodCategoryDef(
       id: FoodCategoryId.legumes,
-      title: 'Beans & chickpeas',
-      subtitle: '1–2 portions',
       maxPortions: 2,
       icon: Icons.grain,
     ),
     FoodCategoryDef(
       id: FoodCategoryId.fillers,
-      title: 'Fillers',
-      subtitle: '1–3 portions (rice, pasta, bread)',
       maxPortions: 3,
       icon: Icons.bakery_dining_outlined,
     ),
     FoodCategoryDef(
       id: FoodCategoryId.treat,
-      title: 'Sweet treat',
-      subtitle: '1 portion (chocolate, dessert)',
       maxPortions: 1,
       icon: Icons.cake_outlined,
     ),
   ];
+
+  String title(AppLocalizations l10n) {
+    switch (id) {
+      case FoodCategoryId.protein:
+        return l10n.foodProteinLabel;
+      case FoodCategoryId.greens:
+        return l10n.foodGreensLabel;
+      case FoodCategoryId.legumes:
+        return l10n.foodBeansLabel;
+      case FoodCategoryId.fillers:
+        return l10n.foodFillersLabel;
+      case FoodCategoryId.treat:
+        return l10n.foodTreatLabel;
+    }
+  }
+
+  String subtitle(AppLocalizations l10n) {
+    switch (id) {
+      case FoodCategoryId.protein:
+        return l10n.foodProteinSubtitle;
+      case FoodCategoryId.greens:
+        return l10n.foodGreensSubtitle;
+      case FoodCategoryId.legumes:
+        return l10n.foodBeansSubtitle;
+      case FoodCategoryId.fillers:
+        return l10n.foodFillersSubtitle;
+      case FoodCategoryId.treat:
+        return l10n.foodTreatSubtitle;
+    }
+  }
 
   int countFrom(TodayState s) {
     switch (id) {

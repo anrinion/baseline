@@ -4,6 +4,8 @@ import 'package:provider/provider.dart';
 import '../modules/module_ids.dart';
 import '../state/app_state.dart';
 import '../state/settings.dart';
+import '../l10n/localization_service.dart';
+import '../l10n/app_localizations.dart';
 
 class SettingsScreen extends StatefulWidget {
   const SettingsScreen({super.key});
@@ -34,14 +36,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
     return _movementOptionsController!;
   }
 
-  final List<Map<String, String>> languages = [
-    {'code': 'en', 'label': 'English'},
-    {'code': 'ru', 'label': 'Русский'},
-    {'code': 'es', 'label': 'Español'},
-    {'code': 'de', 'label': 'Deutsch'},
-    {'code': 'fr', 'label': 'Français'},
-    {'code': 'pl', 'label': 'Polski'}, // placeholder, adjustable
-  ];
+  final List<String> languages = ['en', 'ru'];
 
   final List<Map<String, String>> themes = [
     {'key': 'light1', 'label': 'Light (Neutral)'},
@@ -53,26 +48,29 @@ class _SettingsScreenState extends State<SettingsScreen> {
   @override
   Widget build(BuildContext context) {
     final appState = Provider.of<AppState>(context);
+    final localizationService = Provider.of<LocalizationService>(context);
     final settings = appState.settings;
+    final l10n = AppLocalizations.of(context)!;
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Settings')),
+      appBar: AppBar(title: Text(l10n.settingsScreenTitle)),
       body: ListView(
         padding: const EdgeInsets.all(16),
         children: [
-          Text('Language', style: Theme.of(context).textTheme.titleMedium),
+          Text(l10n.languageLabel, style: Theme.of(context).textTheme.titleMedium),
           const SizedBox(height: 8),
           DropdownButton<String>(
-            value: settings.language,
+            value: localizationService.currentLanguageCode,
             isExpanded: true,
-            items: languages.map((lang) {
+            items: languages.map((langCode) {
               return DropdownMenuItem(
-                value: lang['code'],
-                child: Text(lang['label']!),
+                value: langCode,
+                child: Text(_getLanguageLabel(l10n, langCode)),
               );
             }).toList(),
             onChanged: (value) {
               if (value != null) {
+                localizationService.setLanguage(value);
                 appState.updateSettings((s) {
                   s.language = value;
                 });
@@ -82,12 +80,13 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
           const SizedBox(height: 24),
 
-          Text('Theme', style: Theme.of(context).textTheme.titleMedium),
+          Text(l10n.themeLabel, style: Theme.of(context).textTheme.titleMedium),
           const SizedBox(height: 8),
           Column(
             children: themes.map((theme) {
+              final themeLabel = _getThemeLabel(l10n, theme['key']!);
               return RadioListTile<String>(
-                title: Text(theme['label']!),
+                title: Text(themeLabel),
                 value: theme['key']!,
                 groupValue: settings.theme,
                 onChanged: (value) {
@@ -103,15 +102,15 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
           const SizedBox(height: 24),
 
-          Text('Modules', style: Theme.of(context).textTheme.titleMedium),
+          Text(l10n.modulesLabel, style: Theme.of(context).textTheme.titleMedium),
           const SizedBox(height: 4),
           Text(
-            'Turn modules on or off. Optional settings appear under each one.',
+            l10n.modulesHelpText,
             style: Theme.of(context).textTheme.bodySmall,
           ),
           const SizedBox(height: 12),
 
-          for (final id in BaselineModuleId.all) _moduleCard(context, appState, settings, id),
+          for (final id in BaselineModuleId.all) _moduleCard(context, appState, settings, id, l10n),
 
           const SizedBox(height: 24),
 
@@ -119,22 +118,47 @@ class _SettingsScreenState extends State<SettingsScreen> {
             onPressed: () {
               appState.resetTodayManual();
               ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(content: Text('Today reset')),
+                SnackBar(content: Text(l10n.todayReset)),
               );
             },
-            child: const Text('Reset today'),
+            child: Text(l10n.resetToday),
           ),
 
           const SizedBox(height: 24),
 
-          const Text(
-            'Baseline is a private, present-moment self-care app.\n'
-            'No history. No tracking. Just today.',
-            style: TextStyle(fontSize: 14),
+          Text(
+            l10n.appPrivacyText,
+            style: const TextStyle(fontSize: 14),
           ),
         ],
       ),
     );
+  }
+
+  String _getThemeLabel(AppLocalizations l10n, String themeKey) {
+    switch (themeKey) {
+      case 'light1':
+        return l10n.themeLight1;
+      case 'light2':
+        return l10n.themeLight2;
+      case 'dark1':
+        return l10n.themeDark1;
+      case 'dark2':
+        return l10n.themeDark2;
+      default:
+        return themeKey;
+    }
+  }
+
+  String _getLanguageLabel(AppLocalizations l10n, String code) {
+    switch (code) {
+      case 'en':
+        return l10n.languageEnglish;
+      case 'ru':
+        return l10n.languageRussian;
+      default:
+        return code;
+    }
   }
 
   Widget _moduleCard(
@@ -142,6 +166,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
     AppState appState,
     Settings settings,
     String id,
+    AppLocalizations l10n,
   ) {
     final enabled = settings.isModuleEnabled(id);
 
@@ -154,7 +179,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
           children: [
             SwitchListTile(
               contentPadding: const EdgeInsets.symmetric(horizontal: 8),
-              title: Text(BaselineModuleId.label(id)),
+              title: Text(BaselineModuleId.localizedLabel(l10n, id)),
               value: enabled,
               onChanged: (on) {
                 appState.updateSettings((s) {
@@ -167,10 +192,10 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 padding: const EdgeInsets.fromLTRB(16, 0, 16, 8),
                 child: TextField(
                   controller: _hereCtrl(settings.hereButtonText),
-                  decoration: const InputDecoration(
-                    labelText: 'Button label',
-                    border: OutlineInputBorder(),
-                    hintText: "I'm here. I'm alive.",
+                  decoration: InputDecoration(
+                    labelText: l10n.hereModuleCustomizeLabel,
+                    border: const OutlineInputBorder(),
+                    hintText: l10n.hereButtonHint,
                   ),
                   onChanged: (value) {
                     appState.updateSettings((s) {
@@ -191,14 +216,14 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     settings.getModuleSetting(
                       BaselineModuleId.movement,
                       'options',
-                      'Go for a walk\nLight workout',
+                      l10n.movementDefaultOptions,
                     ),
                   ),
                   maxLines: 3,
-                  decoration: const InputDecoration(
-                    labelText: 'Movement choices (one per line)',
-                    border: OutlineInputBorder(),
-                    hintText: 'Go for a walk\nLight workout',
+                  decoration: InputDecoration(
+                    labelText: l10n.movementChoicesLabel,
+                    border: const OutlineInputBorder(),
+                    hintText: l10n.movementDefaultOptions,
                   ),
                   onChanged: (value) {
                     appState.updateSettings((s) {

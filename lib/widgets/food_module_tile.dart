@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 import '../modules/food_constants.dart';
 import '../modules/food_module.dart';
 import '../state/app_state.dart';
+import '../l10n/app_localizations.dart';
 import '../utils/adaptive_layout.dart';
 
 class FoodModuleTile extends StatelessWidget {
@@ -19,7 +20,7 @@ class FoodModuleTile extends StatelessWidget {
     HapticFeedback.lightImpact();
   }
 
-  double measureExtendedModeHeight(BuildContext context, double w) {
+  double measureExtendedModeHeight(BuildContext context, double w, AppLocalizations l10n) {
     final innerW = w - 48;
     if (innerW <= 0) return double.infinity;
 
@@ -35,13 +36,13 @@ class FoodModuleTile extends StatelessWidget {
     for (final c in FoodCategoryDef.all) {
       double titleH = AdaptiveSizing.measureTextHeight(
         context,
-        c.title,
+        c.title(l10n),
         tStyle,
         textW,
       );
       double subH = AdaptiveSizing.measureTextHeight(
         context,
-        c.subtitle,
+        c.subtitle(l10n),
         sStyle,
         textW,
       );
@@ -56,7 +57,7 @@ class FoodModuleTile extends StatelessWidget {
     return 48 + contentH;
   }
 
-  double measureRegularModeHeight(BuildContext context, double w) {
+  double measureRegularModeHeight(BuildContext context, double w, AppLocalizations l10n) {
     final innerW = w - 48;
     if (innerW <= 0) return double.infinity;
 
@@ -71,7 +72,7 @@ class FoodModuleTile extends StatelessWidget {
     for (final c in FoodCategoryDef.all) {
       double titleH = AdaptiveSizing.measureTextHeight(
         context,
-        c.title,
+        c.title(l10n),
         tStyle,
         textW,
       );
@@ -84,7 +85,7 @@ class FoodModuleTile extends StatelessWidget {
     return 48 + contentH;
   }
 
-  double measureSmallModeHeight(BuildContext context, double w) {
+  double measureSmallModeHeight(BuildContext context, double w, AppLocalizations l10n) {
     final innerW = w - 48;
     if (innerW <= 0) return double.infinity;
 
@@ -98,7 +99,7 @@ class FoodModuleTile extends StatelessWidget {
     for (final c in FoodCategoryDef.all) {
       double titleH = AdaptiveSizing.measureTextHeight(
         context,
-        c.title,
+        c.title(l10n),
         tStyle,
         textW,
       );
@@ -120,15 +121,17 @@ class FoodModuleTile extends StatelessWidget {
           builder: (context, constraints) {
             final availableWidth = constraints.maxWidth;
             final availableHeight = constraints.maxHeight;
+            final l10n = AppLocalizations.of(context)!;
 
             AdaptiveTileMode mode = AdaptiveTileMode.micro;
 
             final extendedH = measureExtendedModeHeight(
               context,
               availableWidth,
+              l10n,
             );
-            final regularH = measureRegularModeHeight(context, availableWidth);
-            final smallH = measureSmallModeHeight(context, availableWidth);
+            final regularH = measureRegularModeHeight(context, availableWidth, l10n);
+            final smallH = measureSmallModeHeight(context, availableWidth, l10n);
 
             if (availableHeight >= extendedH && availableWidth >= 320) {
               mode = AdaptiveTileMode.expanded;
@@ -145,11 +148,11 @@ class FoodModuleTile extends StatelessWidget {
               child: () {
                 switch (mode) {
                   case AdaptiveTileMode.expanded:
-                    return _buildExtended(context, appState);
+                    return _buildExtended(context, appState, l10n);
                   case AdaptiveTileMode.medium:
-                    return _buildRegular(context, appState, total, maxTotal);
+                    return _buildRegular(context, appState, total, maxTotal, l10n);
                   case AdaptiveTileMode.compact:
-                    return _buildSmall(context, appState, total, maxTotal);
+                    return _buildSmall(context, appState, total, maxTotal, l10n);
                   case AdaptiveTileMode.micro:
                     return _buildMicro(context, scheme, total, maxTotal);
                 }
@@ -179,7 +182,7 @@ class FoodModuleTile extends StatelessWidget {
     );
   }
 
-  Widget _buildStandardHeader(BuildContext context, int total, int maxTotal) {
+  Widget _buildStandardHeader(BuildContext context, int total, int maxTotal, AppLocalizations l10n) {
     final scheme = Theme.of(context).colorScheme;
     return Row(
       children: [
@@ -187,7 +190,7 @@ class FoodModuleTile extends StatelessWidget {
         const SizedBox(width: 6),
         Expanded(
           child: Text(
-            'Food',
+            l10n.foodModuleLabel,
             style: Theme.of(context).textTheme.titleSmall?.copyWith(
               fontWeight: FontWeight.w600,
               color: scheme.onSurface,
@@ -203,7 +206,7 @@ class FoodModuleTile extends StatelessWidget {
         ),
         IconButton(
           icon: Icon(Icons.help_outline, size: 20, color: scheme.outline),
-          tooltip: 'Why this works',
+          tooltip: l10n.dialogWhyThisWorks,
           padding: EdgeInsets.zero,
           constraints: const BoxConstraints(minWidth: 36, minHeight: 36),
           onPressed: () => showFoodSourcesHelp(context),
@@ -239,13 +242,14 @@ class FoodModuleTile extends StatelessWidget {
     AppState appState,
     int total,
     int maxTotal,
+    AppLocalizations l10n,
   ) {
     final s = appState.todayState;
     final scheme = Theme.of(context).colorScheme;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        _buildStandardHeader(context, total, maxTotal),
+        _buildStandardHeader(context, total, maxTotal, l10n),
         const SizedBox(height: 8),
         Expanded(
           child: Column(
@@ -259,7 +263,7 @@ class FoodModuleTile extends StatelessWidget {
                     Expanded(
                       flex: 3,
                       child: Text(
-                        c.title,
+                        c.title(l10n),
                         style: Theme.of(context).textTheme.labelMedium
                             ?.copyWith(color: scheme.onSurfaceVariant),
                         maxLines: 2,
@@ -307,11 +311,12 @@ class FoodModuleTile extends StatelessWidget {
     AppState appState,
     int total,
     int maxTotal,
+    AppLocalizations l10n,
   ) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        _buildStandardHeader(context, total, maxTotal),
+        _buildStandardHeader(context, total, maxTotal, l10n),
         const SizedBox(height: 12),
         Expanded(
           child: SingleChildScrollView(
@@ -335,7 +340,7 @@ class FoodModuleTile extends StatelessWidget {
     );
   }
 
-  Widget _buildExtended(BuildContext context, AppState appState) {
+  Widget _buildExtended(BuildContext context, AppState appState, AppLocalizations l10n) {
     final theme = Theme.of(context);
     final scheme = theme.colorScheme;
     return Column(
@@ -347,7 +352,7 @@ class FoodModuleTile extends StatelessWidget {
             Icon(Icons.restaurant, color: scheme.primary, size: 26),
             const SizedBox(width: 8),
             Text(
-              'Nourishment',
+              l10n.nourishment,
               style: theme.textTheme.titleLarge?.copyWith(
                 fontWeight: FontWeight.w600,
                 letterSpacing: -0.3,
@@ -357,7 +362,7 @@ class FoodModuleTile extends StatelessWidget {
             const Spacer(),
             IconButton(
               icon: Icon(Icons.help_outline, size: 22, color: scheme.outline),
-              tooltip: 'Why this works',
+              tooltip: l10n.dialogWhyThisWorks,
               onPressed: () => showFoodSourcesHelp(context),
             ),
             TextButton(
@@ -365,7 +370,7 @@ class FoodModuleTile extends StatelessWidget {
               style: TextButton.styleFrom(
                 foregroundColor: scheme.onSurfaceVariant,
               ),
-              child: const Text('Reset all'),
+              child: Text(l10n.resetAll),
             ),
           ],
         ),
@@ -411,6 +416,7 @@ class _CategoryCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final scheme = theme.colorScheme;
+    final l10n = AppLocalizations.of(context)!;
     final max = category.maxPortions;
     final isMin = current == 0;
     final isMax = current >= max;
@@ -438,7 +444,7 @@ class _CategoryCard extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        category.title,
+                        category.title(l10n),
                         style: theme.textTheme.titleMedium?.copyWith(
                           fontWeight: FontWeight.w600,
                           color: scheme.onSurface,
@@ -447,7 +453,7 @@ class _CategoryCard extends StatelessWidget {
                       if (isExtended) ...[
                         const SizedBox(height: 2),
                         Text(
-                          category.subtitle,
+                          category.subtitle(l10n),
                           style: theme.textTheme.bodySmall?.copyWith(
                             color: scheme.onSurfaceVariant,
                             fontSize: 13,

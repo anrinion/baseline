@@ -1,3 +1,5 @@
+import '../l10n/app_localizations.dart';
+
 /// Stable ids for main-grid modules (persisted in [Settings]).
 abstract class BaselineModuleId {
   static const String mentalState = 'mentalState';
@@ -32,6 +34,25 @@ abstract class BaselineModuleId {
         return 'Grounding';
       case food:
         return 'Food';
+      default:
+        return id;
+    }
+  }
+
+  static String localizedLabel(AppLocalizations l10n, String id) {
+    switch (id) {
+      case mentalState:
+        return l10n.mentalStateModuleLabel;
+      case sleep:
+        return l10n.sleepModuleLabel;
+      case meds:
+        return l10n.medsModuleLabel;
+      case movement:
+        return l10n.movementModuleLabel;
+      case here:
+        return l10n.hereModuleLabel;
+      case food:
+        return l10n.foodModuleLabel;
       default:
         return id;
     }

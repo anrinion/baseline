@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../l10n/app_localizations.dart';
 import 'food_module.dart';
 import 'module_ids.dart';
 
@@ -11,13 +12,14 @@ void showModuleHelp(BuildContext context, String moduleId) {
   }
 
   final scheme = Theme.of(context).colorScheme;
-  final body = _bodyFor(moduleId);
+  final l10n = AppLocalizations.of(context)!;
+  final body = _bodyFor(moduleId, l10n);
   if (body == null) return;
 
   showDialog<void>(
     context: context,
     builder: (ctx) => AlertDialog(
-      title: Text(BaselineModuleId.label(moduleId)),
+      title: Text(BaselineModuleId.localizedLabel(l10n, moduleId)),
       content: SingleChildScrollView(
         child: Text(
           body,
@@ -27,33 +29,25 @@ void showModuleHelp(BuildContext context, String moduleId) {
       actions: [
         TextButton(
           onPressed: () => Navigator.of(ctx).pop(),
-          child: const Text('Got it'),
+          child: Text(l10n.dialogGotIt),
         ),
       ],
     ),
   );
 }
 
-String? _bodyFor(String moduleId) {
+String? _bodyFor(String moduleId, AppLocalizations l10n) {
   switch (moduleId) {
     case BaselineModuleId.mentalState:
-      return 'This area is for right now only: naming how you feel, a tiny bit of '
-          'gratitude or grounding, and gentle “thought lens” prompts inspired by '
-          'cognitive approaches. It is not a substitute for care from a qualified '
-          'professional when you need it.';
+      return l10n.mentalStateHelp;
     case BaselineModuleId.sleep:
-      return 'Sleep affects mood, energy, and regulation. Logging “going to sleep” '
-          'and “awake” with simple duration (today only) supports awareness without '
-          'tracking streaks or judging rest.';
+      return l10n.sleepHelp;
     case BaselineModuleId.meds:
-      return 'A minimal today-only checklist can reduce mental load. This is not '
-          'medical advice; use your clinician’s plan and seek help for urgent concerns.';
+      return l10n.medsHelp;
     case BaselineModuleId.movement:
-      return 'Any movement counts toward care and activation. No intensity or '
-          'duration — a small nudge beats “all or nothing.”';
+      return l10n.movementHelp;
     case BaselineModuleId.here:
-      return 'A single tap to anchor yourself in the present — Gestalt “here and now”. '
-          'No tracking, no memory, no score: the smallest possible caring action.';
+      return l10n.groundingHelp;
     case BaselineModuleId.food:
       return null;
     default:

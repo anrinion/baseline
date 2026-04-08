@@ -20,10 +20,8 @@ class SettingsAdapter extends TypeAdapter<Settings> {
       ..language = fields[0] as String
       ..theme = fields[1] as String
       ..hereButtonText = fields[2] as String
-      ..enabledModuleIds = fields[3] != null
-          ? (fields[3] as List).cast<String>()
-          : List<String>.from(BaselineModuleId.all)
-      ..moduleSettingsJson = fields[4] as String? ?? '{}';
+      ..enabledModuleIds = (fields[3] as List).cast<String>()
+      ..moduleSettingsJson = fields[4] as String;
   }
 
   @override

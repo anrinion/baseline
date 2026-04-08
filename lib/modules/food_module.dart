@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 
 import '../state/app_state.dart';
+import '../l10n/app_localizations.dart';
 import 'food_constants.dart';
 
 // ... food_module.dart
@@ -25,29 +26,20 @@ void applyFoodDelta(AppState app, FoodCategoryDef def, int delta) {
 
 /// Sources / rationale for the Food module (also used from the grid tile “?”).
 void showFoodSourcesHelp(BuildContext context) {
-  final scheme = Theme.of(context).colorScheme;
-  showDialog<void>(
+  final scheme = Theme.of(context).colorScheme;  final l10n = AppLocalizations.of(context)!;  showDialog<void>(
     context: context,
     builder: (ctx) => AlertDialog(
-      title: const Text('Why this works'),
+      title: Text(l10n.foodSourcesTitle),
       content: SingleChildScrollView(
         child: Text(
-          '• Protein: supports satiety and steady energy.\n'
-          '• Greens: fiber, vitamins, and plant variety.\n'
-          '• Beans and chickpeas: fiber and plant protein.\n'
-          '• Fillers: complex carbs for accessible energy.\n'
-          '• Sweet treat: a small enjoyable bite can support behavioral activation — '
-          'pleasure without “earning” it.\n\n'
-          'This is about balance, not restriction. Non-restrictive approaches favor '
-          'flexibility and self-care over rules or guilt. For personalized guidance, '
-          'ask a qualified professional.',
+          l10n.foodSourcesContent,
           style: TextStyle(color: scheme.onSurfaceVariant, height: 1.45),
         ),
       ),
       actions: [
         TextButton(
           onPressed: () => Navigator.of(ctx).pop(),
-          child: const Text('Got it'),
+          child: Text(l10n.dialogGotIt),
         ),
       ],
     ),
@@ -70,6 +62,7 @@ class _FoodEditorDialog extends StatelessWidget {
   Widget build(BuildContext context) {
     final screenH = MediaQuery.sizeOf(context).height;
     final theme = Theme.of(context);
+    final l10n = AppLocalizations.of(context)!;
 
     final scheme = theme.colorScheme;
 
@@ -95,7 +88,7 @@ class _FoodEditorDialog extends StatelessWidget {
                           color: scheme.primary, size: 26),
                       const SizedBox(width: 8),
                       Text(
-                        'Nourishment',
+                        l10n.nourishment,
                         style: theme.textTheme.titleLarge?.copyWith(
                           fontWeight: FontWeight.w600,
                           letterSpacing: -0.3,
@@ -106,7 +99,7 @@ class _FoodEditorDialog extends StatelessWidget {
                       IconButton(
                         icon: Icon(Icons.help_outline,
                             size: 22, color: scheme.outline),
-                        tooltip: 'Why this works',
+                        tooltip: l10n.dialogWhyThisWorks,
                         onPressed: () => showFoodSourcesHelp(context),
                       ),
                       TextButton(
@@ -114,7 +107,7 @@ class _FoodEditorDialog extends StatelessWidget {
                         style: TextButton.styleFrom(
                           foregroundColor: scheme.onSurfaceVariant,
                         ),
-                        child: const Text('Reset all'),
+                        child: Text(l10n.resetAll),
                       ),
                     ],
                   ),
@@ -144,7 +137,7 @@ class _FoodEditorDialog extends StatelessWidget {
                     padding: const EdgeInsets.fromLTRB(8, 0, 8, 8),
                     child: TextButton(
                       onPressed: () => Navigator.of(context).pop(),
-                      child: const Text('Close'),
+                      child: Text(l10n.dialogClose),
                     ),
                   ),
                 ),
@@ -176,6 +169,7 @@ class _FoodCategoryCard extends StatelessWidget {
     final isMax = current >= max;
 
     final scheme = theme.colorScheme;
+    final l10n = AppLocalizations.of(context)!;
 
     return Card(
       elevation: 0,
@@ -196,7 +190,7 @@ class _FoodCategoryCard extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        category.title,
+                        category.title(l10n),
                         style: theme.textTheme.titleMedium?.copyWith(
                           fontWeight: FontWeight.w600,
                           color: scheme.onSurface,
@@ -204,7 +198,7 @@ class _FoodCategoryCard extends StatelessWidget {
                       ),
                       const SizedBox(height: 2),
                       Text(
-                        category.subtitle,
+                        category.subtitle(l10n),
                         style: theme.textTheme.bodySmall?.copyWith(
                           color: scheme.onSurfaceVariant,
                           fontSize: 13,

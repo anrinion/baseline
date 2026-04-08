@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../l10n/app_localizations.dart';
 import '../modules/module_help.dart';
 import '../modules/module_ids.dart';
 import '../modules/movement_module.dart';
@@ -18,9 +19,10 @@ class MovementModuleTile extends StatelessWidget {
         final appState = Provider.of<AppState>(context);
         final theme = Theme.of(context);
         final scheme = theme.colorScheme;
+        final l10n = AppLocalizations.of(context)!;
 
         final hasMoved = appState.todayState.moved;
-        final options = getMovementOptions(appState);
+        final options = getMovementOptions(appState, l10n);
 
         final availableWidth =
             constraints.maxWidth - 32; // 16 padding on each side
@@ -49,7 +51,7 @@ class MovementModuleTile extends StatelessWidget {
 
           final expandedTextH = AdaptiveSizing.measureTextHeight(
             context,
-            'Choose one gentle activity for today:',
+            l10n.movementChoose,
             theme.textTheme.bodyMedium,
             availableWidth,
           );
@@ -124,7 +126,7 @@ class MovementModuleTile extends StatelessWidget {
                     const SizedBox(width: 6),
                     Expanded(
                       child: Text(
-                        BaselineModuleId.label(BaselineModuleId.movement),
+                        BaselineModuleId.localizedLabel(l10n, BaselineModuleId.movement),
                         style: theme.textTheme.titleSmall?.copyWith(
                           fontWeight: FontWeight.w600,
                           color: scheme.onSurface,
@@ -137,7 +139,7 @@ class MovementModuleTile extends StatelessWidget {
                         size: 20,
                         color: scheme.outline,
                       ),
-                      tooltip: 'Why this helps',
+                      tooltip: l10n.dialogWhyThisHelps,
                       padding: EdgeInsets.zero,
                       constraints: const BoxConstraints(
                         minWidth: 36,
@@ -150,7 +152,7 @@ class MovementModuleTile extends StatelessWidget {
                 ),
                 const Expanded(child: SizedBox(height: 8)),
                 if (hasMoved)
-                  _buildCompletedState(context, appState, mode)
+                  _buildCompletedState(context, appState, mode, l10n)
                 else
                   _buildChoicesState(context, appState, options, mode),
                 const Expanded(child: SizedBox(height: 8)),
@@ -166,6 +168,7 @@ class MovementModuleTile extends StatelessWidget {
     BuildContext context,
     AppState appState,
     AdaptiveTileMode mode,
+    AppLocalizations l10n,
   ) {
     final theme = Theme.of(context);
     final scheme = theme.colorScheme;
@@ -178,7 +181,7 @@ class MovementModuleTile extends StatelessWidget {
           const Icon(Icons.check_circle, size: 24, color: Color(0xFF059669)),
           const SizedBox(width: 8),
           Text(
-            'Done',
+            l10n.movementDone,
             style: theme.textTheme.bodyMedium?.copyWith(
               color: const Color(0xFF059669),
               fontWeight: FontWeight.w600,
@@ -188,7 +191,7 @@ class MovementModuleTile extends StatelessWidget {
           IconButton(
             onPressed: () => resetMovementExercise(appState),
             icon: const Icon(Icons.undo, size: 20),
-            tooltip: 'Reset',
+            tooltip: l10n.dialogReset,
           ),
         ],
       );
@@ -206,12 +209,12 @@ class MovementModuleTile extends StatelessWidget {
             if (mode == AdaptiveTileMode.expanded)
               Expanded(
                 child: Text(
-                  'You completed an activity today. That’s wonderful! 💪',
+                  l10n.movementCompleted,
                   style: theme.textTheme.bodyMedium,
                 ),
               )
             else
-              Text('Great job! 💪', style: theme.textTheme.bodyMedium),
+              Text(l10n.movementGreatJob, style: theme.textTheme.bodyMedium),
           ],
         ),
         const SizedBox(height: 12),
@@ -224,7 +227,7 @@ class MovementModuleTile extends StatelessWidget {
               borderRadius: BorderRadius.circular(40),
             ),
           ),
-          child: const Text('Reset'),
+          child: Text(l10n.dialogReset),
         ),
       ],
     );
@@ -238,6 +241,7 @@ class MovementModuleTile extends StatelessWidget {
   ) {
     final theme = Theme.of(context);
     final scheme = theme.colorScheme;
+    final l10n = AppLocalizations.of(context)!;
 
     return Column(
       mainAxisSize: MainAxisSize.min,
@@ -245,7 +249,7 @@ class MovementModuleTile extends StatelessWidget {
       children: [
         if (mode == AdaptiveTileMode.expanded) ...[
           Text(
-            'Choose one gentle activity for today:',
+            l10n.movementChoose,
             style: theme.textTheme.bodyMedium?.copyWith(
               color: scheme.onSurface,
             ),

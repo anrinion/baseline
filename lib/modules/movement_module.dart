@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 
 import '../state/app_state.dart';
+import '../l10n/app_localizations.dart';
 import 'module_help.dart';
 import 'module_ids.dart';
 
@@ -38,11 +39,11 @@ IconData iconForMovementOption(String option) {
   return Icons.fitness_center;
 }
 
-List<String> getMovementOptions(AppState appState) {
+List<String> getMovementOptions(AppState appState, AppLocalizations l10n) {
   final optionsString = appState.settings.getModuleSetting(
     BaselineModuleId.movement,
     'options',
-    'Go for a walk\nLight workout',
+    l10n.movementDefaultOptions,
   );
   final options = optionsString
       .split('\n')
@@ -50,7 +51,7 @@ List<String> getMovementOptions(AppState appState) {
       .where((s) => s.isNotEmpty)
       .toList();
   if (options.isEmpty) {
-    options.addAll(['Go for a walk', 'Light workout']);
+    options.addAll(l10n.movementDefaultOptions.split('\n'));
   }
   return options;
 }
@@ -62,6 +63,7 @@ class _MovementEditorDialog extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final scheme = theme.colorScheme;
+    final l10n = AppLocalizations.of(context)!;
 
     return Dialog(
       insetPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 24),
@@ -74,7 +76,7 @@ class _MovementEditorDialog extends StatelessWidget {
         child: Consumer<AppState>(
           builder: (context, appState, _) {
             final hasMoved = appState.todayState.moved;
-            final options = getMovementOptions(appState);
+            final options = getMovementOptions(appState, l10n);
 
             return Column(
               mainAxisSize: MainAxisSize.min,
@@ -87,7 +89,7 @@ class _MovementEditorDialog extends StatelessWidget {
                           color: scheme.primary, size: 26),
                       const SizedBox(width: 8),
                       Text(
-                        'Movement',
+                        l10n.movementTitle,
                         style: theme.textTheme.titleLarge?.copyWith(
                           fontWeight: FontWeight.w600,
                           letterSpacing: -0.3,
@@ -98,7 +100,7 @@ class _MovementEditorDialog extends StatelessWidget {
                       IconButton(
                         icon: Icon(Icons.help_outline,
                             size: 22, color: scheme.outline),
-                        tooltip: 'Why this works',
+                        tooltip: l10n.dialogWhyThisHelps,
                         onPressed: () => showModuleHelp(context, BaselineModuleId.movement),
                       ),
                     ],
@@ -119,7 +121,7 @@ class _MovementEditorDialog extends StatelessWidget {
                                   size: 48, color: Color(0xFF059669)),
                               const SizedBox(height: 12),
                               Text(
-                                'You completed an activity today. That’s wonderful! 💪',
+                                l10n.movementCompleted,
                                 style: theme.textTheme.bodyMedium?.copyWith(
                                     fontSize: 16,
                                 ),
@@ -135,7 +137,7 @@ class _MovementEditorDialog extends StatelessWidget {
                                     borderRadius: BorderRadius.circular(40),
                                   ),
                                 ),
-                                child: const Text('Reset'),
+                                child: Text(l10n.dialogReset),
                               ),
                             ],
                           )
@@ -143,7 +145,7 @@ class _MovementEditorDialog extends StatelessWidget {
                             key: const ValueKey('choices'),
                             children: [
                               Text(
-                                'Choose one gentle activity for today:',
+                                l10n.movementChoose,
                                 style: theme.textTheme.bodyMedium?.copyWith(
                                   fontSize: 16,
                                   color: scheme.onSurface,
@@ -182,7 +184,7 @@ class _MovementEditorDialog extends StatelessWidget {
                     padding: const EdgeInsets.fromLTRB(8, 0, 8, 8),
                     child: TextButton(
                       onPressed: () => Navigator.of(context).pop(),
-                      child: const Text('Close'),
+                      child: Text(l10n.dialogClose),
                     ),
                   ),
                 ),
