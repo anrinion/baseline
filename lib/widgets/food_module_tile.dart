@@ -21,91 +21,103 @@ class FoodModuleTile extends StatelessWidget {
 
         final scheme = Theme.of(context).colorScheme;
 
-        return Card(
-          margin: const EdgeInsets.all(12),
-          elevation: 0,
-          clipBehavior: Clip.antiAlias,
-          color: scheme.surface,
-          surfaceTintColor: Colors.transparent,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(20),
-          ),
-          child: InkWell(
-            onTap: () => showFoodModule(context),
-            borderRadius: BorderRadius.circular(20),
-            child: Padding(
-              padding: const EdgeInsets.fromLTRB(10, 10, 10, 8),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  Row(
+        return LayoutBuilder(
+          builder: (context, constraints) {
+            final availableWidth = constraints.maxWidth;
+            bool isInteractive = availableWidth >= 150;
+
+            return Card(
+              margin: const EdgeInsets.all(12),
+              elevation: 0,
+              clipBehavior: Clip.antiAlias,
+              color: scheme.surface,
+              surfaceTintColor: Colors.transparent,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(20),
+              ),
+              child: InkWell(
+                onTap: () => showFoodModule(context),
+                borderRadius: BorderRadius.circular(20),
+                child: Padding(
+                  padding: const EdgeInsets.fromLTRB(10, 10, 10, 8),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
-                      Icon(
-                        ModuleTile.iconFor(BaselineModuleId.food),
-                        color: scheme.primary,
-                        size: 20,
+                      Row(
+                        children: [
+                          Icon(
+                            ModuleTile.iconFor(BaselineModuleId.food),
+                            color: scheme.primary,
+                            size: 20,
+                          ),
+                          const SizedBox(width: 6),
+                          Expanded(
+                            child: Text(
+                              'Food',
+                              style: Theme.of(context).textTheme.titleSmall
+                                  ?.copyWith(
+                                    fontWeight: FontWeight.w600,
+                                    color: scheme.onSurface,
+                                  ),
+                            ),
+                          ),
+                          Text(
+                            '$total/$maxTotal',
+                            style: Theme.of(context).textTheme.labelMedium
+                                ?.copyWith(
+                                  fontWeight: FontWeight.w600,
+                                  color: scheme.primary,
+                                ),
+                          ),
+                          IconButton(
+                            icon: Icon(
+                              Icons.help_outline,
+                              size: 20,
+                              color: scheme.outline,
+                            ),
+                            tooltip: 'Why this works',
+                            padding: EdgeInsets.zero,
+                            constraints: const BoxConstraints(
+                              minWidth: 36,
+                              minHeight: 36,
+                            ),
+                            onPressed: () => showFoodSourcesHelp(context),
+                          ),
+                        ],
                       ),
-                      const SizedBox(width: 6),
+                      const SizedBox(height: 8),
                       Expanded(
-                        child: Text(
-                          'Food',
-                          style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                                fontWeight: FontWeight.w600,
-                                color: scheme.onSurface,
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            for (final c in FoodCategoryDef.all)
+                              _GlanceBatteryRow(
+                                icon: c.icon,
+                                current: c.countFrom(s),
+                                max: c.maxPortions,
+                                onIncrement: isInteractive
+                                    ? () => applyFoodDelta(appState, c, 1)
+                                    : null,
                               ),
+                          ],
                         ),
                       ),
                       Text(
-                        '$total/$maxTotal',
-                        style: Theme.of(context).textTheme.labelMedium?.copyWith(
-                              fontWeight: FontWeight.w600,
-                              color: scheme.primary,
-                            ),
-                      ),
-                      IconButton(
-                        icon: Icon(
-                          Icons.help_outline,
-                          size: 20,
-                          color: scheme.outline,
-                        ),
-                        tooltip: 'Why this works',
-                        padding: EdgeInsets.zero,
-                        constraints: const BoxConstraints(
-                          minWidth: 36,
-                          minHeight: 36,
-                        ),
-                        onPressed: () => showFoodSourcesHelp(context),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 8),
-                  Expanded(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        for (final c in FoodCategoryDef.all)
-                          _GlanceBatteryRow(
-                            icon: c.icon,
-                            current: c.countFrom(s),
-                            max: c.maxPortions,
-                          ),
-                      ],
-                    ),
-                  ),
-                  Text(
-                    'Tap to log',
-                    textAlign: TextAlign.center,
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                        'Tap to log',
+                        textAlign: TextAlign.center,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: Theme.of(context).textTheme.bodySmall?.copyWith(
                           color: scheme.onSurfaceVariant,
                           fontSize: 10,
                         ),
+                      ),
+                    ],
                   ),
-                ],
+                ),
               ),
-            ),
-          ),
+            );
+          },
         );
       },
     );
@@ -116,11 +128,13 @@ class _GlanceBatteryRow extends StatelessWidget {
   final IconData icon;
   final int current;
   final int max;
+  final VoidCallback? onIncrement;
 
   const _GlanceBatteryRow({
     required this.icon,
     required this.current,
     required this.max,
+    this.onIncrement,
   });
 
   @override
@@ -151,6 +165,16 @@ class _GlanceBatteryRow extends StatelessWidget {
             }),
           ),
         ),
+        if (onIncrement != null) ...[
+          const SizedBox(width: 4),
+          IconButton(
+            icon: const Icon(Icons.add_circle, size: 20),
+            padding: EdgeInsets.zero,
+            constraints: const BoxConstraints(minWidth: 24, minHeight: 24),
+            color: current >= max ? scheme.outline : scheme.primary,
+            onPressed: current >= max ? null : onIncrement,
+          ),
+        ],
       ],
     );
   }

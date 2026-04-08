@@ -290,3 +290,17 @@ If the user does not specify key details:
 This demonstrates how layout, navigation, and content scale together.
 
 ---
+
+## Component-Level Dynamic Boundaries
+
+While global window sizes (Micro, Compact, Medium, Expanded) determine the overall app scaffolding, **individual components** (like dashboard tiles or dynamic cards) should often determine their own layout mode based on the *actual physical pixel constraints* provided to them locally (e.g., using `LayoutBuilder`), rather than blindly trusting the global screen width.
+
+### Rule of Thumb
+If the native content mathematically fits inside the component's unique boundaries using its richest/widest layout (e.g. `Expanded`), permit it regardless of the global screen size. If it doesn't fit, gracefully calculate and degrade it step-by-step to the next highest tier.
+
+### Managing Unpredictable Bounds (e.g. Localization)
+When dealing with customizable options or localization where translated text lengths shrink and grow unpredictably:
+- Avoid relying entirely on hardcoded static width pixels for evaluating components.
+- Rely on native dynamic simulations (e.g., `TextPainter` in Flutter) inside a localized `LayoutBuilder` constraint. Model precisely how much spatial real-estate the localized strings will consume *before* picking the layout mode.
+- Step down the component's internal adaptive tier exactly precisely when the calculation proves the text will safely overflow the explicit `maxWidth` or `maxHeight`.
+---

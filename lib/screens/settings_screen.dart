@@ -18,12 +18,20 @@ class _SettingsScreenState extends State<SettingsScreen> {
   @override
   void dispose() {
     _hereButtonController?.dispose();
+    _movementOptionsController?.dispose();
     super.dispose();
   }
 
   TextEditingController _hereCtrl(String currentText) {
     _hereButtonController ??= TextEditingController(text: currentText);
     return _hereButtonController!;
+  }
+
+  TextEditingController? _movementOptionsController;
+
+  TextEditingController _movementCtrl(String currentText) {
+    _movementOptionsController ??= TextEditingController(text: currentText);
+    return _movementOptionsController!;
   }
 
   final List<Map<String, String>> languages = [
@@ -169,6 +177,34 @@ class _SettingsScreenState extends State<SettingsScreen> {
                       s.setModuleSetting(
                         BaselineModuleId.here,
                         'buttonText',
+                        value,
+                      );
+                    });
+                  },
+                ),
+              ),
+            if (enabled && id == BaselineModuleId.movement)
+              Padding(
+                padding: const EdgeInsets.fromLTRB(16, 0, 16, 8),
+                child: TextField(
+                  controller: _movementCtrl(
+                    settings.getModuleSetting(
+                      BaselineModuleId.movement,
+                      'options',
+                      'Go for a walk\nLight workout',
+                    ),
+                  ),
+                  maxLines: 3,
+                  decoration: const InputDecoration(
+                    labelText: 'Movement choices (one per line)',
+                    border: OutlineInputBorder(),
+                    hintText: 'Go for a walk\nLight workout',
+                  ),
+                  onChanged: (value) {
+                    appState.updateSettings((s) {
+                      s.setModuleSetting(
+                        BaselineModuleId.movement,
+                        'options',
                         value,
                       );
                     });

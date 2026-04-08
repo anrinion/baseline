@@ -5,12 +5,22 @@ import 'package:provider/provider.dart';
 import '../state/app_state.dart';
 import 'food_constants.dart';
 
-/// Opens the Food module editor: portion steppers + battery indicators (demo-style).
+// ... food_module.dart
+
 void showFoodModule(BuildContext context) {
   showDialog<void>(
     context: context,
     builder: (dialogContext) => const _FoodEditorDialog(),
   );
+}
+
+void applyFoodDelta(AppState app, FoodCategoryDef def, int delta) {
+  app.updateTodayState((st) {
+    final next = def.countFrom(st) + delta;
+    if (next < 0 || next > def.maxPortions) return;
+    def.setCount(st, next);
+  });
+  HapticFeedback.selectionClick();
 }
 
 /// Sources / rationale for the Food module (also used from the grid tile “?”).
@@ -46,14 +56,6 @@ void showFoodSourcesHelp(BuildContext context) {
 
 class _FoodEditorDialog extends StatelessWidget {
   const _FoodEditorDialog();
-
-  void _applyDelta(AppState app, FoodCategoryDef def, int delta) {
-    app.updateTodayState((st) {
-      final next = def.countFrom(st) + delta;
-      def.setCount(st, next);
-    });
-    HapticFeedback.selectionClick();
-  }
 
   void _resetAll(AppState app) {
     app.updateTodayState((st) {
@@ -129,7 +131,7 @@ class _FoodEditorDialog extends StatelessWidget {
                             child: _FoodCategoryCard(
                               category: def,
                               current: def.countFrom(appState.todayState),
-                              onDelta: (d) => _applyDelta(appState, def, d),
+                              onDelta: (d) => applyFoodDelta(appState, def, d),
                             ),
                           ),
                       ],

@@ -5,6 +5,7 @@ import '../state/app_state.dart';
 import 'food_module_tile.dart';
 import 'here_module_tile.dart';
 import 'module_tile.dart';
+import 'movement_module_tile.dart';
 
 /// Default home layout: two 50/50 pair rows, full-width anchor, then a tall
 /// full-width Food band. Rows with no enabled modules are omitted so the rest
@@ -21,6 +22,9 @@ class MainModuleLayout extends StatelessWidget {
   Widget _tile(BuildContext context, String moduleId) {
     if (moduleId == BaselineModuleId.food) {
       return const FoodModuleTile();
+    }
+    if (moduleId == BaselineModuleId.movement) {
+      return const MovementModuleTile();
     }
     return ModuleTile(moduleId: moduleId);
   }

@@ -17,30 +17,35 @@ class HereModuleTile extends StatelessWidget {
       builder: (context, appState, _) {
         final label = appState.settings.hereButtonText;
 
-        return Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Expanded(
-                child: ElevatedButton(
-                  onPressed: () {
-                    appState.updateTodayState((state) {
-                      state.hereTapped = true;
-                    });
-                  },
-                  style: ElevatedButton.styleFrom(
-                    minimumSize: const Size.fromHeight(52),
+        return Center(
+          child: ConstrainedBox(
+            constraints: const BoxConstraints(maxWidth: 500),
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Expanded(
+                    child: ElevatedButton(
+                      onPressed: () {
+                        appState.updateTodayState((state) {
+                          state.hereTapped = true;
+                        });
+                      },
+                      style: ElevatedButton.styleFrom(
+                        minimumSize: const Size.fromHeight(52),
+                      ),
+                      child: Text(label),
+                    ),
                   ),
-                  child: Text(label),
-                ),
+                  IconButton(
+                    icon: Icon(Icons.help_outline, color: scheme.outline),
+                    tooltip: 'Why this helps',
+                    onPressed: () => showModuleHelp(context, BaselineModuleId.here),
+                  ),
+                ],
               ),
-              IconButton(
-                icon: Icon(Icons.help_outline, color: scheme.outline),
-                tooltip: 'Why this helps',
-                onPressed: () => showModuleHelp(context, BaselineModuleId.here),
-              ),
-            ],
+            ),
           ),
         );
       },

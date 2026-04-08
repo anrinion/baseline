@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 
 import '../modules/module_help.dart';
 import '../modules/module_ids.dart';
+import '../modules/movement_module.dart';
 import '../state/app_state.dart';
 
 class ModuleTile extends StatelessWidget {
@@ -101,6 +102,11 @@ class ModuleTile extends StatelessWidget {
   }
 
   void _openModule(BuildContext context) {
+    if (moduleId == BaselineModuleId.movement) {
+      showMovementModule(context);
+      return;
+    }
+
     showDialog<void>(
       context: context,
       builder: (_) => _ModulePlaceholderModal(moduleId: moduleId),
