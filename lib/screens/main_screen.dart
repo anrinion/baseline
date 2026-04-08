@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../state/app_state.dart';
+import '../widgets/food_module_tile.dart';
 import '../widgets/module_tile.dart';
 import 'settings_screen.dart';
 
@@ -38,10 +39,14 @@ class MainScreen extends StatelessWidget {
             child: GridView.count(
               physics: NeverScrollableScrollPhysics(),
               crossAxisCount: 2,
-              childAspectRatio: 1.2,
-              children: modules
-                  .map((name) => ModuleTile(moduleName: name))
-                  .toList(),
+              // Taller cells so module tiles (e.g. Food) can show glance summaries.
+              childAspectRatio: 0.82,
+              children: modules.map((name) {
+                if (name == 'Food') {
+                  return const FoodModuleTile();
+                }
+                return ModuleTile(moduleName: name);
+              }).toList(),
             ),
           ),
           Padding(
@@ -53,8 +58,7 @@ class MainScreen extends StatelessWidget {
                 });
               },
               style: ElevatedButton.styleFrom(
-                minimumSize: Size(double.infinity, 60),
-                foregroundColor: Colors.green,
+                minimumSize: const Size(double.infinity, 60),
               ),
               child: Text(appState.settings.hereButtonText),
             ),

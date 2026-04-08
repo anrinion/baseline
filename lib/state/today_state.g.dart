@@ -17,32 +17,33 @@ class TodayStateAdapter extends TypeAdapter<TodayState> {
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return TodayState()
-      ..proteinDone = fields[0] as bool
-      ..greensDone = fields[1] as bool
-      ..legumesDone = fields[2] as bool
-      ..fillersDone = fields[3] as bool
-      ..treatDone = fields[4] as bool
-      ..moved = fields[5] as bool
-      ..medsTaken = fields[6] as bool
-      ..sleepStarted = fields[7] as bool
-      ..hereTapped = fields[8] as bool
-      ..cbtTemp = fields[9] as String;
+      ..proteinCount = (fields[11] as int?) ?? 0
+      ..greensCount = (fields[12] as int?) ?? 0
+      ..legumesCount = (fields[13] as int?) ?? 0
+      ..fillersCount = (fields[14] as int?) ?? 0
+      ..treatCount = (fields[15] as int?) ?? 0
+      ..moved = (fields[5] as bool?) ?? false
+      ..medsTaken = (fields[6] as bool?) ?? false
+      ..sleepStarted = (fields[7] as bool?) ?? false
+      ..hereTapped = (fields[8] as bool?) ?? false
+      ..cbtTemp = (fields[9] as String?) ?? ''
+      ..lastDayKey = (fields[10] as String?) ?? '';
   }
 
   @override
   void write(BinaryWriter writer, TodayState obj) {
     writer
-      ..writeByte(10)
-      ..writeByte(0)
-      ..write(obj.proteinDone)
-      ..writeByte(1)
-      ..write(obj.greensDone)
-      ..writeByte(2)
-      ..write(obj.legumesDone)
-      ..writeByte(3)
-      ..write(obj.fillersDone)
-      ..writeByte(4)
-      ..write(obj.treatDone)
+      ..writeByte(11)
+      ..writeByte(11)
+      ..write(obj.proteinCount)
+      ..writeByte(12)
+      ..write(obj.greensCount)
+      ..writeByte(13)
+      ..write(obj.legumesCount)
+      ..writeByte(14)
+      ..write(obj.fillersCount)
+      ..writeByte(15)
+      ..write(obj.treatCount)
       ..writeByte(5)
       ..write(obj.moved)
       ..writeByte(6)
@@ -52,7 +53,9 @@ class TodayStateAdapter extends TypeAdapter<TodayState> {
       ..writeByte(8)
       ..write(obj.hereTapped)
       ..writeByte(9)
-      ..write(obj.cbtTemp);
+      ..write(obj.cbtTemp)
+      ..writeByte(10)
+      ..write(obj.lastDayKey);
   }
 
   @override

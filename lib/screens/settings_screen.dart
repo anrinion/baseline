@@ -97,9 +97,7 @@ class SettingsScreen extends StatelessWidget {
           // Reset button
           ElevatedButton(
             onPressed: () {
-              appState.updateTodayState((state) {
-                // full reset by replacing state
-              });
+              appState.resetTodayManual();
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(content: Text('Today reset')),
               );
