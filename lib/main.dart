@@ -32,7 +32,7 @@ class BaselineApp extends StatelessWidget {
           return MaterialApp(
             title: 'Baseline',
             theme: appState.currentTheme,
-            home: MainScreen(),
+            home: const MainScreen(),
           );
         },
       ),

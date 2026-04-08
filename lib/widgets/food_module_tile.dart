@@ -3,7 +3,9 @@ import 'package:provider/provider.dart';
 
 import '../modules/food_constants.dart';
 import '../modules/food_module.dart';
+import '../modules/module_ids.dart';
 import '../state/app_state.dart';
+import 'module_tile.dart';
 
 /// Main-grid tile: at-a-glance food portions; tap opens the full editor.
 class FoodModuleTile extends StatelessWidget {
@@ -39,7 +41,7 @@ class FoodModuleTile extends StatelessWidget {
                   Row(
                     children: [
                       Icon(
-                        Icons.restaurant,
+                        ModuleTile.iconFor(BaselineModuleId.food),
                         color: scheme.primary,
                         size: 20,
                       ),
@@ -59,6 +61,20 @@ class FoodModuleTile extends StatelessWidget {
                               fontWeight: FontWeight.w600,
                               color: scheme.primary,
                             ),
+                      ),
+                      IconButton(
+                        icon: Icon(
+                          Icons.help_outline,
+                          size: 20,
+                          color: scheme.outline,
+                        ),
+                        tooltip: 'Why this works',
+                        padding: EdgeInsets.zero,
+                        constraints: const BoxConstraints(
+                          minWidth: 36,
+                          minHeight: 36,
+                        ),
+                        onPressed: () => showFoodSourcesHelp(context),
                       ),
                     ],
                   ),

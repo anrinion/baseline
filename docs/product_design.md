@@ -16,22 +16,29 @@ Non-negotiables:
 
 ## 1. Main Screen (non-scroll, single view)
 
-Grid layout (fixed):
+Layout has a **sane default** that adapts when modules are off (no empty columns — remaining tiles **grow**):
+
+* **Row 1:** **Mental state** | **Sleep** (50/50 when both on; one tile spans full width if the other is off)
+* **Row 2:** **Meds** | **Movement**
+* **“I’m here”** full width between the 2×2 band and Food
+* **Food** full width **below** the anchor, with **more vertical space** than the pair rows (denser glance data)
 
 ```
-[ Food      ] [ Movement ]
-[ Sleep     ] [ Meds     ]
-[ CBT       ] [ Sources  ]
-
-[   “I’m here” button   ]
+[ Mental state ] [ Sleep ]
+[ Meds         ] [ Movement ]
+[            “I’m here”            ]
+[            Food (wide / tall)    ]
 ```
 
 Notes:
 
 * no scrolling
 * no nesting
-* each tile → modal popup
+* each tile → modal popup (or full module UI where implemented)
 * instant interaction, instant exit
+* **Modules are optional:** turning a module off **removes** its slot; siblings expand — no dead space reserved for disabled modules.
+
+**Custom drag/resize:** not in V1 — doable later with persisted layout and edit mode, but meaningfully more complex (gestures, accessibility, migration). The default above should stay polished first.
 
 ---
 
@@ -115,7 +122,9 @@ No adherence stats. No history.
 
 ---
 
-## 7. CBT (lightweight, present-only)
+## 7. Mental state (CBT-inspired, lightweight, present-only)
+
+*In the UI this is **“Mental state”** — still conceptually light CBT-style tooling, without clinical framing.*
 
 ### a) “Right now”
 
@@ -136,19 +145,12 @@ No logs. No past access.
 
 ---
 
-## 8. Sources
+## 8. Sources (per module, not a separate tile)
 
-This is a dedicated tile.
+There is **no** standalone “Sources” module. Rationale and references live **next to each module**:
 
-Contains:
-
-* all modules explained
-* short, clear reasoning
-* linked or cited sources
-
-Structure:
-
-* topic → explanation → references
+* a small **help (?)** on the grid tile and/or in the module sheet
+* short, clear copy; linked or cited sources where the product ships real citations
 
 Tone:
 
@@ -156,7 +158,7 @@ Tone:
 * transparent
 * no overclaiming
 
-⚠️ Requires careful curation → **further research needed**
+⚠️ Requires careful curation → **further research needed** (per module)
 
 ---
 
@@ -221,6 +223,7 @@ Message:
 * Language
 * Theme
 * “I’m here” text customization
+* **Which modules appear on the main screen** (each module on/off)
 * Meds list
 * Notifications (local)
 * Reset data
@@ -244,7 +247,7 @@ Message:
 
 ## Reflection moment
 
-* CBT → “one small good thing”
+* Mental state → “one small good thing”
 * close
 
 Everything ≤ 30 seconds.
@@ -279,7 +282,8 @@ AppState
  │    ├── meds list
  │    ├── language
  │    ├── theme
- │    └── button text
+ │    ├── button text
+ │    └── enabled modules (subset)
 ```
 
 ---

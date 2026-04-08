@@ -13,7 +13,8 @@ void showFoodModule(BuildContext context) {
   );
 }
 
-void _showFoodSources(BuildContext context) {
+/// Sources / rationale for the Food module (also used from the grid tile “?”).
+void showFoodSourcesHelp(BuildContext context) {
   final scheme = Theme.of(context).colorScheme;
   showDialog<void>(
     context: context,
@@ -104,7 +105,7 @@ class _FoodEditorDialog extends StatelessWidget {
                         icon: Icon(Icons.help_outline,
                             size: 22, color: scheme.outline),
                         tooltip: 'Why this works',
-                        onPressed: () => _showFoodSources(context),
+                        onPressed: () => showFoodSourcesHelp(context),
                       ),
                       TextButton(
                         onPressed: () => _resetAll(appState),

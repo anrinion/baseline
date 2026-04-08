@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+
+import '../modules/module_ids.dart';
 import '../state/app_state.dart';
 
 class SettingsScreen extends StatelessWidget {
+  SettingsScreen({super.key});
+
   final List<Map<String, String>> languages = [
     {'code': 'en', 'label': 'English'},
     {'code': 'ru', 'label': 'Русский'},
@@ -91,6 +95,28 @@ class SettingsScreen extends StatelessWidget {
               });
             },
           ),
+
+          SizedBox(height: 24),
+
+          // Modules on main screen
+          Text('Modules', style: Theme.of(context).textTheme.titleMedium),
+          SizedBox(height: 4),
+          Text(
+            'Turn off anything you do not need. The layout keeps room for what stays on.',
+            style: Theme.of(context).textTheme.bodySmall,
+          ),
+          SizedBox(height: 8),
+          for (final id in BaselineModuleId.all)
+            SwitchListTile(
+              contentPadding: EdgeInsets.zero,
+              title: Text(BaselineModuleId.label(id)),
+              value: settings.isModuleEnabled(id),
+              onChanged: (on) {
+                appState.updateSettings((s) {
+                  s.setModuleEnabled(id, on);
+                });
+              },
+            ),
 
           SizedBox(height: 24),
 
