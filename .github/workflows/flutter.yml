@@ -57,5 +57,5 @@ jobs:
         with:
           tag_name: build-${{ github.run_number }}
           files: |
-            app-release.apk
-            app-release.aab
+            flutter-apk/app-release.apk
+            bundle/release/app-release.aab
