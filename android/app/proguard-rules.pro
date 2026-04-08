@@ -1,0 +1,3 @@
+-keep class io.flutter.** { *; }
+-dontwarn com.google.android.play.core.**
+-keep class com.google.android.play.core.** { *; }
