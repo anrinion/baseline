@@ -9,7 +9,7 @@ class AppLocalizationsEn extends AppLocalizations {
   AppLocalizationsEn([String locale = 'en']) : super(locale);
 
   @override
-  String get appTitle => 'Baseline';
+  String get appTitle => 'The Baseline';
 
   @override
   String get settingsButtonLabel => 'Settings';
@@ -30,28 +30,28 @@ class AppLocalizationsEn extends AppLocalizations {
   String get themeLabel => 'Theme';
 
   @override
-  String get themeLight1 => 'Light (Neutral)';
+  String get themeLight1 => 'Light (neutral)';
 
   @override
-  String get themeLight2 => 'Light (Warm)';
+  String get themeLight2 => 'Light (warm)';
 
   @override
-  String get themeDark1 => 'Dark (True)';
+  String get themeDark1 => 'Dark (true black)';
 
   @override
-  String get themeDark2 => 'Dark (Soft)';
+  String get themeDark2 => 'Dark (dark grey)';
 
   @override
   String get modulesLabel => 'Modules';
 
   @override
-  String get hereModuleLabel => 'I\'m here';
+  String get hereModuleLabel => 'Grounding button';
 
   @override
   String get hereModuleCustomizeLabel => 'Customize button text';
 
   @override
-  String get foodModuleLabel => 'Food';
+  String get foodModuleLabel => 'Nutrition';
 
   @override
   String get foodProteinLabel => 'Protein';
@@ -63,7 +63,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get foodBeansLabel => 'Beans & Chickpeas';
 
   @override
-  String get foodFillersLabel => 'Fillers (Carbs)';
+  String get foodFillersLabel => 'Fillers';
 
   @override
   String get foodTreatLabel => 'Treat';
@@ -73,13 +73,13 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get foodSourcesContent =>
-      '• Protein: supports satiety and steady energy.\n• Greens: fiber, vitamins, and plant variety.\n• Beans and chickpeas: fiber and plant protein.\n• Fillers: complex carbs for accessible energy.\n• Sweet treat: a small enjoyable bite can support behavioral activation — pleasure without \"earning\" it.\n\nThis is about balance, not restriction. Non-restrictive approaches favor flexibility and self-care over rules or guilt. For personalized guidance, ask a qualified professional.';
+      '• Protein: supports satiety and steady energy (PLACEHOLDER, 2030).\n• Greens: fiber, vitamins, and plant variety (PLACEHOLDER, 2030).\n• Beans and chickpeas: fiber and plant protein (PLACEHOLDER, 2030).\n• Fillers: complex carbs for accessible energy (PLACEHOLDER, 2030).\n• Treat: a small enjoyable bite can support behavioral activation (PLACEHOLDER, 2030).\n\nApproaches that emphasize flexibility and self-care over strict rules may help avoid guilt (PLACEHOLDER, 2030).';
 
   @override
   String get movementModuleLabel => 'Movement';
 
   @override
-  String get movementDefaultOptions => 'Go for a walk\nLight workout';
+  String get movementDefaultOptions => 'Go for a walk\nA workout';
 
   @override
   String get movementAnyCountsHint => 'any movement counts';
@@ -163,14 +163,13 @@ class AppLocalizationsEn extends AppLocalizations {
   String get movementTitle => 'Movement';
 
   @override
-  String get movementCompleted =>
-      'You completed an activity today. That\'s wonderful! 💪';
+  String get movementCompleted => 'You completed an activity today. Good.';
 
   @override
   String get movementChoose => 'Choose one gentle activity for today:';
 
   @override
-  String get movementGreatJob => 'Great job! 💪';
+  String get movementGreatJob => 'Good.';
 
   @override
   String get tapToOpen => 'Tap to open';
@@ -193,7 +192,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get appPrivacyText =>
-      'Baseline is a private, present-moment self-care app.\\nNo history. No tracking. Just today.';
+      'Baseline is a private self-care app:\\nNo history, no sync, no data collection.\\n';
 
   @override
   String get foodProteinSubtitle => '1–2 portions';
@@ -212,23 +211,23 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get mentalStateHelp =>
-      'This area is for right now only: naming how you feel, a tiny bit of gratitude or grounding, and gentle \"thought lens\" prompts inspired by cognitive approaches. It is not a substitute for care from a qualified professional when you need it.';
+      'This area is for right now only: naming how you feel, a tiny bit of gratitude or grounding, and gentle \"thought lens\" prompts inspired by cognitive approaches (PLACEHOLDER, 2030). It is not a substitute for care from a qualified professional when you need it.';
 
   @override
   String get sleepHelp =>
-      'Sleep affects mood, energy, and regulation. Logging \"going to sleep\" and \"awake\" with simple duration (today only) supports awareness without tracking streaks or judging rest.';
+      'Sleep affects mood, energy, and regulation (PLACEHOLDER, 2030).';
 
   @override
   String get medsHelp =>
-      'A minimal today-only checklist can reduce mental load. This is not medical advice; use your clinician\'s plan and seek help for urgent concerns.';
+      'Just a tracker for your medications. It is really beneficial to not forget them (no, there will be no source for that).';
 
   @override
   String get movementHelp =>
-      'Any movement counts toward care and activation. No intensity or duration — a small nudge beats \"all or nothing.\"';
+      'Any movement counts toward care and activation (PLACEHOLDER, 2030). No intensity or duration — a small nudge beats \"all or nothing.\"';
 
   @override
   String get groundingHelp =>
-      'A single tap to anchor yourself in the present — Gestalt \"here and now\". No tracking, no memory, no score: the smallest possible caring action.';
+      'A single tap to anchor yourself in the present. This helps to reduce stress (PLACEHOLDER, 2030). Similar to Gestalt\'s \"here and now\"';
 
   @override
   String get hereButtonHint => 'I\'m here. I\'m alive.';

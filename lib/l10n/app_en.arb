@@ -1,6 +1,6 @@
 {
   "@@locale": "en",
-  "appTitle": "Baseline",
+  "appTitle": "The Baseline",
   "@appTitle": {
     "description": "The title of the application"
   },
@@ -28,19 +28,19 @@
   "@themeLabel": {
     "description": "Label for theme selection"
   },
-  "themeLight1": "Light (Neutral)",
+  "themeLight1": "Light (neutral)",
   "@themeLight1": {
     "description": "Light theme option - neutral"
   },
-  "themeLight2": "Light (Warm)",
+  "themeLight2": "Light (warm)",
   "@themeLight2": {
     "description": "Light theme option - warm"
   },
-  "themeDark1": "Dark (True)",
+  "themeDark1": "Dark (true black)",
   "@themeDark1": {
     "description": "Dark theme option - true black"
   },
-  "themeDark2": "Dark (Soft)",
+  "themeDark2": "Dark (dark grey)",
   "@themeDark2": {
     "description": "Dark theme option - soft contrast"
   },
@@ -48,7 +48,7 @@
   "@modulesLabel": {
     "description": "Label for modules settings section"
   },
-  "hereModuleLabel": "I'm here",
+  "hereModuleLabel": "Grounding button",
   "@hereModuleLabel": {
     "description": "Label for the 'I'm here' module"
   },
@@ -56,7 +56,7 @@
   "@hereModuleCustomizeLabel": {
     "description": "Label for customizing the 'I'm here' button text"
   },
-  "foodModuleLabel": "Food",
+  "foodModuleLabel": "Nutrition",
   "@foodModuleLabel": {
     "description": "Label for the Food module"
   },
@@ -72,7 +72,7 @@
   "@foodBeansLabel": {
     "description": "Food category: Beans and Chickpeas"
   },
-  "foodFillersLabel": "Fillers (Carbs)",
+  "foodFillersLabel": "Fillers",
   "@foodFillersLabel": {
     "description": "Food category: Fillers / Carbs"
   },
@@ -84,7 +84,7 @@
   "@foodSourcesTitle": {
     "description": "Title for food module sources/help"
   },
-  "foodSourcesContent": "• Protein: supports satiety and steady energy.\n• Greens: fiber, vitamins, and plant variety.\n• Beans and chickpeas: fiber and plant protein.\n• Fillers: complex carbs for accessible energy.\n• Sweet treat: a small enjoyable bite can support behavioral activation — pleasure without \"earning\" it.\n\nThis is about balance, not restriction. Non-restrictive approaches favor flexibility and self-care over rules or guilt. For personalized guidance, ask a qualified professional.",
+  "foodSourcesContent": "• Protein: supports satiety and steady energy (PLACEHOLDER, 2030).\n• Greens: fiber, vitamins, and plant variety (PLACEHOLDER, 2030).\n• Beans and chickpeas: fiber and plant protein (PLACEHOLDER, 2030).\n• Fillers: complex carbs for accessible energy (PLACEHOLDER, 2030).\n• Treat: a small enjoyable bite can support behavioral activation (PLACEHOLDER, 2030).\n\nApproaches that emphasize flexibility and self-care over strict rules may help avoid guilt (PLACEHOLDER, 2030).",
   "@foodSourcesContent": {
     "description": "Detailed explanation of why the food categories work"
   },
@@ -92,7 +92,7 @@
   "@movementModuleLabel": {
     "description": "Label for the Movement module"
   },
-  "movementDefaultOptions": "Go for a walk\nLight workout",
+  "movementDefaultOptions": "Go for a walk\nA workout",
   "@movementDefaultOptions": {
     "description": "Default movement options"
   },
@@ -204,7 +204,7 @@
   "@movementTitle": {
     "description": "Title for the movement module dialog"
   },
-  "movementCompleted": "You completed an activity today. That's wonderful! 💪",
+  "movementCompleted": "You completed an activity today. Good.",
   "@movementCompleted": {
     "description": "Message shown after completing movement activity"
   },
@@ -212,7 +212,7 @@
   "@movementChoose": {
     "description": "Instruction text for choosing a movement activity"
   },
-  "movementGreatJob": "Great job! 💪",
+  "movementGreatJob": "Good.",
   "@movementGreatJob": {
     "description": "Congratulation message for movement"
   },
@@ -240,7 +240,7 @@
   "@todayReset": {
     "description": "Confirmation message when today is reset"
   },
-  "appPrivacyText": "Baseline is a private, present-moment self-care app.\\nNo history. No tracking. Just today.",
+  "appPrivacyText": "Baseline is a private self-care app:\\nNo history, no sync, no data collection.\\n",
   "@appPrivacyText": {
     "description": "Privacy statement in settings"
   },
@@ -264,23 +264,23 @@
   "@foodTreatSubtitle": {
     "description": "Food category portion guide: Treat"
   },
-  "mentalStateHelp": "This area is for right now only: naming how you feel, a tiny bit of gratitude or grounding, and gentle \"thought lens\" prompts inspired by cognitive approaches. It is not a substitute for care from a qualified professional when you need it.",
+  "mentalStateHelp": "This area is for right now only: naming how you feel, a tiny bit of gratitude or grounding, and gentle \"thought lens\" prompts inspired by cognitive approaches (PLACEHOLDER, 2030). It is not a substitute for care from a qualified professional when you need it.",
   "@mentalStateHelp": {
     "description": "Help text for mental state module"
   },
-  "sleepHelp": "Sleep affects mood, energy, and regulation. Logging \"going to sleep\" and \"awake\" with simple duration (today only) supports awareness without tracking streaks or judging rest.",
+  "sleepHelp": "Sleep affects mood, energy, and regulation (PLACEHOLDER, 2030).",
   "@sleepHelp": {
     "description": "Help text for sleep module"
   },
-  "medsHelp": "A minimal today-only checklist can reduce mental load. This is not medical advice; use your clinician's plan and seek help for urgent concerns.",
+  "medsHelp": "Just a tracker for your medications. It is really beneficial to not forget them (no, there will be no source for that).",
   "@medsHelp": {
     "description": "Help text for meds module"
   },
-  "movementHelp": "Any movement counts toward care and activation. No intensity or duration — a small nudge beats \"all or nothing.\"",
+  "movementHelp": "Any movement counts toward care and activation (PLACEHOLDER, 2030). No intensity or duration — a small nudge beats \"all or nothing.\"",
   "@movementHelp": {
     "description": "Help text for movement module"
   },
-  "groundingHelp": "A single tap to anchor yourself in the present — Gestalt \"here and now\". No tracking, no memory, no score: the smallest possible caring action.",
+  "groundingHelp": "A single tap to anchor yourself in the present. This helps to reduce stress (PLACEHOLDER, 2030). Similar to Gestalt's \"here and now\"",
   "@groundingHelp": {
     "description": "Help text for grounding/here module"
   },

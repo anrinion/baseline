@@ -28,19 +28,19 @@
   "@themeLabel": {
     "description": "Label for theme selection"
   },
-  "themeLight1": "Светлая (Нейтральная)",
+  "themeLight1": "Светлая (нейтральная)",
   "@themeLight1": {
     "description": "Light theme option - neutral"
   },
-  "themeLight2": "Светлая (Теплая)",
+  "themeLight2": "Светлая (тёплая)",
   "@themeLight2": {
     "description": "Light theme option - warm"
   },
-  "themeDark1": "Тёмная (Чёрная)",
+  "themeDark1": "Тёмная (чёрная)",
   "@themeDark1": {
     "description": "Dark theme option - true black"
   },
-  "themeDark2": "Тёмная (Мягкая)",
+  "themeDark2": "Тёмная (тёмно-серая)",
   "@themeDark2": {
     "description": "Dark theme option - soft contrast"
   },
@@ -48,7 +48,7 @@
   "@modulesLabel": {
     "description": "Label for modules settings section"
   },
-  "hereModuleLabel": "Я здесь",
+  "hereModuleLabel": "Большая зелённая кнопка",
   "@hereModuleLabel": {
     "description": "Label for the 'I'm here' module"
   },
@@ -56,7 +56,7 @@
   "@hereModuleCustomizeLabel": {
     "description": "Label for customizing the 'I'm here' button text"
   },
-  "foodModuleLabel": "Еда",
+  "foodModuleLabel": "Питание",
   "@foodModuleLabel": {
     "description": "Label for the Food module"
   },
@@ -72,11 +72,11 @@
   "@foodBeansLabel": {
     "description": "Food category: Beans and Chickpeas"
   },
-  "foodFillersLabel": "Углеводы",
+  "foodFillersLabel": "Сытное",
   "@foodFillersLabel": {
     "description": "Food category: Fillers / Carbs"
   },
-  "foodTreatLabel": "Лакомство",
+  "foodTreatLabel": "Что-то вкусное",
   "@foodTreatLabel": {
     "description": "Food category: Small enjoyable treat"
   },
@@ -84,7 +84,7 @@
   "@foodSourcesTitle": {
     "description": "Title for food module sources/help"
   },
-  "foodSourcesContent": "• Белок: обеспечивает чувство насыщения и стабильную энергию.\n• Зелень: клетчатка, витамины и растительное разнообразие.\n• Бобовые: клетчатка и растительный белок.\n• Углеводы: сложные углеводы для доступной энергии.\n• Лакомство: небольшое лакомство может способствовать поведенческой активации — удовольствие без необходимости его \"заработать\".\n\nЭто о балансе, а не об ограничениях. Без ограничений подход отдаёт предпочтение гибкости и заботе о себе перед правилами и чувством вины. Для персонализированных рекомендаций проконсультируйтесь со специалистом.",
+  "foodSourcesContent": "• Белок: обеспечивает чувство насыщения и стабильную энергию (PLACEHOLDER, 2030).\n• Зелень: клетчатка, витамины и растительное разнообразие (PLACEHOLDER, 2030).\n• Бобовые: клетчатка и растительный белок (PLACEHOLDER, 2030).\n• Сытное: для доступной энергии (PLACEHOLDER, 2030).\n• Что-то вкусное: небольшое лакомство может способствовать поведенческой активации (PLACEHOLDER, 2030).\n\nПодходы, которые подчёркивают гибкость и заботу о себе перед строгими правилами, могут помочь избежать чувства вины (PLACEHOLDER, 2030).",
   "@foodSourcesContent": {
     "description": "Detailed explanation of why the food categories work"
   },
@@ -92,7 +92,7 @@
   "@movementModuleLabel": {
     "description": "Label for the Movement module"
   },
-  "movementDefaultOptions": "Прогулка\nЛегкая тренировка",
+  "movementDefaultOptions": "Выйти погулять\nТренировка",
   "@movementDefaultOptions": {
     "description": "Default movement options"
   },
@@ -108,7 +108,7 @@
   "@sleepGoingToSleep": {
     "description": "Action: going to sleep"
   },
-  "sleepAwake": "Я проснулся",
+  "sleepAwake": "Я встаю",
   "@sleepAwake": {
     "description": "Action: woke up"
   },
@@ -128,15 +128,15 @@
   "@mentalStateRightNow": {
     "description": "Mental state section: current feeling"
   },
-  "mentalStateGoodThing": "Одно хорошее",
+  "mentalStateGoodThing": "Что-то хорошее",
   "@mentalStateGoodThing": {
     "description": "Mental state section: one good thing"
   },
-  "mentalStateThoughtLens": "Фильтр мышления",
+  "mentalStateThoughtLens": "Фильтр когнитивных искажений",
   "@mentalStateThoughtLens": {
     "description": "Mental state section: cognitive distortion tool"
   },
-  "dialogGotIt": "Ясно",
+  "dialogGotIt": "Хорошо",
   "@dialogGotIt": {
     "description": "Dialog action button"
   },
@@ -176,7 +176,7 @@
   "@resetAll": {
     "description": "Button to reset all food categories"
   },
-  "grounding": "Якорь",
+  "grounding": "Осознанность",
   "@grounding": {
     "description": "Label for the grounding/here module"
   },
@@ -188,15 +188,15 @@
   "@groundingAffirmation2": {
     "description": "Grounding affirmation phrase"
   },
-  "groundingAffirmation3": "Один момент за раз.",
+  "groundingAffirmation3": "Одной проблемой меньше.",
   "@groundingAffirmation3": {
     "description": "Grounding affirmation phrase"
   },
-  "groundingAffirmation4": "Ты пришёл. Это важно.",
+  "groundingAffirmation4": "Ты здесь. Это важно.",
   "@groundingAffirmation4": {
     "description": "Grounding affirmation phrase"
   },
-  "groundingAffirmation5": "Прямо здесь, прямо сейчас.",
+  "groundingAffirmation5": "Здесь и сейчас.",
   "@groundingAffirmation5": {
     "description": "Grounding affirmation phrase"
   },
@@ -204,7 +204,7 @@
   "@movementTitle": {
     "description": "Title for the movement module dialog"
   },
-  "movementCompleted": "Ты завершил активность сегодня. Отлично! 💪",
+  "movementCompleted": "Ты завершил(а) активность сегодня. Хорошо.",
   "@movementCompleted": {
     "description": "Message shown after completing movement activity"
   },
@@ -212,7 +212,7 @@
   "@movementChoose": {
     "description": "Instruction text for choosing a movement activity"
   },
-  "movementGreatJob": "Отлично! 💪",
+  "movementGreatJob": "Хорошо.",
   "@movementGreatJob": {
     "description": "Congratulation message for movement"
   },
@@ -232,15 +232,15 @@
   "@modulesHelpText": {
     "description": "Help text in settings for modules section"
   },
-  "resetToday": "Очистить на сегодня",
+  "resetToday": "Сбросить прогресс",
   "@resetToday": {
     "description": "Button to reset today's data"
   },
-  "todayReset": "На сегодня очищено",
+  "todayReset": "Прогресс сброшен",
   "@todayReset": {
     "description": "Confirmation message when today is reset"
   },
-  "appPrivacyText": "Baseline — приложение для личной заботы о себе в настоящий момент.\\nНет истории. Нет отслеживания. Только сегодня.",
+  "appPrivacyText": "Baseline — приватное приложение для заботы о себе:\\nМы не собираем и не храним данные.",
   "@appPrivacyText": {
     "description": "Privacy statement in settings"
   },
@@ -264,27 +264,27 @@
   "@foodTreatSubtitle": {
     "description": "Food category portion guide: Treat"
   },
-  "mentalStateHelp": "Это место только для сейчас: назови своё чувство, немного благодарности или якоря, и мягкие подсказки \"фильтра мышления\" вдохновлённые когнитивными подходами. Это не замена профессиональной помощи, когда она нужна.",
+  "mentalStateHelp": "Это место только для сейчас: назови своё чувство, немного благодарности или якоря, и мягкие подсказки \"фильтра мышления\" вдохновлённые когнитивными подходами (PLACEHOLDER, 2030).",
   "@mentalStateHelp": {
     "description": "Help text for mental state module"
   },
-  "sleepHelp": "Сон влияет на настроение, энергию и саморегуляцию. Логирование \"ходу спать\" и \"проснулся\" с простой длительностью (только сегодня) поддерживает осознанность без отслеживания полос или оценки отдыха.",
+  "sleepHelp": "Сон влияет на настроение, энергию и саморегуляцию (PLACEHOLDER, 2030).",
   "@sleepHelp": {
     "description": "Help text for sleep module"
   },
-  "medsHelp": "Минимальный чек-лист только на сегодня может уменьшить умственную нагрузку. Это не медицинский совет; используйте план своего врача и обратитесь за помощью при срочных проблемах.",
+  "medsHelp": "Список лекарств. Очень полезно не забывать их (нет, для этого источника не будет).",
   "@medsHelp": {
     "description": "Help text for meds module"
   },
-  "movementHelp": "Любое движение считается заботой и активацией. Без интенсивности или длительности — небольшой толчок лучше, чем \"всё или ничего\".",
+  "movementHelp": "Любое движение намного лучше, чем ничего (PLACEHOLDER, 2030).",
   "@movementHelp": {
     "description": "Help text for movement module"
   },
-  "groundingHelp": "Один тап, чтобы якориться в настоящем — Гештальт \"здесь и сейчас\". Нет отслеживания, нет памяти, нет оценки: самое маленькое возможное действие заботы.",
+  "groundingHelp": "Просто кнопка, чтобы показаться своё присутствие. Обращение внимания на текущий момент помогает снизить стресс (PLACEHOLDER, 2030). Что-то вроде \"здесь и сейчас\" из гештальта (PLACEHOLDER, 2030).",
   "@groundingHelp": {
     "description": "Help text for grounding/here module"
   },
-  "hereButtonHint": "Я здесь. Я жив.",
+  "hereButtonHint": "Я здесь. Я живой(ая).",
   "@hereButtonHint": {
     "description": "Hint text for the here module button customization field"
   },

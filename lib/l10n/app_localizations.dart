@@ -101,7 +101,7 @@ abstract class AppLocalizations {
   /// The title of the application
   ///
   /// In en, this message translates to:
-  /// **'Baseline'**
+  /// **'The Baseline'**
   String get appTitle;
 
   /// Label for the settings button
@@ -143,25 +143,25 @@ abstract class AppLocalizations {
   /// Light theme option - neutral
   ///
   /// In en, this message translates to:
-  /// **'Light (Neutral)'**
+  /// **'Light (neutral)'**
   String get themeLight1;
 
   /// Light theme option - warm
   ///
   /// In en, this message translates to:
-  /// **'Light (Warm)'**
+  /// **'Light (warm)'**
   String get themeLight2;
 
   /// Dark theme option - true black
   ///
   /// In en, this message translates to:
-  /// **'Dark (True)'**
+  /// **'Dark (true black)'**
   String get themeDark1;
 
   /// Dark theme option - soft contrast
   ///
   /// In en, this message translates to:
-  /// **'Dark (Soft)'**
+  /// **'Dark (dark grey)'**
   String get themeDark2;
 
   /// Label for modules settings section
@@ -173,7 +173,7 @@ abstract class AppLocalizations {
   /// Label for the 'I'm here' module
   ///
   /// In en, this message translates to:
-  /// **'I\'m here'**
+  /// **'Grounding button'**
   String get hereModuleLabel;
 
   /// Label for customizing the 'I'm here' button text
@@ -185,7 +185,7 @@ abstract class AppLocalizations {
   /// Label for the Food module
   ///
   /// In en, this message translates to:
-  /// **'Food'**
+  /// **'Nutrition'**
   String get foodModuleLabel;
 
   /// Food category: Protein
@@ -209,7 +209,7 @@ abstract class AppLocalizations {
   /// Food category: Fillers / Carbs
   ///
   /// In en, this message translates to:
-  /// **'Fillers (Carbs)'**
+  /// **'Fillers'**
   String get foodFillersLabel;
 
   /// Food category: Small enjoyable treat
@@ -227,7 +227,7 @@ abstract class AppLocalizations {
   /// Detailed explanation of why the food categories work
   ///
   /// In en, this message translates to:
-  /// **'• Protein: supports satiety and steady energy.\n• Greens: fiber, vitamins, and plant variety.\n• Beans and chickpeas: fiber and plant protein.\n• Fillers: complex carbs for accessible energy.\n• Sweet treat: a small enjoyable bite can support behavioral activation — pleasure without \"earning\" it.\n\nThis is about balance, not restriction. Non-restrictive approaches favor flexibility and self-care over rules or guilt. For personalized guidance, ask a qualified professional.'**
+  /// **'• Protein: supports satiety and steady energy (PLACEHOLDER, 2030).\n• Greens: fiber, vitamins, and plant variety (PLACEHOLDER, 2030).\n• Beans and chickpeas: fiber and plant protein (PLACEHOLDER, 2030).\n• Fillers: complex carbs for accessible energy (PLACEHOLDER, 2030).\n• Treat: a small enjoyable bite can support behavioral activation (PLACEHOLDER, 2030).\n\nApproaches that emphasize flexibility and self-care over strict rules may help avoid guilt (PLACEHOLDER, 2030).'**
   String get foodSourcesContent;
 
   /// Label for the Movement module
@@ -239,7 +239,7 @@ abstract class AppLocalizations {
   /// Default movement options
   ///
   /// In en, this message translates to:
-  /// **'Go for a walk\nLight workout'**
+  /// **'Go for a walk\nA workout'**
   String get movementDefaultOptions;
 
   /// Hint text for movement module
@@ -407,7 +407,7 @@ abstract class AppLocalizations {
   /// Message shown after completing movement activity
   ///
   /// In en, this message translates to:
-  /// **'You completed an activity today. That\'s wonderful! 💪'**
+  /// **'You completed an activity today. Good.'**
   String get movementCompleted;
 
   /// Instruction text for choosing a movement activity
@@ -419,7 +419,7 @@ abstract class AppLocalizations {
   /// Congratulation message for movement
   ///
   /// In en, this message translates to:
-  /// **'Great job! 💪'**
+  /// **'Good.'**
   String get movementGreatJob;
 
   /// Instruction on module tile
@@ -461,7 +461,7 @@ abstract class AppLocalizations {
   /// Privacy statement in settings
   ///
   /// In en, this message translates to:
-  /// **'Baseline is a private, present-moment self-care app.\\nNo history. No tracking. Just today.'**
+  /// **'Baseline is a private self-care app:\\nNo history, no sync, no data collection.\\n'**
   String get appPrivacyText;
 
   /// Food category portion guide: Protein
@@ -497,31 +497,31 @@ abstract class AppLocalizations {
   /// Help text for mental state module
   ///
   /// In en, this message translates to:
-  /// **'This area is for right now only: naming how you feel, a tiny bit of gratitude or grounding, and gentle \"thought lens\" prompts inspired by cognitive approaches. It is not a substitute for care from a qualified professional when you need it.'**
+  /// **'This area is for right now only: naming how you feel, a tiny bit of gratitude or grounding, and gentle \"thought lens\" prompts inspired by cognitive approaches (PLACEHOLDER, 2030). It is not a substitute for care from a qualified professional when you need it.'**
   String get mentalStateHelp;
 
   /// Help text for sleep module
   ///
   /// In en, this message translates to:
-  /// **'Sleep affects mood, energy, and regulation. Logging \"going to sleep\" and \"awake\" with simple duration (today only) supports awareness without tracking streaks or judging rest.'**
+  /// **'Sleep affects mood, energy, and regulation (PLACEHOLDER, 2030).'**
   String get sleepHelp;
 
   /// Help text for meds module
   ///
   /// In en, this message translates to:
-  /// **'A minimal today-only checklist can reduce mental load. This is not medical advice; use your clinician\'s plan and seek help for urgent concerns.'**
+  /// **'Just a tracker for your medications. It is really beneficial to not forget them (no, there will be no source for that).'**
   String get medsHelp;
 
   /// Help text for movement module
   ///
   /// In en, this message translates to:
-  /// **'Any movement counts toward care and activation. No intensity or duration — a small nudge beats \"all or nothing.\"'**
+  /// **'Any movement counts toward care and activation (PLACEHOLDER, 2030). No intensity or duration — a small nudge beats \"all or nothing.\"'**
   String get movementHelp;
 
   /// Help text for grounding/here module
   ///
   /// In en, this message translates to:
-  /// **'A single tap to anchor yourself in the present — Gestalt \"here and now\". No tracking, no memory, no score: the smallest possible caring action.'**
+  /// **'A single tap to anchor yourself in the present. This helps to reduce stress (PLACEHOLDER, 2030). Similar to Gestalt\'s \"here and now\"'**
   String get groundingHelp;
 
   /// Hint text for the here module button customization field

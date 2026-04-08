@@ -30,28 +30,28 @@ class AppLocalizationsRu extends AppLocalizations {
   String get themeLabel => 'Тема';
 
   @override
-  String get themeLight1 => 'Светлая (Нейтральная)';
+  String get themeLight1 => 'Светлая (нейтральная)';
 
   @override
-  String get themeLight2 => 'Светлая (Теплая)';
+  String get themeLight2 => 'Светлая (тёплая)';
 
   @override
-  String get themeDark1 => 'Тёмная (Чёрная)';
+  String get themeDark1 => 'Тёмная (чёрная)';
 
   @override
-  String get themeDark2 => 'Тёмная (Мягкая)';
+  String get themeDark2 => 'Тёмная (тёмно-серая)';
 
   @override
   String get modulesLabel => 'Модули';
 
   @override
-  String get hereModuleLabel => 'Я здесь';
+  String get hereModuleLabel => 'Большая зелённая кнопка';
 
   @override
   String get hereModuleCustomizeLabel => 'Изменить текст кнопки';
 
   @override
-  String get foodModuleLabel => 'Еда';
+  String get foodModuleLabel => 'Питание';
 
   @override
   String get foodProteinLabel => 'Белок';
@@ -63,23 +63,23 @@ class AppLocalizationsRu extends AppLocalizations {
   String get foodBeansLabel => 'Бобовые';
 
   @override
-  String get foodFillersLabel => 'Углеводы';
+  String get foodFillersLabel => 'Сытное';
 
   @override
-  String get foodTreatLabel => 'Лакомство';
+  String get foodTreatLabel => 'Что-то вкусное';
 
   @override
   String get foodSourcesTitle => 'Почему это работает';
 
   @override
   String get foodSourcesContent =>
-      '• Белок: обеспечивает чувство насыщения и стабильную энергию.\n• Зелень: клетчатка, витамины и растительное разнообразие.\n• Бобовые: клетчатка и растительный белок.\n• Углеводы: сложные углеводы для доступной энергии.\n• Лакомство: небольшое лакомство может способствовать поведенческой активации — удовольствие без необходимости его \"заработать\".\n\nЭто о балансе, а не об ограничениях. Без ограничений подход отдаёт предпочтение гибкости и заботе о себе перед правилами и чувством вины. Для персонализированных рекомендаций проконсультируйтесь со специалистом.';
+      '• Белок: обеспечивает чувство насыщения и стабильную энергию (PLACEHOLDER, 2030).\n• Зелень: клетчатка, витамины и растительное разнообразие (PLACEHOLDER, 2030).\n• Бобовые: клетчатка и растительный белок (PLACEHOLDER, 2030).\n• Сытное: для доступной энергии (PLACEHOLDER, 2030).\n• Что-то вкусное: небольшое лакомство может способствовать поведенческой активации (PLACEHOLDER, 2030).\n\nПодходы, которые подчёркивают гибкость и заботу о себе перед строгими правилами, могут помочь избежать чувства вины (PLACEHOLDER, 2030).';
 
   @override
   String get movementModuleLabel => 'Движение';
 
   @override
-  String get movementDefaultOptions => 'Прогулка\nЛегкая тренировка';
+  String get movementDefaultOptions => 'Выйти погулять\nТренировка';
 
   @override
   String get movementAnyCountsHint => 'любое движение считается';
@@ -91,7 +91,7 @@ class AppLocalizationsRu extends AppLocalizations {
   String get sleepGoingToSleep => 'Я иду спать';
 
   @override
-  String get sleepAwake => 'Я проснулся';
+  String get sleepAwake => 'Я встаю';
 
   @override
   String get medsModuleLabel => 'Лекарства';
@@ -106,13 +106,13 @@ class AppLocalizationsRu extends AppLocalizations {
   String get mentalStateRightNow => 'Прямо сейчас';
 
   @override
-  String get mentalStateGoodThing => 'Одно хорошее';
+  String get mentalStateGoodThing => 'Что-то хорошее';
 
   @override
-  String get mentalStateThoughtLens => 'Фильтр мышления';
+  String get mentalStateThoughtLens => 'Фильтр когнитивных искажений';
 
   @override
-  String get dialogGotIt => 'Ясно';
+  String get dialogGotIt => 'Хорошо';
 
   @override
   String get dialogCancel => 'Отмена';
@@ -142,7 +142,7 @@ class AppLocalizationsRu extends AppLocalizations {
   String get resetAll => 'Очистить всё';
 
   @override
-  String get grounding => 'Якорь';
+  String get grounding => 'Осознанность';
 
   @override
   String get groundingAffirmation1 => 'Хорошо. Ты здесь.';
@@ -151,25 +151,25 @@ class AppLocalizationsRu extends AppLocalizations {
   String get groundingAffirmation2 => 'Привет!';
 
   @override
-  String get groundingAffirmation3 => 'Один момент за раз.';
+  String get groundingAffirmation3 => 'Одной проблемой меньше.';
 
   @override
-  String get groundingAffirmation4 => 'Ты пришёл. Это важно.';
+  String get groundingAffirmation4 => 'Ты здесь. Это важно.';
 
   @override
-  String get groundingAffirmation5 => 'Прямо здесь, прямо сейчас.';
+  String get groundingAffirmation5 => 'Здесь и сейчас.';
 
   @override
   String get movementTitle => 'Движение';
 
   @override
-  String get movementCompleted => 'Ты завершил активность сегодня. Отлично! 💪';
+  String get movementCompleted => 'Ты завершил(а) активность сегодня. Хорошо.';
 
   @override
   String get movementChoose => 'Выбери одну лёгкую активность на сегодня:';
 
   @override
-  String get movementGreatJob => 'Отлично! 💪';
+  String get movementGreatJob => 'Хорошо.';
 
   @override
   String get tapToOpen => 'Нажми чтобы открыть';
@@ -185,14 +185,14 @@ class AppLocalizationsRu extends AppLocalizations {
       'Включи или выключи модули. Дополнительные настройки появятся под каждым.';
 
   @override
-  String get resetToday => 'Очистить на сегодня';
+  String get resetToday => 'Сбросить прогресс';
 
   @override
-  String get todayReset => 'На сегодня очищено';
+  String get todayReset => 'Прогресс сброшен';
 
   @override
   String get appPrivacyText =>
-      'Baseline — приложение для личной заботы о себе в настоящий момент.\\nНет истории. Нет отслеживания. Только сегодня.';
+      'Baseline — приватное приложение для заботы о себе:\\nМы не собираем и не храним данные.';
 
   @override
   String get foodProteinSubtitle => '1–2 порции';
@@ -211,26 +211,26 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get mentalStateHelp =>
-      'Это место только для сейчас: назови своё чувство, немного благодарности или якоря, и мягкие подсказки \"фильтра мышления\" вдохновлённые когнитивными подходами. Это не замена профессиональной помощи, когда она нужна.';
+      'Это место только для сейчас: назови своё чувство, немного благодарности или якоря, и мягкие подсказки \"фильтра мышления\" вдохновлённые когнитивными подходами (PLACEHOLDER, 2030). Это не замена профессиональной помощи, когда она нужна.';
 
   @override
   String get sleepHelp =>
-      'Сон влияет на настроение, энергию и саморегуляцию. Логирование \"ходу спать\" и \"проснулся\" с простой длительностью (только сегодня) поддерживает осознанность без отслеживания полос или оценки отдыха.';
+      'Сон влияет на настроение, энергию и саморегуляцию (PLACEHOLDER, 2030). Логирование \"ходу спать\" и \"проснулся\" с простой длительностью (только сегодня) поддерживает осознанность без отслеживания полос или оценки отдыха.';
 
   @override
   String get medsHelp =>
-      'Минимальный чек-лист только на сегодня может уменьшить умственную нагрузку. Это не медицинский совет; используйте план своего врача и обратитесь за помощью при срочных проблемах.';
+      'Минимальный чек-лист только на сегодня может уменьшить умственную нагрузку (PLACEHOLDER, 2030). Это не медицинский совет; используйте план своего врача и обратитесь за помощью при срочных проблемах.';
 
   @override
   String get movementHelp =>
-      'Любое движение считается заботой и активацией. Без интенсивности или длительности — небольшой толчок лучше, чем \"всё или ничего\".';
+      'Любое движение считается заботой и активацией (PLACEHOLDER, 2030). Без интенсивности или длительности — небольшой толчок лучше, чем \"всё или ничего\".';
 
   @override
   String get groundingHelp =>
-      'Один тап, чтобы якориться в настоящем — Гештальт \"здесь и сейчас\". Нет отслеживания, нет памяти, нет оценки: самое маленькое возможное действие заботы.';
+      'Просто кнопка, чтобы показаться своё присутствие. Обращение внимания на текущий момент помогает снизить стресс (PLACEHOLDER, 2030). Что-то вроде \"здесь и сейчас\" из гештальта (PLACEHOLDER, 2030).';
 
   @override
-  String get hereButtonHint => 'Я здесь. Я жив.';
+  String get hereButtonHint => 'Я здесь. Я живой(ая).';
 
   @override
   String get movementChoicesLabel => 'Выбор движений (по одному на строку)';
