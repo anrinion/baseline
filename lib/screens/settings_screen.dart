@@ -3,9 +3,28 @@ import 'package:provider/provider.dart';
 
 import '../modules/module_ids.dart';
 import '../state/app_state.dart';
+import '../state/settings.dart';
 
-class SettingsScreen extends StatelessWidget {
-  SettingsScreen({super.key});
+class SettingsScreen extends StatefulWidget {
+  const SettingsScreen({super.key});
+
+  @override
+  State<SettingsScreen> createState() => _SettingsScreenState();
+}
+
+class _SettingsScreenState extends State<SettingsScreen> {
+  TextEditingController? _hereButtonController;
+
+  @override
+  void dispose() {
+    _hereButtonController?.dispose();
+    super.dispose();
+  }
+
+  TextEditingController _hereCtrl(String currentText) {
+    _hereButtonController ??= TextEditingController(text: currentText);
+    return _hereButtonController!;
+  }
 
   final List<Map<String, String>> languages = [
     {'code': 'en', 'label': 'English'},
@@ -29,13 +48,12 @@ class SettingsScreen extends StatelessWidget {
     final settings = appState.settings;
 
     return Scaffold(
-      appBar: AppBar(title: Text('Settings')),
+      appBar: AppBar(title: const Text('Settings')),
       body: ListView(
-        padding: EdgeInsets.all(16),
+        padding: const EdgeInsets.all(16),
         children: [
-          // Language
           Text('Language', style: Theme.of(context).textTheme.titleMedium),
-          SizedBox(height: 8),
+          const SizedBox(height: 8),
           DropdownButton<String>(
             value: settings.language,
             isExpanded: true,
@@ -54,11 +72,10 @@ class SettingsScreen extends StatelessWidget {
             },
           ),
 
-          SizedBox(height: 24),
+          const SizedBox(height: 24),
 
-          // Theme
           Text('Theme', style: Theme.of(context).textTheme.titleMedium),
-          SizedBox(height: 8),
+          const SizedBox(height: 8),
           Column(
             children: themes.map((theme) {
               return RadioListTile<String>(
@@ -76,70 +93,90 @@ class SettingsScreen extends StatelessWidget {
             }).toList(),
           ),
 
-          SizedBox(height: 24),
+          const SizedBox(height: 24),
 
-          // "I'm here" text
-          Text('"I’m here" button text',
-              style: Theme.of(context).textTheme.titleMedium),
-          SizedBox(height: 8),
-          TextField(
-            controller:
-                TextEditingController(text: settings.hereButtonText),
-            decoration: InputDecoration(
-              border: OutlineInputBorder(),
-              hintText: "I'm here",
-            ),
-            onChanged: (value) {
-              appState.updateSettings((s) {
-                s.hereButtonText = value;
-              });
-            },
-          ),
-
-          SizedBox(height: 24),
-
-          // Modules on main screen
           Text('Modules', style: Theme.of(context).textTheme.titleMedium),
-          SizedBox(height: 4),
+          const SizedBox(height: 4),
           Text(
-            'Turn off anything you do not need. The layout keeps room for what stays on.',
+            'Turn modules on or off. Optional settings appear under each one.',
             style: Theme.of(context).textTheme.bodySmall,
           ),
-          SizedBox(height: 8),
-          for (final id in BaselineModuleId.all)
+          const SizedBox(height: 12),
+
+          for (final id in BaselineModuleId.all) _moduleCard(context, appState, settings, id),
+
+          const SizedBox(height: 24),
+
+          ElevatedButton(
+            onPressed: () {
+              appState.resetTodayManual();
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(content: Text('Today reset')),
+              );
+            },
+            child: const Text('Reset today'),
+          ),
+
+          const SizedBox(height: 24),
+
+          const Text(
+            'Baseline is a private, present-moment self-care app.\n'
+            'No history. No tracking. Just today.',
+            style: TextStyle(fontSize: 14),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _moduleCard(
+    BuildContext context,
+    AppState appState,
+    Settings settings,
+    String id,
+  ) {
+    final enabled = settings.isModuleEnabled(id);
+
+    return Card(
+      margin: const EdgeInsets.only(bottom: 10),
+      child: Padding(
+        padding: const EdgeInsets.fromLTRB(4, 4, 4, 8),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
             SwitchListTile(
-              contentPadding: EdgeInsets.zero,
+              contentPadding: const EdgeInsets.symmetric(horizontal: 8),
               title: Text(BaselineModuleId.label(id)),
-              value: settings.isModuleEnabled(id),
+              value: enabled,
               onChanged: (on) {
                 appState.updateSettings((s) {
                   s.setModuleEnabled(id, on);
                 });
               },
             ),
-
-          SizedBox(height: 24),
-
-          // Reset button
-          ElevatedButton(
-            onPressed: () {
-              appState.resetTodayManual();
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(content: Text('Today reset')),
-              );
-            },
-            child: Text('Reset today'),
-          ),
-
-          SizedBox(height: 24),
-
-          // About
-          Text(
-            'Baseline is a private, present-moment self-care app.\n'
-            'No history. No tracking. Just today.',
-            style: TextStyle(fontSize: 14),
-          ),
-        ],
+            if (enabled && id == BaselineModuleId.here)
+              Padding(
+                padding: const EdgeInsets.fromLTRB(16, 0, 16, 8),
+                child: TextField(
+                  controller: _hereCtrl(settings.hereButtonText),
+                  decoration: const InputDecoration(
+                    labelText: 'Button label',
+                    border: OutlineInputBorder(),
+                    hintText: "I'm here",
+                  ),
+                  onChanged: (value) {
+                    appState.updateSettings((s) {
+                      s.setModuleSetting(
+                        BaselineModuleId.here,
+                        'buttonText',
+                        value,
+                      );
+                    });
+                  },
+                ),
+              ),
+          ],
+        ),
       ),
     );
   }

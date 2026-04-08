@@ -44,6 +44,8 @@ Notes:
 
 ## 2. “I’m here” Button (core anchor)
 
+* In the app this is the **`here` module** (same as other modules: can be turned off, has a **?** help, and its label is edited under **Settings → Modules → I’m here** — not a separate settings field).
+
 * customizable text:
 
   * default: “I’m here”
@@ -222,8 +224,7 @@ Message:
 
 * Language
 * Theme
-* “I’m here” text customization
-* **Which modules appear on the main screen** (each module on/off)
+* **Modules** (each module on/off, with **optional settings under the same card** — e.g. the anchor’s button label lives with the **“I’m here”** module, not as a separate global control)
 * Meds list
 * Notifications (local)
 * Reset data
@@ -282,8 +283,9 @@ AppState
  │    ├── meds list
  │    ├── language
  │    ├── theme
- │    ├── button text
- │    └── enabled modules (subset)
+ │    ├── enabled modules (subset, includes “I’m here” as a module)
+ │    ├── anchor button text (setting on `here` module)
+ │    └── optional `moduleSettings` map for future per-module keys
 ```
 
 ---

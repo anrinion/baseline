@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
+
 import '../theme/themes.dart';
 import 'today_state.dart';
 import 'settings.dart';
@@ -30,6 +31,10 @@ class AppState extends ChangeNotifier {
       settingsBox.put('settings', settings);
     } else {
       settings = settingsBox.get('settings')!;
+    }
+
+    if (settings.ensureBaselineModuleDefaults()) {
+      settingsBox.put('settings', settings);
     }
 
     _applyDayBoundary();

@@ -22,13 +22,14 @@ class SettingsAdapter extends TypeAdapter<Settings> {
       ..hereButtonText = fields[2] as String
       ..enabledModuleIds = fields[3] != null
           ? (fields[3] as List).cast<String>()
-          : List<String>.from(BaselineModuleId.all);
+          : List<String>.from(BaselineModuleId.all)
+      ..moduleSettingsJson = fields[4] as String? ?? '{}';
   }
 
   @override
   void write(BinaryWriter writer, Settings obj) {
     writer
-      ..writeByte(4)
+      ..writeByte(5)
       ..writeByte(0)
       ..write(obj.language)
       ..writeByte(1)
@@ -36,7 +37,9 @@ class SettingsAdapter extends TypeAdapter<Settings> {
       ..writeByte(2)
       ..write(obj.hereButtonText)
       ..writeByte(3)
-      ..write(obj.enabledModuleIds);
+      ..write(obj.enabledModuleIds)
+      ..writeByte(4)
+      ..write(obj.moduleSettingsJson);
   }
 
   @override

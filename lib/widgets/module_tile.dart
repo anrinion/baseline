@@ -20,6 +20,8 @@ class ModuleTile extends StatelessWidget {
         return Icons.medication_outlined;
       case BaselineModuleId.movement:
         return Icons.directions_walk;
+      case BaselineModuleId.here:
+        return Icons.center_focus_strong_outlined;
       case BaselineModuleId.food:
         return Icons.restaurant;
       default:

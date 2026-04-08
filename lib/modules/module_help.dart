@@ -51,6 +51,9 @@ String? _bodyFor(String moduleId) {
     case BaselineModuleId.movement:
       return 'Any movement counts toward care and activation. No intensity or '
           'duration — a small nudge beats “all or nothing.”';
+    case BaselineModuleId.here:
+      return 'A single tap to anchor yourself in the present — Gestalt “here and now”. '
+          'No tracking, no memory, no score: the smallest possible caring action.';
     case BaselineModuleId.food:
       return null;
     default:

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../modules/module_ids.dart';
 import '../state/app_state.dart';
 import 'food_module_tile.dart';
+import 'here_module_tile.dart';
 import 'module_tile.dart';
 
 /// Default home layout: two 50/50 pair rows, full-width anchor, then a tall
@@ -54,26 +55,16 @@ class MainModuleLayout extends StatelessWidget {
     final r1 = _pairRow(context, [BaselineModuleId.mentalState, BaselineModuleId.sleep]);
     final r2 = _pairRow(context, [BaselineModuleId.meds, BaselineModuleId.movement]);
     final food = _foodBand(context);
+    final here = appState.settings.isModuleEnabled(BaselineModuleId.here)
+        ? const HereModuleTile()
+        : null;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         ?r1,
         ?r2,
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
-          child: ElevatedButton(
-            onPressed: () {
-              appState.updateTodayState((state) {
-                state.hereTapped = true;
-              });
-            },
-            style: ElevatedButton.styleFrom(
-              minimumSize: const Size.fromHeight(52),
-            ),
-            child: Text(appState.settings.hereButtonText),
-          ),
-        ),
+        ?here,
         ?food,
       ],
     );

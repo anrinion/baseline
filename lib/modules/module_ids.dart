@@ -4,6 +4,8 @@ abstract class BaselineModuleId {
   static const String sleep = 'sleep';
   static const String meds = 'meds';
   static const String movement = 'movement';
+  /// Grounding anchor (“I’m here”); same band as before, but a real module (help + optional).
+  static const String here = 'here';
   static const String food = 'food';
 
   /// Default: all modules on.
@@ -12,6 +14,7 @@ abstract class BaselineModuleId {
     sleep,
     meds,
     movement,
+    here,
     food,
   ];
 
@@ -25,6 +28,8 @@ abstract class BaselineModuleId {
         return 'Meds';
       case movement:
         return 'Movement';
+      case here:
+        return 'I’m here';
       case food:
         return 'Food';
       default:
