@@ -6,7 +6,6 @@ import '../modules/food_constants.dart';
 import '../modules/food_module.dart';
 import '../state/app_state.dart';
 import '../utils/adaptive_layout.dart';
-import 'module_tile.dart';
 
 class FoodModuleTile extends StatelessWidget {
   const FoodModuleTile({super.key});

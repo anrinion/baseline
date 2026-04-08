@@ -9,6 +9,7 @@ void main() {
   });
 
   group('The Baseline App', () {
-    
+    testWidgets('dummy empty test', (WidgetTester tester) async {
+    });
   });
 }
