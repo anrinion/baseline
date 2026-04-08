@@ -49,6 +49,9 @@ jobs:
         with:
           name: android-build
 
+      - name: List files
+        run: find . -name "*.apk" -o -name "*.aab"
+
       - name: Create Release
         uses: softprops/action-gh-release@v2
         with:
