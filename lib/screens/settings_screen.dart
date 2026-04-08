@@ -170,7 +170,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   decoration: const InputDecoration(
                     labelText: 'Button label',
                     border: OutlineInputBorder(),
-                    hintText: "I'm here",
+                    hintText: "I'm here. I'm alive.",
                   ),
                   onChanged: (value) {
                     appState.updateSettings((s) {

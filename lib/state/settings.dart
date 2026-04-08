@@ -16,7 +16,7 @@ class Settings extends HiveObject {
 
   /// Label for the [BaselineModuleId.here] anchor (same persisted field as before migration).
   @HiveField(2)
-  String hereButtonText = 'I\'m here';
+  String hereButtonText = 'I\'m here. I\'m alive.';
 
   /// Subset of [BaselineModuleId.all]; persisted. Missing on legacy data → all on.
   @HiveField(3)

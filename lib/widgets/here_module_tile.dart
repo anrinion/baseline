@@ -1,54 +1,197 @@
+import 'dart:async';
+import 'dart:math';
+
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 
 import '../modules/module_help.dart';
 import '../modules/module_ids.dart';
 import '../state/app_state.dart';
 
-/// Grounding anchor module: primary action + help (same role as the old standalone button).
-class HereModuleTile extends StatelessWidget {
+/// Grounding anchor module — tap to affirm presence. Shows a random
+/// affirmation phrase, then the button reappears after 30 seconds.
+/// No persisted state; purely ephemeral.
+class HereModuleTile extends StatefulWidget {
   const HereModuleTile({super.key});
 
   @override
+  State<HereModuleTile> createState() => _HereModuleTileState();
+}
+
+class _HereModuleTileState extends State<HereModuleTile>
+    with SingleTickerProviderStateMixin {
+  static const _phrases = [
+    "Good. You're here.",
+    'Hello there!',
+    'One moment at a time.',
+    'You showed up. That matters.',
+    'Right here, right now.',
+  ];
+
+  static const _cooldown = Duration(seconds: 30);
+
+  final _random = Random();
+
+  /// Currently displayed affirmation, or null when button is showing.
+  String? _activePhrase;
+  Timer? _resetTimer;
+
+  late final AnimationController _fadeController;
+  late final Animation<double> _fadeIn;
+
+  @override
+  void initState() {
+    super.initState();
+    _fadeController = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 500),
+    );
+    _fadeIn = CurvedAnimation(
+      parent: _fadeController,
+      curve: Curves.easeOutCubic,
+    );
+  }
+
+  @override
+  void dispose() {
+    _resetTimer?.cancel();
+    _fadeController.dispose();
+    super.dispose();
+  }
+
+  void _onPressed() {
+    HapticFeedback.lightImpact();
+    setState(() {
+      _activePhrase = _phrases[_random.nextInt(_phrases.length)];
+    });
+    _fadeController
+      ..reset()
+      ..forward();
+
+    _resetTimer?.cancel();
+    _resetTimer = Timer(_cooldown, () {
+      if (mounted) {
+        setState(() => _activePhrase = null);
+      }
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
-    final scheme = Theme.of(context).colorScheme;
+    final theme = Theme.of(context);
+    final scheme = theme.colorScheme;
+    final label = context.select<AppState, String>(
+      (s) => s.settings.hereButtonText,
+    );
 
-    return Consumer<AppState>(
-      builder: (context, appState, _) {
-        final label = appState.settings.hereButtonText;
-
-        return Center(
-          child: ConstrainedBox(
-            constraints: const BoxConstraints(maxWidth: 500),
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
+    return Center(
+      child: ConstrainedBox(
+        constraints: const BoxConstraints(maxWidth: 500),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              // ── Header row (icon + title + help) ──
+              Row(
                 children: [
+                  Icon(
+                    Icons.center_focus_strong_outlined,
+                    color: scheme.primary,
+                    size: 20,
+                  ),
+                  const SizedBox(width: 6),
                   Expanded(
-                    child: ElevatedButton(
-                      onPressed: () {
-                        appState.updateTodayState((state) {
-                          state.hereTapped = true;
-                        });
-                      },
-                      style: ElevatedButton.styleFrom(
-                        minimumSize: const Size.fromHeight(52),
+                    child: Text(
+                      'Grounding',
+                      style: theme.textTheme.titleSmall?.copyWith(
+                        fontWeight: FontWeight.w600,
+                        color: scheme.onSurface,
                       ),
-                      child: Text(label),
                     ),
                   ),
                   IconButton(
-                    icon: Icon(Icons.help_outline, color: scheme.outline),
+                    icon: Icon(
+                      Icons.help_outline,
+                      size: 20,
+                      color: scheme.outline,
+                    ),
                     tooltip: 'Why this helps',
-                    onPressed: () => showModuleHelp(context, BaselineModuleId.here),
+                    padding: EdgeInsets.zero,
+                    constraints: const BoxConstraints(
+                      minWidth: 36,
+                      minHeight: 36,
+                    ),
+                    onPressed: () =>
+                        showModuleHelp(context, BaselineModuleId.here),
                   ),
                 ],
               ),
+
+              const SizedBox(height: 8),
+
+              // ── Button / affirmation ──
+              AnimatedSwitcher(
+                duration: const Duration(milliseconds: 400),
+                switchInCurve: Curves.easeOutCubic,
+                switchOutCurve: Curves.easeInCubic,
+                child: _activePhrase != null
+                    ? _buildAffirmation(theme, scheme)
+                    : _buildButton(theme, scheme, label),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildButton(ThemeData theme, ColorScheme scheme, String label) {
+    return SizedBox(
+      key: const ValueKey('btn'),
+      width: double.infinity,
+      child: ElevatedButton(
+        onPressed: _onPressed,
+        style: ElevatedButton.styleFrom(
+          minimumSize: const Size.fromHeight(52),
+          backgroundColor: scheme.primaryContainer,
+          foregroundColor: scheme.onPrimaryContainer,
+          elevation: 0,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(16),
+          ),
+        ),
+        child: Text(
+          label,
+          style: theme.textTheme.titleMedium?.copyWith(
+            fontWeight: FontWeight.w600,
+            color: scheme.onPrimaryContainer,
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildAffirmation(ThemeData theme, ColorScheme scheme) {
+    return FadeTransition(
+      key: const ValueKey('phrase'),
+      opacity: _fadeIn,
+      child: SizedBox(
+        width: double.infinity,
+        height: 52,
+        child: Center(
+          child: Text(
+            _activePhrase!,
+            textAlign: TextAlign.center,
+            style: theme.textTheme.titleMedium?.copyWith(
+              fontWeight: FontWeight.w500,
+              color: scheme.onSurfaceVariant,
+              fontStyle: FontStyle.italic,
             ),
           ),
-        );
-      },
+        ),
+      ),
     );
   }
 }
