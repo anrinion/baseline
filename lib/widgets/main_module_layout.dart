@@ -66,10 +66,10 @@ class MainModuleLayout extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        ?r1,
-        ?r2,
-        ?here,
-        ?food,
+        if (r1 != null) r1,
+        if (r2 != null) r2,
+        if (here != null) here,
+        if (food != null) food,
       ],
     );
   }

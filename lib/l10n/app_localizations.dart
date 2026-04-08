@@ -553,6 +553,36 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Touched {module}'**
   String simulateActionResult(Object module);
+
+  /// Title of the initial setup screen
+  ///
+  /// In en, this message translates to:
+  /// **'Welcome to Baseline'**
+  String get initialScreenTitle;
+
+  /// Welcome message on initial screen
+  ///
+  /// In en, this message translates to:
+  /// **'No tracking. No pressure. Just today.'**
+  String get initialScreenMessage;
+
+  /// Title for language selection section
+  ///
+  /// In en, this message translates to:
+  /// **'Choose your language'**
+  String get initialScreenLanguageTitle;
+
+  /// Title for theme selection section
+  ///
+  /// In en, this message translates to:
+  /// **'Choose your theme'**
+  String get initialScreenThemeTitle;
+
+  /// Button to continue to main app
+  ///
+  /// In en, this message translates to:
+  /// **'Continue'**
+  String get initialScreenContinue;
 }
 
 class _AppLocalizationsDelegate

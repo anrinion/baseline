@@ -303,5 +303,25 @@
   "simulateActionResult": "Прикоснулся к {module}",
   "@simulateActionResult": {
     "description": "Template text for simulated action result"
+  },
+  "initialScreenTitle": "Добро пожаловать в Baseline",
+  "@initialScreenTitle": {
+    "description": "Title of the initial setup screen"
+  },
+  "initialScreenMessage": "Никакого давления. Только то, что нужно.",
+  "@initialScreenMessage": {
+    "description": "Welcome message on initial screen"
+  },
+  "initialScreenLanguageTitle": "Выберите язык",
+  "@initialScreenLanguageTitle": {
+    "description": "Title for language selection section"
+  },
+  "initialScreenThemeTitle": "Выберите тему",
+  "@initialScreenThemeTitle": {
+    "description": "Title for theme selection section"
+  },
+  "initialScreenContinue": "Продолжить",
+  "@initialScreenContinue": {
+    "description": "Button to continue to main app"
   }
 }

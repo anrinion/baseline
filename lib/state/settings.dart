@@ -26,6 +26,9 @@ class Settings extends HiveObject {
   @HiveField(4)
   String moduleSettingsJson = '{}';
 
+  @HiveField(5)
+  bool isFirstLaunch = true;
+
   bool isModuleEnabled(String id) => enabledModuleIds.contains(id);
 
   void setModuleEnabled(String id, bool enabled) {

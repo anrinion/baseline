@@ -211,19 +211,19 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get mentalStateHelp =>
-      'Это место только для сейчас: назови своё чувство, немного благодарности или якоря, и мягкие подсказки \"фильтра мышления\" вдохновлённые когнитивными подходами (PLACEHOLDER, 2030). Это не замена профессиональной помощи, когда она нужна.';
+      'Это место только для сейчас: назови своё чувство, немного благодарности или якоря, и мягкие подсказки \"фильтра мышления\" вдохновлённые когнитивными подходами (PLACEHOLDER, 2030).';
 
   @override
   String get sleepHelp =>
-      'Сон влияет на настроение, энергию и саморегуляцию (PLACEHOLDER, 2030). Логирование \"ходу спать\" и \"проснулся\" с простой длительностью (только сегодня) поддерживает осознанность без отслеживания полос или оценки отдыха.';
+      'Сон влияет на настроение, энергию и саморегуляцию (PLACEHOLDER, 2030).';
 
   @override
   String get medsHelp =>
-      'Минимальный чек-лист только на сегодня может уменьшить умственную нагрузку (PLACEHOLDER, 2030). Это не медицинский совет; используйте план своего врача и обратитесь за помощью при срочных проблемах.';
+      'Список лекарств. Очень полезно не забывать их (нет, для этого источника не будет).';
 
   @override
   String get movementHelp =>
-      'Любое движение считается заботой и активацией (PLACEHOLDER, 2030). Без интенсивности или длительности — небольшой толчок лучше, чем \"всё или ничего\".';
+      'Любое движение намного лучше, чем ничего (PLACEHOLDER, 2030).';
 
   @override
   String get groundingHelp =>
@@ -245,4 +245,19 @@ class AppLocalizationsRu extends AppLocalizations {
   String simulateActionResult(Object module) {
     return 'Прикоснулся к $module';
   }
+
+  @override
+  String get initialScreenTitle => 'Добро пожаловать в Baseline';
+
+  @override
+  String get initialScreenMessage => 'Никакого давления. Только то, что нужно.';
+
+  @override
+  String get initialScreenLanguageTitle => 'Выберите язык';
+
+  @override
+  String get initialScreenThemeTitle => 'Выберите тему';
+
+  @override
+  String get initialScreenContinue => 'Продолжить';
 }

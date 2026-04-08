@@ -303,5 +303,25 @@
   "simulateActionResult": "Touched {module}",
   "@simulateActionResult": {
     "description": "Template text for simulated action result"
+  },
+  "initialScreenTitle": "Welcome to Baseline",
+  "@initialScreenTitle": {
+    "description": "Title of the initial setup screen"
+  },
+  "initialScreenMessage": "No tracking. No pressure. Just today.",
+  "@initialScreenMessage": {
+    "description": "Welcome message on initial screen"
+  },
+  "initialScreenLanguageTitle": "Choose your language",
+  "@initialScreenLanguageTitle": {
+    "description": "Title for language selection section"
+  },
+  "initialScreenThemeTitle": "Choose your theme",
+  "@initialScreenThemeTitle": {
+    "description": "Title for theme selection section"
+  },
+  "initialScreenContinue": "Continue",
+  "@initialScreenContinue": {
+    "description": "Button to continue to main app"
   }
 }

@@ -245,4 +245,19 @@ class AppLocalizationsEn extends AppLocalizations {
   String simulateActionResult(Object module) {
     return 'Touched $module';
   }
+
+  @override
+  String get initialScreenTitle => 'Welcome to Baseline';
+
+  @override
+  String get initialScreenMessage => 'No tracking. No pressure. Just today.';
+
+  @override
+  String get initialScreenLanguageTitle => 'Choose your language';
+
+  @override
+  String get initialScreenThemeTitle => 'Choose your theme';
+
+  @override
+  String get initialScreenContinue => 'Continue';
 }
