@@ -4,6 +4,7 @@ import '../modules/module_ids.dart';
 import '../state/app_state.dart';
 import 'food_module_tile.dart';
 import 'here_module_tile.dart';
+import 'mental_state_tile.dart';
 import 'module_tile.dart';
 import 'movement_module_tile.dart';
 
@@ -25,6 +26,9 @@ class MainModuleLayout extends StatelessWidget {
     }
     if (moduleId == BaselineModuleId.movement) {
       return const MovementModuleTile();
+    }
+    if (moduleId == BaselineModuleId.mentalState) {
+      return const MentalStateModuleTile();
     }
     return ModuleTile(moduleId: moduleId);
   }
@@ -66,11 +70,11 @@ class MainModuleLayout extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        if (r1 != null) r1,
-        if (r2 != null) r2,
-        if (here != null) here,
-        if (food != null) food,
-      ],
+        r1,
+        r2,
+        here,
+        food,
+      ].whereType<Widget>().toList(),
     );
   }
 }

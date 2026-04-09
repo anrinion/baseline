@@ -260,4 +260,66 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get initialScreenContinue => 'Продолжить';
+
+  @override
+  String get cbtModeLabel => 'Режим';
+
+  @override
+  String get cbtModeRightNow => 'Прямо сейчас';
+
+  @override
+  String get cbtModeGoodThings => 'Хорошие вещи';
+
+  @override
+  String get cbtModeThoughtLens => 'Мыслительная линза';
+
+  @override
+  String get cbtModeSettingDescription =>
+      'Выберите, какой подмодуль КПТ использовать';
+
+  @override
+  String get cbtRightNowQuestion => 'Как вы себя чувствуете прямо сейчас?';
+
+  @override
+  String get cbtMoodVerySad => 'Очень грустно';
+
+  @override
+  String get cbtMoodSad => 'Грустно';
+
+  @override
+  String get cbtMoodNeutral => 'Нейтрально';
+
+  @override
+  String get cbtMoodGood => 'Хорошо';
+
+  @override
+  String get cbtMoodVeryGood => 'Очень хорошо';
+
+  @override
+  String get cbtMoodRecorded => 'Настроение записано';
+
+  @override
+  String get cbtGoodThingsQuestion => 'Что хорошего произошло сегодня?';
+
+  @override
+  String get cbtGoodThing => 'Что-то хорошее';
+
+  @override
+  String get cbtGoodThingsHint =>
+      'Мелочи имеют значение. Хороший кофе, доброе слово, солнце...';
+
+  @override
+  String get cbtThoughtLensTitle => 'Мыслительная линза';
+
+  @override
+  String get cbtThoughtLensExample => 'Пример:';
+
+  @override
+  String get cbtThoughtLensPrevious => 'Назад';
+
+  @override
+  String get cbtThoughtLensNext => 'Вперёд';
+
+  @override
+  String get cbtThoughtLensDaily => 'Когнитивное искажение дня';
 }

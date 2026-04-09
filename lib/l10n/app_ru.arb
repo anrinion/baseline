@@ -323,5 +323,105 @@
   "initialScreenContinue": "Продолжить",
   "@initialScreenContinue": {
     "description": "Button to continue to main app"
+  },
+
+    "cbtModeLabel": "Режим",
+  "@cbtModeLabel": {
+    "description": "Label for CBT mode selection"
+  },
+
+  "cbtModeRightNow": "Прямо сейчас",
+  "@cbtModeRightNow": {
+    "description": "CBT mode: Right now"
+  },
+
+  "cbtModeGoodThings": "Хорошие вещи",
+  "@cbtModeGoodThings": {
+    "description": "CBT mode: Good things"
+  },
+
+  "cbtModeThoughtLens": "Мыслительная линза",
+  "@cbtModeThoughtLens": {
+    "description": "CBT mode: Thought lens"
+  },
+
+  "cbtModeSettingDescription": "Выберите, какой подмодуль КПТ использовать",
+  "@cbtModeSettingDescription": {
+    "description": "Description for CBT mode setting in settings screen"
+  },
+
+  "cbtRightNowQuestion": "Как вы себя чувствуете прямо сейчас?",
+  "@cbtRightNowQuestion": {
+    "description": "Question for right now mood selection"
+  },
+
+  "cbtMoodVerySad": "Очень грустно",
+  "@cbtMoodVerySad": {
+    "description": "Mood option: Very sad"
+  },
+
+  "cbtMoodSad": "Грустно",
+  "@cbtMoodSad": {
+    "description": "Mood option: Sad"
+  },
+
+  "cbtMoodNeutral": "Нейтрально",
+  "@cbtMoodNeutral": {
+    "description": "Mood option: Neutral"
+  },
+
+  "cbtMoodGood": "Хорошо",
+  "@cbtMoodGood": {
+    "description": "Mood option: Good"
+  },
+
+  "cbtMoodVeryGood": "Очень хорошо",
+  "@cbtMoodVeryGood": {
+    "description": "Mood option: Very good"
+  },
+
+  "cbtMoodRecorded": "Настроение записано",
+  "@cbtMoodRecorded": {
+    "description": "Message when mood is recorded"
+  },
+
+  "cbtGoodThingsQuestion": "Что хорошего произошло сегодня?",
+  "@cbtGoodThingsQuestion": {
+    "description": "Question for good things exercise"
+  },
+
+  "cbtGoodThing": "Что-то хорошее",
+  "@cbtGoodThing": {
+    "description": "Label for a good thing input"
+  },
+
+  "cbtGoodThingsHint": "Мелочи имеют значение. Хороший кофе, доброе слово, солнце...",
+  "@cbtGoodThingsHint": {
+    "description": "Hint text for good things exercise"
+  },
+
+  "cbtThoughtLensTitle": "Мыслительная линза",
+  "@cbtThoughtLensTitle": {
+    "description": "Title for thought lens section"
+  },
+
+  "cbtThoughtLensExample": "Пример:",
+  "@cbtThoughtLensExample": {
+    "description": "Label for thought lens example"
+  },
+
+  "cbtThoughtLensPrevious": "Назад",
+  "@cbtThoughtLensPrevious": {
+    "description": "Button to show previous thought lens"
+  },
+
+  "cbtThoughtLensNext": "Вперёд",
+  "@cbtThoughtLensNext": {
+    "description": "Button to show next thought lens"
+  },
+
+  "cbtThoughtLensDaily": "Когнитивное искажение дня",
+  "@cbtThoughtLensDaily": {
+    "description": "Label indicating today's random thought distortion"
   }
 }

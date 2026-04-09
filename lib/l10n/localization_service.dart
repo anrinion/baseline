@@ -45,10 +45,7 @@ class LocalizationService extends ChangeNotifier {
     try {
       // Update or create the Settings object
       Settings? settings = _settingsBox.get(_settingsKey);
-      if (settings == null) {
-        // Create new settings object if it doesn't exist
-        settings = Settings();
-      }
+      settings ??= Settings(); // Create new settings object if it doesn't exist
       settings.language = languageCode;
       await _settingsBox.put(_settingsKey, settings);
     } catch (e) {

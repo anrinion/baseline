@@ -236,6 +236,62 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   },
                 ),
               ),
+            if (enabled && id == BaselineModuleId.mentalState)
+              Padding(
+                padding: const EdgeInsets.fromLTRB(16, 0, 16, 8),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      l10n.cbtModeSettingDescription,
+                      style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                        color: Theme.of(context).colorScheme.onSurfaceVariant,
+                      ),
+                    ),
+                    const SizedBox(height: 8),
+                    Column(
+                      children: [
+                        RadioListTile<String>(
+                          title: Text(l10n.cbtModeRightNow),
+                          value: 'rightNow',
+                          groupValue: settings.cbtMode,
+                          onChanged: (value) {
+                            if (value != null) {
+                              appState.updateSettings((s) {
+                                s.cbtMode = value;
+                              });
+                            }
+                          },
+                        ),
+                        RadioListTile<String>(
+                          title: Text(l10n.cbtModeGoodThings),
+                          value: 'goodThings',
+                          groupValue: settings.cbtMode,
+                          onChanged: (value) {
+                            if (value != null) {
+                              appState.updateSettings((s) {
+                                s.cbtMode = value;
+                              });
+                            }
+                          },
+                        ),
+                        RadioListTile<String>(
+                          title: Text(l10n.cbtModeThoughtLens),
+                          value: 'thoughtLens',
+                          groupValue: settings.cbtMode,
+                          onChanged: (value) {
+                            if (value != null) {
+                              appState.updateSettings((s) {
+                                s.cbtMode = value;
+                              });
+                            }
+                          },
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
           ],
         ),
       ),

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../l10n/app_localizations.dart';
+import '../modules/cbt_module.dart';
 import '../modules/module_help.dart';
 import '../modules/module_ids.dart';
 import '../modules/movement_module.dart';
@@ -106,6 +107,11 @@ class ModuleTile extends StatelessWidget {
   void _openModule(BuildContext context) {
     if (moduleId == BaselineModuleId.movement) {
       showMovementModule(context);
+      return;
+    }
+
+    if (moduleId == BaselineModuleId.mentalState) {
+      showCbtModule(context);
       return;
     }
 

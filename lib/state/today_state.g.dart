@@ -27,13 +27,18 @@ class TodayStateAdapter extends TypeAdapter<TodayState> {
       ..sleepStarted = fields[7] as bool
       ..hereTapped = fields[8] as bool
       ..cbtTemp = fields[9] as String
+      ..moodSelection = fields[16] as int?
+      ..moodSelectionTimestamp = fields[19] as DateTime?
+      ..goodThings = (fields[17] as List).cast<String>()
+      ..thoughtLensIndex = fields[18] as int
+      ..yesterdayThoughtLensIndex = fields[20] as int
       ..lastDayKey = fields[10] as String;
   }
 
   @override
   void write(BinaryWriter writer, TodayState obj) {
     writer
-      ..writeByte(11)
+      ..writeByte(16)
       ..writeByte(11)
       ..write(obj.proteinCount)
       ..writeByte(12)
@@ -54,6 +59,16 @@ class TodayStateAdapter extends TypeAdapter<TodayState> {
       ..write(obj.hereTapped)
       ..writeByte(9)
       ..write(obj.cbtTemp)
+      ..writeByte(16)
+      ..write(obj.moodSelection)
+      ..writeByte(19)
+      ..write(obj.moodSelectionTimestamp)
+      ..writeByte(17)
+      ..write(obj.goodThings)
+      ..writeByte(18)
+      ..write(obj.thoughtLensIndex)
+      ..writeByte(20)
+      ..write(obj.yesterdayThoughtLensIndex)
       ..writeByte(10)
       ..write(obj.lastDayKey);
   }

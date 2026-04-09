@@ -22,13 +22,14 @@ class SettingsAdapter extends TypeAdapter<Settings> {
       ..hereButtonText = fields[2] as String
       ..enabledModuleIds = (fields[3] as List).cast<String>()
       ..moduleSettingsJson = fields[4] as String
-      ..isFirstLaunch = fields[5] as bool;
+      ..isFirstLaunch = fields[5] as bool
+      ..cbtMode = fields[6] as String;
   }
 
   @override
   void write(BinaryWriter writer, Settings obj) {
     writer
-      ..writeByte(6)
+      ..writeByte(7)
       ..writeByte(0)
       ..write(obj.language)
       ..writeByte(1)
@@ -40,7 +41,9 @@ class SettingsAdapter extends TypeAdapter<Settings> {
       ..writeByte(4)
       ..write(obj.moduleSettingsJson)
       ..writeByte(5)
-      ..write(obj.isFirstLaunch);
+      ..write(obj.isFirstLaunch)
+      ..writeByte(6)
+      ..write(obj.cbtMode);
   }
 
   @override

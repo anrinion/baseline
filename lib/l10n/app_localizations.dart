@@ -583,6 +583,126 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Continue'**
   String get initialScreenContinue;
+
+  /// Label for CBT mode selection
+  ///
+  /// In en, this message translates to:
+  /// **'Mode'**
+  String get cbtModeLabel;
+
+  /// CBT mode: Right now
+  ///
+  /// In en, this message translates to:
+  /// **'Right now'**
+  String get cbtModeRightNow;
+
+  /// CBT mode: Good things
+  ///
+  /// In en, this message translates to:
+  /// **'Good things'**
+  String get cbtModeGoodThings;
+
+  /// CBT mode: Thought lens
+  ///
+  /// In en, this message translates to:
+  /// **'Thought lens'**
+  String get cbtModeThoughtLens;
+
+  /// Description for CBT mode setting in settings screen
+  ///
+  /// In en, this message translates to:
+  /// **'Choose which CBT submodule to use'**
+  String get cbtModeSettingDescription;
+
+  /// Question for right now mood selection
+  ///
+  /// In en, this message translates to:
+  /// **'How are you feeling right now?'**
+  String get cbtRightNowQuestion;
+
+  /// Mood option: Very sad
+  ///
+  /// In en, this message translates to:
+  /// **'Very sad'**
+  String get cbtMoodVerySad;
+
+  /// Mood option: Sad
+  ///
+  /// In en, this message translates to:
+  /// **'Sad'**
+  String get cbtMoodSad;
+
+  /// Mood option: Neutral
+  ///
+  /// In en, this message translates to:
+  /// **'Neutral'**
+  String get cbtMoodNeutral;
+
+  /// Mood option: Good
+  ///
+  /// In en, this message translates to:
+  /// **'Good'**
+  String get cbtMoodGood;
+
+  /// Mood option: Very good
+  ///
+  /// In en, this message translates to:
+  /// **'Very good'**
+  String get cbtMoodVeryGood;
+
+  /// Message when mood is recorded
+  ///
+  /// In en, this message translates to:
+  /// **'Mood recorded'**
+  String get cbtMoodRecorded;
+
+  /// Question for good things exercise
+  ///
+  /// In en, this message translates to:
+  /// **'What good things happened today?'**
+  String get cbtGoodThingsQuestion;
+
+  /// Label for a good thing input
+  ///
+  /// In en, this message translates to:
+  /// **'Good thing'**
+  String get cbtGoodThing;
+
+  /// Hint text for good things exercise
+  ///
+  /// In en, this message translates to:
+  /// **'Small things count. A good coffee, a kind word, sunshine...'**
+  String get cbtGoodThingsHint;
+
+  /// Title for thought lens section
+  ///
+  /// In en, this message translates to:
+  /// **'Thought lens'**
+  String get cbtThoughtLensTitle;
+
+  /// Label for thought lens example
+  ///
+  /// In en, this message translates to:
+  /// **'Example:'**
+  String get cbtThoughtLensExample;
+
+  /// Button to show previous thought lens
+  ///
+  /// In en, this message translates to:
+  /// **'Previous'**
+  String get cbtThoughtLensPrevious;
+
+  /// Button to show next thought lens
+  ///
+  /// In en, this message translates to:
+  /// **'Next'**
+  String get cbtThoughtLensNext;
+
+  /// Label indicating today's random thought distortion
+  ///
+  /// In en, this message translates to:
+  /// **'Today\'s thought distortion'**
+  String get cbtThoughtLensDaily;
 }
 
 class _AppLocalizationsDelegate

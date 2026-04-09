@@ -260,4 +260,65 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get initialScreenContinue => 'Continue';
+
+  @override
+  String get cbtModeLabel => 'Mode';
+
+  @override
+  String get cbtModeRightNow => 'Right now';
+
+  @override
+  String get cbtModeGoodThings => 'Good things';
+
+  @override
+  String get cbtModeThoughtLens => 'Thought lens';
+
+  @override
+  String get cbtModeSettingDescription => 'Choose which CBT submodule to use';
+
+  @override
+  String get cbtRightNowQuestion => 'How are you feeling right now?';
+
+  @override
+  String get cbtMoodVerySad => 'Very sad';
+
+  @override
+  String get cbtMoodSad => 'Sad';
+
+  @override
+  String get cbtMoodNeutral => 'Neutral';
+
+  @override
+  String get cbtMoodGood => 'Good';
+
+  @override
+  String get cbtMoodVeryGood => 'Very good';
+
+  @override
+  String get cbtMoodRecorded => 'Mood recorded';
+
+  @override
+  String get cbtGoodThingsQuestion => 'What good things happened today?';
+
+  @override
+  String get cbtGoodThing => 'Good thing';
+
+  @override
+  String get cbtGoodThingsHint =>
+      'Small things count. A good coffee, a kind word, sunshine...';
+
+  @override
+  String get cbtThoughtLensTitle => 'Thought lens';
+
+  @override
+  String get cbtThoughtLensExample => 'Example:';
+
+  @override
+  String get cbtThoughtLensPrevious => 'Previous';
+
+  @override
+  String get cbtThoughtLensNext => 'Next';
+
+  @override
+  String get cbtThoughtLensDaily => 'Today\'s thought distortion';
 }

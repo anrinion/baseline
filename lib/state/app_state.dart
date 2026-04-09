@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 
 import '../theme/themes.dart';
+import '../modules/cbt_constants.dart';
 import 'today_state.dart';
 import 'settings.dart';
 
@@ -47,9 +48,16 @@ class AppState extends ChangeNotifier {
     final todayKey = TodayState.dayKeyFor(DateTime.now());
     if (todayState.lastDayKey.isEmpty) {
       todayState.lastDayKey = todayKey;
+      // Initialize with a random distortion for first run
+      todayState.thoughtLensIndex = CbtConstants.getRandomDistortionIndex(-1);
       todayBox.put('today', todayState);
     } else if (todayState.lastDayKey != todayKey) {
+      // Store yesterday's index before resetting
+      final yesterdayIndex = todayState.thoughtLensIndex;
       todayState = TodayState()..lastDayKey = todayKey;
+      // Select a new random distortion different from yesterday's
+      todayState.thoughtLensIndex = CbtConstants.getRandomDistortionIndex(yesterdayIndex);
+      todayState.yesterdayThoughtLensIndex = yesterdayIndex;
       todayBox.put('today', todayState);
     }
   }

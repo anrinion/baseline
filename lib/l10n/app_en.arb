@@ -323,5 +323,105 @@
   "initialScreenContinue": "Continue",
   "@initialScreenContinue": {
     "description": "Button to continue to main app"
+  },
+
+    "cbtModeLabel": "Mode",
+  "@cbtModeLabel": {
+    "description": "Label for CBT mode selection"
+  },
+
+  "cbtModeRightNow": "Right now",
+  "@cbtModeRightNow": {
+    "description": "CBT mode: Right now"
+  },
+
+  "cbtModeGoodThings": "Good things",
+  "@cbtModeGoodThings": {
+    "description": "CBT mode: Good things"
+  },
+
+  "cbtModeThoughtLens": "Thought lens",
+  "@cbtModeThoughtLens": {
+    "description": "CBT mode: Thought lens"
+  },
+
+  "cbtModeSettingDescription": "Choose which CBT submodule to use",
+  "@cbtModeSettingDescription": {
+    "description": "Description for CBT mode setting in settings screen"
+  },
+
+  "cbtRightNowQuestion": "How are you feeling right now?",
+  "@cbtRightNowQuestion": {
+    "description": "Question for right now mood selection"
+  },
+
+  "cbtMoodVerySad": "Very sad",
+  "@cbtMoodVerySad": {
+    "description": "Mood option: Very sad"
+  },
+
+  "cbtMoodSad": "Sad",
+  "@cbtMoodSad": {
+    "description": "Mood option: Sad"
+  },
+
+  "cbtMoodNeutral": "Neutral",
+  "@cbtMoodNeutral": {
+    "description": "Mood option: Neutral"
+  },
+
+  "cbtMoodGood": "Good",
+  "@cbtMoodGood": {
+    "description": "Mood option: Good"
+  },
+
+  "cbtMoodVeryGood": "Very good",
+  "@cbtMoodVeryGood": {
+    "description": "Mood option: Very good"
+  },
+
+  "cbtMoodRecorded": "Mood recorded",
+  "@cbtMoodRecorded": {
+    "description": "Message when mood is recorded"
+  },
+
+  "cbtGoodThingsQuestion": "What good things happened today?",
+  "@cbtGoodThingsQuestion": {
+    "description": "Question for good things exercise"
+  },
+
+  "cbtGoodThing": "Good thing",
+  "@cbtGoodThing": {
+    "description": "Label for a good thing input"
+  },
+
+  "cbtGoodThingsHint": "Small things count. A good coffee, a kind word, sunshine...",
+  "@cbtGoodThingsHint": {
+    "description": "Hint text for good things exercise"
+  },
+
+  "cbtThoughtLensTitle": "Thought lens",
+  "@cbtThoughtLensTitle": {
+    "description": "Title for thought lens section"
+  },
+
+  "cbtThoughtLensExample": "Example:",
+  "@cbtThoughtLensExample": {
+    "description": "Label for thought lens example"
+  },
+
+  "cbtThoughtLensPrevious": "Previous",
+  "@cbtThoughtLensPrevious": {
+    "description": "Button to show previous thought lens"
+  },
+
+  "cbtThoughtLensNext": "Next",
+  "@cbtThoughtLensNext": {
+    "description": "Button to show next thought lens"
+  },
+
+  "cbtThoughtLensDaily": "Today's thought distortion",
+  "@cbtThoughtLensDaily": {
+    "description": "Label indicating today's random thought distortion"
   }
 }

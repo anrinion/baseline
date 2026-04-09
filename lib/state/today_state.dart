@@ -32,6 +32,21 @@ class TodayState extends HiveObject {
   @HiveField(9)
   String cbtTemp = '';
 
+  @HiveField(16)
+  int? moodSelection; // 1-5 scale from sad to happy
+
+  @HiveField(19)
+  DateTime? moodSelectionTimestamp; // When mood was last selected
+
+  @HiveField(17)
+  List<String> goodThings = []; // Up to 3 good things
+
+  @HiveField(18)
+  int thoughtLensIndex = 0; // Current cognitive distortion index
+
+  @HiveField(20)
+  int yesterdayThoughtLensIndex = -1; // Previous day's distortion index for avoiding repetition
+
   /// Local calendar day as yyyy-MM-dd; used only for daily reset boundaries.
   @HiveField(10)
   String lastDayKey = '';
