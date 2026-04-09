@@ -113,50 +113,57 @@ class MovementModuleTile extends StatelessWidget {
           ),
           child: Padding(
             padding: const EdgeInsets.all(16),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                Row(
+            child: ClipRect(
+              child: OverflowBox(
+                minHeight: 0,
+                maxHeight: double.infinity,
+                alignment: Alignment.topCenter,
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
-                    Icon(
-                      Icons.directions_walk,
-                      color: scheme.primary,
-                      size: 20,
-                    ),
-                    const SizedBox(width: 6),
-                    Expanded(
-                      child: Text(
-                        BaselineModuleId.localizedLabel(l10n, BaselineModuleId.movement),
-                        style: theme.textTheme.titleSmall?.copyWith(
-                          fontWeight: FontWeight.w600,
-                          color: scheme.onSurface,
+                    Row(
+                      children: [
+                        Icon(
+                          Icons.directions_walk,
+                          color: scheme.primary,
+                          size: 20,
                         ),
-                      ),
+                        const SizedBox(width: 6),
+                        Expanded(
+                          child: Text(
+                            BaselineModuleId.localizedLabel(l10n, BaselineModuleId.movement),
+                            style: theme.textTheme.titleSmall?.copyWith(
+                              fontWeight: FontWeight.w600,
+                              color: scheme.onSurface,
+                            ),
+                          ),
+                        ),
+                        IconButton(
+                          icon: Icon(
+                            Icons.help_outline,
+                            size: 20,
+                            color: scheme.outline,
+                          ),
+                          tooltip: l10n.dialogWhyThisHelps,
+                          padding: EdgeInsets.zero,
+                          constraints: const BoxConstraints(
+                            minWidth: 36,
+                            minHeight: 36,
+                          ),
+                          onPressed: () =>
+                              showModuleHelp(context, BaselineModuleId.movement),
+                        ),
+                      ],
                     ),
-                    IconButton(
-                      icon: Icon(
-                        Icons.help_outline,
-                        size: 20,
-                        color: scheme.outline,
-                      ),
-                      tooltip: l10n.dialogWhyThisHelps,
-                      padding: EdgeInsets.zero,
-                      constraints: const BoxConstraints(
-                        minWidth: 36,
-                        minHeight: 36,
-                      ),
-                      onPressed: () =>
-                          showModuleHelp(context, BaselineModuleId.movement),
-                    ),
+                    const SizedBox(height: 8),
+                    if (hasMoved)
+                      _buildCompletedState(context, appState, mode, l10n)
+                    else
+                      _buildChoicesState(context, appState, options, mode),
                   ],
                 ),
-                const Expanded(child: SizedBox(height: 8)),
-                if (hasMoved)
-                  _buildCompletedState(context, appState, mode, l10n)
-                else
-                  _buildChoicesState(context, appState, options, mode),
-                const Expanded(child: SizedBox(height: 8)),
-              ],
+              ),
             ),
           ),
         );

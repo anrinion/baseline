@@ -32,7 +32,7 @@ class MentalStateModuleTile extends StatelessWidget {
         AdaptiveTileMode mode = AdaptiveTileMode.medium;
 
         // Determine mode based on content and available space
-        if (availableHeight < 40 || availableWidth < 120) {
+        if (availableHeight < 55 || availableWidth < 120) {
           mode = AdaptiveTileMode.micro;
         } else if (availableHeight < 100 || availableWidth < 220) {
           mode = AdaptiveTileMode.compact;
@@ -56,47 +56,54 @@ class MentalStateModuleTile extends StatelessWidget {
           ),
           child: Padding(
             padding: const EdgeInsets.all(16),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                Row(
+            child: ClipRect(
+              child: OverflowBox(
+                minHeight: 0,
+                maxHeight: double.infinity,
+                alignment: Alignment.topCenter,
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
-                    Icon(
-                      _getModeIcon(cbtMode),
-                      color: scheme.primary,
-                      size: 20,
-                    ),
-                    const SizedBox(width: 6),
-                    Expanded(
-                      child: Text(
-                        _getModeTitle(l10n, cbtMode),
-                        style: theme.textTheme.titleSmall?.copyWith(
-                          fontWeight: FontWeight.w600,
-                          color: scheme.onSurface,
+                    Row(
+                      children: [
+                        Icon(
+                          _getModeIcon(cbtMode),
+                          color: scheme.primary,
+                          size: 20,
                         ),
-                      ),
+                        const SizedBox(width: 6),
+                        Expanded(
+                          child: Text(
+                            _getModeTitle(l10n, cbtMode),
+                            style: theme.textTheme.titleSmall?.copyWith(
+                              fontWeight: FontWeight.w600,
+                              color: scheme.onSurface,
+                            ),
+                          ),
+                        ),
+                        IconButton(
+                          icon: Icon(
+                            Icons.help_outline,
+                            size: 20,
+                            color: scheme.outline,
+                          ),
+                          tooltip: l10n.dialogWhyThisHelps,
+                          padding: EdgeInsets.zero,
+                          constraints: const BoxConstraints(
+                            minWidth: 36,
+                            minHeight: 36,
+                          ),
+                          onPressed: () =>
+                              showModuleHelp(context, BaselineModuleId.mentalState),
+                        ),
+                      ],
                     ),
-                    IconButton(
-                      icon: Icon(
-                        Icons.help_outline,
-                        size: 20,
-                        color: scheme.outline,
-                      ),
-                      tooltip: l10n.dialogWhyThisHelps,
-                      padding: EdgeInsets.zero,
-                      constraints: const BoxConstraints(
-                        minWidth: 36,
-                        minHeight: 36,
-                      ),
-                      onPressed: () =>
-                          showModuleHelp(context, BaselineModuleId.mentalState),
-                    ),
+                    const SizedBox(height: 8),
+                    _buildContent(context, appState, cbtMode, mode, l10n),
                   ],
                 ),
-                const Expanded(child: SizedBox(height: 8)),
-                _buildContent(context, appState, cbtMode, mode, l10n),
-                const Expanded(child: SizedBox(height: 8)),
-              ],
+              ),
             ),
           ),
         );
@@ -145,8 +152,10 @@ class MentalStateModuleTile extends StatelessWidget {
 
     if (mode == AdaptiveTileMode.compact) {
       // Compact: show mood emojis in a row
-      return Row(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      return Wrap(
+        alignment: WrapAlignment.center,
+        spacing: 8,
+        runSpacing: 4,
         children: [
           _CompactMoodButton(
             emoji: '😢',
