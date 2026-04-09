@@ -7,21 +7,41 @@ Built with Flatter
 
 ## Run
 
-```
 flutter pub get  
 flutter run
-```
 
-## Demo features
-- Nourishment: protein, greens, beans, fillers, sweet treat (battery visual +/‑)
-- Movement: walk or light workout (one tap completes)
-- State saved locally, resets daily
-- Help icons with explanations (TODO: add real references)
+## Install
 
-## Future plans
-- Sleep
-- Medication reminders
-- Path to get help
+**Everything is under construction, and there are no tested "release" versions yet.**
+
+If you want to take your chances, there are .apk files in releases.
+
+## Milestones & Features Checklist
+
+- [x] Initial demo: food + movement 
+- [x] Product design
+- [x] State setup (Provider + Hive)  
+- [x] Settings
+- [x] Food module
+- [x] Movement module
+- [x] Grounding module
+- [x] Adaptive mobile design
+- [x] Localization (English + Russian for now)  
+- [ ] CBT module
+- [ ] Meds module
+- [ ] Sleep module
+- [ ] Sources: explanations + references for all modules  
+- [ ] Testing (unit, e2e, dogfooding)
+- [ ] Final design polish
+- [ ] Android release
+
+### v2 Ideas
+- [ ] iOS release
+- [ ] "Help" module with regular & emergency paths  
+- [ ] More languages
+- [ ] More color themes
+- [ ] Additional CBT tools or prompts
+- [ ] More modules (?)
 
 ## Anti-plans
 
@@ -41,3 +61,7 @@ If you want any of those, try (not sponsored, they are just good):
 - **Daylio** – mood & history  
 - **HabitKit** – streaks & analytics  
 - **Yazio** – calorie counting
+
+## Screenshots
+
+![screenshot](https://github.com/user-attachments/assets/ac8f6a8a-ecc3-4391-9470-04d514b725c8)
