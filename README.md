@@ -1,19 +1,17 @@
 # The Baseline
 
+<img width="48" height="48" alt="Icon_rounded_48" src="https://github.com/user-attachments/assets/c7a550f7-979d-4823-ab4e-afa483745af9" />
 Gentle self-care for depression, disability, chronic illness, or burnout.  
 
-Built with Flatter
+## Preview
 
-## Run
-
-flutter pub get  
-flutter run
+<img width="284" height="640" alt="screenshot" src="https://github.com/user-attachments/assets/ac8f6a8a-ecc3-4391-9470-04d514b725c8" />
 
 ## Install
 
 **Everything is under construction, and there are no tested "release" versions yet.**
 
-If you want to take your chances, there are .apk files in releases.
+If you want to take your chances, there are .apk files in releases *(tip: use [Obtainium](https://github.com/ImranR98/Obtainium))*.
 
 ## Milestones & Features Checklist
 
@@ -28,7 +26,7 @@ If you want to take your chances, there are .apk files in releases.
 - [x] Localization (English + Russian for now) 
 - [x] CBT module
 - [ ] Meds module
-- [ ] Sleep module
+- [x] Sleep module
 - [ ] Sources: explanations + references for all modules  
 - [x] Testing (unit, e2e, dogfooding)
 - [ ] Final design polish
@@ -62,6 +60,11 @@ If you want any of those, try (not sponsored, they are just good):
 - **HabitKit** – streaks & analytics  
 - **Yazio** – calorie counting
 
-## Screenshots
+## Development
 
-![screenshot](https://github.com/user-attachments/assets/ac8f6a8a-ecc3-4391-9470-04d514b725c8)
+Built with Flutter, use accordingly:
+
+### Run
+
+flutter pub get  
+flutter run
