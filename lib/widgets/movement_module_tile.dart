@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -139,6 +140,23 @@ class MovementModuleTile extends StatelessWidget {
                             ),
                           ),
                         ),
+                        if (kDebugMode) ...[
+                          Container(
+                            padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 2),
+                            decoration: BoxDecoration(
+                              color: scheme.tertiaryContainer,
+                              borderRadius: BorderRadius.circular(4),
+                            ),
+                            child: Text(
+                              mode.name.substring(0, 1).toUpperCase(),
+                              style: theme.textTheme.labelSmall?.copyWith(
+                                color: scheme.onTertiaryContainer,
+                                fontSize: 9,
+                                fontWeight: FontWeight.w700,
+                              ),
+                            ),
+                          ),
+                        ],
                         IconButton(
                           icon: Icon(
                             Icons.help_outline,

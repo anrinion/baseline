@@ -51,7 +51,8 @@ void main() {
       expect(state.treatCount, equals(0));
       expect(state.moved, isFalse);
       expect(state.medsTaken, isFalse);
-      expect(state.sleepStarted, isFalse);
+      expect(state.sleepBedTimeMinutes, equals(1380)); // 23:00 default
+      expect(state.sleepWakeTimeMinutes, equals(420));  // 07:00 default
       expect(state.hereTapped, isFalse);
       expect(state.cbtTemp, equals(''));
       expect(state.moodSelection, isNull);
@@ -242,16 +243,19 @@ void main() {
   });
 
   group('Sleep State Updates', () {
-    test('sleep state can be toggled', () async {
+    test('sleep times can be updated', () async {
       final appState = await createTestAppState();
 
-      expect(appState.todayState.sleepStarted, isFalse);
+      expect(appState.todayState.sleepBedTimeMinutes, equals(1380));
+      expect(appState.todayState.sleepWakeTimeMinutes, equals(420));
 
       appState.updateTodayState((state) {
-        state.sleepStarted = true;
+        state.sleepBedTimeMinutes = 1320;  // 22:00
+        state.sleepWakeTimeMinutes = 480;  // 08:00
       });
 
-      expect(appState.todayState.sleepStarted, isTrue);
+      expect(appState.todayState.sleepBedTimeMinutes, equals(1320));
+      expect(appState.todayState.sleepWakeTimeMinutes, equals(480));
     });
   });
 

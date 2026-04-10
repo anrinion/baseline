@@ -23,8 +23,12 @@ class TodayState extends HiveObject {
   @HiveField(6)
   bool medsTaken = false;
 
-  @HiveField(7)
-  bool sleepStarted = false;
+  /// Sleep times as minutes from midnight (0-1439). Defaults: 23:00 bed, 07:00 wake.
+  @HiveField(21)
+  int sleepBedTimeMinutes = 1380; // 23:00
+
+  @HiveField(22)
+  int sleepWakeTimeMinutes = 420;  // 07:00
 
   @HiveField(8)
   bool hereTapped = false;

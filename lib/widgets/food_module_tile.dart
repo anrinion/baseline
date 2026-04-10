@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
@@ -150,9 +151,9 @@ class FoodModuleTile extends StatelessWidget {
                   case AdaptiveTileMode.expanded:
                     return _buildExtended(context, appState, l10n);
                   case AdaptiveTileMode.medium:
-                    return _buildRegular(context, appState, total, maxTotal, l10n);
+                    return _buildRegular(context, appState, total, maxTotal, l10n, mode);
                   case AdaptiveTileMode.compact:
-                    return _buildSmall(context, appState, total, maxTotal, l10n);
+                    return _buildSmall(context, appState, total, maxTotal, l10n, mode);
                   case AdaptiveTileMode.micro:
                     return _buildMicro(context, scheme, total, maxTotal);
                 }
@@ -182,7 +183,7 @@ class FoodModuleTile extends StatelessWidget {
     );
   }
 
-  Widget _buildStandardHeader(BuildContext context, int total, int maxTotal, AppLocalizations l10n) {
+  Widget _buildStandardHeader(BuildContext context, int total, int maxTotal, AppLocalizations l10n, AdaptiveTileMode mode) {
     final scheme = Theme.of(context).colorScheme;
     return Row(
       children: [
@@ -204,6 +205,23 @@ class FoodModuleTile extends StatelessWidget {
             color: scheme.primary,
           ),
         ),
+        if (kDebugMode) ...[
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 2),
+            decoration: BoxDecoration(
+              color: scheme.tertiaryContainer,
+              borderRadius: BorderRadius.circular(4),
+            ),
+            child: Text(
+              mode.name.substring(0, 1).toUpperCase(),
+              style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                color: scheme.onTertiaryContainer,
+                fontSize: 9,
+                fontWeight: FontWeight.w700,
+              ),
+            ),
+          ),
+        ],
         IconButton(
           icon: Icon(Icons.help_outline, size: 20, color: scheme.outline),
           tooltip: l10n.dialogWhyThisWorks,
@@ -243,13 +261,14 @@ class FoodModuleTile extends StatelessWidget {
     int total,
     int maxTotal,
     AppLocalizations l10n,
+    AdaptiveTileMode mode,
   ) {
     final s = appState.todayState;
     final scheme = Theme.of(context).colorScheme;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        _buildStandardHeader(context, total, maxTotal, l10n),
+        _buildStandardHeader(context, total, maxTotal, l10n, mode),
         const SizedBox(height: 8),
         Expanded(
           child: Column(
@@ -312,11 +331,12 @@ class FoodModuleTile extends StatelessWidget {
     int total,
     int maxTotal,
     AppLocalizations l10n,
+    AdaptiveTileMode mode,
   ) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        _buildStandardHeader(context, total, maxTotal, l10n),
+        _buildStandardHeader(context, total, maxTotal, l10n, mode),
         const SizedBox(height: 12),
         Expanded(
           child: SingleChildScrollView(

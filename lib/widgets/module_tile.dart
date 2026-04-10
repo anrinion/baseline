@@ -6,6 +6,7 @@ import '../modules/cbt_module.dart';
 import '../modules/module_help.dart';
 import '../modules/module_ids.dart';
 import '../modules/movement_module.dart';
+import '../modules/sleep_module.dart';
 import '../state/app_state.dart';
 
 class ModuleTile extends StatelessWidget {
@@ -120,6 +121,11 @@ class ModuleTile extends StatelessWidget {
 
     if (moduleId == BaselineModuleId.mentalState) {
       showCbtModule(context);
+      return;
+    }
+
+    if (moduleId == BaselineModuleId.sleep) {
+      showSleepModule(context);
       return;
     }
 

@@ -7,6 +7,7 @@ import 'here_module_tile.dart';
 import 'mental_state_tile.dart';
 import 'module_tile.dart';
 import 'movement_module_tile.dart';
+import 'sleep_module_tile.dart';
 
 /// Default home layout: two 50/50 pair rows, full-width anchor, then a tall
 /// full-width Food band. Rows with no enabled modules are omitted so the rest
@@ -29,6 +30,9 @@ class MainModuleLayout extends StatelessWidget {
     }
     if (moduleId == BaselineModuleId.mentalState) {
       return const MentalStateModuleTile();
+    }
+    if (moduleId == BaselineModuleId.sleep) {
+      return const SleepModuleTile();
     }
     return ModuleTile(moduleId: moduleId);
   }

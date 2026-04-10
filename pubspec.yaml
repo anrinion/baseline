@@ -1,4 +1,4 @@
-name: Baseline
+name: baseline
 description: "Simple self-care app."
 publish_to: 'none'
 version: 1.0.0+1

@@ -94,6 +94,30 @@ class AppLocalizationsEn extends AppLocalizations {
   String get sleepAwake => 'I\'m awake';
 
   @override
+  String get sleepDurationSoFar => 'so far';
+
+  @override
+  String get sleepCompleted => 'Sleep recorded';
+
+  @override
+  String get sleepStartLabel => 'Start';
+
+  @override
+  String get sleepEndLabel => 'End';
+
+  @override
+  String get sleepPrompt => 'Track your sleep session:';
+
+  @override
+  String get sleepBedTimeLabel => 'Bedtime';
+
+  @override
+  String get sleepWakeTimeLabel => 'Wake up';
+
+  @override
+  String get sleepDurationLabel => 'Sleep duration';
+
+  @override
   String get medsModuleLabel => 'Meds';
 
   @override

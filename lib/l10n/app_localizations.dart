@@ -266,6 +266,54 @@ abstract class AppLocalizations {
   /// **'I\'m awake'**
   String get sleepAwake;
 
+  /// Label indicating sleep duration is ongoing
+  ///
+  /// In en, this message translates to:
+  /// **'so far'**
+  String get sleepDurationSoFar;
+
+  /// Message when sleep session is complete
+  ///
+  /// In en, this message translates to:
+  /// **'Sleep recorded'**
+  String get sleepCompleted;
+
+  /// Label for sleep start time
+  ///
+  /// In en, this message translates to:
+  /// **'Start'**
+  String get sleepStartLabel;
+
+  /// Label for sleep end time
+  ///
+  /// In en, this message translates to:
+  /// **'End'**
+  String get sleepEndLabel;
+
+  /// Prompt for starting sleep tracking
+  ///
+  /// In en, this message translates to:
+  /// **'Track your sleep session:'**
+  String get sleepPrompt;
+
+  /// Label for bedtime slider
+  ///
+  /// In en, this message translates to:
+  /// **'Bedtime'**
+  String get sleepBedTimeLabel;
+
+  /// Label for wake up time slider
+  ///
+  /// In en, this message translates to:
+  /// **'Wake up'**
+  String get sleepWakeTimeLabel;
+
+  /// Label for calculated sleep duration
+  ///
+  /// In en, this message translates to:
+  /// **'Sleep duration'**
+  String get sleepDurationLabel;
+
   /// Label for the Meds module
   ///
   /// In en, this message translates to:

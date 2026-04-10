@@ -94,6 +94,30 @@ class AppLocalizationsRu extends AppLocalizations {
   String get sleepAwake => 'Я встаю';
 
   @override
+  String get sleepDurationSoFar => 'пока что';
+
+  @override
+  String get sleepCompleted => 'Сон записан';
+
+  @override
+  String get sleepStartLabel => 'Начало';
+
+  @override
+  String get sleepEndLabel => 'Конец';
+
+  @override
+  String get sleepPrompt => 'Запишите свой сон:';
+
+  @override
+  String get sleepBedTimeLabel => 'Отбой';
+
+  @override
+  String get sleepWakeTimeLabel => 'Подъем';
+
+  @override
+  String get sleepDurationLabel => 'Длительность сна';
+
+  @override
   String get medsModuleLabel => 'Лекарства';
 
   @override

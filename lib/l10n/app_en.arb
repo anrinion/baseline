@@ -112,6 +112,38 @@
   "@sleepAwake": {
     "description": "Action: woke up"
   },
+  "sleepDurationSoFar": "so far",
+  "@sleepDurationSoFar": {
+    "description": "Label indicating sleep duration is ongoing"
+  },
+  "sleepCompleted": "Sleep recorded",
+  "@sleepCompleted": {
+    "description": "Message when sleep session is complete"
+  },
+  "sleepStartLabel": "Start",
+  "@sleepStartLabel": {
+    "description": "Label for sleep start time"
+  },
+  "sleepEndLabel": "End",
+  "@sleepEndLabel": {
+    "description": "Label for sleep end time"
+  },
+  "sleepPrompt": "Track your sleep session:",
+  "@sleepPrompt": {
+    "description": "Prompt for starting sleep tracking"
+  },
+  "sleepBedTimeLabel": "Bedtime",
+  "@sleepBedTimeLabel": {
+    "description": "Label for bedtime slider"
+  },
+  "sleepWakeTimeLabel": "Wake up",
+  "@sleepWakeTimeLabel": {
+    "description": "Label for wake up time slider"
+  },
+  "sleepDurationLabel": "Sleep duration",
+  "@sleepDurationLabel": {
+    "description": "Label for calculated sleep duration"
+  },
   "medsModuleLabel": "Meds",
   "@medsModuleLabel": {
     "description": "Label for the Meds module"
