@@ -1,7 +1,6 @@
 # The Baseline
 
 Gentle self-care for depression, disability, chronic illness, or burnout.  
-No calories, no shame – just food & movement tracking.
 
 Built with Flatter
 
@@ -26,13 +25,14 @@ If you want to take your chances, there are .apk files in releases.
 - [x] Movement module
 - [x] Grounding module
 - [x] Adaptive mobile design
-- [x] Localization (English + Russian for now)  
-- [ ] CBT module
+- [x] Localization (English + Russian for now) 
+- [x] CBT module
 - [ ] Meds module
 - [ ] Sleep module
 - [ ] Sources: explanations + references for all modules  
-- [ ] Testing (unit, e2e, dogfooding)
+- [x] Testing (unit, e2e, dogfooding)
 - [ ] Final design polish
+- [ ] Fixing bugs
 - [ ] Android release
 
 ### v2 Ideas
