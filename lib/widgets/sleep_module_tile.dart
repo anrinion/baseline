@@ -76,11 +76,18 @@ class _SleepModuleTileState extends State<SleepModuleTile> {
                   // Header with duration inline
                   Row(
                     children: [
-                      Icon(Icons.bedtime_outlined, color: scheme.primary, size: 20),
+                      Icon(
+                        Icons.bedtime_outlined,
+                        color: scheme.primary,
+                        size: 20,
+                      ),
                       const SizedBox(width: 6),
                       Expanded(
                         child: Text(
-                          BaselineModuleId.localizedLabel(l10n, BaselineModuleId.sleep),
+                          BaselineModuleId.localizedLabel(
+                            l10n,
+                            BaselineModuleId.sleep,
+                          ),
                           style: theme.textTheme.titleSmall?.copyWith(
                             fontWeight: FontWeight.w600,
                             color: scheme.onSurface,
@@ -89,9 +96,12 @@ class _SleepModuleTileState extends State<SleepModuleTile> {
                       ),
                       // Duration inline with header
                       Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 12,
+                          vertical: 6,
+                        ),
                         decoration: BoxDecoration(
-                          color: _isHealthySleep(duration)
+                          color: isHealthySleep(duration)
                               ? scheme.primaryContainer
                               : scheme.surfaceVariant,
                           borderRadius: BorderRadius.circular(8),
@@ -100,7 +110,7 @@ class _SleepModuleTileState extends State<SleepModuleTile> {
                           formatDuration(duration),
                           style: theme.textTheme.titleMedium?.copyWith(
                             fontWeight: FontWeight.w700,
-                            color: _isHealthySleep(duration)
+                            color: isHealthySleep(duration)
                                 ? scheme.onPrimaryContainer
                                 : scheme.onSurface,
                           ),
@@ -109,7 +119,10 @@ class _SleepModuleTileState extends State<SleepModuleTile> {
                       if (kDebugMode) ...[
                         const SizedBox(width: 8),
                         Container(
-                          padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 2),
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 4,
+                            vertical: 2,
+                          ),
                           decoration: BoxDecoration(
                             color: scheme.tertiaryContainer,
                             borderRadius: BorderRadius.circular(4),
@@ -125,11 +138,19 @@ class _SleepModuleTileState extends State<SleepModuleTile> {
                         ),
                       ],
                       IconButton(
-                        icon: Icon(Icons.help_outline, size: 20, color: scheme.outline),
+                        icon: Icon(
+                          Icons.help_outline,
+                          size: 20,
+                          color: scheme.outline,
+                        ),
                         tooltip: l10n.dialogWhyThisHelps,
                         padding: EdgeInsets.zero,
-                        constraints: const BoxConstraints(minWidth: 36, minHeight: 36),
-                        onPressed: () => showModuleHelp(context, BaselineModuleId.sleep),
+                        constraints: const BoxConstraints(
+                          minWidth: 36,
+                          minHeight: 36,
+                        ),
+                        onPressed: () =>
+                            showModuleHelp(context, BaselineModuleId.sleep),
                       ),
                     ],
                   ),
@@ -150,7 +171,9 @@ class _SleepModuleTileState extends State<SleepModuleTile> {
                           },
                           onChangeEnd: (v) {
                             appState.updateTodayState((s) {
-                              s.sleepBedTimeMinutes = roundTo30Minutes(v.round());
+                              s.sleepBedTimeMinutes = roundTo30Minutes(
+                                v.round(),
+                              );
                             });
                             setState(() => _localBedTime = null);
                           },
@@ -169,10 +192,12 @@ class _SleepModuleTileState extends State<SleepModuleTile> {
                           },
                           onChangeEnd: (v) {
                             appState.updateTodayState((s) {
-                              s.sleepWakeTimeMinutes = roundTo30Minutes(v.round());
+                              s.sleepWakeTimeMinutes = roundTo30Minutes(
+                                v.round(),
+                              );
                             });
                             setState(() => _localWakeTime = null);
-        },
+                          },
                         ),
                       ),
                     ],
@@ -205,9 +230,25 @@ class _SleepModuleTileState extends State<SleepModuleTile> {
                   mainAxisSize: MainAxisSize.min,
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
-                    _buildHeader(context, l10n, scheme, theme, isCompact, isExpanded),
+                    _buildHeader(
+                      context,
+                      l10n,
+                      scheme,
+                      theme,
+                      isCompact,
+                      isExpanded,
+                    ),
                     const SizedBox(height: 8),
-                    _buildCompactContent(context, theme, scheme, duration, isCompact, bedTime, wakeTime, l10n),
+                    _buildCompactContent(
+                      context,
+                      theme,
+                      scheme,
+                      duration,
+                      isCompact,
+                      bedTime,
+                      wakeTime,
+                      l10n,
+                    ),
                   ],
                 ),
               ),
@@ -218,7 +259,14 @@ class _SleepModuleTileState extends State<SleepModuleTile> {
     );
   }
 
-  Widget _buildHeader(BuildContext context, AppLocalizations l10n, ColorScheme scheme, ThemeData theme, bool isCompact, bool isExpanded) {
+  Widget _buildHeader(
+    BuildContext context,
+    AppLocalizations l10n,
+    ColorScheme scheme,
+    ThemeData theme,
+    bool isCompact,
+    bool isExpanded,
+  ) {
     return Row(
       children: [
         Icon(Icons.bedtime_outlined, color: scheme.primary, size: 20),
@@ -260,7 +308,16 @@ class _SleepModuleTileState extends State<SleepModuleTile> {
     );
   }
 
-  Widget _buildCompactContent(BuildContext context, ThemeData theme, ColorScheme scheme, Duration duration, bool isCompact, int bedTime, int wakeTime, AppLocalizations l10n) {
+  Widget _buildCompactContent(
+    BuildContext context,
+    ThemeData theme,
+    ColorScheme scheme,
+    Duration duration,
+    bool isCompact,
+    int bedTime,
+    int wakeTime,
+    AppLocalizations l10n,
+  ) {
     return Center(
       child: Text(
         formatDuration(duration),
@@ -274,115 +331,6 @@ class _SleepModuleTileState extends State<SleepModuleTile> {
                 color: scheme.primary,
               ),
       ),
-    );
-  }
-
-  bool _isHealthySleep(Duration duration) {
-    final hours = duration.inHours;
-    return hours >= 7 && hours <= 9;
-  }
-
-  Widget _buildSliderWithZones(
-    BuildContext context,
-    int minutes,
-    int otherTime, {
-    required bool isBedTime,
-    required ValueChanged<double> onChanged,
-    required ValueChanged<double> onChangeEnd,
-  }) {
-    final theme = Theme.of(context);
-    final scheme = theme.colorScheme;
-
-    final recommendedStart = isBedTime ? 20 * 60 : 7 * 60;
-    final recommendedEnd = isBedTime ? 2 * 60 : 12 * 60;
-
-    final sleepWindow = calculateSleepWindow(
-      roundTo30Minutes(minutes),
-      roundTo30Minutes(otherTime),
-      isBedTime,
-    );
-    final sleepStart = sleepWindow[0];
-    final sleepEnd = sleepWindow[1];
-
-    return Stack(
-      alignment: Alignment.center,
-      children: [
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 12),
-          child: LayoutBuilder(
-            builder: (context, constraints) {
-              final trackWidth = constraints.maxWidth - 24;
-
-              return SizedBox(
-                width: trackWidth,
-                height: 4,
-                child: Stack(
-                  children: [
-                    if (isBedTime && recommendedStart > recommendedEnd)
-                      ...[
-                        Positioned(
-                          left: trackWidth * (recommendedStart / 1440),
-                          right: 0,
-                          child: Container(
-                            height: 2,
-                            decoration: BoxDecoration(
-                              color: scheme.tertiaryContainer,
-                              borderRadius: BorderRadius.circular(1),
-                            ),
-                          ),
-                        ),
-                        Positioned(
-                          left: 0,
-                          right: trackWidth * (1 - recommendedEnd / 1440),
-                          child: Container(
-                            height: 2,
-                            decoration: BoxDecoration(
-                              color: scheme.tertiaryContainer,
-                              borderRadius: BorderRadius.circular(1),
-                            ),
-                          ),
-                        ),
-                      ]
-                    else
-                      Positioned(
-                        left: trackWidth * (recommendedStart / 1440),
-                        right: trackWidth * (1 - recommendedEnd / 1440),
-                        child: Container(
-                          height: 2,
-                          decoration: BoxDecoration(
-                            color: scheme.tertiaryContainer,
-                            borderRadius: BorderRadius.circular(1),
-                          ),
-                        ),
-                      ),
-                    Positioned(
-                      left: trackWidth * (sleepStart / 1440),
-                      right: trackWidth * (1 - sleepEnd / 1440),
-                      child: Container(
-                        height: 4,
-                        decoration: BoxDecoration(
-                          color: scheme.primary.withOpacity(0.3),
-                          borderRadius: BorderRadius.circular(2),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              );
-            },
-          ),
-        ),
-        Slider(
-          value: minutes.toDouble(),
-          min: 0,
-          max: 1440,
-          onChanged: onChanged,
-          onChangeEnd: onChangeEnd,
-          activeColor: scheme.outline.withOpacity(0.3),
-          inactiveColor: scheme.outline.withOpacity(0.3),
-          thumbColor: scheme.primary,
-        ),
-      ],
     );
   }
 
@@ -425,7 +373,7 @@ class _SleepModuleTileState extends State<SleepModuleTile> {
           ],
         ),
         const SizedBox(height: 4),
-        _buildSliderWithZones(
+        buildSliderWithZones(
           context,
           minutes,
           otherTime,
@@ -438,12 +386,27 @@ class _SleepModuleTileState extends State<SleepModuleTile> {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text('00:00', style: theme.textTheme.bodySmall?.copyWith(
-                  color: scheme.outline, fontSize: 9)),
-              Text('12:00', style: theme.textTheme.bodySmall?.copyWith(
-                  color: scheme.outline, fontSize: 9)),
-              Text('23:59', style: theme.textTheme.bodySmall?.copyWith(
-                  color: scheme.outline, fontSize: 9)),
+              Text(
+                '00:00',
+                style: theme.textTheme.bodySmall?.copyWith(
+                  color: scheme.outline,
+                  fontSize: 9,
+                ),
+              ),
+              Text(
+                '12:00',
+                style: theme.textTheme.bodySmall?.copyWith(
+                  color: scheme.outline,
+                  fontSize: 9,
+                ),
+              ),
+              Text(
+                '23:59',
+                style: theme.textTheme.bodySmall?.copyWith(
+                  color: scheme.outline,
+                  fontSize: 9,
+                ),
+              ),
             ],
           ),
         ),

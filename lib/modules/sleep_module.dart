@@ -42,7 +42,11 @@ Duration calculateSleepDuration(int bedMinutes, int wakeMinutes) {
 /// Returns [sleepStart, sleepEnd] in minutes from midnight.
 /// For bed slider: shows sleep from bedtime to wake (or midnight if overnight)
 /// For wake slider: shows sleep from bedtime (or midnight if overnight) to wake
-List<int> calculateSleepWindow(int thisMinutes, int otherMinutes, bool isBedTime) {
+List<int> calculateSleepWindow(
+  int thisMinutes,
+  int otherMinutes,
+  bool isBedTime,
+) {
   // For bed slider: overnight when bed (this) > wake (other)
   // For wake slider: overnight when wake (this) < bed (other)
   final isOvernight = isBedTime
@@ -50,9 +54,13 @@ List<int> calculateSleepWindow(int thisMinutes, int otherMinutes, bool isBedTime
       : thisMinutes < otherMinutes;
   final sleepStart = isBedTime
       ? thisMinutes // bed slider: start at bed time
-      : (isOvernight ? 0 : otherMinutes); // wake slider: start at midnight (overnight) or bed time (same day)
+      : (isOvernight
+            ? 0
+            : otherMinutes); // wake slider: start at midnight (overnight) or bed time (same day)
   final sleepEnd = isBedTime
-      ? (isOvernight ? 1440 : otherMinutes) // bed slider: end at midnight (overnight) or wake time (same day)
+      ? (isOvernight
+            ? 1440
+            : otherMinutes) // bed slider: end at midnight (overnight) or wake time (same day)
       : thisMinutes; // wake slider: end at wake time
   return [sleepStart, sleepEnd];
 }
@@ -65,6 +73,121 @@ String formatDuration(Duration duration) {
     return '${hours}h ${minutes}m';
   }
   return '${minutes}m';
+}
+
+/// Checks if the sleep duration is considered healthy (7-9 hours).
+bool isHealthySleep(Duration duration) {
+  final hours = duration.inHours;
+  return hours >= 7 && hours <= 9;
+}
+
+/// Builds a slider with recommended zones and sleep window visualization.
+Widget buildSliderWithZones(
+  BuildContext context,
+  int minutes,
+  int otherTime, {
+  required bool isBedTime,
+  required ValueChanged<double> onChanged,
+  required ValueChanged<double> onChangeEnd,
+}) {
+  final theme = Theme.of(context);
+  final scheme = theme.colorScheme;
+
+  // Recommended ranges: Bed 20:00-02:00, Wake 07:00-12:00
+  final recommendedStart = isBedTime ? 20 * 60 : 7 * 60;
+  final recommendedEnd = isBedTime ? 2 * 60 : 12 * 60;
+
+  // Calculate sleep window for visualization (using rounded values)
+  final sleepWindow = calculateSleepWindow(
+    roundTo30Minutes(minutes),
+    roundTo30Minutes(otherTime),
+    isBedTime,
+  );
+  final sleepStart = sleepWindow[0];
+  final sleepEnd = sleepWindow[1];
+
+  return Stack(
+    alignment: Alignment.center,
+    children: [
+      // Background track with recommended zone and sleep window
+      Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 12),
+        child: LayoutBuilder(
+          builder: (context, constraints) {
+            final trackWidth = constraints.maxWidth - 24;
+
+            return SizedBox(
+              width: trackWidth,
+              height: 4,
+              child: Stack(
+                children: [
+                  // Recommended zone (tertiary color, thinner)
+                  if (isBedTime && recommendedStart > recommendedEnd) ...[
+                    Positioned(
+                      left: trackWidth * (recommendedStart / 1440),
+                      right: 0,
+                      child: Container(
+                        height: 2,
+                        decoration: BoxDecoration(
+                          color: scheme.tertiaryContainer,
+                          borderRadius: BorderRadius.circular(1),
+                        ),
+                      ),
+                    ),
+                    Positioned(
+                      left: 0,
+                      right: trackWidth * (1 - recommendedEnd / 1440),
+                      child: Container(
+                        height: 2,
+                        decoration: BoxDecoration(
+                          color: scheme.tertiaryContainer,
+                          borderRadius: BorderRadius.circular(1),
+                        ),
+                      ),
+                    ),
+                  ] else
+                    Positioned(
+                      left: trackWidth * (recommendedStart / 1440),
+                      right: trackWidth * (1 - recommendedEnd / 1440),
+                      child: Container(
+                        height: 2,
+                        decoration: BoxDecoration(
+                          color: scheme.tertiaryContainer,
+                          borderRadius: BorderRadius.circular(1),
+                        ),
+                      ),
+                    ),
+                  // Sleep window (primary color, fills the actual sleep time)
+                  Positioned(
+                    left: trackWidth * (sleepStart / 1440),
+                    right: trackWidth * (1 - sleepEnd / 1440),
+                    child: Container(
+                      height: 4,
+                      decoration: BoxDecoration(
+                        color: scheme.primary.withOpacity(0.3),
+                        borderRadius: BorderRadius.circular(2),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            );
+          },
+        ),
+      ),
+      // The actual slider (uniform track color so standard fill isn't visible)
+      Slider(
+        value: minutes.toDouble(),
+        min: 0,
+        max: 1440,
+        onChanged: onChanged,
+        onChangeEnd: onChangeEnd,
+        activeColor: scheme.outline.withOpacity(0.3),
+        inactiveColor: scheme.outline.withOpacity(0.3),
+        thumbColor: scheme.primary,
+      ),
+    ],
+  );
 }
 
 class _SleepDialog extends StatefulWidget {
@@ -107,8 +230,11 @@ class _SleepDialogState extends State<_SleepDialog> {
                   padding: const EdgeInsets.fromLTRB(16, 16, 8, 8),
                   child: Row(
                     children: [
-                      Icon(Icons.bedtime_outlined,
-                          color: scheme.primary, size: 26),
+                      Icon(
+                        Icons.bedtime_outlined,
+                        color: scheme.primary,
+                        size: 26,
+                      ),
                       const SizedBox(width: 8),
                       Text(
                         l10n.sleepModuleLabel,
@@ -120,10 +246,14 @@ class _SleepDialogState extends State<_SleepDialog> {
                       ),
                       const Spacer(),
                       IconButton(
-                        icon: Icon(Icons.help_outline,
-                            size: 22, color: scheme.outline),
+                        icon: Icon(
+                          Icons.help_outline,
+                          size: 22,
+                          color: scheme.outline,
+                        ),
                         tooltip: l10n.dialogWhyThisHelps,
-                        onPressed: () => showModuleHelp(context, BaselineModuleId.sleep),
+                        onPressed: () =>
+                            showModuleHelp(context, BaselineModuleId.sleep),
                       ),
                     ],
                   ),
@@ -148,7 +278,9 @@ class _SleepDialogState extends State<_SleepDialog> {
                         },
                         onChangeEnd: (value) {
                           appState.updateTodayState((state) {
-                            state.sleepBedTimeMinutes = roundTo30Minutes(value.round());
+                            state.sleepBedTimeMinutes = roundTo30Minutes(
+                              value.round(),
+                            );
                           });
                           setState(() {
                             _localBedTime = null;
@@ -170,19 +302,24 @@ class _SleepDialogState extends State<_SleepDialog> {
                         },
                         onChangeEnd: (value) {
                           appState.updateTodayState((state) {
-                            state.sleepWakeTimeMinutes = roundTo30Minutes(value.round());
+                            state.sleepWakeTimeMinutes = roundTo30Minutes(
+                              value.round(),
+                            );
                           });
                           setState(() {
                             _localWakeTime = null;
                           });
-        },
+                        },
                       ),
                       const SizedBox(height: 32),
                       // Duration display
                       Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 32,
+                          vertical: 16,
+                        ),
                         decoration: BoxDecoration(
-                          color: _isHealthySleep(duration)
+                          color: isHealthySleep(duration)
                               ? scheme.primaryContainer
                               : scheme.surfaceVariant,
                           borderRadius: BorderRadius.circular(16),
@@ -192,7 +329,7 @@ class _SleepDialogState extends State<_SleepDialog> {
                             Text(
                               l10n.sleepDurationLabel,
                               style: theme.textTheme.bodySmall?.copyWith(
-                                color: _isHealthySleep(duration)
+                                color: isHealthySleep(duration)
                                     ? scheme.onPrimaryContainer
                                     : scheme.onSurfaceVariant,
                               ),
@@ -202,7 +339,7 @@ class _SleepDialogState extends State<_SleepDialog> {
                               formatDuration(duration),
                               style: theme.textTheme.headlineSmall?.copyWith(
                                 fontWeight: FontWeight.w700,
-                                color: _isHealthySleep(duration)
+                                color: isHealthySleep(duration)
                                     ? scheme.onPrimaryContainer
                                     : scheme.onSurface,
                               ),
@@ -270,7 +407,7 @@ class _SleepDialogState extends State<_SleepDialog> {
           ],
         ),
         const SizedBox(height: 8),
-        _buildSliderWithZones(
+        buildSliderWithZones(
           context,
           minutes,
           otherTime,
@@ -283,126 +420,26 @@ class _SleepDialogState extends State<_SleepDialog> {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text('00:00', style: theme.textTheme.bodySmall?.copyWith(color: scheme.outline)),
-              Text('12:00', style: theme.textTheme.bodySmall?.copyWith(color: scheme.outline)),
-              Text('23:59', style: theme.textTheme.bodySmall?.copyWith(color: scheme.outline)),
+              Text(
+                '00:00',
+                style: theme.textTheme.bodySmall?.copyWith(
+                  color: scheme.outline,
+                ),
+              ),
+              Text(
+                '12:00',
+                style: theme.textTheme.bodySmall?.copyWith(
+                  color: scheme.outline,
+                ),
+              ),
+              Text(
+                '23:59',
+                style: theme.textTheme.bodySmall?.copyWith(
+                  color: scheme.outline,
+                ),
+              ),
             ],
           ),
-        ),
-      ],
-    );
-  }
-
-  bool _isHealthySleep(Duration duration) {
-    final hours = duration.inHours;
-    return hours >= 7 && hours <= 9;
-  }
-
-  Widget _buildSliderWithZones(
-    BuildContext context,
-    int minutes,
-    int otherTime, {
-    required bool isBedTime,
-    required ValueChanged<double> onChanged,
-    required ValueChanged<double> onChangeEnd,
-  }) {
-    final theme = Theme.of(context);
-    final scheme = theme.colorScheme;
-
-    // Recommended ranges: Bed 20:00-02:00, Wake 07:00-12:00
-    final recommendedStart = isBedTime ? 20 * 60 : 7 * 60;
-    final recommendedEnd = isBedTime ? 2 * 60 : 12 * 60;
-
-    // Calculate sleep window for visualization (using rounded values)
-    final sleepWindow = calculateSleepWindow(
-      roundTo30Minutes(minutes),
-      roundTo30Minutes(otherTime),
-      isBedTime,
-    );
-    final sleepStart = sleepWindow[0];
-    final sleepEnd = sleepWindow[1];
-
-    return Stack(
-      alignment: Alignment.center,
-      children: [
-        // Background track with recommended zone and sleep window
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 12),
-          child: LayoutBuilder(
-            builder: (context, constraints) {
-              final trackWidth = constraints.maxWidth - 24;
-
-              return SizedBox(
-                width: trackWidth,
-                height: 4,
-                child: Stack(
-                  children: [
-                    // Recommended zone (tertiary color, thinner)
-                    if (isBedTime && recommendedStart > recommendedEnd)
-                      ...[
-                        Positioned(
-                          left: trackWidth * (recommendedStart / 1440),
-                          right: 0,
-                          child: Container(
-                            height: 2,
-                            decoration: BoxDecoration(
-                              color: scheme.tertiaryContainer,
-                              borderRadius: BorderRadius.circular(1),
-                            ),
-                          ),
-                        ),
-                        Positioned(
-                          left: 0,
-                          right: trackWidth * (1 - recommendedEnd / 1440),
-                          child: Container(
-                            height: 2,
-                            decoration: BoxDecoration(
-                              color: scheme.tertiaryContainer,
-                              borderRadius: BorderRadius.circular(1),
-                            ),
-                          ),
-                        ),
-                      ]
-                    else
-                      Positioned(
-                        left: trackWidth * (recommendedStart / 1440),
-                        right: trackWidth * (1 - recommendedEnd / 1440),
-                        child: Container(
-                          height: 2,
-                          decoration: BoxDecoration(
-                            color: scheme.tertiaryContainer,
-                            borderRadius: BorderRadius.circular(1),
-                          ),
-                        ),
-                      ),
-                    // Sleep window (primary color, fills the actual sleep time)
-                    Positioned(
-                      left: trackWidth * (sleepStart / 1440),
-                      right: trackWidth * (1 - sleepEnd / 1440),
-                      child: Container(
-                        height: 4,
-                        decoration: BoxDecoration(
-                          color: scheme.primary.withOpacity(0.3),
-                          borderRadius: BorderRadius.circular(2),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              );
-            },
-          ),
-        ),
-        // The actual slider (uniform track color so standard fill isn't visible)
-        Slider(
-          value: minutes.toDouble(),
-          min: 0,
-          max: 1440,
-          onChanged: onChanged,
-          onChangeEnd: onChangeEnd,
-          activeColor: scheme.outline.withOpacity(0.3),
-          inactiveColor: scheme.outline.withOpacity(0.3),
-          thumbColor: scheme.primary,
         ),
       ],
     );
