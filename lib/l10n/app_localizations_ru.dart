@@ -173,6 +173,60 @@ class AppLocalizationsRu extends AppLocalizations {
   String get medsAddButtonLabel => 'Добавить лекарство';
 
   @override
+  String get medsEditListButtonLabel => 'Изменить список';
+
+  @override
+  String get medsEditListTitle => 'Список лекарств';
+
+  @override
+  String get medsEditListHint => 'По одному лекарству на строку';
+
+  @override
+  String get medsListSettingsLabel => 'Список лекарств (по одному на строку)';
+
+  @override
+  String get medsDefaultList => '';
+
+  @override
+  String get medsEmptyState =>
+      'Список лекарств пока пуст. Добавь то, что хочешь отмечать сегодня.';
+
+  @override
+  String get medsEmptyCompact => 'Пока нет лекарств';
+
+  @override
+  String medsTodayProgress(int taken, int total) {
+    return 'Отмечено на сегодня: $taken из $total';
+  }
+
+  @override
+  String medsMoreCount(int count) {
+    return '+ещё $count';
+  }
+
+  @override
+  String get medsReminderToggleLabel => 'Ежедневное напоминание';
+
+  @override
+  String get medsReminderToggleHelp =>
+      'Если включено, Baseline присылает одно локальное напоминание в день.';
+
+  @override
+  String get medsReminderTimeLabel => 'Время напоминания';
+
+  @override
+  String get medsReminderPermissionDenied =>
+      'Уведомления отключены. Разреши их, чтобы включить напоминания.';
+
+  @override
+  String get medsReminderEnableTooltip =>
+      'Включить напоминание для этого лекарства';
+
+  @override
+  String get medsReminderDisableTooltip =>
+      'Выключить напоминание для этого лекарства';
+
+  @override
   String get mentalStateModuleLabel => 'Психическое состояние';
 
   @override
@@ -306,7 +360,7 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get medsHelp =>
-      'Список лекарств. Очень полезно не забывать их (нет, для этого источника не будет).';
+      'Отмечай лекарства только на сегодня. Без оценок и истории, просто спокойный чек-лист.';
 
   @override
   String get movementHelp =>

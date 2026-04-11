@@ -212,6 +212,79 @@
   "@medsAddButtonLabel": {
     "description": "Button to add a medication"
   },
+  "medsEditListButtonLabel": "Изменить список",
+  "@medsEditListButtonLabel": {
+    "description": "Button to open medication list editor"
+  },
+  "medsEditListTitle": "Список лекарств",
+  "@medsEditListTitle": {
+    "description": "Title for medication list editor dialog"
+  },
+  "medsEditListHint": "По одному лекарству на строку",
+  "@medsEditListHint": {
+    "description": "Hint for medication list editor text field"
+  },
+  "medsListSettingsLabel": "Список лекарств (по одному на строку)",
+  "@medsListSettingsLabel": {
+    "description": "Settings label for meds list input"
+  },
+  "medsDefaultList": "",
+  "@medsDefaultList": {
+    "description": "Default medication list. Keep empty for a clean first state."
+  },
+  "medsEmptyState": "Список лекарств пока пуст. Добавь то, что хочешь отмечать сегодня.",
+  "@medsEmptyState": {
+    "description": "Empty state text for meds module"
+  },
+  "medsEmptyCompact": "Пока нет лекарств",
+  "@medsEmptyCompact": {
+    "description": "Compact empty state text for meds module tile"
+  },
+  "medsTodayProgress": "Отмечено на сегодня: {taken} из {total}",
+  "@medsTodayProgress": {
+    "description": "Progress text for meds taken today",
+    "placeholders": {
+      "taken": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "medsMoreCount": "+ещё {count}",
+  "@medsMoreCount": {
+    "description": "Text indicating more medications exist than shown in tile",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "medsReminderToggleLabel": "Ежедневное напоминание",
+  "@medsReminderToggleLabel": {
+    "description": "Toggle label for enabling daily meds reminder notifications"
+  },
+  "medsReminderToggleHelp": "Если включено, Baseline присылает одно локальное напоминание в день.",
+  "@medsReminderToggleHelp": {
+    "description": "Help text for meds reminder toggle"
+  },
+  "medsReminderTimeLabel": "Время напоминания",
+  "@medsReminderTimeLabel": {
+    "description": "Label for meds reminder time picker"
+  },
+  "medsReminderPermissionDenied": "Уведомления отключены. Разреши их, чтобы включить напоминания.",
+  "@medsReminderPermissionDenied": {
+    "description": "Message shown when notification permission is denied while enabling reminders"
+  },
+  "medsReminderEnableTooltip": "Включить напоминание для этого лекарства",
+  "@medsReminderEnableTooltip": {
+    "description": "Tooltip for enabling reminder on a medication row"
+  },
+  "medsReminderDisableTooltip": "Выключить напоминание для этого лекарства",
+  "@medsReminderDisableTooltip": {
+    "description": "Tooltip for disabling reminder on a medication row"
+  },
   "mentalStateModuleLabel": "Психическое состояние",
   "@mentalStateModuleLabel": {
     "description": "Label for the Mental state module"
@@ -380,7 +453,7 @@
   "@sleepHelp": {
     "description": "Help text for sleep module"
   },
-  "medsHelp": "Список лекарств. Очень полезно не забывать их (нет, для этого источника не будет).",
+  "medsHelp": "Отмечай лекарства только на сегодня. Без оценок и истории, просто спокойный чек-лист.",
   "@medsHelp": {
     "description": "Help text for meds module"
   },

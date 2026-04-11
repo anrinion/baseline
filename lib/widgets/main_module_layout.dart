@@ -5,6 +5,7 @@ import '../state/app_state.dart';
 import 'food_module_tile.dart';
 import 'here_module_tile.dart';
 import 'mental_state_tile.dart';
+import 'meds_module_tile.dart';
 import 'module_tile.dart';
 import 'movement_module_tile.dart';
 import 'sleep_module_tile.dart';
@@ -34,13 +35,17 @@ class MainModuleLayout extends StatelessWidget {
     if (moduleId == BaselineModuleId.sleep) {
       return const SleepModuleTile();
     }
+    if (moduleId == BaselineModuleId.meds) {
+      return const MedsModuleTile();
+    }
     return ModuleTile(moduleId: moduleId);
   }
 
   /// Only enabled modules; each gets equal width in the row. Single tile = full width.
   Widget? _pairRow(BuildContext context, List<String> slotIds) {
-    final enabled =
-        slotIds.where((id) => appState.settings.isModuleEnabled(id)).toList();
+    final enabled = slotIds
+        .where((id) => appState.settings.isModuleEnabled(id))
+        .toList();
     if (enabled.isEmpty) return null;
 
     return Expanded(
@@ -64,8 +69,14 @@ class MainModuleLayout extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final r1 = _pairRow(context, [BaselineModuleId.mentalState, BaselineModuleId.sleep]);
-    final r2 = _pairRow(context, [BaselineModuleId.meds, BaselineModuleId.movement]);
+    final r1 = _pairRow(context, [
+      BaselineModuleId.mentalState,
+      BaselineModuleId.sleep,
+    ]);
+    final r2 = _pairRow(context, [
+      BaselineModuleId.meds,
+      BaselineModuleId.movement,
+    ]);
     final food = _foodBand(context);
     final here = appState.settings.isModuleEnabled(BaselineModuleId.here)
         ? const HereModuleTile()
@@ -73,12 +84,7 @@ class MainModuleLayout extends StatelessWidget {
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: [
-        r1,
-        r2,
-        here,
-        food,
-      ].whereType<Widget>().toList(),
+      children: [r1, r2, here, food].whereType<Widget>().toList(),
     );
   }
 }

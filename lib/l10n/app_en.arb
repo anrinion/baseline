@@ -212,6 +212,79 @@
   "@medsAddButtonLabel": {
     "description": "Button to add a medication"
   },
+  "medsEditListButtonLabel": "Edit list",
+  "@medsEditListButtonLabel": {
+    "description": "Button to open medication list editor"
+  },
+  "medsEditListTitle": "Medication list",
+  "@medsEditListTitle": {
+    "description": "Title for medication list editor dialog"
+  },
+  "medsEditListHint": "One medication per line",
+  "@medsEditListHint": {
+    "description": "Hint for medication list editor text field"
+  },
+  "medsListSettingsLabel": "Medication list (one per line)",
+  "@medsListSettingsLabel": {
+    "description": "Settings label for meds list input"
+  },
+  "medsDefaultList": "",
+  "@medsDefaultList": {
+    "description": "Default medication list. Keep empty for a clean first state."
+  },
+  "medsEmptyState": "No medications listed yet. Add the ones you want to track today.",
+  "@medsEmptyState": {
+    "description": "Empty state text for meds module"
+  },
+  "medsEmptyCompact": "No meds yet",
+  "@medsEmptyCompact": {
+    "description": "Compact empty state text for meds module tile"
+  },
+  "medsTodayProgress": "{taken} of {total} marked for today",
+  "@medsTodayProgress": {
+    "description": "Progress text for meds taken today",
+    "placeholders": {
+      "taken": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "medsMoreCount": "+{count} more",
+  "@medsMoreCount": {
+    "description": "Text indicating more medications exist than shown in tile",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "medsReminderToggleLabel": "Daily reminder",
+  "@medsReminderToggleLabel": {
+    "description": "Toggle label for enabling daily meds reminder notifications"
+  },
+  "medsReminderToggleHelp": "If enabled, Baseline sends one local reminder per day.",
+  "@medsReminderToggleHelp": {
+    "description": "Help text for meds reminder toggle"
+  },
+  "medsReminderTimeLabel": "Reminder time",
+  "@medsReminderTimeLabel": {
+    "description": "Label for meds reminder time picker"
+  },
+  "medsReminderPermissionDenied": "Notifications are off. Enable permissions to use reminders.",
+  "@medsReminderPermissionDenied": {
+    "description": "Message shown when notification permission is denied while enabling reminders"
+  },
+  "medsReminderEnableTooltip": "Enable reminder for this medication",
+  "@medsReminderEnableTooltip": {
+    "description": "Tooltip for enabling reminder on a medication row"
+  },
+  "medsReminderDisableTooltip": "Disable reminder for this medication",
+  "@medsReminderDisableTooltip": {
+    "description": "Tooltip for disabling reminder on a medication row"
+  },
   "mentalStateModuleLabel": "Mental state",
   "@mentalStateModuleLabel": {
     "description": "Label for the Mental state module"
@@ -380,7 +453,7 @@
   "@sleepHelp": {
     "description": "Help text for sleep module"
   },
-  "medsHelp": "Just a tracker for your medications. It is really beneficial to not forget them (no, there will be no source for that).",
+  "medsHelp": "Track medications for today only. No scores, no history, just a gentle checklist you can reset anytime.",
   "@medsHelp": {
     "description": "Help text for meds module"
   },

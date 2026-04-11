@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 
 import '../l10n/app_localizations.dart';
 import '../modules/mental_state_module.dart';
+import '../modules/meds_module.dart';
 import '../modules/module_help.dart';
 import '../modules/module_ids.dart';
 import '../modules/movement_module.dart';
@@ -45,9 +46,7 @@ class ModuleTile extends StatelessWidget {
       clipBehavior: Clip.antiAlias,
       color: scheme.surface,
       surfaceTintColor: Colors.transparent,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(20),
-      ),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
       child: InkWell(
         onTap: () => _openModule(context),
         borderRadius: BorderRadius.circular(20),
@@ -71,7 +70,8 @@ class ModuleTile extends StatelessWidget {
                           label,
                           maxLines: 2,
                           overflow: TextOverflow.ellipsis,
-                          style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                          style: Theme.of(context).textTheme.titleSmall
+                              ?.copyWith(
                                 fontWeight: FontWeight.w600,
                                 color: scheme.onSurface,
                               ),
@@ -100,9 +100,9 @@ class ModuleTile extends StatelessWidget {
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                     style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                          color: scheme.onSurfaceVariant,
-                          fontSize: 10,
-                        ),
+                      color: scheme.onSurfaceVariant,
+                      fontSize: 10,
+                    ),
                   ),
                 ],
               ),
@@ -126,6 +126,10 @@ class ModuleTile extends StatelessWidget {
 
     if (moduleId == BaselineModuleId.sleep) {
       showSleepModule(context);
+      return;
+    }
+    if (moduleId == BaselineModuleId.meds) {
+      showMedsModule(context);
       return;
     }
 
@@ -181,7 +185,7 @@ class _ModulePlaceholderModal extends StatelessWidget {
         TextButton(
           onPressed: () => Navigator.pop(context),
           child: Text(l10n.dialogClose),
-        )
+        ),
       ],
     );
   }

@@ -22,6 +22,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
   void dispose() {
     _hereButtonController?.dispose();
     _movementOptionsController?.dispose();
+    _medsListController?.dispose();
     super.dispose();
   }
 
@@ -35,6 +36,13 @@ class _SettingsScreenState extends State<SettingsScreen> {
   TextEditingController _movementCtrl(String currentText) {
     _movementOptionsController ??= TextEditingController(text: currentText);
     return _movementOptionsController!;
+  }
+
+  TextEditingController? _medsListController;
+
+  TextEditingController _medsCtrl(String currentText) {
+    _medsListController ??= TextEditingController(text: currentText);
+    return _medsListController!;
   }
 
   final List<String> languages = ['en', 'ru'];
@@ -59,7 +67,10 @@ class _SettingsScreenState extends State<SettingsScreen> {
       body: ListView(
         padding: const EdgeInsets.all(16),
         children: [
-          Text(l10n.languageLabel, style: Theme.of(context).textTheme.titleMedium),
+          Text(
+            l10n.languageLabel,
+            style: Theme.of(context).textTheme.titleMedium,
+          ),
           const SizedBox(height: 8),
           DropdownButton<String>(
             value: localizationService.currentLanguageCode,
@@ -237,7 +248,10 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
           const SizedBox(height: 24),
 
-          Text(l10n.modulesLabel, style: Theme.of(context).textTheme.titleMedium),
+          Text(
+            l10n.modulesLabel,
+            style: Theme.of(context).textTheme.titleMedium,
+          ),
           const SizedBox(height: 4),
           Text(
             l10n.modulesHelpText,
@@ -245,16 +259,17 @@ class _SettingsScreenState extends State<SettingsScreen> {
           ),
           const SizedBox(height: 12),
 
-          for (final id in BaselineModuleId.all) _moduleCard(context, appState, settings, id, l10n),
+          for (final id in BaselineModuleId.all)
+            _moduleCard(context, appState, settings, id, l10n),
 
           const SizedBox(height: 24),
 
           ElevatedButton(
             onPressed: () {
               appState.resetTodayManual();
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(content: Text(l10n.todayReset)),
-              );
+              ScaffoldMessenger.of(
+                context,
+              ).showSnackBar(SnackBar(content: Text(l10n.todayReset)));
             },
             child: Text(l10n.resetToday),
           ),
@@ -314,10 +329,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
           const SizedBox(height: 24),
 
-          Text(
-            l10n.appPrivacyText,
-            style: const TextStyle(fontSize: 14),
-          ),
+          Text(l10n.appPrivacyText, style: const TextStyle(fontSize: 14)),
         ],
       ),
     );
@@ -374,10 +386,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
   }
 
   TimeOfDay _timeOfDayFromMinutes(int minutes) {
-    return TimeOfDay(
-      hour: minutes ~/ 60,
-      minute: minutes % 60,
-    );
+    return TimeOfDay(hour: minutes ~/ 60, minute: minutes % 60);
   }
 
   Future<void> _pickThemeTime(
@@ -464,6 +473,30 @@ class _SettingsScreenState extends State<SettingsScreen> {
                         'options',
                         value,
                       );
+                    });
+                  },
+                ),
+              ),
+            if (enabled && id == BaselineModuleId.meds)
+              Padding(
+                padding: const EdgeInsets.fromLTRB(16, 0, 16, 8),
+                child: TextField(
+                  controller: _medsCtrl(
+                    settings.getModuleSetting(
+                      BaselineModuleId.meds,
+                      'list',
+                      l10n.medsDefaultList,
+                    ),
+                  ),
+                  maxLines: 5,
+                  decoration: InputDecoration(
+                    labelText: l10n.medsListSettingsLabel,
+                    border: const OutlineInputBorder(),
+                    hintText: l10n.medsEditListHint,
+                  ),
+                  onChanged: (value) {
+                    appState.updateSettings((s) {
+                      s.setModuleSetting(BaselineModuleId.meds, 'list', value);
                     });
                   },
                 ),

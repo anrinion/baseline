@@ -23,12 +23,17 @@ class TodayState extends HiveObject {
   @HiveField(6)
   bool medsTaken = false;
 
+  /// Today's medication checks keyed by medication label.
+  /// Resets with daily boundary along with the rest of [TodayState].
+  @HiveField(23)
+  Map<String, bool> medsChecked = {};
+
   /// Sleep times as minutes from midnight (0-1439). Defaults: 23:00 bed, 07:00 wake.
   @HiveField(21)
   int sleepBedTimeMinutes = 1380; // 23:00
 
   @HiveField(22)
-  int sleepWakeTimeMinutes = 420;  // 07:00
+  int sleepWakeTimeMinutes = 420; // 07:00
 
   @HiveField(8)
   bool hereTapped = false;

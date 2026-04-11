@@ -416,6 +416,96 @@ abstract class AppLocalizations {
   /// **'Add medication'**
   String get medsAddButtonLabel;
 
+  /// Button to open medication list editor
+  ///
+  /// In en, this message translates to:
+  /// **'Edit list'**
+  String get medsEditListButtonLabel;
+
+  /// Title for medication list editor dialog
+  ///
+  /// In en, this message translates to:
+  /// **'Medication list'**
+  String get medsEditListTitle;
+
+  /// Hint for medication list editor text field
+  ///
+  /// In en, this message translates to:
+  /// **'One medication per line'**
+  String get medsEditListHint;
+
+  /// Settings label for meds list input
+  ///
+  /// In en, this message translates to:
+  /// **'Medication list (one per line)'**
+  String get medsListSettingsLabel;
+
+  /// Default medication list. Keep empty for a clean first state.
+  ///
+  /// In en, this message translates to:
+  /// **''**
+  String get medsDefaultList;
+
+  /// Empty state text for meds module
+  ///
+  /// In en, this message translates to:
+  /// **'No medications listed yet. Add the ones you want to track today.'**
+  String get medsEmptyState;
+
+  /// Compact empty state text for meds module tile
+  ///
+  /// In en, this message translates to:
+  /// **'No meds yet'**
+  String get medsEmptyCompact;
+
+  /// Progress text for meds taken today
+  ///
+  /// In en, this message translates to:
+  /// **'{taken} of {total} marked for today'**
+  String medsTodayProgress(int taken, int total);
+
+  /// Text indicating more medications exist than shown in tile
+  ///
+  /// In en, this message translates to:
+  /// **'+{count} more'**
+  String medsMoreCount(int count);
+
+  /// Toggle label for enabling daily meds reminder notifications
+  ///
+  /// In en, this message translates to:
+  /// **'Daily reminder'**
+  String get medsReminderToggleLabel;
+
+  /// Help text for meds reminder toggle
+  ///
+  /// In en, this message translates to:
+  /// **'If enabled, Baseline sends one local reminder per day.'**
+  String get medsReminderToggleHelp;
+
+  /// Label for meds reminder time picker
+  ///
+  /// In en, this message translates to:
+  /// **'Reminder time'**
+  String get medsReminderTimeLabel;
+
+  /// Message shown when notification permission is denied while enabling reminders
+  ///
+  /// In en, this message translates to:
+  /// **'Notifications are off. Enable permissions to use reminders.'**
+  String get medsReminderPermissionDenied;
+
+  /// Tooltip for enabling reminder on a medication row
+  ///
+  /// In en, this message translates to:
+  /// **'Enable reminder for this medication'**
+  String get medsReminderEnableTooltip;
+
+  /// Tooltip for disabling reminder on a medication row
+  ///
+  /// In en, this message translates to:
+  /// **'Disable reminder for this medication'**
+  String get medsReminderDisableTooltip;
+
   /// Label for the Mental state module
   ///
   /// In en, this message translates to:
@@ -671,7 +761,7 @@ abstract class AppLocalizations {
   /// Help text for meds module
   ///
   /// In en, this message translates to:
-  /// **'Just a tracker for your medications. It is really beneficial to not forget them (no, there will be no source for that).'**
+  /// **'Track medications for today only. No scores, no history, just a gentle checklist you can reset anytime.'**
   String get medsHelp;
 
   /// Help text for movement module

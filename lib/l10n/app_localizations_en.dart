@@ -172,6 +172,59 @@ class AppLocalizationsEn extends AppLocalizations {
   String get medsAddButtonLabel => 'Add medication';
 
   @override
+  String get medsEditListButtonLabel => 'Edit list';
+
+  @override
+  String get medsEditListTitle => 'Medication list';
+
+  @override
+  String get medsEditListHint => 'One medication per line';
+
+  @override
+  String get medsListSettingsLabel => 'Medication list (one per line)';
+
+  @override
+  String get medsDefaultList => '';
+
+  @override
+  String get medsEmptyState =>
+      'No medications listed yet. Add the ones you want to track today.';
+
+  @override
+  String get medsEmptyCompact => 'No meds yet';
+
+  @override
+  String medsTodayProgress(int taken, int total) {
+    return '$taken of $total marked for today';
+  }
+
+  @override
+  String medsMoreCount(int count) {
+    return '+$count more';
+  }
+
+  @override
+  String get medsReminderToggleLabel => 'Daily reminder';
+
+  @override
+  String get medsReminderToggleHelp =>
+      'If enabled, Baseline sends one local reminder per day.';
+
+  @override
+  String get medsReminderTimeLabel => 'Reminder time';
+
+  @override
+  String get medsReminderPermissionDenied =>
+      'Notifications are off. Enable permissions to use reminders.';
+
+  @override
+  String get medsReminderEnableTooltip => 'Enable reminder for this medication';
+
+  @override
+  String get medsReminderDisableTooltip =>
+      'Disable reminder for this medication';
+
+  @override
   String get mentalStateModuleLabel => 'Mental state';
 
   @override
@@ -305,7 +358,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get medsHelp =>
-      'Just a tracker for your medications. It is really beneficial to not forget them (no, there will be no source for that).';
+      'Track medications for today only. No scores, no history, just a gentle checklist you can reset anytime.';
 
   @override
   String get movementHelp =>

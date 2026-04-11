@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 
+import '../services/meds_notifications_service.dart';
 import '../theme/themes.dart';
 import '../modules/mental_state_constants.dart';
 import 'today_state.dart';
@@ -44,6 +45,7 @@ class AppState extends ChangeNotifier with WidgetsBindingObserver {
 
     _applyDayBoundary();
     _scheduleThemeTimer();
+    unawaited(MedsNotificationsService.instance.syncFromSettings(settings));
     notifyListeners();
   }
 
@@ -82,6 +84,7 @@ class AppState extends ChangeNotifier with WidgetsBindingObserver {
     todayBox.put('today', todayState);
     _applyDayBoundary();
     _scheduleThemeTimer();
+    unawaited(MedsNotificationsService.instance.syncFromSettings(settings));
     notifyListeners();
   }
 
@@ -95,6 +98,7 @@ class AppState extends ChangeNotifier with WidgetsBindingObserver {
     updater(settings);
     settingsBox.put('settings', settings);
     _scheduleThemeTimer();
+    unawaited(MedsNotificationsService.instance.syncFromSettings(settings));
     notifyListeners();
   }
 
