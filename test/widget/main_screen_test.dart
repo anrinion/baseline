@@ -1,5 +1,3 @@
-/// Widget tests for MainScreen and module tiles
-/// Tests tile interactions, modal opening, and state updates
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:hive_flutter/hive_flutter.dart';
@@ -30,7 +28,7 @@ void main() {
 
   group('MainScreen Layout', () {
     testWidgets('displays app title and settings button', (WidgetTester tester) async {
-      final appState = (await tester.runAsync(() => createTestAppState()))!;
+      final AppState appState = (await tester.runAsync(() => createTestAppState()))!;
 
       await tester.pumpWidget(createTestableApp(
         home: const MainScreen(),
@@ -44,7 +42,7 @@ void main() {
     });
 
     testWidgets('MainModuleLayout shows enabled module tiles', (WidgetTester tester) async {
-      final appState = (await tester.runAsync(() => createTestAppState()))!;
+      final AppState appState = (await tester.runAsync(() => createTestAppState()))!;
 
       // Enable all modules for testing
       appState.updateSettings((s) {
@@ -67,7 +65,7 @@ void main() {
     });
 
     testWidgets('tapping settings button opens settings screen', skip: true, (WidgetTester tester) async {
-      final appState = (await tester.runAsync(() => createTestAppState()))!;
+      final AppState appState = (await tester.runAsync(() => createTestAppState()))!;
 
       await tester.pumpWidget(createTestableApp(
         home: const MainScreen(),
@@ -87,7 +85,7 @@ void main() {
 
   group('Module Tile Interactions', () {
     testWidgets('Food tile shows correct initial state (0/11)', (WidgetTester tester) async {
-      final appState = (await tester.runAsync(() => createTestAppState()))!;
+      final AppState appState = (await tester.runAsync(() => createTestAppState()))!;
 
       await tester.pumpWidget(createTestableApp(
         home: const MainScreen(),
@@ -100,7 +98,7 @@ void main() {
     });
 
     testWidgets('Mental State tile is present', (WidgetTester tester) async {
-      final appState = (await tester.runAsync(() => createTestAppState()))!;
+      final AppState appState = (await tester.runAsync(() => createTestAppState()))!;
 
       await tester.pumpWidget(createTestableApp(
         home: const MainScreen(),
@@ -113,7 +111,7 @@ void main() {
     });
 
     testWidgets('Movement tile opens modal when tapped', (WidgetTester tester) async {
-      final appState = (await tester.runAsync(() => createTestAppState()))!;
+      final AppState appState = (await tester.runAsync(() => createTestAppState()))!;
 
       await tester.pumpWidget(createTestableApp(
         home: const MainScreen(),
@@ -139,7 +137,7 @@ void main() {
 
   group('Grounding Button ("I\'m here")', () {
     testWidgets('Grounding button is displayed when module enabled', (WidgetTester tester) async {
-      final appState = (await tester.runAsync(() => createTestAppState()))!;
+      final AppState appState = (await tester.runAsync(() => createTestAppState()))!;
 
       await tester.pumpWidget(createTestableApp(
         home: const MainScreen(),
@@ -152,7 +150,7 @@ void main() {
     });
 
     testWidgets('tapping grounding button shows visual confirmation', skip: true, (WidgetTester tester) async {
-      final appState = (await tester.runAsync(() => createTestAppState()))!;
+      final AppState appState = (await tester.runAsync(() => createTestAppState()))!;
 
       await tester.pumpWidget(createTestableApp(
         home: const MainScreen(),
@@ -183,7 +181,7 @@ void main() {
 
   group('Language Selection', () {
     testWidgets('English localization displays correctly', (WidgetTester tester) async {
-      final appState = (await tester.runAsync(() => createTestAppState()))!;
+      final AppState appState = (await tester.runAsync(() => createTestAppState()))!;
 
       await tester.pumpWidget(createTestableApp(
         home: const MainScreen(),
@@ -197,7 +195,7 @@ void main() {
     });
 
     testWidgets('Russian localization displays correctly', (WidgetTester tester) async {
-      final appState = (await tester.runAsync(() => createTestAppState()))!;
+      final AppState appState = (await tester.runAsync(() => createTestAppState()))!;
 
       await tester.pumpWidget(createTestableApp(
         home: const MainScreen(),
@@ -215,7 +213,7 @@ void main() {
     });
 
     testWidgets('module labels reflect language selection', (WidgetTester tester) async {
-      final appState = (await tester.runAsync(() => createTestAppState()))!;
+      final AppState appState = (await tester.runAsync(() => createTestAppState()))!;
 
       // Test English
       await tester.pumpWidget(createTestableApp(
@@ -243,7 +241,7 @@ void main() {
 
   group('Theme Switching', () {
     testWidgets('light theme applies correctly', (WidgetTester tester) async {
-      final appState = (await tester.runAsync(() => createTestAppState()))!;
+      final AppState appState = (await tester.runAsync(() => createTestAppState()))!;
 
       appState.updateSettings((s) {
         s.theme = 'light1';
@@ -262,7 +260,7 @@ void main() {
     });
 
     testWidgets('dark theme applies correctly', (WidgetTester tester) async {
-      final appState = (await tester.runAsync(() => createTestAppState()))!;
+      final AppState appState = (await tester.runAsync(() => createTestAppState()))!;
 
       appState.updateSettings((s) {
         s.theme = 'dark1';
@@ -281,7 +279,7 @@ void main() {
     });
 
     testWidgets('theme switch persists to settings', (WidgetTester tester) async {
-      final appState = (await tester.runAsync(() => createTestAppState()))!;
+      final AppState appState = (await tester.runAsync(() => createTestAppState()))!;
 
       // Change to dark theme
       appState.updateSettings((s) {
@@ -327,7 +325,7 @@ void main() {
     // });
 
     testWidgets('closing modal preserves state', (WidgetTester tester) async {
-      final appState = (await tester.runAsync(() => createTestAppState()))!;
+      final AppState appState = (await tester.runAsync(() => createTestAppState()))!;
 
       // Set some state
       appState.updateTodayState((s) {
@@ -364,7 +362,7 @@ void main() {
 
   group('Module Enable/Disable', () {
     testWidgets('disabling module removes it from layout', (WidgetTester tester) async {
-      final appState = (await tester.runAsync(() => createTestAppState()))!;
+      final AppState appState = (await tester.runAsync(() => createTestAppState()))!;
 
       // Initially food should be visible
       await tester.pumpWidget(createTestableApp(

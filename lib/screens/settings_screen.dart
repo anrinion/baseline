@@ -82,22 +82,24 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
           Text(l10n.themeLabel, style: Theme.of(context).textTheme.titleMedium),
           const SizedBox(height: 8),
-          Column(
-            children: themes.map((theme) {
-              final themeLabel = _getThemeLabel(l10n, theme['key']!);
-              return RadioListTile<String>(
-                title: Text(themeLabel),
-                value: theme['key']!,
-                groupValue: settings.theme,
-                onChanged: (value) {
-                  if (value != null) {
-                    appState.updateSettings((s) {
-                      s.theme = value;
-                    });
-                  }
-                },
-              );
-            }).toList(),
+          RadioGroup<String>(
+            groupValue: settings.theme,
+            onChanged: (value) {
+              if (value != null) {
+                appState.updateSettings((s) {
+                  s.theme = value;
+                });
+              }
+            },
+            child: Column(
+              children: themes.map((theme) {
+                final themeLabel = _getThemeLabel(l10n, theme['key']!);
+                return RadioListTile<String>(
+                  title: Text(themeLabel),
+                  value: theme['key']!,
+                );
+              }).toList(),
+            ),
           ),
 
           const SizedBox(height: 24),
@@ -249,45 +251,31 @@ class _SettingsScreenState extends State<SettingsScreen> {
                       ),
                     ),
                     const SizedBox(height: 8),
-                    Column(
-                      children: [
-                        RadioListTile<String>(
-                          title: Text(l10n.cbtModeRightNow),
-                          value: 'rightNow',
-                          groupValue: settings.mentalStateMode,
-                          onChanged: (value) {
-                            if (value != null) {
-                              appState.updateSettings((s) {
-                                s.mentalStateMode = value;
-                              });
-                            }
-                          },
-                        ),
-                        RadioListTile<String>(
-                          title: Text(l10n.cbtModeGoodThings),
-                          value: 'goodThings',
-                          groupValue: settings.mentalStateMode,
-                          onChanged: (value) {
-                            if (value != null) {
-                              appState.updateSettings((s) {
-                                s.mentalStateMode = value;
-                              });
-                            }
-                          },
-                        ),
-                        RadioListTile<String>(
-                          title: Text(l10n.cbtModeThoughtLens),
-                          value: 'thoughtLens',
-                          groupValue: settings.mentalStateMode,
-                          onChanged: (value) {
-                            if (value != null) {
-                              appState.updateSettings((s) {
-                                s.mentalStateMode = value;
-                              });
-                            }
-                          },
-                        ),
-                      ],
+                    RadioGroup<String>(
+                      groupValue: settings.mentalStateMode,
+                      onChanged: (value) {
+                        if (value != null) {
+                          appState.updateSettings((s) {
+                            s.mentalStateMode = value;
+                          });
+                        }
+                      },
+                      child: Column(
+                        children: [
+                          RadioListTile<String>(
+                            title: Text(l10n.cbtModeRightNow),
+                            value: 'rightNow',
+                          ),
+                          RadioListTile<String>(
+                            title: Text(l10n.cbtModeGoodThings),
+                            value: 'goodThings',
+                          ),
+                          RadioListTile<String>(
+                            title: Text(l10n.cbtModeThoughtLens),
+                            value: 'thoughtLens',
+                          ),
+                        ],
+                      ),
                     ),
                   ],
                 ),

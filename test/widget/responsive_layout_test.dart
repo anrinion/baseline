@@ -1,12 +1,8 @@
-/// Responsive layout tests
-/// Tests main screen at multiple screen sizes: square, small phone, standard phone, tablet
-/// Verifies non-scrollable layout and modal usability
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
 import 'package:baseline/screens/main_screen.dart';
-import 'package:baseline/state/app_state.dart';
 import 'package:baseline/state/settings.dart';
 import 'package:baseline/state/today_state.dart';
 import 'package:baseline/widgets/mental_state_tile.dart';

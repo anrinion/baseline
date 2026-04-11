@@ -1,5 +1,3 @@
-/// Unit tests for AppState and TodayState
-/// Tests state reset logic, tile actions, and persistence
 import 'package:flutter_test/flutter_test.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
@@ -70,7 +68,7 @@ void main() {
       await todayBox.put('today', initialState);
 
       // Create AppState - should load from Hive
-      final appState = await createTestAppState();
+      final AppState appState = await createTestAppState();
       
       expect(appState.todayState.proteinCount, equals(2));
       expect(appState.todayState.greensCount, equals(3));
@@ -79,7 +77,7 @@ void main() {
 
   group('TodayState Daily Reset', () {
     test('updateTodayState modifies state and persists to Hive', () async {
-      final appState = await createTestAppState();
+      final AppState appState = await createTestAppState();
 
       // Update state
       appState.updateTodayState((state) {
@@ -104,7 +102,7 @@ void main() {
     });
 
     test('resetTodayManual clears all activity but keeps current day', () async {
-      final appState = await createTestAppState();
+      final AppState appState = await createTestAppState();
 
       // Set up state with some data
       final todayKey = TodayState.dayKeyFor(DateTime.now());
@@ -130,7 +128,7 @@ void main() {
 
   group('Food Module State Updates', () {
     test('applyFoodDelta updates food counts correctly', () async {
-      final appState = await createTestAppState();
+      final AppState appState = await createTestAppState();
 
       // Simulate adding food items
       appState.updateTodayState((state) {
@@ -157,7 +155,7 @@ void main() {
     });
 
     test('FoodCategoryDef.totalLogged calculates total correctly', () async {
-      final appState = await createTestAppState();
+      final AppState appState = await createTestAppState();
 
       appState.updateTodayState((state) {
         state.proteinCount = 2;
@@ -174,7 +172,7 @@ void main() {
 
   group('Movement State Updates', () {
     test('movement completed updates state', () async {
-      final appState = await createTestAppState();
+      final AppState appState = await createTestAppState();
 
       expect(appState.todayState.moved, isFalse);
 
@@ -186,7 +184,7 @@ void main() {
     });
 
     test('movement can be reset', () async {
-      final appState = await createTestAppState();
+      final AppState appState = await createTestAppState();
 
       appState.updateTodayState((state) {
         state.moved = true;
@@ -202,7 +200,7 @@ void main() {
 
   group('Mental State (CBT) Updates', () {
     test('mood selection updates state with timestamp', () async {
-      final appState = await createTestAppState();
+      final AppState appState = await createTestAppState();
 
       final beforeUpdate = DateTime.now();
       
@@ -221,7 +219,7 @@ void main() {
     });
 
     test('good things list can be updated', () async {
-      final appState = await createTestAppState();
+      final AppState appState = await createTestAppState();
 
       appState.updateTodayState((state) {
         state.goodThings = ['Good coffee', 'Nice walk', 'Fun conversation'];
@@ -232,7 +230,7 @@ void main() {
     });
 
     test('thought lens index can be updated', () async {
-      final appState = await createTestAppState();
+      final AppState appState = await createTestAppState();
 
       appState.updateTodayState((state) {
         state.thoughtLensIndex = 5;
@@ -244,7 +242,7 @@ void main() {
 
   group('Sleep State Updates', () {
     test('sleep times can be updated', () async {
-      final appState = await createTestAppState();
+      final AppState appState = await createTestAppState();
 
       expect(appState.todayState.sleepBedTimeMinutes, equals(1380));
       expect(appState.todayState.sleepWakeTimeMinutes, equals(420));
@@ -261,7 +259,7 @@ void main() {
 
   group('Meds State Updates', () {
     test('meds taken state can be updated', () async {
-      final appState = await createTestAppState();
+      final AppState appState = await createTestAppState();
 
       expect(appState.todayState.medsTaken, isFalse);
 

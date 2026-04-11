@@ -1,5 +1,3 @@
-/// Integration and edge case tests
-/// Tests: app restart mid-day, midnight rollover, language/theme persistence, out-of-order taps
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:hive_flutter/hive_flutter.dart';

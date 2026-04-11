@@ -1,9 +1,7 @@
-/// Smoke test to verify widget test infrastructure works
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
-import 'package:baseline/state/app_state.dart';
 import 'package:baseline/state/settings.dart';
 import 'package:baseline/state/today_state.dart';
 

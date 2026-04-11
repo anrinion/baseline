@@ -1,5 +1,3 @@
-/// Test helpers for Baseline app tests
-/// Provides setup/teardown for Hive and Provider wrappers
 import 'dart:typed_data';
 
 import 'package:flutter/material.dart';

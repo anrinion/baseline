@@ -164,7 +164,7 @@ Widget buildSliderWithZones(
                     child: Container(
                       height: 4,
                       decoration: BoxDecoration(
-                        color: scheme.primary.withOpacity(0.3),
+                        color: scheme.primary.withValues(alpha: 0.3),
                         borderRadius: BorderRadius.circular(2),
                       ),
                     ),
@@ -182,8 +182,8 @@ Widget buildSliderWithZones(
         max: 1440,
         onChanged: onChanged,
         onChangeEnd: onChangeEnd,
-        activeColor: scheme.outline.withOpacity(0.3),
-        inactiveColor: scheme.outline.withOpacity(0.3),
+        activeColor: scheme.outline.withValues(alpha: 0.3),
+        inactiveColor: scheme.outline.withValues(alpha: 0.3),
         thumbColor: scheme.primary,
       ),
     ],
@@ -321,7 +321,7 @@ class _SleepDialogState extends State<_SleepDialog> {
                         decoration: BoxDecoration(
                           color: isHealthySleep(duration)
                               ? scheme.primaryContainer
-                              : scheme.surfaceVariant,
+                              : scheme.surfaceContainerHighest,
                           borderRadius: BorderRadius.circular(16),
                         ),
                         child: Column(

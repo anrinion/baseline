@@ -1,14 +1,9 @@
-/// Main test entry point for Baseline app
-/// Imports all test files for running the complete test suite
-///
-/// To run all tests:
-///   flutter test test/all_tests.dart
-///
-/// To run specific test group:
-///   flutter test test/unit/app_state_test.dart
-///   flutter test test/widget/main_screen_test.dart
-///   flutter test test/widget/responsive_layout_test.dart
-///   flutter test test/integration/edge_case_test.dart
+//
+// To run specific test group:
+//   flutter test test/unit/app_state_test.dart
+//   flutter test test/widget/main_screen_test.dart
+//   flutter test test/widget/responsive_layout_test.dart
+//   flutter test test/integration/edge_case_test.dart
 
 import 'package:flutter_test/flutter_test.dart';
 

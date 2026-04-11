@@ -103,7 +103,7 @@ class _SleepModuleTileState extends State<SleepModuleTile> {
                         decoration: BoxDecoration(
                           color: isHealthySleep(duration)
                               ? scheme.primaryContainer
-                              : scheme.surfaceVariant,
+                              : scheme.surfaceContainerHighest,
                           borderRadius: BorderRadius.circular(8),
                         ),
                         child: Text(
