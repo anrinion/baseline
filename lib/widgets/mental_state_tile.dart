@@ -5,8 +5,8 @@ import 'package:provider/provider.dart';
 import '../l10n/app_localizations.dart';
 import '../modules/module_help.dart';
 import '../modules/module_ids.dart';
-import '../modules/cbt_module.dart';
-import '../modules/cbt_constants.dart';
+import '../modules/mental_state_module.dart';
+import '../modules/mental_state_constants.dart';
 import '../state/app_state.dart';
 import '../utils/adaptive_layout.dart';
 import 'module_tile.dart';
@@ -23,7 +23,7 @@ class MentalStateModuleTile extends StatelessWidget {
         final scheme = theme.colorScheme;
         final l10n = AppLocalizations.of(context)!;
 
-        final cbtMode = appState.settings.cbtMode;
+        final mentalStateMode = appState.settings.mentalStateMode;
 
         final availableWidth =
             constraints.maxWidth - 32; // 16 padding on each side
@@ -69,14 +69,14 @@ class MentalStateModuleTile extends StatelessWidget {
                     Row(
                       children: [
                         Icon(
-                          _getModeIcon(cbtMode),
+                          _getModeIcon(mentalStateMode),
                           color: scheme.primary,
                           size: 20,
                         ),
                         const SizedBox(width: 6),
                         Expanded(
                           child: Text(
-                            _getModeTitle(l10n, cbtMode),
+                            _getModeTitle(l10n, mentalStateMode),
                             style: theme.textTheme.titleSmall?.copyWith(
                               fontWeight: FontWeight.w600,
                               color: scheme.onSurface,
@@ -118,7 +118,7 @@ class MentalStateModuleTile extends StatelessWidget {
                       ],
                     ),
                     const SizedBox(height: 8),
-                    _buildContent(context, appState, cbtMode, mode, l10n),
+                    _buildContent(context, appState, mentalStateMode, mode, l10n),
                   ],
                 ),
               ),
@@ -132,11 +132,11 @@ class MentalStateModuleTile extends StatelessWidget {
   Widget _buildContent(
     BuildContext context,
     AppState appState,
-    String cbtMode,
+    String mentalStateMode,
     AdaptiveTileMode mode,
     AppLocalizations l10n,
   ) {
-    switch (cbtMode) {
+    switch (mentalStateMode) {
       case 'rightNow':
         return _buildRightNowContent(context, appState, mode, l10n);
       case 'goodThings':
@@ -321,7 +321,7 @@ class MentalStateModuleTile extends StatelessWidget {
 
     if (mode == AdaptiveTileMode.compact) {
       return ElevatedButton(
-        onPressed: () => showCbtModule(context),
+        onPressed: () => showMentalStateModule(context),
         style: ElevatedButton.styleFrom(
           backgroundColor: scheme.primaryContainer,
           foregroundColor: scheme.onPrimaryContainer,
@@ -386,7 +386,7 @@ class MentalStateModuleTile extends StatelessWidget {
         // Show button in all cases when list is empty, or when not in expanded mode
         if (goodThings.isEmpty || mode != AdaptiveTileMode.expanded)
           ElevatedButton.icon(
-            onPressed: () => showCbtModule(context),
+            onPressed: () => showMentalStateModule(context),
             icon: Icon(goodThings.isEmpty ? Icons.edit_note : Icons.add, size: 18),
             label: Text(goodThings.isEmpty ? l10n.cbtModeGoodThings : l10n.dialogClose),
             style: ElevatedButton.styleFrom(
@@ -423,7 +423,7 @@ class MentalStateModuleTile extends StatelessWidget {
           ),
           const SizedBox(width: 8),
           IconButton(
-            onPressed: () => showCbtModule(context),
+            onPressed: () => showMentalStateModule(context),
             icon: const Icon(Icons.edit, size: 16),
             style: IconButton.styleFrom(
               foregroundColor: const Color(0xFF059669),
@@ -451,7 +451,7 @@ class MentalStateModuleTile extends StatelessWidget {
         ),
         const SizedBox(height: 12),
         OutlinedButton(
-          onPressed: () => showCbtModule(context),
+          onPressed: () => showMentalStateModule(context),
           style: OutlinedButton.styleFrom(
             foregroundColor: scheme.onSurfaceVariant,
             side: BorderSide(color: scheme.outlineVariant),
@@ -476,7 +476,7 @@ class MentalStateModuleTile extends StatelessWidget {
 
     if (mode == AdaptiveTileMode.compact) {
       return ElevatedButton(
-        onPressed: () => showCbtModule(context),
+        onPressed: () => showMentalStateModule(context),
         style: ElevatedButton.styleFrom(
           backgroundColor: scheme.primaryContainer,
           foregroundColor: scheme.onPrimaryContainer,
@@ -510,7 +510,7 @@ class MentalStateModuleTile extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  CbtConstants.getDistortion(appState.todayState.thoughtLensIndex)['title'] ?? 'Unknown',
+                  MentalStateConstants.getDistortion(appState.todayState.thoughtLensIndex)['title'] ?? 'Unknown',
                   style: theme.textTheme.titleMedium?.copyWith(
                     fontWeight: FontWeight.w600,
                     color: scheme.primary,
@@ -518,7 +518,7 @@ class MentalStateModuleTile extends StatelessWidget {
                 ),
                 const SizedBox(height: 12),
                 Text(
-                  CbtConstants.getDistortion(appState.todayState.thoughtLensIndex)['description'] ?? '',
+                  MentalStateConstants.getDistortion(appState.todayState.thoughtLensIndex)['description'] ?? '',
                   style: theme.textTheme.bodyMedium,
                 ),
                 const SizedBox(height: 12),
@@ -539,7 +539,7 @@ class MentalStateModuleTile extends StatelessWidget {
                       ),
                       const SizedBox(height: 4),
                       Text(
-                        CbtConstants.getDistortion(appState.todayState.thoughtLensIndex)['example'] ?? '',
+                        MentalStateConstants.getDistortion(appState.todayState.thoughtLensIndex)['example'] ?? '',
                         style: theme.textTheme.bodySmall?.copyWith(
                           fontStyle: FontStyle.italic,
                         ),
@@ -557,7 +557,7 @@ class MentalStateModuleTile extends StatelessWidget {
                 child: OutlinedButton(
                   onPressed: () {
                     appState.updateTodayState((state) {
-                      state.thoughtLensIndex = ((appState.todayState.thoughtLensIndex - 1 + CbtConstants.distortionCount) % CbtConstants.distortionCount);
+                      state.thoughtLensIndex = ((appState.todayState.thoughtLensIndex - 1 + MentalStateConstants.distortionCount) % MentalStateConstants.distortionCount);
                     });
                   },
                   child: Text(l10n.cbtThoughtLensPrevious),
@@ -568,7 +568,7 @@ class MentalStateModuleTile extends StatelessWidget {
                 child: ElevatedButton(
                   onPressed: () {
                     appState.updateTodayState((state) {
-                      state.thoughtLensIndex = ((appState.todayState.thoughtLensIndex + 1) % CbtConstants.distortionCount);
+                      state.thoughtLensIndex = ((appState.todayState.thoughtLensIndex + 1) % MentalStateConstants.distortionCount);
                     });
                   },
                   child: Text(l10n.cbtThoughtLensNext),
@@ -578,7 +578,7 @@ class MentalStateModuleTile extends StatelessWidget {
           ),
           const SizedBox(height: 8),
           Text(
-            '${appState.todayState.thoughtLensIndex + 1} / ${CbtConstants.distortionCount}',
+            '${appState.todayState.thoughtLensIndex + 1} / ${MentalStateConstants.distortionCount}',
             textAlign: TextAlign.center,
             style: theme.textTheme.bodySmall?.copyWith(
               color: scheme.onSurfaceVariant,
@@ -587,7 +587,7 @@ class MentalStateModuleTile extends StatelessWidget {
         ],
         if (mode != AdaptiveTileMode.expanded)
           ElevatedButton.icon(
-            onPressed: () => showCbtModule(context),
+            onPressed: () => showMentalStateModule(context),
             icon: const Icon(Icons.psychology, size: 18),
             label: Text(l10n.cbtModeThoughtLens),
             style: ElevatedButton.styleFrom(
@@ -602,14 +602,7 @@ class MentalStateModuleTile extends StatelessWidget {
 
   /// Checks if mood can be changed based on timestamp (1-hour cooldown)
   bool _canChangeMood(AppState appState) {
-    final currentMood = appState.todayState.moodSelection;
-    final moodTimestamp = appState.todayState.moodSelectionTimestamp;
-    
-    if (currentMood == null) return true;
-    if (moodTimestamp == null) return true;
-    
-    final oneHourAgo = DateTime.now().subtract(const Duration(hours: 1));
-    return moodTimestamp.isBefore(oneHourAgo);
+    return canChangeMood(appState);
   }
 
   void _selectMood(AppState appState, int? value) {

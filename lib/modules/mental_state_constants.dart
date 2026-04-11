@@ -1,8 +1,8 @@
 import 'dart:math';
 
-/// Shared constants for CBT (Cognitive Behavioral Therapy) functionality
-class CbtConstants {
-  CbtConstants._();
+/// Shared constants for Mental State functionality
+class MentalStateConstants {
+  MentalStateConstants._();
 
   /// List of cognitive distortions used in thought lens exercises
   static const List<Map<String, String>> cognitiveDistortions = [

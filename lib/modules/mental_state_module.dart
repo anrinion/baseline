@@ -3,17 +3,17 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../l10n/app_localizations.dart';
-import '../modules/cbt_constants.dart';
+import '../modules/mental_state_constants.dart';
 import '../state/app_state.dart';
 
-class CbtModule extends StatelessWidget {
-  const CbtModule({super.key});
+class MentalStateModule extends StatelessWidget {
+  const MentalStateModule({super.key});
 
   @override
   Widget build(BuildContext context) {
     final appState = Provider.of<AppState>(context);
     final l10n = AppLocalizations.of(context)!;
-    final cbtMode = appState.settings.cbtMode;
+    final mentalStateMode = appState.settings.mentalStateMode;
 
     return Dialog(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
@@ -42,9 +42,9 @@ class CbtModule extends StatelessWidget {
             const SizedBox(height: 16),
             
             // Content based on mode
-            if (cbtMode == 'rightNow')
+            if (mentalStateMode == 'rightNow')
               _MoodSelectionContent(appState: appState, l10n: l10n)
-            else if (cbtMode == 'goodThings')
+            else if (mentalStateMode == 'goodThings')
               _GoodThingsContent(appState: appState, l10n: l10n)
             else
               _ThoughtLensContent(appState: appState, l10n: l10n),
@@ -67,14 +67,7 @@ class _MoodSelectionContent extends StatelessWidget {
 
   /// Checks if mood can be changed based on timestamp (1-hour cooldown)
   bool _canChangeMood() {
-    final currentMood = appState.todayState.moodSelection;
-    final moodTimestamp = appState.todayState.moodSelectionTimestamp;
-    
-    if (currentMood == null) return true;
-    if (moodTimestamp == null) return true;
-    
-    final oneHourAgo = DateTime.now().subtract(const Duration(hours: 1));
-    return moodTimestamp.isBefore(oneHourAgo);
+    return canChangeMood(appState);
   }
 
   @override
@@ -404,7 +397,7 @@ class _ThoughtLensContent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final currentIndex = appState.todayState.thoughtLensIndex;
-    final distortion = CbtConstants.getDistortion(currentIndex);
+    final distortion = MentalStateConstants.getDistortion(currentIndex);
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -480,9 +473,21 @@ class _ThoughtLensContent extends StatelessWidget {
   }
 }
 
-void showCbtModule(BuildContext context) {
+void showMentalStateModule(BuildContext context) {
   showDialog<void>(
     context: context,
-    builder: (_) => const CbtModule(),
+    builder: (_) => const MentalStateModule(),
   );
+}
+
+/// Checks if mood can be changed based on timestamp (1-hour cooldown)
+bool canChangeMood(AppState appState) {
+  final currentMood = appState.todayState.moodSelection;
+  final moodTimestamp = appState.todayState.moodSelectionTimestamp;
+  
+  if (currentMood == null) return true;
+  if (moodTimestamp == null) return true;
+  
+  final oneHourAgo = DateTime.now().subtract(const Duration(hours: 1));
+  return moodTimestamp.isBefore(oneHourAgo);
 }

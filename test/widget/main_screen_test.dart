@@ -9,7 +9,6 @@ import 'package:baseline/screens/main_screen.dart';
 import 'package:baseline/screens/settings_screen.dart';
 import 'package:baseline/state/app_state.dart';
 import 'package:baseline/state/settings.dart';
-import 'package:baseline/state/today_state.dart';
 import 'package:baseline/widgets/main_module_layout.dart';
 import 'package:baseline/widgets/mental_state_tile.dart';
 

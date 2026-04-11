@@ -12,15 +12,6 @@ import '../utils/adaptive_layout.dart';
 class FoodModuleTile extends StatelessWidget {
   const FoodModuleTile({super.key});
 
-  void _resetAll(AppState app) {
-    app.updateTodayState((st) {
-      for (final c in FoodCategoryDef.all) {
-        c.setCount(st, 0);
-      }
-    });
-    HapticFeedback.lightImpact();
-  }
-
   double measureExtendedModeHeight(BuildContext context, double w, AppLocalizations l10n) {
     final innerW = w - 48;
     if (innerW <= 0) return double.infinity;
@@ -294,7 +285,7 @@ class FoodModuleTile extends StatelessWidget {
                       flex: 4,
                       child: SizedBox(
                         height: 6,
-                        child: _BatteryIndicator(
+                        child: BatteryIndicator(
                           current: c.countFrom(s),
                           max: c.maxPortions,
                         ),
@@ -386,7 +377,7 @@ class FoodModuleTile extends StatelessWidget {
               onPressed: () => showFoodSourcesHelp(context),
             ),
             TextButton(
-              onPressed: () => _resetAll(appState),
+              onPressed: () => resetAllFood(appState),
               style: TextButton.styleFrom(
                 foregroundColor: scheme.onSurfaceVariant,
               ),
@@ -489,13 +480,13 @@ class _CategoryCard extends StatelessWidget {
             Row(
               children: [
                 Expanded(
-                  child: _BatteryIndicator(current: current, max: max),
+                  child: BatteryIndicator(current: current, max: max),
                 ),
                 const SizedBox(width: 16),
                 Row(
                   children: [
                     if (isExtended) ...[
-                      _StepperButton(
+                      StepperButton(
                         icon: Icons.remove,
                         enabled: !isMin,
                         onPressed: () => onDelta(-1),
@@ -517,7 +508,7 @@ class _CategoryCard extends StatelessWidget {
                         ),
                       ),
                       const SizedBox(width: 10),
-                      _StepperButton(
+                      StepperButton(
                         icon: Icons.add,
                         enabled: !isMax,
                         onPressed: () => onDelta(1),
@@ -528,78 +519,6 @@ class _CategoryCard extends StatelessWidget {
               ],
             ),
           ],
-        ),
-      ),
-    );
-  }
-}
-
-class _BatteryIndicator extends StatelessWidget {
-  final int current;
-  final int max;
-
-  const _BatteryIndicator({required this.current, required this.max});
-
-  @override
-  Widget build(BuildContext context) {
-    final scheme = Theme.of(context).colorScheme;
-    final empty = scheme.outlineVariant;
-
-    return Row(
-      children: List.generate(max, (index) {
-        final filled = index < current;
-        return Expanded(
-          child: AnimatedContainer(
-            duration: const Duration(milliseconds: 180),
-            curve: Curves.easeOutCubic,
-            margin: const EdgeInsets.symmetric(horizontal: 2),
-            height: 8,
-            decoration: BoxDecoration(
-              color: filled ? scheme.primary : empty,
-              borderRadius: BorderRadius.circular(4),
-            ),
-          ),
-        );
-      }),
-    );
-  }
-}
-
-class _StepperButton extends StatelessWidget {
-  final IconData icon;
-  final bool enabled;
-  final VoidCallback onPressed;
-
-  const _StepperButton({
-    required this.icon,
-    required this.enabled,
-    required this.onPressed,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    final scheme = Theme.of(context).colorScheme;
-
-    return Material(
-      color: Colors.transparent,
-      child: InkWell(
-        onTap: enabled ? onPressed : null,
-        borderRadius: BorderRadius.circular(30),
-        splashColor: scheme.primary.withValues(alpha: 0.2),
-        highlightColor: scheme.primary.withValues(alpha: 0.1),
-        child: Container(
-          padding: const EdgeInsets.all(8),
-          decoration: BoxDecoration(
-            shape: BoxShape.circle,
-            color: enabled
-                ? scheme.primaryContainer
-                : scheme.surfaceContainerHighest,
-          ),
-          child: Icon(
-            icon,
-            size: 20,
-            color: enabled ? scheme.primary : scheme.outline,
-          ),
         ),
       ),
     );

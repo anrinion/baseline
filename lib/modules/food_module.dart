@@ -24,6 +24,15 @@ void applyFoodDelta(AppState app, FoodCategoryDef def, int delta) {
   HapticFeedback.selectionClick();
 }
 
+void resetAllFood(AppState app) {
+  app.updateTodayState((st) {
+    for (final c in FoodCategoryDef.all) {
+      c.setCount(st, 0);
+    }
+  });
+  HapticFeedback.lightImpact();
+}
+
 /// Sources / rationale for the Food module (also used from the grid tile “?”).
 void showFoodSourcesHelp(BuildContext context) {
   final scheme = Theme.of(context).colorScheme;  final l10n = AppLocalizations.of(context)!;  showDialog<void>(
@@ -46,17 +55,81 @@ void showFoodSourcesHelp(BuildContext context) {
   );
 }
 
+class BatteryIndicator extends StatelessWidget {
+  final int current;
+  final int max;
+
+  const BatteryIndicator({super.key, required this.current, required this.max});
+
+  @override
+  Widget build(BuildContext context) {
+    final scheme = Theme.of(context).colorScheme;
+    final empty = scheme.outlineVariant;
+
+    return Row(
+      children: List.generate(max, (index) {
+        final filled = index < current;
+        return Expanded(
+          child: AnimatedContainer(
+            duration: const Duration(milliseconds: 180),
+            curve: Curves.easeOutCubic,
+            margin: const EdgeInsets.symmetric(horizontal: 2),
+            height: 8,
+            decoration: BoxDecoration(
+              color: filled ? scheme.primary : empty,
+              borderRadius: BorderRadius.circular(4),
+            ),
+          ),
+        );
+      }),
+    );
+  }
+}
+
+class StepperButton extends StatelessWidget {
+  final IconData icon;
+  final bool enabled;
+  final VoidCallback onPressed;
+
+  const StepperButton({
+    super.key,
+    required this.icon,
+    required this.enabled,
+    required this.onPressed,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final scheme = Theme.of(context).colorScheme;
+
+    return Material(
+      color: Colors.transparent,
+      child: InkWell(
+        onTap: enabled ? onPressed : null,
+        borderRadius: BorderRadius.circular(30),
+        splashColor: scheme.primary.withValues(alpha: 0.2),
+        highlightColor: scheme.primary.withValues(alpha: 0.1),
+        child: Container(
+          padding: const EdgeInsets.all(8),
+          decoration: BoxDecoration(
+            shape: BoxShape.circle,
+            color: enabled
+                ? scheme.primaryContainer
+                : scheme.surfaceContainerHighest,
+          ),
+          child: Icon(
+            icon,
+            size: 20,
+            color: enabled ? scheme.primary : scheme.outline,
+          ),
+        ),
+    ),
+  );
+}
+}
+
 class _FoodEditorDialog extends StatelessWidget {
   const _FoodEditorDialog();
-
-  void _resetAll(AppState app) {
-    app.updateTodayState((st) {
-      for (final c in FoodCategoryDef.all) {
-        c.setCount(st, 0);
-      }
-    });
-    HapticFeedback.lightImpact();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -103,7 +176,7 @@ class _FoodEditorDialog extends StatelessWidget {
                         onPressed: () => showFoodSourcesHelp(context),
                       ),
                       TextButton(
-                        onPressed: () => _resetAll(appState),
+                        onPressed: () => resetAllFood(appState),
                         style: TextButton.styleFrom(
                           foregroundColor: scheme.onSurfaceVariant,
                         ),
@@ -213,12 +286,12 @@ class _FoodCategoryCard extends StatelessWidget {
             Row(
               children: [
                 Expanded(
-                  child: _BatteryIndicator(current: current, max: max),
+                  child: BatteryIndicator(current: current, max: max),
                 ),
                 const SizedBox(width: 16),
                 Row(
                   children: [
-                    _StepperButton(
+                    StepperButton(
                       icon: Icons.remove,
                       enabled: !isMin,
                       onPressed: () => onDelta(-1),
@@ -238,7 +311,7 @@ class _FoodCategoryCard extends StatelessWidget {
                       ),
                     ),
                     const SizedBox(width: 10),
-                    _StepperButton(
+                    StepperButton(
                       icon: Icons.add,
                       enabled: !isMax,
                       onPressed: () => onDelta(1),
@@ -248,78 +321,6 @@ class _FoodCategoryCard extends StatelessWidget {
               ],
             ),
           ],
-        ),
-      ),
-    );
-  }
-}
-
-class _BatteryIndicator extends StatelessWidget {
-  final int current;
-  final int max;
-
-  const _BatteryIndicator({required this.current, required this.max});
-
-  @override
-  Widget build(BuildContext context) {
-    final scheme = Theme.of(context).colorScheme;
-    final empty = scheme.outlineVariant;
-
-    return Row(
-      children: List.generate(max, (index) {
-        final filled = index < current;
-        return Expanded(
-          child: AnimatedContainer(
-            duration: const Duration(milliseconds: 180),
-            curve: Curves.easeOutCubic,
-            margin: const EdgeInsets.symmetric(horizontal: 2),
-            height: 8,
-            decoration: BoxDecoration(
-              color: filled ? scheme.primary : empty,
-              borderRadius: BorderRadius.circular(4),
-            ),
-          ),
-        );
-      }),
-    );
-  }
-}
-
-class _StepperButton extends StatelessWidget {
-  final IconData icon;
-  final bool enabled;
-  final VoidCallback onPressed;
-
-  const _StepperButton({
-    required this.icon,
-    required this.enabled,
-    required this.onPressed,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    final scheme = Theme.of(context).colorScheme;
-
-    return Material(
-      color: Colors.transparent,
-      child: InkWell(
-        onTap: enabled ? onPressed : null,
-        borderRadius: BorderRadius.circular(30),
-        splashColor: scheme.primary.withValues(alpha: 0.2),
-        highlightColor: scheme.primary.withValues(alpha: 0.1),
-        child: Container(
-          padding: const EdgeInsets.all(8),
-          decoration: BoxDecoration(
-            shape: BoxShape.circle,
-            color: enabled
-                ? scheme.primaryContainer
-                : scheme.surfaceContainerHighest,
-          ),
-          child: Icon(
-            icon,
-            size: 20,
-            color: enabled ? scheme.primary : scheme.outline,
-          ),
         ),
       ),
     );

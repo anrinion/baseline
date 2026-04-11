@@ -23,7 +23,7 @@ class SettingsAdapter extends TypeAdapter<Settings> {
       ..enabledModuleIds = (fields[3] as List).cast<String>()
       ..moduleSettingsJson = fields[4] as String
       ..isFirstLaunch = fields[5] as bool
-      ..cbtMode = fields[6] as String;
+      ..mentalStateMode = fields[6] as String;
   }
 
   @override
@@ -43,7 +43,7 @@ class SettingsAdapter extends TypeAdapter<Settings> {
       ..writeByte(5)
       ..write(obj.isFirstLaunch)
       ..writeByte(6)
-      ..write(obj.cbtMode);
+      ..write(obj.mentalStateMode);
   }
 
   @override

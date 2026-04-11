@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../l10n/app_localizations.dart';
-import '../modules/cbt_module.dart';
+import '../modules/mental_state_module.dart';
 import '../modules/module_help.dart';
 import '../modules/module_ids.dart';
 import '../modules/movement_module.dart';
@@ -120,7 +120,7 @@ class ModuleTile extends StatelessWidget {
     }
 
     if (moduleId == BaselineModuleId.mentalState) {
-      showCbtModule(context);
+      showMentalStateModule(context);
       return;
     }
 

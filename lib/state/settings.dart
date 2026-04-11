@@ -30,7 +30,7 @@ class Settings extends HiveObject {
   bool isFirstLaunch = true;
 
   @HiveField(6)
-  String cbtMode = 'rightNow'; // 'rightNow', 'goodThings', 'thoughtLens'
+  String mentalStateMode = 'rightNow'; // 'rightNow', 'goodThings', 'thoughtLens'
 
   bool isModuleEnabled(String id) => enabledModuleIds.contains(id);
 

@@ -254,11 +254,11 @@ class _SettingsScreenState extends State<SettingsScreen> {
                         RadioListTile<String>(
                           title: Text(l10n.cbtModeRightNow),
                           value: 'rightNow',
-                          groupValue: settings.cbtMode,
+                          groupValue: settings.mentalStateMode,
                           onChanged: (value) {
                             if (value != null) {
                               appState.updateSettings((s) {
-                                s.cbtMode = value;
+                                s.mentalStateMode = value;
                               });
                             }
                           },
@@ -266,11 +266,11 @@ class _SettingsScreenState extends State<SettingsScreen> {
                         RadioListTile<String>(
                           title: Text(l10n.cbtModeGoodThings),
                           value: 'goodThings',
-                          groupValue: settings.cbtMode,
+                          groupValue: settings.mentalStateMode,
                           onChanged: (value) {
                             if (value != null) {
                               appState.updateSettings((s) {
-                                s.cbtMode = value;
+                                s.mentalStateMode = value;
                               });
                             }
                           },
@@ -278,11 +278,11 @@ class _SettingsScreenState extends State<SettingsScreen> {
                         RadioListTile<String>(
                           title: Text(l10n.cbtModeThoughtLens),
                           value: 'thoughtLens',
-                          groupValue: settings.cbtMode,
+                          groupValue: settings.mentalStateMode,
                           onChanged: (value) {
                             if (value != null) {
                               appState.updateSettings((s) {
-                                s.cbtMode = value;
+                                s.mentalStateMode = value;
                               });
                             }
                           },
