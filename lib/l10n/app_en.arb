@@ -44,6 +44,66 @@
   "@themeDark2": {
     "description": "Dark theme option - soft contrast"
   },
+  "themeBehaviorHelp": "Choose how Baseline moves between light and dark.",
+  "@themeBehaviorHelp": {
+    "description": "Help text for theme behavior settings"
+  },
+  "themeModeManual": "Choose here",
+  "@themeModeManual": {
+    "description": "Theme behavior option: manual"
+  },
+  "themeModeManualDescription": "You pick light or dark yourself.",
+  "@themeModeManualDescription": {
+    "description": "Description for manual theme behavior"
+  },
+  "themeModeDevice": "As device",
+  "@themeModeDevice": {
+    "description": "Theme behavior option: follow device"
+  },
+  "themeModeDeviceDescription": "Baseline follows your phone's light and dark setting.",
+  "@themeModeDeviceDescription": {
+    "description": "Description for device theme behavior"
+  },
+  "themeModeSchedule": "On schedule",
+  "@themeModeSchedule": {
+    "description": "Theme behavior option: scheduled"
+  },
+  "themeModeScheduleDescription": "Baseline switches at the times you choose.",
+  "@themeModeScheduleDescription": {
+    "description": "Description for scheduled theme behavior"
+  },
+  "themeManualChoiceLabel": "When you choose here:",
+  "@themeManualChoiceLabel": {
+    "description": "Label for manual light/dark choice"
+  },
+  "themeUseLight": "Use light theme",
+  "@themeUseLight": {
+    "description": "Manual theme option: use light theme"
+  },
+  "themeUseDark": "Use dark theme",
+  "@themeUseDark": {
+    "description": "Manual theme option: use dark theme"
+  },
+  "themeLightSectionLabel": "Light theme",
+  "@themeLightSectionLabel": {
+    "description": "Section label for light theme palette selection"
+  },
+  "themeDarkSectionLabel": "Dark theme",
+  "@themeDarkSectionLabel": {
+    "description": "Section label for dark theme palette selection"
+  },
+  "themeScheduleLabel": "Schedule",
+  "@themeScheduleLabel": {
+    "description": "Section label for scheduled theme settings"
+  },
+  "themeScheduleLightStarts": "Light starts",
+  "@themeScheduleLightStarts": {
+    "description": "Label for scheduled light theme start time"
+  },
+  "themeScheduleDarkStarts": "Dark starts",
+  "@themeScheduleDarkStarts": {
+    "description": "Label for scheduled dark theme start time"
+  },
   "modulesLabel": "Modules",
   "@modulesLabel": {
     "description": "Label for modules settings section"
@@ -271,6 +331,22 @@
   "todayReset": "Today reset",
   "@todayReset": {
     "description": "Confirmation message when today is reset"
+  },
+  "developerModeLabel": "Developer mode",
+  "@developerModeLabel": {
+    "description": "Label for developer mode toggle"
+  },
+  "developerModeHelp": "Shows tools for testing and full local resets.",
+  "@developerModeHelp": {
+    "description": "Help text for developer mode toggle"
+  },
+  "developerResetAllDataLabel": "Complete state reset",
+  "@developerResetAllDataLabel": {
+    "description": "Button label for developer full reset"
+  },
+  "developerResetAllDataHelp": "This clears today's state, app settings, and returns to the initial setup screen.",
+  "@developerResetAllDataHelp": {
+    "description": "Confirmation text for developer full reset"
   },
   "appPrivacyText": "Baseline is a private self-care app:\\nNo history, no sync, no data collection.\\n",
   "@appPrivacyText": {

@@ -42,6 +42,55 @@ class AppLocalizationsRu extends AppLocalizations {
   String get themeDark2 => 'Тёмная (тёмно-серая)';
 
   @override
+  String get themeBehaviorHelp =>
+      'Выбери, как Baseline переключается между светлой и тёмной темой.';
+
+  @override
+  String get themeModeManual => 'Выбирать вручную';
+
+  @override
+  String get themeModeManualDescription =>
+      'Светлую или тёмную тему выбираешь ты.';
+
+  @override
+  String get themeModeDevice => 'Как на устройстве';
+
+  @override
+  String get themeModeDeviceDescription =>
+      'Baseline следует настройке светлой и тёмной темы на телефоне.';
+
+  @override
+  String get themeModeSchedule => 'По расписанию';
+
+  @override
+  String get themeModeScheduleDescription =>
+      'Baseline переключается в выбранное тобой время.';
+
+  @override
+  String get themeManualChoiceLabel => 'Если выбирать вручную:';
+
+  @override
+  String get themeUseLight => 'Использовать светлую';
+
+  @override
+  String get themeUseDark => 'Использовать тёмную';
+
+  @override
+  String get themeLightSectionLabel => 'Светлая тема';
+
+  @override
+  String get themeDarkSectionLabel => 'Тёмная тема';
+
+  @override
+  String get themeScheduleLabel => 'Расписание';
+
+  @override
+  String get themeScheduleLightStarts => 'Светлая с';
+
+  @override
+  String get themeScheduleDarkStarts => 'Тёмная с';
+
+  @override
   String get modulesLabel => 'Модули';
 
   @override
@@ -213,6 +262,20 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get todayReset => 'Прогресс сброшен';
+
+  @override
+  String get developerModeLabel => 'Режим разработчика';
+
+  @override
+  String get developerModeHelp =>
+      'Показывает инструменты для тестов и полного локального сброса.';
+
+  @override
+  String get developerResetAllDataLabel => 'Полный сброс состояния';
+
+  @override
+  String get developerResetAllDataHelp =>
+      'Это очистит состояние на сегодня, настройки приложения и вернёт тебя на начальный экран.';
 
   @override
   String get appPrivacyText =>

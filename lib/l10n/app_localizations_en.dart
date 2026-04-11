@@ -42,6 +42,54 @@ class AppLocalizationsEn extends AppLocalizations {
   String get themeDark2 => 'Dark (dark grey)';
 
   @override
+  String get themeBehaviorHelp =>
+      'Choose how Baseline moves between light and dark.';
+
+  @override
+  String get themeModeManual => 'Choose here';
+
+  @override
+  String get themeModeManualDescription => 'You pick light or dark yourself.';
+
+  @override
+  String get themeModeDevice => 'As device';
+
+  @override
+  String get themeModeDeviceDescription =>
+      'Baseline follows your phone\'s light and dark setting.';
+
+  @override
+  String get themeModeSchedule => 'On schedule';
+
+  @override
+  String get themeModeScheduleDescription =>
+      'Baseline switches at the times you choose.';
+
+  @override
+  String get themeManualChoiceLabel => 'When you choose here:';
+
+  @override
+  String get themeUseLight => 'Use light theme';
+
+  @override
+  String get themeUseDark => 'Use dark theme';
+
+  @override
+  String get themeLightSectionLabel => 'Light theme';
+
+  @override
+  String get themeDarkSectionLabel => 'Dark theme';
+
+  @override
+  String get themeScheduleLabel => 'Schedule';
+
+  @override
+  String get themeScheduleLightStarts => 'Light starts';
+
+  @override
+  String get themeScheduleDarkStarts => 'Dark starts';
+
+  @override
   String get modulesLabel => 'Modules';
 
   @override
@@ -213,6 +261,20 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get todayReset => 'Today reset';
+
+  @override
+  String get developerModeLabel => 'Developer mode';
+
+  @override
+  String get developerModeHelp =>
+      'Shows tools for testing and full local resets.';
+
+  @override
+  String get developerResetAllDataLabel => 'Complete state reset';
+
+  @override
+  String get developerResetAllDataHelp =>
+      'This clears today\'s state, app settings, and returns to the initial setup screen.';
 
   @override
   String get appPrivacyText =>

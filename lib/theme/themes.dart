@@ -11,6 +11,8 @@ import 'light_warm_theme.dart';
 /// via [applyBaselineChrome] from [theme_common.dart], import it here, and add a
 /// static method plus a branch in [AppState.currentTheme].
 abstract final class BaselineThemes {
+  static const List<String> lightKeys = ['light1', 'light2'];
+  static const List<String> darkKeys = ['dark1', 'dark2'];
   /// Light (neutral) — emerald + slate; matches Food module palette.
   static ThemeData light1() => buildLightNeutralTheme();
 
@@ -22,4 +24,19 @@ abstract final class BaselineThemes {
 
   /// Dark — soft zinc surfaces.
   static ThemeData dark2() => buildDarkSoftTheme();
+
+  static ThemeData fromKey(String key) {
+    switch (key) {
+      case 'light1':
+        return light1();
+      case 'light2':
+        return light2();
+      case 'dark1':
+        return dark1();
+      case 'dark2':
+        return dark2();
+      default:
+        return light1();
+    }
+  }
 }

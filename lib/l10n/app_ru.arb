@@ -44,6 +44,66 @@
   "@themeDark2": {
     "description": "Dark theme option - soft contrast"
   },
+  "themeBehaviorHelp": "Выбери, как Baseline переключается между светлой и тёмной темой.",
+  "@themeBehaviorHelp": {
+    "description": "Help text for theme behavior settings"
+  },
+  "themeModeManual": "Выбирать вручную",
+  "@themeModeManual": {
+    "description": "Theme behavior option: manual"
+  },
+  "themeModeManualDescription": "Светлую или тёмную тему выбираешь ты.",
+  "@themeModeManualDescription": {
+    "description": "Description for manual theme behavior"
+  },
+  "themeModeDevice": "Как на устройстве",
+  "@themeModeDevice": {
+    "description": "Theme behavior option: follow device"
+  },
+  "themeModeDeviceDescription": "Baseline следует настройке светлой и тёмной темы на телефоне.",
+  "@themeModeDeviceDescription": {
+    "description": "Description for device theme behavior"
+  },
+  "themeModeSchedule": "По расписанию",
+  "@themeModeSchedule": {
+    "description": "Theme behavior option: scheduled"
+  },
+  "themeModeScheduleDescription": "Baseline переключается в выбранное тобой время.",
+  "@themeModeScheduleDescription": {
+    "description": "Description for scheduled theme behavior"
+  },
+  "themeManualChoiceLabel": "Если выбирать вручную:",
+  "@themeManualChoiceLabel": {
+    "description": "Label for manual light/dark choice"
+  },
+  "themeUseLight": "Использовать светлую",
+  "@themeUseLight": {
+    "description": "Manual theme option: use light theme"
+  },
+  "themeUseDark": "Использовать тёмную",
+  "@themeUseDark": {
+    "description": "Manual theme option: use dark theme"
+  },
+  "themeLightSectionLabel": "Светлая тема",
+  "@themeLightSectionLabel": {
+    "description": "Section label for light theme palette selection"
+  },
+  "themeDarkSectionLabel": "Тёмная тема",
+  "@themeDarkSectionLabel": {
+    "description": "Section label for dark theme palette selection"
+  },
+  "themeScheduleLabel": "Расписание",
+  "@themeScheduleLabel": {
+    "description": "Section label for scheduled theme settings"
+  },
+  "themeScheduleLightStarts": "Светлая с",
+  "@themeScheduleLightStarts": {
+    "description": "Label for scheduled light theme start time"
+  },
+  "themeScheduleDarkStarts": "Тёмная с",
+  "@themeScheduleDarkStarts": {
+    "description": "Label for scheduled dark theme start time"
+  },
   "modulesLabel": "Модули",
   "@modulesLabel": {
     "description": "Label for modules settings section"
@@ -271,6 +331,22 @@
   "todayReset": "Прогресс сброшен",
   "@todayReset": {
     "description": "Confirmation message when today is reset"
+  },
+  "developerModeLabel": "Режим разработчика",
+  "@developerModeLabel": {
+    "description": "Label for developer mode toggle"
+  },
+  "developerModeHelp": "Показывает инструменты для тестов и полного локального сброса.",
+  "@developerModeHelp": {
+    "description": "Help text for developer mode toggle"
+  },
+  "developerResetAllDataLabel": "Полный сброс состояния",
+  "@developerResetAllDataLabel": {
+    "description": "Button label for developer full reset"
+  },
+  "developerResetAllDataHelp": "Это очистит состояние на сегодня, настройки приложения и вернёт тебя на начальный экран.",
+  "@developerResetAllDataHelp": {
+    "description": "Confirmation text for developer full reset"
   },
   "appPrivacyText": "Baseline — приватное приложение для заботы о себе:\\nМы не собираем и не храним данные.",
   "@appPrivacyText": {

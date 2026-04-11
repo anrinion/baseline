@@ -164,6 +164,96 @@ abstract class AppLocalizations {
   /// **'Dark (dark grey)'**
   String get themeDark2;
 
+  /// Help text for theme behavior settings
+  ///
+  /// In en, this message translates to:
+  /// **'Choose how Baseline moves between light and dark.'**
+  String get themeBehaviorHelp;
+
+  /// Theme behavior option: manual
+  ///
+  /// In en, this message translates to:
+  /// **'Choose here'**
+  String get themeModeManual;
+
+  /// Description for manual theme behavior
+  ///
+  /// In en, this message translates to:
+  /// **'You pick light or dark yourself.'**
+  String get themeModeManualDescription;
+
+  /// Theme behavior option: follow device
+  ///
+  /// In en, this message translates to:
+  /// **'As device'**
+  String get themeModeDevice;
+
+  /// Description for device theme behavior
+  ///
+  /// In en, this message translates to:
+  /// **'Baseline follows your phone\'s light and dark setting.'**
+  String get themeModeDeviceDescription;
+
+  /// Theme behavior option: scheduled
+  ///
+  /// In en, this message translates to:
+  /// **'On schedule'**
+  String get themeModeSchedule;
+
+  /// Description for scheduled theme behavior
+  ///
+  /// In en, this message translates to:
+  /// **'Baseline switches at the times you choose.'**
+  String get themeModeScheduleDescription;
+
+  /// Label for manual light/dark choice
+  ///
+  /// In en, this message translates to:
+  /// **'When you choose here:'**
+  String get themeManualChoiceLabel;
+
+  /// Manual theme option: use light theme
+  ///
+  /// In en, this message translates to:
+  /// **'Use light theme'**
+  String get themeUseLight;
+
+  /// Manual theme option: use dark theme
+  ///
+  /// In en, this message translates to:
+  /// **'Use dark theme'**
+  String get themeUseDark;
+
+  /// Section label for light theme palette selection
+  ///
+  /// In en, this message translates to:
+  /// **'Light theme'**
+  String get themeLightSectionLabel;
+
+  /// Section label for dark theme palette selection
+  ///
+  /// In en, this message translates to:
+  /// **'Dark theme'**
+  String get themeDarkSectionLabel;
+
+  /// Section label for scheduled theme settings
+  ///
+  /// In en, this message translates to:
+  /// **'Schedule'**
+  String get themeScheduleLabel;
+
+  /// Label for scheduled light theme start time
+  ///
+  /// In en, this message translates to:
+  /// **'Light starts'**
+  String get themeScheduleLightStarts;
+
+  /// Label for scheduled dark theme start time
+  ///
+  /// In en, this message translates to:
+  /// **'Dark starts'**
+  String get themeScheduleDarkStarts;
+
   /// Label for modules settings section
   ///
   /// In en, this message translates to:
@@ -505,6 +595,30 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Today reset'**
   String get todayReset;
+
+  /// Label for developer mode toggle
+  ///
+  /// In en, this message translates to:
+  /// **'Developer mode'**
+  String get developerModeLabel;
+
+  /// Help text for developer mode toggle
+  ///
+  /// In en, this message translates to:
+  /// **'Shows tools for testing and full local resets.'**
+  String get developerModeHelp;
+
+  /// Button label for developer full reset
+  ///
+  /// In en, this message translates to:
+  /// **'Complete state reset'**
+  String get developerResetAllDataLabel;
+
+  /// Confirmation text for developer full reset
+  ///
+  /// In en, this message translates to:
+  /// **'This clears today\'s state, app settings, and returns to the initial setup screen.'**
+  String get developerResetAllDataHelp;
 
   /// Privacy statement in settings
   ///

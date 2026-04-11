@@ -56,7 +56,9 @@ class BaselineApp extends StatelessWidget {
           
           return MaterialApp(
             title: 'Baseline',
-            theme: appState.currentTheme,
+            theme: appState.lightTheme,
+            darkTheme: appState.darkTheme,
+            themeMode: appState.materialThemeMode,
             locale: localizationService.currentLocale,
             localizationsDelegates: const [
               AppLocalizations.delegate,
