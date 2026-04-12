@@ -9,10 +9,11 @@ import 'light_warm_theme.dart';
 ///
 /// To add a theme: create a new file (e.g. `my_theme.dart`) that returns [ThemeData]
 /// via [applyBaselineChrome] from [theme_common.dart], import it here, and add a
-/// static method plus a branch in [AppState.currentTheme].
+/// static method plus a branch in [BaselineTheme.resolvedThemeKey].
 abstract final class BaselineThemes {
   static const List<String> lightKeys = ['light1', 'light2'];
   static const List<String> darkKeys = ['dark1', 'dark2'];
+
   /// Light (neutral) — emerald + slate; matches Food module palette.
   static ThemeData light1() => buildLightNeutralTheme();
 

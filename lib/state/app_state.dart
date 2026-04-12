@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 
 import '../services/meds_notifications_service.dart';
-import '../theme/themes.dart';
+import '../theme/theme.dart';
 import '../modules/mental_state_constants.dart';
 import 'today_state.dart';
 import 'settings.dart';
@@ -56,14 +56,16 @@ class AppState extends ChangeNotifier with WidgetsBindingObserver {
     if (todayState.lastDayKey.isEmpty) {
       todayState.lastDayKey = todayKey;
       // Initialize with a random distortion for first run
-      todayState.thoughtLensIndex = MentalStateConstants.getRandomDistortionIndex(-1);
+      todayState.thoughtLensIndex =
+          MentalStateConstants.getRandomDistortionIndex(-1);
       todayBox.put('today', todayState);
     } else if (todayState.lastDayKey != todayKey) {
       // Store yesterday's index before resetting
       final yesterdayIndex = todayState.thoughtLensIndex;
       todayState = TodayState()..lastDayKey = todayKey;
       // Select a new random distortion different from yesterday's
-      todayState.thoughtLensIndex = MentalStateConstants.getRandomDistortionIndex(yesterdayIndex);
+      todayState.thoughtLensIndex =
+          MentalStateConstants.getRandomDistortionIndex(yesterdayIndex);
       todayState.yesterdayThoughtLensIndex = yesterdayIndex;
       todayBox.put('today', todayState);
     }
@@ -102,61 +104,24 @@ class AppState extends ChangeNotifier with WidgetsBindingObserver {
     notifyListeners();
   }
 
-  ThemeData get lightTheme =>
-      BaselineThemes.fromKey(settings.lightThemeKey);
+  ThemeData get lightTheme => BaselineTheme.lightTheme(settings);
 
-  ThemeData get darkTheme =>
-      BaselineThemes.fromKey(settings.darkThemeKey);
+  ThemeData get darkTheme => BaselineTheme.darkTheme(settings);
 
   ThemeMode get materialThemeMode {
-    switch (settings.themeMode) {
-      case Settings.themeModeDevice:
-        return ThemeMode.system;
-      case Settings.themeModeSchedule:
-        return isScheduledDarkAt(DateTime.now())
-            ? ThemeMode.dark
-            : ThemeMode.light;
-      case Settings.themeModeManual:
-      default:
-        return settings.usesDarkManualTheme ? ThemeMode.dark : ThemeMode.light;
-    }
+    return BaselineTheme.materialThemeMode(settings, now: DateTime.now());
   }
 
-  String resolvedThemeKey({
-    DateTime? now,
-    Brightness? platformBrightness,
-  }) {
-    switch (settings.themeMode) {
-      case Settings.themeModeDevice:
-        final brightness =
-            platformBrightness ??
-            WidgetsBinding.instance.platformDispatcher.platformBrightness;
-        return brightness == Brightness.dark
-            ? settings.darkThemeKey
-            : settings.lightThemeKey;
-      case Settings.themeModeSchedule:
-        return isScheduledDarkAt(now ?? DateTime.now())
-            ? settings.darkThemeKey
-            : settings.lightThemeKey;
-      case Settings.themeModeManual:
-      default:
-        return settings.theme;
-    }
+  String resolvedThemeKey({DateTime? now, Brightness? platformBrightness}) {
+    return BaselineTheme.resolvedThemeKey(
+      settings,
+      now: now,
+      platformBrightness: platformBrightness,
+    );
   }
 
   ThemeData get currentTheme {
-    return BaselineThemes.fromKey(resolvedThemeKey(now: DateTime.now()));
-  }
-
-  bool isScheduledDarkAt(DateTime dateTime) {
-    final nowMinutes = dateTime.hour * 60 + dateTime.minute;
-    final lightStarts = settings.scheduleLightStartMinutes;
-    final darkStarts = settings.scheduleDarkStartMinutes;
-    return !_isInDailyRange(
-      nowMinutes,
-      startMinutes: lightStarts,
-      endMinutes: darkStarts,
-    );
+    return BaselineTheme.currentTheme(settings, now: DateTime.now());
   }
 
   @override
@@ -180,15 +145,7 @@ class AppState extends ChangeNotifier with WidgetsBindingObserver {
     }
 
     final now = DateTime.now();
-    final nextLight = _nextDailyOccurrence(
-      now,
-      settings.scheduleLightStartMinutes,
-    );
-    final nextDark = _nextDailyOccurrence(
-      now,
-      settings.scheduleDarkStartMinutes,
-    );
-    final nextBoundary = nextLight.isBefore(nextDark) ? nextLight : nextDark;
+    final nextBoundary = BaselineTheme.nextThemeBoundary(settings, now);
     final delay = nextBoundary.difference(now);
 
     _themeScheduleTimer = Timer(
@@ -198,33 +155,5 @@ class AppState extends ChangeNotifier with WidgetsBindingObserver {
         notifyListeners();
       },
     );
-  }
-
-  static bool _isInDailyRange(
-    int nowMinutes, {
-    required int startMinutes,
-    required int endMinutes,
-  }) {
-    if (startMinutes == endMinutes) {
-      return true;
-    }
-    if (startMinutes < endMinutes) {
-      return nowMinutes >= startMinutes && nowMinutes < endMinutes;
-    }
-    return nowMinutes >= startMinutes || nowMinutes < endMinutes;
-  }
-
-  static DateTime _nextDailyOccurrence(DateTime now, int minutesOfDay) {
-    final candidate = DateTime(
-      now.year,
-      now.month,
-      now.day,
-      minutesOfDay ~/ 60,
-      minutesOfDay % 60,
-    );
-    if (candidate.isAfter(now)) {
-      return candidate;
-    }
-    return candidate.add(const Duration(days: 1));
   }
 }
