@@ -10,6 +10,7 @@ import 'package:flutter_test/flutter_test.dart';
 // Unit tests
 import 'unit/app_state_test.dart' as app_state;
 import 'unit/meds_module_test.dart' as meds_module;
+import 'unit/theme_test.dart' as theme;
 
 // Widget tests  
 import 'widget/main_screen_test.dart' as main_screen;
@@ -23,6 +24,7 @@ void main() {
   group('Baseline Test Suite', () {
     app_state.main();
     meds_module.main();
+    theme.main();
     main_screen.main();
     responsive_layout.main();
     edge_case.main();
