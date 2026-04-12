@@ -1,0 +1,44 @@
+on:
+  workflow_dispatch:
+    inputs:
+      dev_version:
+        description: 'Dev version to promote (e.g., 0.0.42-dev)'
+        required: true
+        type: string
+
+jobs:
+  promote:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Validate version format
+        run: |
+          VERSION="${{ inputs.dev_version }}"
+          if [[ ! "$VERSION" =~ -dev$ ]]; then
+            echo "Error: Version must end with '-dev'"
+            exit 1
+          fi
+          echo "Promoting version: $VERSION"
+
+      - name: Compute production version
+        id: version
+        run: |
+          DEV_VERSION="${{ inputs.dev_version }}"
+          PROD_VERSION="${DEV_VERSION%-dev}"
+          echo "prod_version=$PROD_VERSION" >> $GITHUB_OUTPUT
+          echo "Production version: $PROD_VERSION"
+
+      - name: Download dev release artifacts
+        uses: robinraju/release-downloader@v1
+        with:
+          tag: v${{ inputs.dev_version }}
+          fileName: "*"
+          out-file-path: "artifacts"
+
+      - name: Create Production Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: v${{ steps.version.outputs.prod_version }}
+          name: Release ${{ steps.version.outputs.prod_version }}
+          files: artifacts/*
