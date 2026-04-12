@@ -132,6 +132,13 @@ class AppState extends ChangeNotifier with WidgetsBindingObserver {
   }
 
   @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state == AppLifecycleState.resumed) {
+      unawaited(MedsNotificationsService.instance.syncFromSettings(settings));
+    }
+  }
+
+  @override
   void dispose() {
     _themeScheduleTimer?.cancel();
     WidgetsBinding.instance.removeObserver(this);

@@ -421,6 +421,42 @@
   "@developerResetAllDataHelp": {
     "description": "Confirmation text for developer full reset"
   },
+  "developerNotificationsServiceLabel": "Сервис уведомлений о лекарствах",
+  "@developerNotificationsServiceLabel": {
+    "description": "Label for notification service status shown in developer mode"
+  },
+  "developerNotificationsStatusNotInitialized": "Статус: не инициализирован",
+  "@developerNotificationsStatusNotInitialized": {
+    "description": "Developer status for notifications when service has not initialized"
+  },
+  "developerNotificationsStatusReady": "Статус: готов (напоминания не запланированы)",
+  "@developerNotificationsStatusReady": {
+    "description": "Developer status for notifications when service is ready and no reminders are currently scheduled"
+  },
+  "developerNotificationsStatusActive": "Статус: активен (напоминания запланированы)",
+  "@developerNotificationsStatusActive": {
+    "description": "Developer status for notifications when reminders are scheduled"
+  },
+  "developerNotificationsStatusDisabled": "Статус: выключен (напоминания не настроены)",
+  "@developerNotificationsStatusDisabled": {
+    "description": "Developer status for notifications when reminders are disabled in settings"
+  },
+  "developerNotificationsStatusUnsupportedPlatform": "Статус: платформа не поддерживается",
+  "@developerNotificationsStatusUnsupportedPlatform": {
+    "description": "Developer status for notifications when current platform does not support the notifications service"
+  },
+  "developerNotificationsStatusPluginMissing": "Статус: плагин недоступен",
+  "@developerNotificationsStatusPluginMissing": {
+    "description": "Developer status for notifications when local notifications plugin is unavailable"
+  },
+  "developerNotificationsStatusPermissionDenied": "Статус: доступ запрещён",
+  "@developerNotificationsStatusPermissionDenied": {
+    "description": "Developer status for notifications when notification permission is denied"
+  },
+  "developerNotificationsStatusError": "Статус: ошибка",
+  "@developerNotificationsStatusError": {
+    "description": "Developer status for notifications when an unexpected error occurs"
+  },
   "appPrivacyText": "Baseline — приватное приложение для заботы о себе:\\nМы не собираем и не храним данные.",
   "@appPrivacyText": {
     "description": "Privacy statement in settings"

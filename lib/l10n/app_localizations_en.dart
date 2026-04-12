@@ -330,6 +330,41 @@ class AppLocalizationsEn extends AppLocalizations {
       'This clears today\'s state, app settings, and returns to the initial setup screen.';
 
   @override
+  String get developerNotificationsServiceLabel =>
+      'Medication notifications service';
+
+  @override
+  String get developerNotificationsStatusNotInitialized =>
+      'Status: not initialized';
+
+  @override
+  String get developerNotificationsStatusReady =>
+      'Status: ready (no reminders scheduled)';
+
+  @override
+  String get developerNotificationsStatusActive =>
+      'Status: active (reminders scheduled)';
+
+  @override
+  String get developerNotificationsStatusDisabled =>
+      'Status: disabled (no reminders configured)';
+
+  @override
+  String get developerNotificationsStatusUnsupportedPlatform =>
+      'Status: unsupported platform';
+
+  @override
+  String get developerNotificationsStatusPluginMissing =>
+      'Status: plugin unavailable';
+
+  @override
+  String get developerNotificationsStatusPermissionDenied =>
+      'Status: permission denied';
+
+  @override
+  String get developerNotificationsStatusError => 'Status: error';
+
+  @override
   String get appPrivacyText =>
       'Baseline is a private self-care app:\\nNo history, no sync, no data collection.\\n';
 
