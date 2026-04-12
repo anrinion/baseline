@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -120,26 +119,9 @@ class _SleepModuleTileState extends State<SleepModuleTile> {
                           ),
                         ),
                       ),
-                      if (kDebugMode) ...[
+                      if (appState.settings.developerModeEnabled) ...[
                         const SizedBox(width: 8),
-                        Container(
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 4,
-                            vertical: 2,
-                          ),
-                          decoration: BoxDecoration(
-                            color: scheme.tertiaryContainer,
-                            borderRadius: BorderRadius.circular(4),
-                          ),
-                          child: Text(
-                            'E',
-                            style: theme.textTheme.labelSmall?.copyWith(
-                              color: scheme.onTertiaryContainer,
-                              fontSize: 9,
-                              fontWeight: FontWeight.w700,
-                            ),
-                          ),
-                        ),
+                        buildLayoutModeIndicator(context, AdaptiveTileMode.expanded, enabled: true),
                       ],
                       IconButton(
                         icon: Icon(
@@ -284,21 +266,15 @@ class _SleepModuleTileState extends State<SleepModuleTile> {
             ),
           ),
         ),
-        if (kDebugMode) ...[
-          Container(
-            padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 2),
-            decoration: BoxDecoration(
-              color: scheme.tertiaryContainer,
-              borderRadius: BorderRadius.circular(4),
-            ),
-            child: Text(
-              isExpanded ? 'E' : (isCompact ? 'C' : 'M'),
-              style: theme.textTheme.labelSmall?.copyWith(
-                color: scheme.onTertiaryContainer,
-                fontSize: 9,
-                fontWeight: FontWeight.w700,
-              ),
-            ),
+        if (context.select<AppState, bool>(
+          (s) => s.settings.developerModeEnabled,
+        )) ...[
+          buildLayoutModeIndicator(
+            context,
+            isExpanded
+                ? AdaptiveTileMode.expanded
+                : (isCompact ? AdaptiveTileMode.compact : AdaptiveTileMode.medium),
+            enabled: true,
           ),
         ],
         IconButton(

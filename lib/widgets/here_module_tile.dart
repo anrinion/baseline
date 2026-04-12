@@ -1,8 +1,9 @@
 import 'dart:async';
 import 'dart:math';
 
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+
+import '../utils/adaptive_layout.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 
@@ -116,21 +117,13 @@ class _HereModuleTileState extends State<HereModuleTile>
                       ),
                     ),
                   ),
-                  if (kDebugMode) ...[
-                    Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 2),
-                      decoration: BoxDecoration(
-                        color: scheme.tertiaryContainer,
-                        borderRadius: BorderRadius.circular(4),
-                      ),
-                      child: Text(
-                        'H',
-                        style: theme.textTheme.labelSmall?.copyWith(
-                          color: scheme.onTertiaryContainer,
-                          fontSize: 9,
-                          fontWeight: FontWeight.w700,
-                        ),
-                      ),
+                  if (context.select<AppState, bool>(
+                    (s) => s.settings.developerModeEnabled,
+                  )) ...[
+                    buildLayoutModeIndicator(
+                      context,
+                      AdaptiveTileMode.medium,
+                      enabled: true,
                     ),
                   ],
                   IconButton(

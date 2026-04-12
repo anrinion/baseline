@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -195,23 +194,11 @@ class FoodModuleTile extends StatelessWidget {
             color: scheme.primary,
           ),
         ),
-        if (kDebugMode) ...[
-          Container(
-            padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 2),
-            decoration: BoxDecoration(
-              color: scheme.tertiaryContainer,
-              borderRadius: BorderRadius.circular(4),
-            ),
-            child: Text(
-              mode.name.substring(0, 1).toUpperCase(),
-              style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                color: scheme.onTertiaryContainer,
-                fontSize: 9,
-                fontWeight: FontWeight.w700,
-              ),
-            ),
-          ),
-        ],
+        buildLayoutModeIndicator(
+          context,
+          mode,
+          enabled: context.select<AppState, bool>((s) => s.settings.developerModeEnabled),
+        ),
         IconButton(
           icon: Icon(Icons.help_outline, size: 20, color: scheme.outline),
           tooltip: l10n.dialogWhyThisWorks,

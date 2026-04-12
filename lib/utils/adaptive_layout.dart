@@ -98,3 +98,34 @@ AdaptiveTileMode resolveStandardTileMode({
 
   return AdaptiveTileMode.medium;
 }
+
+/// Builds a small indicator showing the current layout mode.
+/// Used for debugging when developer mode is enabled.
+Widget buildLayoutModeIndicator(
+  BuildContext context,
+  AdaptiveTileMode mode, {
+  bool enabled = false,
+}) {
+  if (!enabled) return const SizedBox.shrink();
+
+  final scheme = Theme.of(context).colorScheme;
+  final theme = Theme.of(context);
+
+  final letter = mode.name.substring(0, 1).toUpperCase();
+
+  return Container(
+    padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 2),
+    decoration: BoxDecoration(
+      color: scheme.tertiaryContainer,
+      borderRadius: BorderRadius.circular(4),
+    ),
+    child: Text(
+      letter,
+      style: theme.textTheme.labelSmall?.copyWith(
+        color: scheme.onTertiaryContainer,
+        fontSize: 9,
+        fontWeight: FontWeight.w700,
+      ),
+    ),
+  );
+}
