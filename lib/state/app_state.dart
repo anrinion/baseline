@@ -56,14 +56,16 @@ class AppState extends ChangeNotifier with WidgetsBindingObserver {
     if (todayState.lastDayKey.isEmpty) {
       todayState.lastDayKey = todayKey;
       // Initialize with a random distortion for first run
-      todayState.thoughtLensIndex = MentalStateConstants.getRandomDistortionIndex(-1);
+      todayState.thoughtLensIndex =
+          MentalStateConstants.getRandomDistortionIndex(-1);
       todayBox.put('today', todayState);
     } else if (todayState.lastDayKey != todayKey) {
       // Store yesterday's index before resetting
       final yesterdayIndex = todayState.thoughtLensIndex;
       todayState = TodayState()..lastDayKey = todayKey;
       // Select a new random distortion different from yesterday's
-      todayState.thoughtLensIndex = MentalStateConstants.getRandomDistortionIndex(yesterdayIndex);
+      todayState.thoughtLensIndex =
+          MentalStateConstants.getRandomDistortionIndex(yesterdayIndex);
       todayState.yesterdayThoughtLensIndex = yesterdayIndex;
       todayBox.put('today', todayState);
     }
@@ -110,10 +112,7 @@ class AppState extends ChangeNotifier with WidgetsBindingObserver {
     return BaselineTheme.materialThemeMode(settings, now: DateTime.now());
   }
 
-  String resolvedThemeKey({
-    DateTime? now,
-    Brightness? platformBrightness,
-  }) {
+  String resolvedThemeKey({DateTime? now, Brightness? platformBrightness}) {
     return BaselineTheme.resolvedThemeKey(
       settings,
       now: now,
@@ -157,5 +156,4 @@ class AppState extends ChangeNotifier with WidgetsBindingObserver {
       },
     );
   }
-
 }

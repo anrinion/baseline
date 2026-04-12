@@ -13,10 +13,7 @@ abstract final class BaselineTheme {
     return BaselineThemes.fromKey(settings.darkThemeKey);
   }
 
-  static ThemeMode materialThemeMode(
-    Settings settings, {
-    DateTime? now,
-  }) {
+  static ThemeMode materialThemeMode(Settings settings, {DateTime? now}) {
     switch (settings.themeMode) {
       case Settings.themeModeDevice:
         return ThemeMode.system;
@@ -79,8 +76,14 @@ abstract final class BaselineTheme {
   }
 
   static DateTime nextThemeBoundary(Settings settings, DateTime now) {
-    final nextLight = _nextDailyOccurrence(now, settings.scheduleLightStartMinutes);
-    final nextDark = _nextDailyOccurrence(now, settings.scheduleDarkStartMinutes);
+    final nextLight = _nextDailyOccurrence(
+      now,
+      settings.scheduleLightStartMinutes,
+    );
+    final nextDark = _nextDailyOccurrence(
+      now,
+      settings.scheduleDarkStartMinutes,
+    );
     return nextLight.isBefore(nextDark) ? nextLight : nextDark;
   }
 
