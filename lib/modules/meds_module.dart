@@ -122,6 +122,12 @@ bool isMedTakenToday(AppState appState, String medName) {
 }
 
 void setMedTakenToday(AppState appState, String medName, bool isTaken) {
+  // Cancel notification and snooze when marking as taken
+  if (isTaken) {
+    MedsNotificationsService.instance.clearSnooze(medName);
+    MedsNotificationsService.instance.cancelNotificationForMed(medName);
+  }
+
   appState.updateTodayState((state) {
     final next = Map<String, bool>.from(state.medsChecked);
     next[medName] = isTaken;
@@ -271,9 +277,26 @@ class _MedsDialog extends StatelessWidget {
                               appState.settings,
                               med,
                             );
+                            final snoozeTime = MedsNotificationsService.instance.getSnoozeTime(med);
+                            final isSnoozed = snoozeTime != null && snoozeTime.isAfter(DateTime.now());
+
+                            Widget? subtitle;
+                            if (isSnoozed) {
+                              final timeStr =
+                                  '${snoozeTime.hour.toString().padLeft(2, '0')}:${snoozeTime.minute.toString().padLeft(2, '0')}';
+                              subtitle = Text(
+                                'Snoozed until $timeStr',
+                                style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                                  color: Theme.of(context).colorScheme.primary,
+                                  fontStyle: FontStyle.italic,
+                                ),
+                              );
+                            }
+
                             return CheckboxListTile(
                               dense: true,
                               title: Text(med),
+                              subtitle: subtitle,
                               value: checked,
                               secondary: _MedReminderControl(
                                 medName: med,

@@ -5,6 +5,7 @@ import '../l10n/app_localizations.dart';
 import '../modules/meds_module.dart';
 import '../modules/module_help.dart';
 import '../modules/module_ids.dart';
+import '../services/meds_notifications_service.dart';
 import '../state/app_state.dart';
 import '../utils/adaptive_layout.dart';
 import 'module_tile.dart';
@@ -195,14 +196,9 @@ class _MedsContent extends StatelessWidget {
         ),
         const SizedBox(height: 6),
         for (final med in visible)
-          CheckboxListTile(
-            dense: true,
-            contentPadding: EdgeInsets.zero,
-            title: Text(med, maxLines: 1, overflow: TextOverflow.ellipsis),
-            value: isMedTakenToday(appState, med),
-            controlAffinity: ListTileControlAffinity.leading,
-            onChanged: (value) =>
-                setMedTakenToday(appState, med, value == true),
+          _MedItemTile(
+            med: med,
+            appState: appState,
           ),
         if (meds.length > visible.length)
           Text(
@@ -212,6 +208,53 @@ class _MedsContent extends StatelessWidget {
             ),
           ),
       ],
+    );
+  }
+}
+
+class _MedItemTile extends StatelessWidget {
+  const _MedItemTile({
+    required this.med,
+    required this.appState,
+  });
+
+  final String med;
+  final AppState appState;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final isTaken = isMedTakenToday(appState, med);
+    final snoozeTime = MedsNotificationsService.instance.getSnoozeTime(med);
+    final isSnoozed = snoozeTime != null && snoozeTime.isAfter(DateTime.now());
+
+    Widget? subtitle;
+    if (isSnoozed) {
+      final timeStr =
+          '${snoozeTime.hour.toString().padLeft(2, '0')}:${snoozeTime.minute.toString().padLeft(2, '0')}';
+      subtitle = Text(
+        'Snoozed until $timeStr',
+        style: theme.textTheme.bodySmall?.copyWith(
+          color: theme.colorScheme.primary,
+          fontStyle: FontStyle.italic,
+        ),
+      );
+    }
+
+    return CheckboxListTile(
+      dense: true,
+      contentPadding: EdgeInsets.zero,
+      title: Text(med, maxLines: 1, overflow: TextOverflow.ellipsis),
+      subtitle: subtitle,
+      value: isTaken,
+      controlAffinity: ListTileControlAffinity.leading,
+      onChanged: (value) {
+        setMedTakenToday(appState, med, value == true);
+        // Clear snooze when marking as taken
+        if (value == true) {
+          MedsNotificationsService.instance.clearSnooze(med);
+        }
+      },
     );
   }
 }

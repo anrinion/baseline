@@ -2,12 +2,25 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../state/app_state.dart';
+import '../services/meds_notifications_service.dart';
 import '../widgets/main_module_layout.dart';
 import '../l10n/app_localizations.dart';
 import 'settings_screen.dart';
 
-class MainScreen extends StatelessWidget {
+class MainScreen extends StatefulWidget {
   const MainScreen({super.key});
+
+  @override
+  State<MainScreen> createState() => _MainScreenState();
+}
+
+class _MainScreenState extends State<MainScreen> {
+  @override
+  void initState() {
+    super.initState();
+    // Listen for notification action feedback (snooze/taken confirmations)
+    MedsNotificationsService.instance.listenForActionFeedback(context);
+  }
 
   @override
   Widget build(BuildContext context) {

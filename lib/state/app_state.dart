@@ -6,6 +6,7 @@ import 'package:hive/hive.dart';
 import '../services/meds_notifications_service.dart';
 import '../theme/theme.dart';
 import '../modules/mental_state_constants.dart';
+import '../modules/meds_module.dart' as meds_module;
 import 'today_state.dart';
 import 'settings.dart';
 
@@ -45,7 +46,24 @@ class AppState extends ChangeNotifier with WidgetsBindingObserver {
 
     _applyDayBoundary();
     _scheduleThemeTimer();
-    unawaited(MedsNotificationsService.instance.syncFromSettings(settings));
+
+    // Register notification action callbacks
+    MedsNotificationsService.instance.setCallbacks(
+      onMarkMedTaken: (medName) {
+        todayState.medsChecked[medName] = true;
+        todayBox.put('today', todayState);
+        notifyListeners();
+      },
+      onSnoozeMed: (medName, snoozeUntil) {
+        // Snooze is handled by service - just log for now
+        debugPrint('Snoozed $medName until $snoozeUntil');
+      },
+    );
+
+    unawaited(MedsNotificationsService.instance.syncFromSettings(
+      settings,
+      isMedTaken: (medName) => meds_module.isMedTakenToday(this, medName),
+    ));
     notifyListeners();
   }
 
@@ -86,7 +104,10 @@ class AppState extends ChangeNotifier with WidgetsBindingObserver {
     todayBox.put('today', todayState);
     _applyDayBoundary();
     _scheduleThemeTimer();
-    unawaited(MedsNotificationsService.instance.syncFromSettings(settings));
+    unawaited(MedsNotificationsService.instance.syncFromSettings(
+      settings,
+      isMedTaken: (medName) => meds_module.isMedTakenToday(this, medName),
+    ));
     notifyListeners();
   }
 
@@ -100,7 +121,10 @@ class AppState extends ChangeNotifier with WidgetsBindingObserver {
     updater(settings);
     settingsBox.put('settings', settings);
     _scheduleThemeTimer();
-    unawaited(MedsNotificationsService.instance.syncFromSettings(settings));
+    unawaited(MedsNotificationsService.instance.syncFromSettings(
+      settings,
+      isMedTaken: (medName) => meds_module.isMedTakenToday(this, medName),
+    ));
     notifyListeners();
   }
 
@@ -134,7 +158,10 @@ class AppState extends ChangeNotifier with WidgetsBindingObserver {
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
     if (state == AppLifecycleState.resumed) {
-      unawaited(MedsNotificationsService.instance.syncFromSettings(settings));
+      unawaited(MedsNotificationsService.instance.syncFromSettings(
+        settings,
+        isMedTaken: (medName) => meds_module.isMedTakenToday(this, medName),
+      ));
     }
   }
 

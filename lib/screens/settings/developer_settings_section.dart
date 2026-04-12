@@ -61,6 +61,18 @@ class DeveloperSettingsSection extends StatelessWidget {
           const SizedBox(height: 12),
           OutlinedButton(
             onPressed: () async {
+              final result = await MedsNotificationsService.instance.scheduleTestNotificationWithDelay();
+              if (context.mounted) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(content: Text(result)),
+                );
+              }
+            },
+            child: const Text('Test Alarm (3s)'),
+          ),
+          const SizedBox(height: 12),
+          OutlinedButton(
+            onPressed: () async {
               final confirmed = await showDialog<bool>(
                 context: context,
                 builder: (dialogContext) => AlertDialog(
