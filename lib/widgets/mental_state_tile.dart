@@ -30,16 +30,18 @@ class MentalStateModuleTile extends StatelessWidget {
         final availableHeight =
             constraints.maxHeight - 64; // rough header/margins
 
-        AdaptiveTileMode mode = AdaptiveTileMode.medium;
-
-        // Determine mode based on content and available space
-        if (availableHeight < 55 || availableWidth < 120) {
-          mode = AdaptiveTileMode.micro;
-        } else if (availableHeight < 100 || availableWidth < 220) {
-          mode = AdaptiveTileMode.compact;
-        } else if (availableWidth >= 400 && availableHeight >= 140) {
-          mode = AdaptiveTileMode.expanded;
-        }
+        final mode = resolveStandardTileMode(
+          availableWidth: availableWidth,
+          availableHeight: availableHeight,
+          thresholds: const AdaptiveTileThresholds(
+            microHeight: 55,
+            microWidth: 120,
+            compactHeight: 100,
+            compactWidth: 220,
+            expandedHeight: 140,
+            expandedWidth: 400,
+          ),
+        );
 
         if (mode == AdaptiveTileMode.micro) {
           // Micro: use standard tile that opens a popup.

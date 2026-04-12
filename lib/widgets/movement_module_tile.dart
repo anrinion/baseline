@@ -37,13 +37,18 @@ class MovementModuleTile extends StatelessWidget {
 
         if (hasMoved) {
           // Standard check for "completed" state space since it's quite fixed.
-          if (availableHeight < 40 || availableWidth < 120) {
-            mode = AdaptiveTileMode.micro;
-          } else if (availableHeight < 100 || availableWidth < 220) {
-            mode = AdaptiveTileMode.compact;
-          } else if (availableWidth >= 400 && availableHeight >= 140) {
-            mode = AdaptiveTileMode.expanded;
-          }
+          mode = resolveStandardTileMode(
+            availableWidth: availableWidth,
+            availableHeight: availableHeight,
+            thresholds: const AdaptiveTileThresholds(
+              microHeight: 40,
+              microWidth: 120,
+              compactHeight: 100,
+              compactWidth: 220,
+              expandedHeight: 140,
+              expandedWidth: 400,
+            ),
+          );
         } else {
           final List<double> textItemWidths = options.map((opt) {
             // roughly padding (16*2) + icon (18) + gap (8) = 58
