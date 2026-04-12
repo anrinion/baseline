@@ -41,14 +41,18 @@ class _SleepModuleTileState extends State<SleepModuleTile> {
         final availableWidth = constraints.maxWidth - 32;
         final availableHeight = constraints.maxHeight - 64;
 
-        AdaptiveTileMode mode = AdaptiveTileMode.medium;
-        if (availableHeight < 40 || availableWidth < 120) {
-          mode = AdaptiveTileMode.micro;
-        } else if (availableHeight < 100 || availableWidth < 200) {
-          mode = AdaptiveTileMode.compact;
-        } else if (availableWidth >= 400 && availableHeight >= 100) {
-          mode = AdaptiveTileMode.expanded;
-        }
+        final mode = resolveStandardTileMode(
+          availableWidth: availableWidth,
+          availableHeight: availableHeight,
+          thresholds: const AdaptiveTileThresholds(
+            microHeight: 40,
+            microWidth: 120,
+            compactHeight: 100,
+            compactWidth: 200,
+            expandedHeight: 100,
+            expandedWidth: 400,
+          ),
+        );
 
         if (mode == AdaptiveTileMode.micro) {
           return const ModuleTile(moduleId: BaselineModuleId.sleep);

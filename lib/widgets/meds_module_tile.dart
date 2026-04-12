@@ -29,14 +29,18 @@ class MedsModuleTile extends StatelessWidget {
         final availableWidth = constraints.maxWidth - 32;
         final availableHeight = constraints.maxHeight - 64;
 
-        AdaptiveTileMode mode = AdaptiveTileMode.medium;
-        if (availableHeight < 55 || availableWidth < 140) {
-          mode = AdaptiveTileMode.micro;
-        } else if (availableHeight < 110 || availableWidth < 220) {
-          mode = AdaptiveTileMode.compact;
-        } else if (availableWidth >= 360 && availableHeight >= 140) {
-          mode = AdaptiveTileMode.expanded;
-        }
+        final mode = resolveStandardTileMode(
+          availableWidth: availableWidth,
+          availableHeight: availableHeight,
+          thresholds: const AdaptiveTileThresholds(
+            microHeight: 55,
+            microWidth: 140,
+            compactHeight: 110,
+            compactWidth: 220,
+            expandedHeight: 140,
+            expandedWidth: 360,
+          ),
+        );
 
         if (mode == AdaptiveTileMode.micro) {
           return const ModuleTile(moduleId: BaselineModuleId.meds);

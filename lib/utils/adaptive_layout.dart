@@ -2,6 +2,24 @@ import 'package:flutter/material.dart';
 
 enum AdaptiveTileMode { micro, compact, medium, expanded }
 
+class AdaptiveTileThresholds {
+  const AdaptiveTileThresholds({
+    required this.microHeight,
+    required this.microWidth,
+    required this.compactHeight,
+    required this.compactWidth,
+    required this.expandedHeight,
+    required this.expandedWidth,
+  });
+
+  final double microHeight;
+  final double microWidth;
+  final double compactHeight;
+  final double compactWidth;
+  final double expandedHeight;
+  final double expandedWidth;
+}
+
 class AdaptiveSizing {
   static double measureTextWidth(
     BuildContext context,
@@ -56,4 +74,27 @@ class AdaptiveSizing {
     }
     return rows * itemHeight + (rows - 1) * runSpacing;
   }
+}
+
+AdaptiveTileMode resolveStandardTileMode({
+  required double availableWidth,
+  required double availableHeight,
+  required AdaptiveTileThresholds thresholds,
+}) {
+  if (availableHeight < thresholds.microHeight ||
+      availableWidth < thresholds.microWidth) {
+    return AdaptiveTileMode.micro;
+  }
+
+  if (availableHeight < thresholds.compactHeight ||
+      availableWidth < thresholds.compactWidth) {
+    return AdaptiveTileMode.compact;
+  }
+
+  if (availableWidth >= thresholds.expandedWidth &&
+      availableHeight >= thresholds.expandedHeight) {
+    return AdaptiveTileMode.expanded;
+  }
+
+  return AdaptiveTileMode.medium;
 }
