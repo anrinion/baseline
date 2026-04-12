@@ -36,7 +36,8 @@ abstract class NotificationAdapter {
     tz.TZDateTime scheduledDate,
     NotificationDetails notificationDetails, {
     required AndroidScheduleMode androidScheduleMode,
-    required UILocalNotificationDateInterpretation uiLocalNotificationDateInterpretation,
+    required UILocalNotificationDateInterpretation
+    uiLocalNotificationDateInterpretation,
     DateTimeComponents? matchDateTimeComponents,
     String? payload,
   });
@@ -61,23 +62,28 @@ class FlutterNotificationAdapter implements NotificationAdapter {
   Future<void> initialize(
     InitializationSettings settings, {
     NotificationResponseCallback? onDidReceiveNotificationResponse,
-  }) =>
-      _plugin.initialize(
-        settings,
-        onDidReceiveNotificationResponse: onDidReceiveNotificationResponse,
-      );
+  }) => _plugin.initialize(
+    settings,
+    onDidReceiveNotificationResponse: onDidReceiveNotificationResponse,
+  );
 
   @override
-  Future<void> createNotificationChannel(AndroidNotificationChannel channel) async {
+  Future<void> createNotificationChannel(
+    AndroidNotificationChannel channel,
+  ) async {
     final androidImplementation = _plugin
-        .resolvePlatformSpecificImplementation<AndroidFlutterLocalNotificationsPlugin>();
+        .resolvePlatformSpecificImplementation<
+          AndroidFlutterLocalNotificationsPlugin
+        >();
     await androidImplementation?.createNotificationChannel(channel);
   }
 
   @override
   Future<bool?> requestAndroidNotificationPermission() async {
     final androidImplementation = _plugin
-        .resolvePlatformSpecificImplementation<AndroidFlutterLocalNotificationsPlugin>();
+        .resolvePlatformSpecificImplementation<
+          AndroidFlutterLocalNotificationsPlugin
+        >();
     return await androidImplementation?.requestNotificationsPermission();
   }
 
@@ -89,21 +95,22 @@ class FlutterNotificationAdapter implements NotificationAdapter {
     tz.TZDateTime scheduledDate,
     NotificationDetails notificationDetails, {
     required AndroidScheduleMode androidScheduleMode,
-    required UILocalNotificationDateInterpretation uiLocalNotificationDateInterpretation,
+    required UILocalNotificationDateInterpretation
+    uiLocalNotificationDateInterpretation,
     DateTimeComponents? matchDateTimeComponents,
     String? payload,
-  }) =>
-      _plugin.zonedSchedule(
-        id,
-        title,
-        body,
-        scheduledDate,
-        notificationDetails,
-        androidScheduleMode: androidScheduleMode,
-        uiLocalNotificationDateInterpretation: uiLocalNotificationDateInterpretation,
-        matchDateTimeComponents: matchDateTimeComponents,
-        payload: payload,
-      );
+  }) => _plugin.zonedSchedule(
+    id,
+    title,
+    body,
+    scheduledDate,
+    notificationDetails,
+    androidScheduleMode: androidScheduleMode,
+    uiLocalNotificationDateInterpretation:
+        uiLocalNotificationDateInterpretation,
+    matchDateTimeComponents: matchDateTimeComponents,
+    payload: payload,
+  );
 
   @override
   Future<void> cancel(int id) => _plugin.cancel(id);
@@ -122,13 +129,7 @@ class FlutterNotificationAdapter implements NotificationAdapter {
     String? title,
     String? body,
     NotificationDetails? notificationDetails,
-  ) =>
-      _plugin.show(
-        id,
-        title,
-        body,
-        notificationDetails,
-      );
+  ) => _plugin.show(id, title, body, notificationDetails);
 }
 
 class MedsNotificationsService {
@@ -143,7 +144,9 @@ class MedsNotificationsService {
       'Daily alarm-like reminders for medication check-ins.';
 
   NotificationAdapter? _adapter;
-  NotificationAdapter get _plugin => _adapter ??= FlutterNotificationAdapter(FlutterLocalNotificationsPlugin());
+  NotificationAdapter get _plugin => _adapter ??= FlutterNotificationAdapter(
+    FlutterLocalNotificationsPlugin(),
+  );
 
   // Allow injecting mock adapter for testing
   @visibleForTesting
@@ -171,7 +174,8 @@ class MedsNotificationsService {
   OnSnoozeMed? _onSnoozeMed;
 
   @visibleForTesting
-  StreamController<String> get actionFeedbackControllerForTest => _actionFeedbackController;
+  StreamController<String> get actionFeedbackControllerForTest =>
+      _actionFeedbackController;
 
   final _actionFeedbackController = StreamController<String>.broadcast();
 
@@ -190,7 +194,10 @@ class MedsNotificationsService {
   @visibleForTesting
   OnSnoozeMed? get onSnoozeMedCallback => _onSnoozeMed;
 
-  void setCallbacks({OnMarkMedTaken? onMarkMedTaken, OnSnoozeMed? onSnoozeMed}) {
+  void setCallbacks({
+    OnMarkMedTaken? onMarkMedTaken,
+    OnSnoozeMed? onSnoozeMed,
+  }) {
     _onMarkMedTaken = onMarkMedTaken;
     _onSnoozeMed = onSnoozeMed;
   }
@@ -290,24 +297,22 @@ class MedsNotificationsService {
     try {
       // USE_EXACT_ALARM is granted at install time for medical apps
       // But POST_NOTIFICATIONS requires runtime request on Android 13+
-      final androidGranted = await _plugin.requestAndroidNotificationPermission();
+      final androidGranted = await _plugin
+          .requestAndroidNotificationPermission();
       if (androidGranted != null) {
         granted = granted && androidGranted;
       }
 
       // iOS/macOS permissions - skip for now as they're not critical for the tests
       // and would require additional adapter methods
-    } on MissingPluginException {
-      _isAvailable = false;
-      _setStatus('plugin_missing');
+    } on MissingPluginException catch (e) {
+      _setStatus('plugin_missing: ${e.message}');
       return false;
-    } on PlatformException {
-      _isAvailable = false;
-      _setStatus('platform_error');
+    } on PlatformException catch (e) {
+      _setStatus('platform_error: ${e.message}');
       return false;
-    } catch (_) {
-      _isAvailable = false;
-      _setStatus('error');
+    } catch (e) {
+      _setStatus('error: $e');
       return false;
     }
 
@@ -370,7 +375,8 @@ class MedsNotificationsService {
           uiLocalNotificationDateInterpretation:
               UILocalNotificationDateInterpretation.wallClockTime,
           matchDateTimeComponents: DateTimeComponents.time,
-          payload: '$_medsPayloadPrefix$medName::$minutes::${settings.language}',
+          payload:
+              '$_medsPayloadPrefix$medName::$minutes::${settings.language}',
         );
       }
       _setStatus('active');
@@ -446,7 +452,11 @@ class MedsNotificationsService {
 
   /// Builds notification details for medication reminders
   /// Shared between real scheduling and test notifications
-  NotificationDetails _buildMedNotificationDetails(String title, String body, {bool includeActions = true}) {
+  NotificationDetails _buildMedNotificationDetails(
+    String title,
+    String body, {
+    bool includeActions = true,
+  }) {
     return NotificationDetails(
       android: AndroidNotificationDetails(
         _channelId,
@@ -461,18 +471,20 @@ class MedsNotificationsService {
         playSound: true,
         enableVibration: true,
         audioAttributesUsage: AudioAttributesUsage.alarm,
-        actions: includeActions ? const <AndroidNotificationAction>[
-          AndroidNotificationAction(
-            'snooze',
-            'Snooze',
-            showsUserInterface: true,
-          ),
-          AndroidNotificationAction(
-            'mark_taken',
-            'Mark Taken',
-            showsUserInterface: true,
-          ),
-        ] : null,
+        actions: includeActions
+            ? const <AndroidNotificationAction>[
+                AndroidNotificationAction(
+                  'snooze',
+                  'Snooze',
+                  showsUserInterface: true,
+                ),
+                AndroidNotificationAction(
+                  'mark_taken',
+                  'Mark Taken',
+                  showsUserInterface: true,
+                ),
+              ]
+            : null,
       ),
       iOS: const DarwinNotificationDetails(
         presentAlert: true,
@@ -495,7 +507,10 @@ class MedsNotificationsService {
         'TEST Medication',
         'This is a test notification',
         scheduledTime,
-        _buildMedNotificationDetails('TEST Medication', 'This is a test notification'),
+        _buildMedNotificationDetails(
+          'TEST Medication',
+          'This is a test notification',
+        ),
         androidScheduleMode: AndroidScheduleMode.alarmClock,
         uiLocalNotificationDateInterpretation:
             UILocalNotificationDateInterpretation.wallClockTime,
@@ -548,7 +563,8 @@ class MedsNotificationsService {
 
   void _handleSnooze(String medName) {
     final snoozeUntil = DateTime.now().add(const Duration(minutes: 10));
-    final timeStr = '${snoozeUntil.hour.toString().padLeft(2, '0')}:${snoozeUntil.minute.toString().padLeft(2, '0')}';
+    final timeStr =
+        '${snoozeUntil.hour.toString().padLeft(2, '0')}:${snoozeUntil.minute.toString().padLeft(2, '0')}';
 
     // Track snooze
     _snoozedMeds[medName] = snoozeUntil;
@@ -563,7 +579,10 @@ class MedsNotificationsService {
     _actionFeedbackController.add('Alarm snoozed until $timeStr');
   }
 
-  Future<void> _scheduleSnoozeNotification(String medName, DateTime snoozeUntil) async {
+  Future<void> _scheduleSnoozeNotification(
+    String medName,
+    DateTime snoozeUntil,
+  ) async {
     final snoozeTime = tz.TZDateTime.from(snoozeUntil, tz.local);
 
     await _plugin.zonedSchedule(
@@ -592,7 +611,8 @@ class MedsNotificationsService {
     _snoozedMeds.remove(medName);
 
     // Get stored reminder settings (fallback to 8:00 AM if not found)
-    final reminderMinutes = _medReminderMinutes[medName] ?? 480; // 8:00 AM default
+    final reminderMinutes =
+        _medReminderMinutes[medName] ?? 480; // 8:00 AM default
 
     // Reschedule for tomorrow (since cancel() stops all future repetitions)
     final tomorrow = tz.TZDateTime.now(tz.local).add(const Duration(days: 1));
@@ -605,21 +625,24 @@ class MedsNotificationsService {
       reminderMinutes % 60,
     );
 
-    unawaited(_plugin.zonedSchedule(
-      notificationIdForMed(medName),
-      _titleForLanguage(_currentLanguage, medName),
-      _bodyForLanguage(_currentLanguage),
-      nextSchedule,
-      _buildMedNotificationDetails(
+    unawaited(
+      _plugin.zonedSchedule(
+        notificationIdForMed(medName),
         _titleForLanguage(_currentLanguage, medName),
         _bodyForLanguage(_currentLanguage),
+        nextSchedule,
+        _buildMedNotificationDetails(
+          _titleForLanguage(_currentLanguage, medName),
+          _bodyForLanguage(_currentLanguage),
+        ),
+        androidScheduleMode: AndroidScheduleMode.alarmClock,
+        uiLocalNotificationDateInterpretation:
+            UILocalNotificationDateInterpretation.wallClockTime,
+        matchDateTimeComponents: DateTimeComponents.time,
+        payload:
+            '$_medsPayloadPrefix$medName::$reminderMinutes::$_currentLanguage',
       ),
-      androidScheduleMode: AndroidScheduleMode.alarmClock,
-      uiLocalNotificationDateInterpretation:
-          UILocalNotificationDateInterpretation.wallClockTime,
-      matchDateTimeComponents: DateTimeComponents.time,
-      payload: '$_medsPayloadPrefix$medName::$reminderMinutes::$_currentLanguage',
-    ));
+    );
 
     // Notify app to mark as taken
     _onMarkMedTaken?.call(medName);
@@ -648,7 +671,7 @@ class MedsNotificationsService {
   /// Call this from any widget to show SnackBar feedback when notification actions are pressed
   void listenForActionFeedback(BuildContext context) {
     actionFeedbackStream.listen((message) {
-      if (context.mounted) { 
+      if (context.mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text(message),

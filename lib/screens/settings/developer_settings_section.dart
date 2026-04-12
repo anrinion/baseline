@@ -112,8 +112,13 @@ class DeveloperSettingsSection extends StatelessWidget {
     );
   }
 
-  String _notificationsStatusLabel(AppLocalizations l10n, String statusCode) {
-    switch (statusCode) {
+  String _notificationsStatusLabel(AppLocalizations l10n, String status) {
+    // Extract base status from messages that may include details (e.g., 'error: ...')
+    final baseStatus = status.contains(':') 
+        ? status.substring(0, status.indexOf(':')) 
+        : status;
+    
+    switch (baseStatus) {
       case 'active':
         return l10n.developerNotificationsStatusActive;
       case 'disabled':
@@ -126,7 +131,7 @@ class DeveloperSettingsSection extends StatelessWidget {
         return l10n.developerNotificationsStatusPermissionDenied;
       case 'platform_error':
       case 'error':
-        return l10n.developerNotificationsStatusError;
+        return '${l10n.developerNotificationsStatusError} ($status)';
       case 'ready':
         return l10n.developerNotificationsStatusReady;
       case 'not_initialized':
