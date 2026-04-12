@@ -407,10 +407,64 @@ class AppLocalizationsEn extends AppLocalizations {
   String get hereButtonHint => 'I\'m here. I\'m alive.';
 
   @override
-  String get movementChoicesLabel => 'Movement choices (one per line)';
+  String get movementChoicesLabel => 'Movement choices';
+
+  @override
+  String get movementItemDeleted => 'Item deleted';
+
+  @override
+  String get movementItemHint => 'e.g. Go for a walk';
+
+  @override
+  String get movementAddNewItem => 'New activity';
 
   @override
   String get movementDone => 'Done';
+
+  @override
+  String get movementMagicWalk => 'walk,stroll';
+
+  @override
+  String get movementMagicRun => 'run,jog';
+
+  @override
+  String get movementMagicYoga => 'yoga,stretch';
+
+  @override
+  String get movementMagicBike => 'bike,cycle';
+
+  @override
+  String get movementMagicSwim => 'swim,pool';
+
+  @override
+  String get movementMagicWorkout => 'workout,gym';
+
+  @override
+  String get movementMagicBasketball => 'basketball,ball';
+
+  @override
+  String get movementMagicTennis => 'tennis,racket';
+
+  @override
+  String get movementMagicHike => 'hike,trek';
+
+  @override
+  String get movementMagicMartial => 'martial,karate';
+
+  @override
+  String get movementMagicDance => 'dance,dancing';
+
+  @override
+  String get movementMagicRow => 'row,kayak';
+
+  @override
+  String get movementMagicSkate => 'skate,skateboard';
+
+  @override
+  String get movementMagicSki => 'ski,snowboard';
+
+  @override
+  String get movementMagicSoccer => 'soccer,football';
 
   @override
   String get stateLabel => 'State:';

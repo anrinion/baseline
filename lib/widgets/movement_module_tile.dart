@@ -52,7 +52,7 @@ class MovementModuleTile extends StatelessWidget {
         } else {
           final List<double> textItemWidths = options.map((opt) {
             // roughly padding (16*2) + icon (18) + gap (8) = 58
-            return 58.0 + AdaptiveSizing.measureTextWidth(context, opt, buttonTextStyle);
+            return 58.0 + AdaptiveSizing.measureTextWidth(context, opt.text, buttonTextStyle);
           }).toList();
 
           final expandedTextH = AdaptiveSizing.measureTextHeight(
@@ -266,7 +266,7 @@ class MovementModuleTile extends StatelessWidget {
   Widget _buildChoicesState(
     BuildContext context,
     AppState appState,
-    List<String> options,
+    List<MovementOption> options,
     AdaptiveTileMode mode,
   ) {
     final theme = Theme.of(context);
@@ -292,7 +292,7 @@ class MovementModuleTile extends StatelessWidget {
           runSpacing: 8,
           alignment: WrapAlignment.center,
           children: options.map((option) {
-            final iconForOpt = iconForMovementOption(option);
+            final iconForOpt = getMovementIconByName(option.iconName);
             if (mode == AdaptiveTileMode.compact) {
               return Material(
                 color: scheme.primaryContainer,
@@ -310,7 +310,7 @@ class MovementModuleTile extends StatelessWidget {
               return ElevatedButton.icon(
                 onPressed: () => completeMovementExercise(appState),
                 icon: Icon(iconForOpt, size: 18),
-                label: Text(option),
+                label: Text(option.text),
                 style: ElevatedButton.styleFrom(
                   backgroundColor: scheme.primaryContainer,
                   foregroundColor: scheme.onPrimaryContainer,

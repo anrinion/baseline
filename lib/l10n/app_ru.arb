@@ -505,13 +505,85 @@
   "@hereButtonHint": {
     "description": "Hint text for the here module button customization field"
   },
-  "movementChoicesLabel": "Выбор движений (по одному на строку)",
+  "movementChoicesLabel": "Выбор движений",
   "@movementChoicesLabel": {
     "description": "Label for movement choices field"
+  },
+  "movementItemDeleted": "Пункт удалён",
+  "@movementItemDeleted": {
+    "description": "Message shown when a movement item is deleted"
+  },
+  "movementItemHint": "например, Выйти погулять",
+  "@movementItemHint": {
+    "description": "Hint text for movement item input field"
+  },
+  "movementAddNewItem": "Новая активность",
+  "@movementAddNewItem": {
+    "description": "Button label to add a new movement activity"
   },
   "movementDone": "Готово",
   "@movementDone": {
     "description": "Compact movement completed label"
+  },
+  "movementMagicWalk": "гулять,прогулка",
+  "@movementMagicWalk": {
+    "description": "Magic keywords for walk icon (comma-separated)"
+  },
+  "movementMagicRun": "бег,пробежка",
+  "@movementMagicRun": {
+    "description": "Magic keywords for run icon (comma-separated)"
+  },
+  "movementMagicYoga": "йога,растяжка",
+  "@movementMagicYoga": {
+    "description": "Magic keywords for yoga icon (comma-separated)"
+  },
+  "movementMagicBike": "велосипед,вело",
+  "@movementMagicBike": {
+    "description": "Magic keywords for bike icon (comma-separated)"
+  },
+  "movementMagicSwim": "плавание,бассейн",
+  "@movementMagicSwim": {
+    "description": "Magic keywords for swim icon (comma-separated)"
+  },
+  "movementMagicWorkout": "тренировка,спортзал",
+  "@movementMagicWorkout": {
+    "description": "Magic keywords for workout icon (comma-separated)"
+  },
+  "movementMagicBasketball": "баскетбол,мяч",
+  "@movementMagicBasketball": {
+    "description": "Magic keywords for basketball icon (comma-separated)"
+  },
+  "movementMagicTennis": "теннис,ракетка",
+  "@movementMagicTennis": {
+    "description": "Magic keywords for tennis icon (comma-separated)"
+  },
+  "movementMagicHike": "поход,трекинг",
+  "@movementMagicHike": {
+    "description": "Magic keywords for hike icon (comma-separated)"
+  },
+  "movementMagicMartial": "боевые,бокс",
+  "@movementMagicMartial": {
+    "description": "Magic keywords for martial arts icon (comma-separated)"
+  },
+  "movementMagicDance": "танцы,танец",
+  "@movementMagicDance": {
+    "description": "Magic keywords for dance icon (comma-separated)"
+  },
+  "movementMagicRow": "гребля,каяк",
+  "@movementMagicRow": {
+    "description": "Magic keywords for rowing icon (comma-separated)"
+  },
+  "movementMagicSkate": "скейт,скейтборд",
+  "@movementMagicSkate": {
+    "description": "Magic keywords for skateboard icon (comma-separated)"
+  },
+  "movementMagicSki": "лыжи,сноуборд",
+  "@movementMagicSki": {
+    "description": "Magic keywords for ski icon (comma-separated)"
+  },
+  "movementMagicSoccer": "футбол,мяч",
+  "@movementMagicSoccer": {
+    "description": "Magic keywords for soccer icon (comma-separated)"
   },
   "stateLabel": "Состояние:",
   "@stateLabel": {

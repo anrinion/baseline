@@ -839,14 +839,122 @@ abstract class AppLocalizations {
   /// Label for movement choices field
   ///
   /// In en, this message translates to:
-  /// **'Movement choices (one per line)'**
+  /// **'Movement choices'**
   String get movementChoicesLabel;
+
+  /// Message shown when a movement item is deleted
+  ///
+  /// In en, this message translates to:
+  /// **'Item deleted'**
+  String get movementItemDeleted;
+
+  /// Hint text for movement item input field
+  ///
+  /// In en, this message translates to:
+  /// **'e.g. Go for a walk'**
+  String get movementItemHint;
+
+  /// Button label to add a new movement activity
+  ///
+  /// In en, this message translates to:
+  /// **'New activity'**
+  String get movementAddNewItem;
 
   /// Compact movement completed label
   ///
   /// In en, this message translates to:
   /// **'Done'**
   String get movementDone;
+
+  /// Magic keywords for walk icon (comma-separated)
+  ///
+  /// In en, this message translates to:
+  /// **'walk,stroll'**
+  String get movementMagicWalk;
+
+  /// Magic keywords for run icon (comma-separated)
+  ///
+  /// In en, this message translates to:
+  /// **'run,jog'**
+  String get movementMagicRun;
+
+  /// Magic keywords for yoga icon (comma-separated)
+  ///
+  /// In en, this message translates to:
+  /// **'yoga,stretch'**
+  String get movementMagicYoga;
+
+  /// Magic keywords for bike icon (comma-separated)
+  ///
+  /// In en, this message translates to:
+  /// **'bike,cycle'**
+  String get movementMagicBike;
+
+  /// Magic keywords for swim icon (comma-separated)
+  ///
+  /// In en, this message translates to:
+  /// **'swim,pool'**
+  String get movementMagicSwim;
+
+  /// Magic keywords for workout icon (comma-separated)
+  ///
+  /// In en, this message translates to:
+  /// **'workout,gym'**
+  String get movementMagicWorkout;
+
+  /// Magic keywords for basketball icon (comma-separated)
+  ///
+  /// In en, this message translates to:
+  /// **'basketball,ball'**
+  String get movementMagicBasketball;
+
+  /// Magic keywords for tennis icon (comma-separated)
+  ///
+  /// In en, this message translates to:
+  /// **'tennis,racket'**
+  String get movementMagicTennis;
+
+  /// Magic keywords for hike icon (comma-separated)
+  ///
+  /// In en, this message translates to:
+  /// **'hike,trek'**
+  String get movementMagicHike;
+
+  /// Magic keywords for martial arts icon (comma-separated)
+  ///
+  /// In en, this message translates to:
+  /// **'martial,karate'**
+  String get movementMagicMartial;
+
+  /// Magic keywords for dance icon (comma-separated)
+  ///
+  /// In en, this message translates to:
+  /// **'dance,dancing'**
+  String get movementMagicDance;
+
+  /// Magic keywords for rowing icon (comma-separated)
+  ///
+  /// In en, this message translates to:
+  /// **'row,kayak'**
+  String get movementMagicRow;
+
+  /// Magic keywords for skateboard icon (comma-separated)
+  ///
+  /// In en, this message translates to:
+  /// **'skate,skateboard'**
+  String get movementMagicSkate;
+
+  /// Magic keywords for ski icon (comma-separated)
+  ///
+  /// In en, this message translates to:
+  /// **'ski,snowboard'**
+  String get movementMagicSki;
+
+  /// Magic keywords for soccer icon (comma-separated)
+  ///
+  /// In en, this message translates to:
+  /// **'soccer,football'**
+  String get movementMagicSoccer;
 
   /// Label prefix for current state display
   ///

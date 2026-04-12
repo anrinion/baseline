@@ -505,13 +505,85 @@
   "@hereButtonHint": {
     "description": "Hint text for the here module button customization field"
   },
-  "movementChoicesLabel": "Movement choices (one per line)",
+  "movementChoicesLabel": "Movement choices",
   "@movementChoicesLabel": {
     "description": "Label for movement choices field"
+  },
+  "movementItemDeleted": "Item deleted",
+  "@movementItemDeleted": {
+    "description": "Message shown when a movement item is deleted"
+  },
+  "movementItemHint": "e.g. Go for a walk",
+  "@movementItemHint": {
+    "description": "Hint text for movement item input field"
+  },
+  "movementAddNewItem": "New activity",
+  "@movementAddNewItem": {
+    "description": "Button label to add a new movement activity"
   },
   "movementDone": "Done",
   "@movementDone": {
     "description": "Compact movement completed label"
+  },
+  "movementMagicWalk": "walk,stroll",
+  "@movementMagicWalk": {
+    "description": "Magic keywords for walk icon (comma-separated)"
+  },
+  "movementMagicRun": "run,jog",
+  "@movementMagicRun": {
+    "description": "Magic keywords for run icon (comma-separated)"
+  },
+  "movementMagicYoga": "yoga,stretch",
+  "@movementMagicYoga": {
+    "description": "Magic keywords for yoga icon (comma-separated)"
+  },
+  "movementMagicBike": "bike,cycle",
+  "@movementMagicBike": {
+    "description": "Magic keywords for bike icon (comma-separated)"
+  },
+  "movementMagicSwim": "swim,pool",
+  "@movementMagicSwim": {
+    "description": "Magic keywords for swim icon (comma-separated)"
+  },
+  "movementMagicWorkout": "workout,gym",
+  "@movementMagicWorkout": {
+    "description": "Magic keywords for workout icon (comma-separated)"
+  },
+  "movementMagicBasketball": "basketball,ball",
+  "@movementMagicBasketball": {
+    "description": "Magic keywords for basketball icon (comma-separated)"
+  },
+  "movementMagicTennis": "tennis,racket",
+  "@movementMagicTennis": {
+    "description": "Magic keywords for tennis icon (comma-separated)"
+  },
+  "movementMagicHike": "hike,trek",
+  "@movementMagicHike": {
+    "description": "Magic keywords for hike icon (comma-separated)"
+  },
+  "movementMagicMartial": "martial,karate",
+  "@movementMagicMartial": {
+    "description": "Magic keywords for martial arts icon (comma-separated)"
+  },
+  "movementMagicDance": "dance,dancing",
+  "@movementMagicDance": {
+    "description": "Magic keywords for dance icon (comma-separated)"
+  },
+  "movementMagicRow": "row,kayak",
+  "@movementMagicRow": {
+    "description": "Magic keywords for rowing icon (comma-separated)"
+  },
+  "movementMagicSkate": "skate,skateboard",
+  "@movementMagicSkate": {
+    "description": "Magic keywords for skateboard icon (comma-separated)"
+  },
+  "movementMagicSki": "ski,snowboard",
+  "@movementMagicSki": {
+    "description": "Magic keywords for ski icon (comma-separated)"
+  },
+  "movementMagicSoccer": "soccer,football",
+  "@movementMagicSoccer": {
+    "description": "Magic keywords for soccer icon (comma-separated)"
   },
   "stateLabel": "State:",
   "@stateLabel": {

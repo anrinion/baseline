@@ -409,10 +409,64 @@ class AppLocalizationsRu extends AppLocalizations {
   String get hereButtonHint => 'Я здесь. Я живой(ая).';
 
   @override
-  String get movementChoicesLabel => 'Выбор движений (по одному на строку)';
+  String get movementChoicesLabel => 'Выбор движений';
+
+  @override
+  String get movementItemDeleted => 'Пункт удалён';
+
+  @override
+  String get movementItemHint => 'например, Выйти погулять';
+
+  @override
+  String get movementAddNewItem => 'Новая активность';
 
   @override
   String get movementDone => 'Готово';
+
+  @override
+  String get movementMagicWalk => 'гулять,прогулка';
+
+  @override
+  String get movementMagicRun => 'бег,пробежка';
+
+  @override
+  String get movementMagicYoga => 'йога,растяжка';
+
+  @override
+  String get movementMagicBike => 'велосипед,вело';
+
+  @override
+  String get movementMagicSwim => 'плавание,бассейн';
+
+  @override
+  String get movementMagicWorkout => 'тренировка,спортзал';
+
+  @override
+  String get movementMagicBasketball => 'баскетбол,мяч';
+
+  @override
+  String get movementMagicTennis => 'теннис,ракетка';
+
+  @override
+  String get movementMagicHike => 'поход,трекинг';
+
+  @override
+  String get movementMagicMartial => 'боевые,бокс';
+
+  @override
+  String get movementMagicDance => 'танцы,танец';
+
+  @override
+  String get movementMagicRow => 'гребля,каяк';
+
+  @override
+  String get movementMagicSkate => 'скейт,скейтборд';
+
+  @override
+  String get movementMagicSki => 'лыжи,сноуборд';
+
+  @override
+  String get movementMagicSoccer => 'футбол,мяч';
 
   @override
   String get stateLabel => 'Состояние:';
