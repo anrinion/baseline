@@ -1,5 +1,14 @@
 on:
   workflow_dispatch:
+    inputs:
+      release_type:
+        description: 'Build type'
+        required: true
+        default: 'dev'
+        type: choice
+        options:
+          - dev
+          - production
   push:
     branches:
     - main
@@ -7,9 +16,40 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    outputs:
+      version: ${{ steps.version.outputs.version }}
+      release_tag: ${{ steps.version.outputs.release_tag }}
     steps:
       - name: Clone repository
         uses: actions/checkout@v6
+
+      - name: Compute version
+        id: version
+        run: |
+          MAJOR_MINOR="${{ vars.MAJOR_MINOR || '0.0' }}"
+          PATCH="${{ github.run_number }}"
+          
+          if [[ "${{ github.event_name }}" == "push" || "${{ inputs.release_type }}" == "dev" ]]; then
+            SUFFIX="-dev"
+          else
+            SUFFIX=""
+          fi
+          
+          # Pubspec version uses Flutter format: versionName+versionCode
+          PUBSPEC_VERSION="${MAJOR_MINOR}.${PATCH}+${PATCH}"
+          # Release tag includes -dev suffix if applicable
+          RELEASE_TAG="${MAJOR_MINOR}.${PATCH}${SUFFIX}"
+          
+          echo "pubspec_version=$PUBSPEC_VERSION" >> $GITHUB_OUTPUT
+          echo "release_tag=$RELEASE_TAG" >> $GITHUB_OUTPUT
+          echo "version=$RELEASE_TAG" >> $GITHUB_OUTPUT
+          echo "Pubspec version: $PUBSPEC_VERSION"
+          echo "Release tag: $RELEASE_TAG"
+
+      - name: Update version in pubspec.yaml
+        run: |
+          sed -i "s/^version: .*/version: ${{ steps.version.outputs.pubspec_version }}/" pubspec.yaml
+          cat pubspec.yaml | grep "^version:"
 
       - name: Set up Flutter
         uses: subosito/flutter-action@v2
@@ -21,7 +61,7 @@ jobs:
         run: |
           flutter --version
           flutter pub get
-        
+
       - name: Flutter test
         run: flutter test
 
@@ -55,7 +95,8 @@ jobs:
       - name: Create Release
         uses: softprops/action-gh-release@v2
         with:
-          tag_name: build-${{ github.run_number }}
+          tag_name: v${{ needs.build.outputs.release_tag }}
+          name: Release ${{ needs.build.outputs.release_tag }}
           files: |
             flutter-apk/app-release.apk
             bundle/release/app-release.aab
