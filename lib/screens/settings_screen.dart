@@ -6,6 +6,7 @@ import '../state/app_state.dart';
 import '../state/settings.dart';
 import '../l10n/localization_service.dart';
 import '../l10n/app_localizations.dart';
+import '../services/meds_notifications_service.dart';
 import 'initial_screen.dart';
 
 class SettingsScreen extends StatefulWidget {
@@ -291,6 +292,24 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
           if (settings.developerModeEnabled) ...[
             const SizedBox(height: 12),
+            FutureBuilder<void>(
+              future: MedsNotificationsService.instance.ensureInitialized(),
+              builder: (context, snapshot) => ValueListenableBuilder<String>(
+                valueListenable:
+                    MedsNotificationsService.instance.statusListenable,
+                builder: (context, statusCode, child) {
+                  return ListTile(
+                    contentPadding: EdgeInsets.zero,
+                    title: Text(l10n.developerNotificationsServiceLabel),
+                    subtitle: Text(
+                      _notificationsStatusLabel(l10n, statusCode),
+                      style: Theme.of(context).textTheme.bodySmall,
+                    ),
+                  );
+                },
+              ),
+            ),
+            const SizedBox(height: 12),
             OutlinedButton(
               onPressed: () async {
                 final confirmed = await showDialog<bool>(
@@ -333,6 +352,29 @@ class _SettingsScreenState extends State<SettingsScreen> {
         ],
       ),
     );
+  }
+
+  String _notificationsStatusLabel(AppLocalizations l10n, String statusCode) {
+    switch (statusCode) {
+      case 'active':
+        return l10n.developerNotificationsStatusActive;
+      case 'disabled':
+        return l10n.developerNotificationsStatusDisabled;
+      case 'unsupported_platform':
+        return l10n.developerNotificationsStatusUnsupportedPlatform;
+      case 'plugin_missing':
+        return l10n.developerNotificationsStatusPluginMissing;
+      case 'permission_denied':
+        return l10n.developerNotificationsStatusPermissionDenied;
+      case 'platform_error':
+      case 'error':
+        return l10n.developerNotificationsStatusError;
+      case 'ready':
+        return l10n.developerNotificationsStatusReady;
+      case 'not_initialized':
+      default:
+        return l10n.developerNotificationsStatusNotInitialized;
+    }
   }
 
   String _getThemeLabel(AppLocalizations l10n, String themeKey) {

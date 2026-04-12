@@ -421,6 +421,42 @@
   "@developerResetAllDataHelp": {
     "description": "Confirmation text for developer full reset"
   },
+  "developerNotificationsServiceLabel": "Medication notifications service",
+  "@developerNotificationsServiceLabel": {
+    "description": "Label for notification service status shown in developer mode"
+  },
+  "developerNotificationsStatusNotInitialized": "Status: not initialized",
+  "@developerNotificationsStatusNotInitialized": {
+    "description": "Developer status for notifications when service has not initialized"
+  },
+  "developerNotificationsStatusReady": "Status: ready (no reminders scheduled)",
+  "@developerNotificationsStatusReady": {
+    "description": "Developer status for notifications when service is ready and no reminders are currently scheduled"
+  },
+  "developerNotificationsStatusActive": "Status: active (reminders scheduled)",
+  "@developerNotificationsStatusActive": {
+    "description": "Developer status for notifications when reminders are scheduled"
+  },
+  "developerNotificationsStatusDisabled": "Status: disabled (no reminders configured)",
+  "@developerNotificationsStatusDisabled": {
+    "description": "Developer status for notifications when reminders are disabled in settings"
+  },
+  "developerNotificationsStatusUnsupportedPlatform": "Status: unsupported platform",
+  "@developerNotificationsStatusUnsupportedPlatform": {
+    "description": "Developer status for notifications when current platform does not support the notifications service"
+  },
+  "developerNotificationsStatusPluginMissing": "Status: plugin unavailable",
+  "@developerNotificationsStatusPluginMissing": {
+    "description": "Developer status for notifications when local notifications plugin is unavailable"
+  },
+  "developerNotificationsStatusPermissionDenied": "Status: permission denied",
+  "@developerNotificationsStatusPermissionDenied": {
+    "description": "Developer status for notifications when notification permission is denied"
+  },
+  "developerNotificationsStatusError": "Status: error",
+  "@developerNotificationsStatusError": {
+    "description": "Developer status for notifications when an unexpected error occurs"
+  },
   "appPrivacyText": "Baseline is a private self-care app:\\nNo history, no sync, no data collection.\\n",
   "@appPrivacyText": {
     "description": "Privacy statement in settings"

@@ -332,6 +332,41 @@ class AppLocalizationsRu extends AppLocalizations {
       'Это очистит состояние на сегодня, настройки приложения и вернёт тебя на начальный экран.';
 
   @override
+  String get developerNotificationsServiceLabel =>
+      'Сервис уведомлений о лекарствах';
+
+  @override
+  String get developerNotificationsStatusNotInitialized =>
+      'Статус: не инициализирован';
+
+  @override
+  String get developerNotificationsStatusReady =>
+      'Статус: готов (напоминания не запланированы)';
+
+  @override
+  String get developerNotificationsStatusActive =>
+      'Статус: активен (напоминания запланированы)';
+
+  @override
+  String get developerNotificationsStatusDisabled =>
+      'Статус: выключен (напоминания не настроены)';
+
+  @override
+  String get developerNotificationsStatusUnsupportedPlatform =>
+      'Статус: платформа не поддерживается';
+
+  @override
+  String get developerNotificationsStatusPluginMissing =>
+      'Статус: плагин недоступен';
+
+  @override
+  String get developerNotificationsStatusPermissionDenied =>
+      'Статус: доступ запрещён';
+
+  @override
+  String get developerNotificationsStatusError => 'Статус: ошибка';
+
+  @override
   String get appPrivacyText =>
       'Baseline — приватное приложение для заботы о себе:\\nМы не собираем и не храним данные.';
 

@@ -710,6 +710,60 @@ abstract class AppLocalizations {
   /// **'This clears today\'s state, app settings, and returns to the initial setup screen.'**
   String get developerResetAllDataHelp;
 
+  /// Label for notification service status shown in developer mode
+  ///
+  /// In en, this message translates to:
+  /// **'Medication notifications service'**
+  String get developerNotificationsServiceLabel;
+
+  /// Developer status for notifications when service has not initialized
+  ///
+  /// In en, this message translates to:
+  /// **'Status: not initialized'**
+  String get developerNotificationsStatusNotInitialized;
+
+  /// Developer status for notifications when service is ready and no reminders are currently scheduled
+  ///
+  /// In en, this message translates to:
+  /// **'Status: ready (no reminders scheduled)'**
+  String get developerNotificationsStatusReady;
+
+  /// Developer status for notifications when reminders are scheduled
+  ///
+  /// In en, this message translates to:
+  /// **'Status: active (reminders scheduled)'**
+  String get developerNotificationsStatusActive;
+
+  /// Developer status for notifications when reminders are disabled in settings
+  ///
+  /// In en, this message translates to:
+  /// **'Status: disabled (no reminders configured)'**
+  String get developerNotificationsStatusDisabled;
+
+  /// Developer status for notifications when current platform does not support the notifications service
+  ///
+  /// In en, this message translates to:
+  /// **'Status: unsupported platform'**
+  String get developerNotificationsStatusUnsupportedPlatform;
+
+  /// Developer status for notifications when local notifications plugin is unavailable
+  ///
+  /// In en, this message translates to:
+  /// **'Status: plugin unavailable'**
+  String get developerNotificationsStatusPluginMissing;
+
+  /// Developer status for notifications when notification permission is denied
+  ///
+  /// In en, this message translates to:
+  /// **'Status: permission denied'**
+  String get developerNotificationsStatusPermissionDenied;
+
+  /// Developer status for notifications when an unexpected error occurs
+  ///
+  /// In en, this message translates to:
+  /// **'Status: error'**
+  String get developerNotificationsStatusError;
+
   /// Privacy statement in settings
   ///
   /// In en, this message translates to:
