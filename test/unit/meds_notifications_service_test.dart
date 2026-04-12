@@ -107,9 +107,9 @@ void main() {
       });
 
       test('TZDateTime uses local timezone correctly', () {
-        // Create a fixed time and verify timezone is applied
-        final fixedTime = DateTime(2026, 4, 12, 14, 30);
-        final tzTime = tz.TZDateTime.from(fixedTime, tz.local);
+        // Create a fixed time directly in the target timezone
+        // Using constructor (not from()) to interpret time as being in tz.local
+        final tzTime = tz.TZDateTime(tz.local, 2026, 4, 12, 14, 30);
 
         // Verify the TZDateTime preserved the time components
         expect(tzTime.year, equals(2026));
