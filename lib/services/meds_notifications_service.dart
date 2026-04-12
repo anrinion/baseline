@@ -104,16 +104,8 @@ class MedsNotificationsService {
     var granted = true;
 
     try {
-      final androidImplementation = _plugin
-          .resolvePlatformSpecificImplementation<
-            AndroidFlutterLocalNotificationsPlugin
-          >();
-      final androidGranted = await androidImplementation
-          ?.requestNotificationsPermission();
-      if (androidGranted != null) {
-        granted = granted && androidGranted;
-      }
-      await androidImplementation?.requestExactAlarmsPermission();
+      // USE_EXACT_ALARM is granted at install time for medical apps
+      // No runtime permission request needed
 
       final iosImplementation = _plugin
           .resolvePlatformSpecificImplementation<
@@ -213,7 +205,7 @@ class MedsNotificationsService {
               interruptionLevel: InterruptionLevel.timeSensitive,
             ),
           ),
-          androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
+          androidScheduleMode: AndroidScheduleMode.alarmClock,
           uiLocalNotificationDateInterpretation:
               UILocalNotificationDateInterpretation.wallClockTime,
           matchDateTimeComponents: DateTimeComponents.time,
