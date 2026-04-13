@@ -54,20 +54,6 @@ jobs:
           sed -i "s/^version: .*/version: ${{ steps.version.outputs.pubspec_version }}/" pubspec.yaml
           cat pubspec.yaml | grep "^version:"
 
-      - name: Update Android package name and version
-        run: |
-          # Update namespace and applicationId to real package name
-          sed -i 's/namespace = "app\.baseline\.android"/namespace = "io.github.anrinion.baseline"/' android/app/build.gradle.kts
-          sed -i 's/applicationId = "app\.baseline\.android"/applicationId = "io.github.anrinion.baseline"/' android/app/build.gradle.kts
-          
-          # Handle -dev suffix in versionName (pubspec can't have it due to +versionCode format)
-          VERSION_NAME="${{ steps.version.outputs.version }}"
-          VERSION_CODE="${{ github.run_number }}"
-          sed -i "s/versionName = flutter\.versionName/versionName = \"$VERSION_NAME\"/" android/app/build.gradle.kts
-          sed -i "s/versionCode = flutter\.versionCode/versionCode = $VERSION_CODE/" android/app/build.gradle.kts
-          
-          cat android/app/build.gradle.kts | grep -E "(namespace|applicationId|versionName|versionCode)"
-
       - name: Set up Flutter
         uses: subosito/flutter-action@v2
         with:
