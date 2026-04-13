@@ -9,6 +9,7 @@ import '../modules/module_ids.dart';
 import '../modules/movement_module.dart';
 import '../modules/sleep_module.dart';
 import '../state/app_state.dart';
+import '../utils/adaptive_layout.dart';
 
 class ModuleTile extends StatelessWidget {
   final String moduleId;
@@ -36,80 +37,148 @@ class ModuleTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final scheme = Theme.of(context).colorScheme;
-    final l10n = AppLocalizations.of(context)!;
-    final label = BaselineModuleId.localizedLabel(l10n, moduleId);
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final scheme = Theme.of(context).colorScheme;
+        final l10n = AppLocalizations.of(context)!;
+        final label = BaselineModuleId.localizedLabel(l10n, moduleId);
+        final appState = Provider.of<AppState>(context);
 
-    return Card(
-      margin: const EdgeInsets.all(12),
-      elevation: 0,
-      clipBehavior: Clip.antiAlias,
-      color: scheme.surface,
-      surfaceTintColor: Colors.transparent,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-      child: InkWell(
-        onTap: () => _openModule(context),
-        borderRadius: BorderRadius.circular(20),
-        child: Padding(
-          padding: const EdgeInsets.fromLTRB(10, 10, 10, 8),
-          child: ClipRect(
-            child: OverflowBox(
-              minHeight: 0,
-              maxHeight: double.infinity,
-              alignment: Alignment.topCenter,
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  Row(
-                    children: [
-                      Icon(iconFor(moduleId), color: scheme.primary, size: 20),
-                      const SizedBox(width: 6),
-                      Expanded(
-                        child: Text(
-                          label,
-                          maxLines: 2,
-                          overflow: TextOverflow.ellipsis,
-                          style: Theme.of(context).textTheme.titleSmall
-                              ?.copyWith(
-                                fontWeight: FontWeight.w600,
-                                color: scheme.onSurface,
-                              ),
-                        ),
-                      ),
-                      IconButton(
-                        icon: Icon(
-                          Icons.help_outline,
-                          size: 20,
-                          color: scheme.outline,
-                        ),
-                        tooltip: l10n.dialogWhyThisHelps,
-                        padding: EdgeInsets.zero,
-                        constraints: const BoxConstraints(
-                          minWidth: 36,
-                          minHeight: 36,
-                        ),
-                        onPressed: () => showModuleHelp(context, moduleId),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 8),
-                  Text(
-                    l10n.tapToOpen,
-                    textAlign: TextAlign.center,
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                      color: scheme.onSurfaceVariant,
-                      fontSize: 10,
-                    ),
-                  ),
-                ],
+        final availableWidth = constraints.maxWidth - 24; // 12 padding each side
+        final availableHeight = constraints.maxHeight - 24; // 12 padding each side
+
+        final mode = resolveStandardTileMode(
+          availableWidth: availableWidth,
+          availableHeight: availableHeight,
+          thresholds: const AdaptiveTileThresholds(
+            microHeight: 50,
+            microWidth: 80,
+            compactHeight: 70,
+            compactWidth: 140,
+            expandedHeight: 100,
+            expandedWidth: 200,
+          ),
+        );
+
+        final isMicro = mode == AdaptiveTileMode.micro;
+        final isCompact = mode == AdaptiveTileMode.compact;
+
+        return Card(
+          margin: const EdgeInsets.all(12),
+          elevation: 0,
+          clipBehavior: Clip.antiAlias,
+          color: scheme.surface,
+          surfaceTintColor: Colors.transparent,
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+          child: InkWell(
+            onTap: () => _openModule(context),
+            borderRadius: BorderRadius.circular(20),
+            child: Padding(
+              padding: const EdgeInsets.fromLTRB(10, 10, 10, 8),
+              child: ClipRect(
+                child: OverflowBox(
+                  minHeight: 0,
+                  maxHeight: double.infinity,
+                  alignment: Alignment.topCenter,
+                  child: isMicro
+                      ? _buildMicroLayout(context, scheme, label)
+                      : _buildStandardLayout(context, scheme, l10n, label, isCompact, appState, mode, availableWidth, availableHeight),
+                ),
               ),
             ),
           ),
+        );
+      },
+    );
+  }
+
+  Widget _buildMicroLayout(BuildContext context, ColorScheme scheme, String label) {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Icon(iconFor(moduleId), color: scheme.primary, size: 24),
+        const SizedBox(height: 4),
+        Text(
+          label,
+          maxLines: 1,
+          overflow: TextOverflow.ellipsis,
+          textAlign: TextAlign.center,
+          style: Theme.of(context).textTheme.labelSmall?.copyWith(
+            fontWeight: FontWeight.w600,
+            color: scheme.onSurface,
+            fontSize: 10,
+          ),
         ),
-      ),
+      ],
+    );
+  }
+
+  Widget _buildStandardLayout(
+    BuildContext context,
+    ColorScheme scheme,
+    AppLocalizations l10n,
+    String label,
+    bool isCompact,
+    AppState appState,
+    AdaptiveTileMode mode,
+    double availableWidth,
+    double availableHeight,
+  ) {
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        Row(
+          children: [
+            Icon(iconFor(moduleId), color: scheme.primary, size: isCompact ? 18 : 20),
+            const SizedBox(width: 6),
+            Expanded(
+              child: Text(
+                label,
+                maxLines: 2,
+                overflow: TextOverflow.ellipsis,
+                style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                  fontWeight: FontWeight.w600,
+                  color: scheme.onSurface,
+                  fontSize: isCompact ? 13 : null,
+                ),
+              ),
+            ),
+            buildLayoutModeIndicator(
+              context,
+              mode,
+              enabled: appState.settings.developerModeEnabled,
+              availableWidth: availableWidth,
+              availableHeight: availableHeight,
+            ),
+            IconButton(
+              icon: Icon(
+                Icons.help_outline,
+                size: isCompact ? 18 : 20,
+                color: scheme.outline,
+              ),
+              tooltip: l10n.dialogWhyThisHelps,
+              padding: EdgeInsets.zero,
+              constraints: const BoxConstraints(
+                minWidth: 36,
+                minHeight: 36,
+              ),
+              onPressed: () => showModuleHelp(context, moduleId),
+            ),
+          ],
+        ),
+        const SizedBox(height: 8),
+        Text(
+          l10n.tapToOpen,
+          textAlign: TextAlign.center,
+          maxLines: 1,
+          overflow: TextOverflow.ellipsis,
+          style: Theme.of(context).textTheme.bodySmall?.copyWith(
+            color: scheme.onSurfaceVariant,
+            fontSize: isCompact ? 9 : 10,
+          ),
+        ),
+      ],
     );
   }
 

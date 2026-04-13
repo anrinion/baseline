@@ -119,13 +119,13 @@ void main() {
       ));
       await tester.pumpAndSettle();
 
-      // Find movement tile
+      // Find movement tile (header icon has size 20, option icons don't specify size)
       final movementIcon = find.byIcon(Icons.directions_walk);
-      expect(movementIcon, findsOneWidget);
+      expect(movementIcon, findsAtLeastNWidgets(1));
 
-      // Tap to open
+      // Tap the first one (header icon in the Card)
       await tester.tap(find.ancestor(
-        of: movementIcon,
+        of: movementIcon.first,
         matching: find.byType(Card),
       ).first);
       await tester.pumpAndSettle();

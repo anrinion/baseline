@@ -105,6 +105,8 @@ Widget buildLayoutModeIndicator(
   BuildContext context,
   AdaptiveTileMode mode, {
   bool enabled = false,
+  double? availableWidth,
+  double? availableHeight,
 }) {
   if (!enabled) return const SizedBox.shrink();
 
@@ -113,19 +115,38 @@ Widget buildLayoutModeIndicator(
 
   final letter = mode.name.substring(0, 1).toUpperCase();
 
+  // Use provided constraints or fallback to screen size
+  final size = MediaQuery.of(context).size;
+  final width = (availableWidth ?? size.width).toInt();
+  final height = (availableHeight ?? size.height).toInt();
+
   return Container(
     padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 2),
     decoration: BoxDecoration(
       color: scheme.tertiaryContainer,
       borderRadius: BorderRadius.circular(4),
     ),
-    child: Text(
-      letter,
-      style: theme.textTheme.labelSmall?.copyWith(
-        color: scheme.onTertiaryContainer,
-        fontSize: 9,
-        fontWeight: FontWeight.w700,
-      ),
+    child: Row(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Text(
+          letter,
+          style: theme.textTheme.labelSmall?.copyWith(
+            color: scheme.onTertiaryContainer,
+            fontSize: 9,
+            fontWeight: FontWeight.w700,
+          ),
+        ),
+        const SizedBox(width: 2),
+        Text(
+          '${width}x$height',
+          style: theme.textTheme.labelSmall?.copyWith(
+            color: scheme.onTertiaryContainer,
+            fontSize: 8,
+            fontWeight: FontWeight.w500,
+          ),
+        ),
+      ],
     ),
   );
 }

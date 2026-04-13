@@ -119,10 +119,13 @@ class _SleepModuleTileState extends State<SleepModuleTile> {
                           ),
                         ),
                       ),
-                      if (appState.settings.developerModeEnabled) ...[
-                        const SizedBox(width: 8),
-                        buildLayoutModeIndicator(context, AdaptiveTileMode.expanded, enabled: true),
-                      ],
+                      buildLayoutModeIndicator(
+                        context,
+                        AdaptiveTileMode.expanded,
+                        enabled: appState.settings.developerModeEnabled,
+                        availableWidth: availableWidth,
+                        availableHeight: availableHeight,
+                      ),
                       IconButton(
                         icon: Icon(
                           Icons.help_outline,
@@ -223,6 +226,9 @@ class _SleepModuleTileState extends State<SleepModuleTile> {
                       theme,
                       isCompact,
                       isExpanded,
+                      mode,
+                      availableWidth,
+                      availableHeight,
                     ),
                     const SizedBox(height: 8),
                     _buildCompactContent(
@@ -252,7 +258,11 @@ class _SleepModuleTileState extends State<SleepModuleTile> {
     ThemeData theme,
     bool isCompact,
     bool isExpanded,
+    AdaptiveTileMode mode,
+    double availableWidth,
+    double availableHeight,
   ) {
+    final appState = Provider.of<AppState>(context);
     return Row(
       children: [
         Icon(Icons.bedtime_outlined, color: scheme.primary, size: 20),
@@ -266,17 +276,13 @@ class _SleepModuleTileState extends State<SleepModuleTile> {
             ),
           ),
         ),
-        if (context.select<AppState, bool>(
-          (s) => s.settings.developerModeEnabled,
-        )) ...[
-          buildLayoutModeIndicator(
-            context,
-            isExpanded
-                ? AdaptiveTileMode.expanded
-                : (isCompact ? AdaptiveTileMode.compact : AdaptiveTileMode.medium),
-            enabled: true,
-          ),
-        ],
+        buildLayoutModeIndicator(
+          context,
+          mode,
+          enabled: appState.settings.developerModeEnabled,
+          availableWidth: availableWidth,
+          availableHeight: availableHeight,
+        ),
         IconButton(
           icon: Icon(Icons.help_outline, size: 20, color: scheme.outline),
           tooltip: l10n.dialogWhyThisHelps,
@@ -298,18 +304,57 @@ class _SleepModuleTileState extends State<SleepModuleTile> {
     int wakeTime,
     AppLocalizations l10n,
   ) {
+    final durationText = formatDuration(duration);
+    final bedTimeStr = formatTimeFromMinutes(roundTo30Minutes(bedTime));
+    final wakeTimeStr = formatTimeFromMinutes(roundTo30Minutes(wakeTime));
+
+    if (isCompact) {
+      // Compact: duration with inline bed/wake icons (wrap if space is tight)
+      return Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Text(
+            durationText,
+            style: theme.textTheme.titleLarge?.copyWith(
+              fontWeight: FontWeight.w700,
+              color: scheme.primary,
+            ),
+          ),
+          const SizedBox(height: 4),
+          Wrap(
+            alignment: WrapAlignment.center,
+            spacing: 4,
+            runSpacing: 2,
+            children: [
+              Icon(Icons.bedtime_outlined, size: 14, color: scheme.outline),
+              Text(
+                bedTimeStr,
+                style: theme.textTheme.bodySmall?.copyWith(
+                  color: scheme.onSurfaceVariant,
+                ),
+              ),
+              const SizedBox(width: 8),
+              Icon(Icons.wb_sunny_outlined, size: 14, color: scheme.outline),
+              Text(
+                wakeTimeStr,
+                style: theme.textTheme.bodySmall?.copyWith(
+                  color: scheme.onSurfaceVariant,
+                ),
+              ),
+            ],
+          ),
+        ],
+      );
+    }
+
+    // Medium: just the large duration
     return Center(
       child: Text(
-        formatDuration(duration),
-        style: isCompact
-            ? theme.textTheme.titleLarge?.copyWith(
-                fontWeight: FontWeight.w700,
-                color: scheme.primary,
-              )
-            : theme.textTheme.headlineSmall?.copyWith(
-                fontWeight: FontWeight.w700,
-                color: scheme.primary,
-              ),
+        durationText,
+        style: theme.textTheme.headlineSmall?.copyWith(
+          fontWeight: FontWeight.w700,
+          color: scheme.primary,
+        ),
       ),
     );
   }
