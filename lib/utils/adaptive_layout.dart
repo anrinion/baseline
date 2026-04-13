@@ -117,8 +117,15 @@ Widget buildLayoutModeIndicator(
 
   // Use provided constraints or fallback to screen size
   final size = MediaQuery.of(context).size;
-  final width = (availableWidth ?? size.width).toInt();
-  final height = (availableHeight ?? size.height).toInt();
+  double widthValue = availableWidth ?? size.width;
+  double heightValue = availableHeight ?? size.height;
+  
+  // Handle NaN or negative values
+  if (widthValue.isNaN || widthValue < 0) widthValue = 0;
+  if (heightValue.isNaN || heightValue < 0) heightValue = 0;
+  
+  final width = widthValue.toInt();
+  final height = heightValue.toInt();
 
   return Container(
     padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 2),
