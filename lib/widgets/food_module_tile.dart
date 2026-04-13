@@ -3,101 +3,14 @@ import 'package:provider/provider.dart';
 
 import '../modules/food_constants.dart';
 import '../modules/food_module.dart';
+import '../modules/module_ids.dart';
 import '../state/app_state.dart';
 import '../l10n/app_localizations.dart';
 import '../utils/adaptive_layout.dart';
+import 'module_tile.dart';
 
 class FoodModuleTile extends StatelessWidget {
   const FoodModuleTile({super.key});
-
-  double measureExtendedModeHeight(BuildContext context, double w, AppLocalizations l10n) {
-    final innerW = w - 48;
-    if (innerW <= 0) return double.infinity;
-
-    final textW = innerW - 32 - 24 - 12;
-    if (textW <= 0) return double.infinity;
-
-    double contentH = 60 + 24 + 1;
-    final tStyle = Theme.of(
-      context,
-    ).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w600);
-    final sStyle = Theme.of(context).textTheme.bodySmall;
-
-    for (final c in FoodCategoryDef.all) {
-      double titleH = AdaptiveSizing.measureTextHeight(
-        context,
-        c.title(l10n),
-        tStyle,
-        textW,
-      );
-      double subH = AdaptiveSizing.measureTextHeight(
-        context,
-        c.subtitle(l10n),
-        sStyle,
-        textW,
-      );
-
-      double row1H = (titleH + 2 + subH);
-      if (row1H < 24.0) row1H = 24.0;
-
-      double cardH = 32.0 + row1H + 16.0 + 36.0;
-      contentH += cardH + 10.0;
-    }
-
-    return 48 + contentH;
-  }
-
-  double measureRegularModeHeight(BuildContext context, double w, AppLocalizations l10n) {
-    final innerW = w - 48;
-    if (innerW <= 0) return double.infinity;
-
-    final textW = innerW - 32 - 24 - 12;
-    if (textW <= 0) return double.infinity;
-
-    double contentH = 36 + 12;
-    final tStyle = Theme.of(
-      context,
-    ).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w600);
-
-    for (final c in FoodCategoryDef.all) {
-      double titleH = AdaptiveSizing.measureTextHeight(
-        context,
-        c.title(l10n),
-        tStyle,
-        textW,
-      );
-      double row1H = titleH < 24.0 ? 24.0 : titleH;
-
-      double cardH = 32.0 + row1H + 16.0 + 36.0;
-      contentH += cardH + 8.0;
-    }
-
-    return 48 + contentH;
-  }
-
-  double measureSmallModeHeight(BuildContext context, double w, AppLocalizations l10n) {
-    final innerW = w - 48;
-    if (innerW <= 0) return double.infinity;
-
-    final availableForExpanded = innerW - 32 - 28; // 28 = plus button + gap
-    final textW = availableForExpanded * 3 / 7;
-    if (textW <= 0) return double.infinity;
-
-    double contentH = 36 + 8;
-
-    final tStyle = Theme.of(context).textTheme.labelMedium;
-    for (final c in FoodCategoryDef.all) {
-      double titleH = AdaptiveSizing.measureTextHeight(
-        context,
-        c.title(l10n),
-        tStyle,
-        textW,
-      );
-      contentH += (titleH < 16.0 ? 16.0 : titleH) + 8.0;
-    }
-
-    return 48 + contentH;
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -109,26 +22,25 @@ class FoodModuleTile extends StatelessWidget {
 
         return LayoutBuilder(
           builder: (context, constraints) {
-            final availableWidth = constraints.maxWidth;
-            final availableHeight = constraints.maxHeight;
+            final availableWidth = constraints.maxWidth - 24; // 12 padding each side
+            final availableHeight = constraints.maxHeight - 24; // 12 padding each side
             final l10n = AppLocalizations.of(context)!;
 
-            AdaptiveTileMode mode = AdaptiveTileMode.micro;
-
-            final extendedH = measureExtendedModeHeight(
-              context,
-              availableWidth,
-              l10n,
+            final mode = resolveStandardTileMode(
+              availableWidth: availableWidth,
+              availableHeight: availableHeight,
+              thresholds: const AdaptiveTileThresholds(
+                microHeight: 60,
+                microWidth: 120,
+                compactHeight: 200,
+                compactWidth: 200,
+                expandedHeight: 400,
+                expandedWidth: 320,
+              ),
             );
-            final regularH = measureRegularModeHeight(context, availableWidth, l10n);
-            final smallH = measureSmallModeHeight(context, availableWidth, l10n);
 
-            if (availableHeight >= extendedH && availableWidth >= 320) {
-              mode = AdaptiveTileMode.expanded;
-            } else if (availableHeight >= regularH && availableWidth >= 280) {
-              mode = AdaptiveTileMode.medium;
-            } else if (availableHeight >= smallH && availableWidth >= 160) {
-              mode = AdaptiveTileMode.compact;
+            if (mode == AdaptiveTileMode.micro) {
+              return const ModuleTile(moduleId: BaselineModuleId.food);
             }
 
             final isExtended = mode == AdaptiveTileMode.expanded;
@@ -138,13 +50,13 @@ class FoodModuleTile extends StatelessWidget {
               child: () {
                 switch (mode) {
                   case AdaptiveTileMode.expanded:
-                    return _buildExtended(context, appState, l10n);
+                    return _buildExtended(context, appState, l10n, availableWidth, availableHeight);
                   case AdaptiveTileMode.medium:
-                    return _buildRegular(context, appState, total, maxTotal, l10n, mode);
+                    return _buildRegular(context, appState, total, maxTotal, l10n, mode, availableWidth, availableHeight);
                   case AdaptiveTileMode.compact:
-                    return _buildSmall(context, appState, total, maxTotal, l10n, mode);
+                    return _buildSmall(context, appState, total, maxTotal, l10n, mode, availableWidth, availableHeight);
                   case AdaptiveTileMode.micro:
-                    return _buildMicro(context, scheme, total, maxTotal);
+                    return const SizedBox.shrink(); // unreachable
                 }
               }(),
             );
@@ -172,7 +84,7 @@ class FoodModuleTile extends StatelessWidget {
     );
   }
 
-  Widget _buildStandardHeader(BuildContext context, int total, int maxTotal, AppLocalizations l10n, AdaptiveTileMode mode) {
+  Widget _buildStandardHeader(BuildContext context, AppState appState, int total, int maxTotal, AppLocalizations l10n, AdaptiveTileMode mode, double availableWidth, double availableHeight) {
     final scheme = Theme.of(context).colorScheme;
     return Row(
       children: [
@@ -197,7 +109,9 @@ class FoodModuleTile extends StatelessWidget {
         buildLayoutModeIndicator(
           context,
           mode,
-          enabled: context.select<AppState, bool>((s) => s.settings.developerModeEnabled),
+          enabled: appState.settings.developerModeEnabled,
+          availableWidth: availableWidth,
+          availableHeight: availableHeight,
         ),
         IconButton(
           icon: Icon(Icons.help_outline, size: 20, color: scheme.outline),
@@ -210,28 +124,6 @@ class FoodModuleTile extends StatelessWidget {
     );
   }
 
-  Widget _buildMicro(
-    BuildContext context,
-    ColorScheme scheme,
-    int total,
-    int maxTotal,
-  ) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Icon(Icons.restaurant, color: scheme.primary, size: 28),
-        const SizedBox(height: 8),
-        Text(
-          '$total/$maxTotal',
-          style: Theme.of(context).textTheme.titleMedium?.copyWith(
-            fontWeight: FontWeight.bold,
-            color: scheme.primary,
-          ),
-        ),
-      ],
-    );
-  }
-
   Widget _buildSmall(
     BuildContext context,
     AppState appState,
@@ -239,63 +131,91 @@ class FoodModuleTile extends StatelessWidget {
     int maxTotal,
     AppLocalizations l10n,
     AdaptiveTileMode mode,
+    double availableWidth,
+    double availableHeight,
   ) {
     final s = appState.todayState;
     final scheme = Theme.of(context).colorScheme;
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        _buildStandardHeader(context, total, maxTotal, l10n, mode),
+        _buildStandardHeader(context, appState, total, maxTotal, l10n, mode, availableWidth, availableHeight),
         const SizedBox(height: 8),
         Expanded(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              for (final c in FoodCategoryDef.all)
-                Row(
-                  children: [
-                    Icon(c.icon, size: 16, color: scheme.primary),
-                    const SizedBox(width: 8),
-                    Expanded(
-                      flex: 3,
-                      child: Text(
-                        c.title(l10n),
-                        style: Theme.of(context).textTheme.labelMedium
-                            ?.copyWith(color: scheme.onSurfaceVariant),
-                        maxLines: 2,
-                        overflow: TextOverflow.ellipsis,
+          child: LayoutBuilder(
+            builder: (context, constraints) {
+              // Calculate if we need ultra-compact layout
+              final availableHeight = constraints.maxHeight;
+              final itemCount = FoodCategoryDef.all.length;
+              final spacePerItem = availableHeight / itemCount;
+              final useUltraCompact = spacePerItem < 32; // Very tight space
+
+              return Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  for (final c in FoodCategoryDef.all)
+                    Padding(
+                      padding: EdgeInsets.symmetric(
+                        vertical: useUltraCompact ? 1 : 2,
+                      ),
+                      child: Row(
+                        children: [
+                          Icon(c.icon,
+                              size: useUltraCompact ? 14 : 16,
+                              color: scheme.primary),
+                          const SizedBox(width: 8),
+                          Expanded(
+                            flex: 3,
+                            child: Text(
+                              c.title(l10n),
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .labelMedium
+                                  ?.copyWith(
+                                    color: scheme.onSurfaceVariant,
+                                    fontSize: useUltraCompact ? 11 : null,
+                                  ),
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          ),
+                          const SizedBox(width: 8),
+                          Expanded(
+                            flex: 4,
+                            child: SizedBox(
+                              height: 6,
+                              child: BatteryIndicator(
+                                current: c.countFrom(s),
+                                max: c.maxPortions,
+                              ),
+                            ),
+                          ),
+                          const SizedBox(width: 4),
+                          SizedBox(
+                            width: useUltraCompact ? 20 : 24,
+                            height: useUltraCompact ? 20 : 24,
+                            child: IconButton(
+                              icon: Icon(Icons.add_circle,
+                                  size: useUltraCompact ? 16 : 18),
+                              padding: EdgeInsets.zero,
+                              constraints: const BoxConstraints(),
+                              color: c.countFrom(s) >= c.maxPortions
+                                  ? scheme.outline
+                                  : scheme.primary,
+                              onPressed: c.countFrom(s) >= c.maxPortions
+                                  ? null
+                                  : () => applyFoodDelta(appState, c, 1),
+                            ),
+                          ),
+                        ],
                       ),
                     ),
-                    const SizedBox(width: 8),
-                    Expanded(
-                      flex: 4,
-                      child: SizedBox(
-                        height: 6,
-                        child: BatteryIndicator(
-                          current: c.countFrom(s),
-                          max: c.maxPortions,
-                        ),
-                      ),
-                    ),
-                    const SizedBox(width: 4),
-                    SizedBox(
-                      width: 24,
-                      height: 24,
-                      child: IconButton(
-                        icon: const Icon(Icons.add_circle, size: 18),
-                        padding: EdgeInsets.zero,
-                        constraints: const BoxConstraints(),
-                        color: c.countFrom(s) >= c.maxPortions
-                            ? scheme.outline
-                            : scheme.primary,
-                        onPressed: c.countFrom(s) >= c.maxPortions
-                            ? null
-                            : () => applyFoodDelta(appState, c, 1),
-                      ),
-                    ),
-                  ],
-                ),
-            ],
+                ],
+              );
+            },
           ),
         ),
       ],
@@ -309,35 +229,98 @@ class FoodModuleTile extends StatelessWidget {
     int maxTotal,
     AppLocalizations l10n,
     AdaptiveTileMode mode,
+    double availableWidth,
+    double availableHeight,
   ) {
+    final s = appState.todayState;
+    final scheme = Theme.of(context).colorScheme;
+
+    // Medium mode uses compact rows (like _buildSmall) but with slightly more spacing
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        _buildStandardHeader(context, total, maxTotal, l10n, mode),
+        _buildStandardHeader(context, appState, total, maxTotal, l10n, mode, availableWidth, availableHeight),
         const SizedBox(height: 12),
         Expanded(
-          child: SingleChildScrollView(
-            child: Column(
-              children: [
-                for (final def in FoodCategoryDef.all)
-                  Padding(
-                    padding: const EdgeInsets.only(bottom: 8),
-                    child: _CategoryCard(
-                      category: def,
-                      current: def.countFrom(appState.todayState),
-                      onDelta: (d) => applyFoodDelta(appState, def, d),
-                      mode: AdaptiveTileMode.medium,
+          child: LayoutBuilder(
+            builder: (context, constraints) {
+              final availableHeight = constraints.maxHeight;
+              final itemCount = FoodCategoryDef.all.length;
+              final spacePerItem = availableHeight / itemCount;
+              final useCompact = spacePerItem < 40;
+
+              return Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  for (final c in FoodCategoryDef.all)
+                    Padding(
+                      padding: EdgeInsets.symmetric(
+                        vertical: useCompact ? 2 : 4,
+                      ),
+                      child: Row(
+                        children: [
+                          Icon(c.icon,
+                              size: useCompact ? 16 : 18,
+                              color: scheme.primary),
+                          const SizedBox(width: 8),
+                          Expanded(
+                            flex: 3,
+                            child: Text(
+                              c.title(l10n),
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .labelMedium
+                                  ?.copyWith(
+                                    color: scheme.onSurfaceVariant,
+                                    fontSize: useCompact ? 12 : 13,
+                                  ),
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          ),
+                          const SizedBox(width: 8),
+                          Expanded(
+                            flex: 4,
+                            child: SizedBox(
+                              height: 6,
+                              child: BatteryIndicator(
+                                current: c.countFrom(s),
+                                max: c.maxPortions,
+                              ),
+                            ),
+                          ),
+                          const SizedBox(width: 4),
+                          SizedBox(
+                            width: useCompact ? 24 : 28,
+                            height: useCompact ? 24 : 28,
+                            child: IconButton(
+                              icon: Icon(Icons.add_circle,
+                                  size: useCompact ? 18 : 20),
+                              padding: EdgeInsets.zero,
+                              constraints: const BoxConstraints(),
+                              color: c.countFrom(s) >= c.maxPortions
+                                  ? scheme.outline
+                                  : scheme.primary,
+                              onPressed: c.countFrom(s) >= c.maxPortions
+                                  ? null
+                                  : () => applyFoodDelta(appState, c, 1),
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
-                  ),
-              ],
-            ),
+                ],
+              );
+            },
           ),
         ),
       ],
     );
   }
 
-  Widget _buildExtended(BuildContext context, AppState appState, AppLocalizations l10n) {
+  Widget _buildExtended(BuildContext context, AppState appState, AppLocalizations l10n, double availableWidth, double availableHeight) {
     final theme = Theme.of(context);
     final scheme = theme.colorScheme;
     return Column(
@@ -348,15 +331,25 @@ class FoodModuleTile extends StatelessWidget {
           children: [
             Icon(Icons.restaurant, color: scheme.primary, size: 26),
             const SizedBox(width: 8),
-            Text(
-              l10n.nourishment,
-              style: theme.textTheme.titleLarge?.copyWith(
-                fontWeight: FontWeight.w600,
-                letterSpacing: -0.3,
-                color: scheme.onSurface,
+            Expanded(
+              child: Text(
+                l10n.nourishment,
+                style: theme.textTheme.titleLarge?.copyWith(
+                  fontWeight: FontWeight.w600,
+                  letterSpacing: -0.3,
+                  color: scheme.onSurface,
+                ),
+                overflow: TextOverflow.ellipsis,
               ),
             ),
-            const Spacer(),
+            const SizedBox(width: 8),
+            buildLayoutModeIndicator(
+              context,
+              AdaptiveTileMode.expanded,
+              enabled: appState.settings.developerModeEnabled,
+              availableWidth: availableWidth,
+              availableHeight: availableHeight,
+            ),
             IconButton(
               icon: Icon(Icons.help_outline, size: 22, color: scheme.outline),
               tooltip: l10n.dialogWhyThisWorks,
@@ -374,21 +367,35 @@ class FoodModuleTile extends StatelessWidget {
         Divider(height: 1, color: scheme.outlineVariant),
         const SizedBox(height: 8),
         Expanded(
-          child: SingleChildScrollView(
-            child: Column(
-              children: [
-                for (final def in FoodCategoryDef.all)
-                  Padding(
-                    padding: const EdgeInsets.only(bottom: 10),
-                    child: _CategoryCard(
-                      category: def,
-                      current: def.countFrom(appState.todayState),
-                      onDelta: (d) => applyFoodDelta(appState, def, d),
-                      mode: AdaptiveTileMode.expanded,
+          child: LayoutBuilder(
+            builder: (context, constraints) {
+              final availableHeight = constraints.maxHeight;
+              final itemCount = FoodCategoryDef.all.length;
+              final spacePerItem = availableHeight / itemCount;
+              final useCompact = spacePerItem < 90; // CategoryCards need more space
+
+              return Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  for (final def in FoodCategoryDef.all)
+                    Padding(
+                      padding: EdgeInsets.only(
+                        bottom: useCompact ? 4 : 8,
+                      ),
+                      child: _CategoryCard(
+                        category: def,
+                        current: def.countFrom(appState.todayState),
+                        onDelta: (d) => applyFoodDelta(appState, def, d),
+                        mode: useCompact
+                            ? AdaptiveTileMode.medium
+                            : AdaptiveTileMode.expanded,
+                      ),
                     ),
-                  ),
-              ],
-            ),
+                ],
+              );
+            },
           ),
         ),
       ],
