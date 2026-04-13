@@ -93,8 +93,12 @@ class _HereModuleTileState extends State<HereModuleTile>
         final appState = Provider.of<AppState>(context);
         final label = appState.settings.hereButtonText;
 
-        final availableWidth = constraints.maxWidth - 40; // 20 padding each side
-        final availableHeight = constraints.maxHeight - 64; // header + margins
+        final availableWidth = constraints.maxWidth.isFinite 
+            ? constraints.maxWidth - 40 // 20 padding each side
+            : 300.0; // fallback
+        final availableHeight = constraints.maxHeight.isFinite 
+            ? constraints.maxHeight - 64 // header + margins
+            : 100.0; // fallback
 
         final mode = resolveStandardTileMode(
           availableWidth: availableWidth,

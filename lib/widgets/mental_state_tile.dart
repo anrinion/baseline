@@ -47,8 +47,14 @@ class MentalStateModuleTile extends StatelessWidget {
           return const ModuleTile(moduleId: BaselineModuleId.mentalState);
         }
 
+        // Use much less padding in compact mode
+        final isCompact = mode == AdaptiveTileMode.compact;
+        final cardPadding = isCompact ? 8.0 : 16.0;
+        final headerSpacing = isCompact ? 4.0 : 8.0;
+        final iconSize = isCompact ? 16.0 : 20.0;
+        
         return Card(
-          margin: const EdgeInsets.all(12),
+          margin: EdgeInsets.all(isCompact ? 8 : 12),
           elevation: 0,
           clipBehavior: Clip.antiAlias,
           color: scheme.surface,
@@ -57,62 +63,57 @@ class MentalStateModuleTile extends StatelessWidget {
             borderRadius: BorderRadius.circular(20),
           ),
           child: Padding(
-            padding: const EdgeInsets.all(16),
-            child: ClipRect(
-              child: OverflowBox(
-                minHeight: 0,
-                maxHeight: double.infinity,
-                alignment: Alignment.topCenter,
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
+            padding: EdgeInsets.all(cardPadding),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                Row(
                   children: [
-                    Row(
-                      children: [
-                        Icon(
-                          _getModeIcon(mentalStateMode),
-                          color: scheme.primary,
-                          size: 20,
-                        ),
-                        const SizedBox(width: 6),
-                        Expanded(
-                          child: Text(
-                            _getModeTitle(l10n, mentalStateMode),
-                            style: theme.textTheme.titleSmall?.copyWith(
-                              fontWeight: FontWeight.w600,
-                              color: scheme.onSurface,
-                            ),
-                          ),
-                        ),
-                        buildLayoutModeIndicator(
-                          context,
-                          mode,
-                          enabled: appState.settings.developerModeEnabled,
-                          availableWidth: availableWidth,
-                          availableHeight: availableHeight,
-                        ),
-                        IconButton(
-                          icon: Icon(
-                            Icons.help_outline,
-                            size: 20,
-                            color: scheme.outline,
-                          ),
-                          tooltip: l10n.dialogWhyThisHelps,
-                          padding: EdgeInsets.zero,
-                          constraints: const BoxConstraints(
-                            minWidth: 36,
-                            minHeight: 36,
-                          ),
-                          onPressed: () =>
-                              showModuleHelp(context, BaselineModuleId.mentalState),
-                        ),
-                      ],
+                    Icon(
+                      _getModeIcon(mentalStateMode),
+                      color: scheme.primary,
+                      size: iconSize,
                     ),
-                    const SizedBox(height: 8),
-                    _buildContent(context, appState, mentalStateMode, mode, l10n),
+                    const SizedBox(width: 6),
+                    Expanded(
+                      child: Text(
+                        _getModeTitle(l10n, mentalStateMode),
+                        style: theme.textTheme.titleSmall?.copyWith(
+                          fontWeight: FontWeight.w600,
+                          color: scheme.onSurface,
+                          fontSize: isCompact ? 13 : null,
+                        ),
+                      ),
+                    ),
+                    buildLayoutModeIndicator(
+                      context,
+                      mode,
+                      enabled: appState.settings.developerModeEnabled,
+                      availableWidth: availableWidth,
+                      availableHeight: availableHeight,
+                    ),
+                    if (!isCompact)
+                      IconButton(
+                        icon: Icon(
+                          Icons.help_outline,
+                          size: 20,
+                          color: scheme.outline,
+                        ),
+                        tooltip: l10n.dialogWhyThisHelps,
+                        padding: EdgeInsets.zero,
+                        constraints: const BoxConstraints(
+                          minWidth: 36,
+                          minHeight: 36,
+                        ),
+                        onPressed: () =>
+                            showModuleHelp(context, BaselineModuleId.mentalState),
+                      ),
                   ],
                 ),
-              ),
+                SizedBox(height: headerSpacing),
+                _buildContent(context, appState, mentalStateMode, mode, l10n),
+              ],
             ),
           ),
         );
@@ -182,51 +183,97 @@ class MentalStateModuleTile extends StatelessWidget {
       );
     }
 
-    // Medium or Expanded: show all mood options
-    return Column(
-      children: [
-        if (mode == AdaptiveTileMode.expanded)
-          Text(
-            l10n.cbtRightNowQuestion,
-            textAlign: TextAlign.center,
-            style: theme.textTheme.bodyMedium?.copyWith(
-              color: scheme.onSurface,
-            ),
-          ),
-        if (mode == AdaptiveTileMode.expanded) const SizedBox(height: 12),
-        Wrap(
-          spacing: 8,
-          runSpacing: 8,
-          alignment: WrapAlignment.center,
+    // Medium or Expanded: show all mood options with responsive grid
+    final isExpanded = mode == AdaptiveTileMode.expanded;
+    
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final availableWidth = constraints.maxWidth;
+        final availableHeight = constraints.maxHeight;
+        
+        // Calculate button sizing based on available space
+        final minButtonWidth = isExpanded ? 70.0 : 60.0;
+        final columns = (availableWidth / minButtonWidth).floor().clamp(2, 5);
+        final buttonWidth = (availableWidth - (columns - 1) * 8) / columns;
+        
+        // Calculate if we need compact sizing
+        final useCompact = availableHeight < 100 || buttonWidth < 65;
+        final emojiSize = useCompact ? 20.0 : (isExpanded ? 28.0 : 24.0);
+        final labelSize = useCompact ? 10.0 : (isExpanded ? 12.0 : 11.0);
+        final padding = useCompact ? 6.0 : (isExpanded ? 12.0 : 10.0);
+        
+        return Column(
+          mainAxisSize: MainAxisSize.min,
           children: [
-            _MoodButton(
-              emoji: '😢',
-              label: l10n.cbtMoodVerySad,
-              onTap: () => _selectMood(appState, 1),
-            ),
-            _MoodButton(
-              emoji: '😕',
-              label: l10n.cbtMoodSad,
-              onTap: () => _selectMood(appState, 2),
-            ),
-            _MoodButton(
-              emoji: '😐',
-              label: l10n.cbtMoodNeutral,
-              onTap: () => _selectMood(appState, 3),
-            ),
-            _MoodButton(
-              emoji: '🙂',
-              label: l10n.cbtMoodGood,
-              onTap: () => _selectMood(appState, 4),
-            ),
-            _MoodButton(
-              emoji: '😊',
-              label: l10n.cbtMoodVeryGood,
-              onTap: () => _selectMood(appState, 5),
+            if (isExpanded)
+              Text(
+                l10n.cbtRightNowQuestion,
+                textAlign: TextAlign.center,
+                style: theme.textTheme.bodyMedium?.copyWith(
+                  color: scheme.onSurface,
+                ),
+              ),
+            if (isExpanded) const SizedBox(height: 12),
+            Wrap(
+              spacing: 8,
+              runSpacing: 8,
+              alignment: WrapAlignment.center,
+              children: [
+                _ResizableMoodButton(
+                  emoji: '😢',
+                  label: l10n.cbtMoodVerySad,
+                  onTap: () => _selectMood(appState, 1),
+                  width: buttonWidth,
+                  emojiSize: emojiSize,
+                  labelSize: labelSize,
+                  padding: padding,
+                  showLabel: !useCompact,
+                ),
+                _ResizableMoodButton(
+                  emoji: '😕',
+                  label: l10n.cbtMoodSad,
+                  onTap: () => _selectMood(appState, 2),
+                  width: buttonWidth,
+                  emojiSize: emojiSize,
+                  labelSize: labelSize,
+                  padding: padding,
+                  showLabel: !useCompact,
+                ),
+                _ResizableMoodButton(
+                  emoji: '😐',
+                  label: l10n.cbtMoodNeutral,
+                  onTap: () => _selectMood(appState, 3),
+                  width: buttonWidth,
+                  emojiSize: emojiSize,
+                  labelSize: labelSize,
+                  padding: padding,
+                  showLabel: !useCompact,
+                ),
+                _ResizableMoodButton(
+                  emoji: '🙂',
+                  label: l10n.cbtMoodGood,
+                  onTap: () => _selectMood(appState, 4),
+                  width: buttonWidth,
+                  emojiSize: emojiSize,
+                  labelSize: labelSize,
+                  padding: padding,
+                  showLabel: !useCompact,
+                ),
+                _ResizableMoodButton(
+                  emoji: '😊',
+                  label: l10n.cbtMoodVeryGood,
+                  onTap: () => _selectMood(appState, 5),
+                  width: buttonWidth,
+                  emojiSize: emojiSize,
+                  labelSize: labelSize,
+                  padding: padding,
+                  showLabel: !useCompact,
+                ),
+              ],
             ),
           ],
-        ),
-      ],
+        );
+      },
     );
   }
 
@@ -650,15 +697,25 @@ class MentalStateModuleTile extends StatelessWidget {
   }
 }
 
-class _MoodButton extends StatelessWidget {
+class _ResizableMoodButton extends StatelessWidget {
   final String emoji;
   final String label;
   final VoidCallback onTap;
+  final double width;
+  final double emojiSize;
+  final double labelSize;
+  final double padding;
+  final bool showLabel;
 
-  const _MoodButton({
+  const _ResizableMoodButton({
     required this.emoji,
     required this.label,
     required this.onTap,
+    required this.width,
+    required this.emojiSize,
+    required this.labelSize,
+    required this.padding,
+    required this.showLabel,
   });
 
   @override
@@ -666,27 +723,35 @@ class _MoodButton extends StatelessWidget {
     final theme = Theme.of(context);
     final scheme = theme.colorScheme;
 
-    return Material(
-      color: scheme.primaryContainer,
-      borderRadius: BorderRadius.circular(16),
-      child: InkWell(
-        borderRadius: BorderRadius.circular(16),
-        onTap: onTap,
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Text(emoji, style: const TextStyle(fontSize: 24)),
-              const SizedBox(height: 2),
-              Text(
-                label,
-                style: theme.textTheme.labelSmall?.copyWith(
-                  color: scheme.onPrimaryContainer,
-                ),
-                textAlign: TextAlign.center,
-              ),
-            ],
+    return SizedBox(
+      width: width,
+      child: Material(
+        color: scheme.primaryContainer,
+        borderRadius: BorderRadius.circular(12),
+        child: InkWell(
+          borderRadius: BorderRadius.circular(12),
+          onTap: onTap,
+          child: Padding(
+            padding: EdgeInsets.all(padding),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(emoji, style: TextStyle(fontSize: emojiSize)),
+                if (showLabel) ...[
+                  const SizedBox(height: 2),
+                  Text(
+                    label,
+                    style: theme.textTheme.labelSmall?.copyWith(
+                      color: scheme.onPrimaryContainer,
+                      fontSize: labelSize,
+                    ),
+                    textAlign: TextAlign.center,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ],
+              ],
+            ),
           ),
         ),
       ),

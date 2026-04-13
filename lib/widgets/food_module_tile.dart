@@ -147,59 +147,65 @@ class FoodModuleTile extends StatelessWidget {
             builder: (context, constraints) {
               // Calculate if we need ultra-compact layout
               final availableHeight = constraints.maxHeight;
+              final availableWidth = constraints.maxWidth;
               final itemCount = FoodCategoryDef.all.length;
               final spacePerItem = availableHeight / itemCount;
-              final useUltraCompact = spacePerItem < 32; // Very tight space
+              final useUltraCompact = spacePerItem < 28; // Very tight space
+              final hasExtraSpace = spacePerItem > 40;
+
+              // If extremely tight width, hide labels to save space
+              final hideLabels = availableWidth < 180;
 
               return Column(
-                mainAxisAlignment: MainAxisAlignment.start,
+                mainAxisAlignment: hasExtraSpace ? MainAxisAlignment.spaceEvenly : MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.stretch,
-                mainAxisSize: MainAxisSize.min,
+                mainAxisSize: MainAxisSize.max,
                 children: [
                   for (final c in FoodCategoryDef.all)
                     Padding(
                       padding: EdgeInsets.symmetric(
-                        vertical: useUltraCompact ? 1 : 2,
+                        vertical: useUltraCompact ? 0 : 1,
                       ),
                       child: Row(
                         children: [
                           Icon(c.icon,
-                              size: useUltraCompact ? 14 : 16,
+                              size: useUltraCompact ? 12 : 14,
                               color: scheme.primary),
-                          const SizedBox(width: 8),
-                          Expanded(
-                            flex: 3,
-                            child: Text(
-                              c.title(l10n),
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .labelMedium
-                                  ?.copyWith(
-                                    color: scheme.onSurfaceVariant,
-                                    fontSize: useUltraCompact ? 11 : null,
-                                  ),
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
+                          const SizedBox(width: 6),
+                          if (!hideLabels)
+                            Expanded(
+                              flex: 3,
+                              child: Text(
+                                c.title(l10n),
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .labelSmall
+                                    ?.copyWith(
+                                      color: scheme.onSurfaceVariant,
+                                      fontSize: useUltraCompact ? 10 : 11,
+                                    ),
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                              ),
                             ),
-                          ),
-                          const SizedBox(width: 8),
+                          if (!hideLabels) const SizedBox(width: 6),
                           Expanded(
                             flex: 4,
                             child: SizedBox(
-                              height: 6,
+                              height: useUltraCompact ? 4 : 5,
                               child: BatteryIndicator(
                                 current: c.countFrom(s),
                                 max: c.maxPortions,
                               ),
                             ),
                           ),
-                          const SizedBox(width: 4),
+                          const SizedBox(width: 2),
                           SizedBox(
-                            width: useUltraCompact ? 20 : 24,
-                            height: useUltraCompact ? 20 : 24,
+                            width: useUltraCompact ? 18 : 20,
+                            height: useUltraCompact ? 18 : 20,
                             child: IconButton(
                               icon: Icon(Icons.add_circle,
-                                  size: useUltraCompact ? 16 : 18),
+                                  size: useUltraCompact ? 14 : 16),
                               padding: EdgeInsets.zero,
                               constraints: const BoxConstraints(),
                               color: c.countFrom(s) >= c.maxPortions
@@ -249,10 +255,13 @@ class FoodModuleTile extends StatelessWidget {
               final spacePerItem = availableHeight / itemCount;
               final useCompact = spacePerItem < 40;
 
+              // Use spaceEvenly if there's extra room, otherwise pack at top
+              final hasExtraSpace = spacePerItem > 50;
+              
               return Column(
-                mainAxisAlignment: MainAxisAlignment.start,
+                mainAxisAlignment: hasExtraSpace ? MainAxisAlignment.spaceEvenly : MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.stretch,
-                mainAxisSize: MainAxisSize.min,
+                mainAxisSize: MainAxisSize.max,
                 children: [
                   for (final c in FoodCategoryDef.all)
                     Padding(
@@ -321,76 +330,105 @@ class FoodModuleTile extends StatelessWidget {
   }
 
   Widget _buildExtended(BuildContext context, AppState appState, AppLocalizations l10n, double availableWidth, double availableHeight) {
-    final theme = Theme.of(context);
-    final scheme = theme.colorScheme;
+    final s = appState.todayState;
+    final scheme = Theme.of(context).colorScheme;
+
+    // Extended mode is like medium mode but with food subtitles (labels) shown
     return Column(
-      mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        Row(
-          children: [
-            Icon(Icons.restaurant, color: scheme.primary, size: 26),
-            const SizedBox(width: 8),
-            Expanded(
-              child: Text(
-                l10n.nourishment,
-                style: theme.textTheme.titleLarge?.copyWith(
-                  fontWeight: FontWeight.w600,
-                  letterSpacing: -0.3,
-                  color: scheme.onSurface,
-                ),
-                overflow: TextOverflow.ellipsis,
-              ),
-            ),
-            const SizedBox(width: 8),
-            buildLayoutModeIndicator(
-              context,
-              AdaptiveTileMode.expanded,
-              enabled: appState.settings.developerModeEnabled,
-              availableWidth: availableWidth,
-              availableHeight: availableHeight,
-            ),
-            IconButton(
-              icon: Icon(Icons.help_outline, size: 22, color: scheme.outline),
-              tooltip: l10n.dialogWhyThisWorks,
-              onPressed: () => showFoodSourcesHelp(context),
-            ),
-            TextButton(
-              onPressed: () => resetAllFood(appState),
-              style: TextButton.styleFrom(
-                foregroundColor: scheme.onSurfaceVariant,
-              ),
-              child: Text(l10n.resetAll),
-            ),
-          ],
-        ),
-        Divider(height: 1, color: scheme.outlineVariant),
-        const SizedBox(height: 8),
+        _buildStandardHeader(context, appState, 0, 0, l10n, AdaptiveTileMode.expanded, availableWidth, availableHeight),
+        const SizedBox(height: 12),
         Expanded(
           child: LayoutBuilder(
             builder: (context, constraints) {
               final availableHeight = constraints.maxHeight;
               final itemCount = FoodCategoryDef.all.length;
               final spacePerItem = availableHeight / itemCount;
-              final useCompact = spacePerItem < 90; // CategoryCards need more space
+              final useCompact = spacePerItem < 50;
+
+              final hasExtraSpace = spacePerItem > 60;
 
               return Column(
-                mainAxisAlignment: MainAxisAlignment.start,
+                mainAxisAlignment: hasExtraSpace ? MainAxisAlignment.spaceEvenly : MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.stretch,
-                mainAxisSize: MainAxisSize.min,
+                mainAxisSize: MainAxisSize.max,
                 children: [
-                  for (final def in FoodCategoryDef.all)
+                  for (final c in FoodCategoryDef.all)
                     Padding(
-                      padding: EdgeInsets.only(
-                        bottom: useCompact ? 4 : 8,
+                      padding: EdgeInsets.symmetric(
+                        vertical: useCompact ? 2 : 4,
                       ),
-                      child: _CategoryCard(
-                        category: def,
-                        current: def.countFrom(appState.todayState),
-                        onDelta: (d) => applyFoodDelta(appState, def, d),
-                        mode: useCompact
-                            ? AdaptiveTileMode.medium
-                            : AdaptiveTileMode.expanded,
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Icon(c.icon,
+                              size: useCompact ? 18 : 20,
+                              color: scheme.primary),
+                          const SizedBox(width: 8),
+                          Expanded(
+                            flex: 3,
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  c.title(l10n),
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .labelMedium
+                                      ?.copyWith(
+                                        color: scheme.onSurface,
+                                        fontWeight: FontWeight.w600,
+                                        fontSize: useCompact ? 13 : 14,
+                                      ),
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                                // Show subtitle (food labels/comments) - this is the only difference from medium mode
+                                Text(
+                                  c.subtitle(l10n),
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .bodySmall
+                                      ?.copyWith(
+                                        color: scheme.onSurfaceVariant,
+                                        fontSize: useCompact ? 10 : 11,
+                                      ),
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                              ],
+                            ),
+                          ),
+                          const SizedBox(width: 8),
+                          Expanded(
+                            flex: 4,
+                            child: SizedBox(
+                              height: useCompact ? 6 : 8,
+                              child: BatteryIndicator(
+                                current: c.countFrom(s),
+                                max: c.maxPortions,
+                              ),
+                            ),
+                          ),
+                          const SizedBox(width: 4),
+                          SizedBox(
+                            width: useCompact ? 28 : 32,
+                            height: useCompact ? 28 : 32,
+                            child: IconButton(
+                              icon: Icon(Icons.add_circle,
+                                  size: useCompact ? 20 : 22),
+                              padding: EdgeInsets.zero,
+                              constraints: const BoxConstraints(),
+                              color: c.countFrom(s) >= c.maxPortions
+                                  ? scheme.outline
+                                  : scheme.primary,
+                              onPressed: c.countFrom(s) >= c.maxPortions
+                                  ? null
+                                  : () => applyFoodDelta(appState, c, 1),
+                            ),
+                          ),
+                        ],
                       ),
                     ),
                 ],
@@ -399,121 +437,6 @@ class FoodModuleTile extends StatelessWidget {
           ),
         ),
       ],
-    );
-  }
-}
-
-class _CategoryCard extends StatelessWidget {
-  final FoodCategoryDef category;
-  final int current;
-  final void Function(int) onDelta;
-  final AdaptiveTileMode mode;
-
-  const _CategoryCard({
-    required this.category,
-    required this.current,
-    required this.onDelta,
-    required this.mode,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    final scheme = theme.colorScheme;
-    final l10n = AppLocalizations.of(context)!;
-    final max = category.maxPortions;
-    final isMin = current == 0;
-    final isMax = current >= max;
-
-    final bool isExtended = mode == AdaptiveTileMode.expanded;
-
-    return Card(
-      elevation: 0,
-      color: isExtended
-          ? scheme.surfaceContainerLow
-          : scheme.surfaceContainerHighest,
-      surfaceTintColor: Colors.transparent,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-      child: Padding(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              children: [
-                Icon(category.icon, size: 24, color: scheme.primary),
-                const SizedBox(width: 12),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        category.title(l10n),
-                        style: theme.textTheme.titleMedium?.copyWith(
-                          fontWeight: FontWeight.w600,
-                          color: scheme.onSurface,
-                        ),
-                      ),
-                      if (isExtended) ...[
-                        const SizedBox(height: 2),
-                        Text(
-                          category.subtitle(l10n),
-                          style: theme.textTheme.bodySmall?.copyWith(
-                            color: scheme.onSurfaceVariant,
-                            fontSize: 13,
-                          ),
-                        ),
-                      ],
-                    ],
-                  ),
-                ),
-              ],
-            ),
-            const SizedBox(height: 16),
-            Row(
-              children: [
-                Expanded(
-                  child: BatteryIndicator(current: current, max: max),
-                ),
-                const SizedBox(width: 16),
-                Row(
-                  children: [
-                    if (isExtended) ...[
-                      StepperButton(
-                        icon: Icons.remove,
-                        enabled: !isMin,
-                        onPressed: () => onDelta(-1),
-                      ),
-                      const SizedBox(width: 10),
-                    ],
-                    if (isExtended || mode == AdaptiveTileMode.medium) ...[
-                      SizedBox(
-                        width: 36,
-                        child: Center(
-                          child: Text(
-                            '$current/$max',
-                            style: TextStyle(
-                              fontSize: 15,
-                              fontWeight: FontWeight.w500,
-                              color: scheme.onSurface,
-                            ),
-                          ),
-                        ),
-                      ),
-                      const SizedBox(width: 10),
-                      StepperButton(
-                        icon: Icons.add,
-                        enabled: !isMax,
-                        onPressed: () => onDelta(1),
-                      ),
-                    ],
-                  ],
-                ),
-              ],
-            ),
-          ],
-        ),
-      ),
     );
   }
 }
