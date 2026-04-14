@@ -308,20 +308,93 @@ class _MoodSelectionView extends StatelessWidget {
   }
 }
 
+class _AdaptiveEmojiButton extends StatelessWidget {
+  final String emoji;
+  final int value;
+  final double maxHeight;
+
+  const _AdaptiveEmojiButton({
+    required this.emoji,
+    required this.value,
+    required this.maxHeight,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final scheme = Theme.of(context).colorScheme;
+
+    return ConstrainedBox(
+      constraints: BoxConstraints(maxHeight: maxHeight),
+      child: AspectRatio(
+        aspectRatio: 1,
+        child: FittedBox(
+          fit: BoxFit.scaleDown,
+          child: Material(
+            color: scheme.primaryContainer,
+            borderRadius: BorderRadius.circular(16),
+            child: InkWell(
+              borderRadius: BorderRadius.circular(16),
+              onTap: () {
+                Provider.of<AppState>(context, listen: false).updateTodayState(
+                  (state) {
+                    state.moodSelection = value;
+                    state.moodSelectionTimestamp = DateTime.now();
+                  },
+                );
+              },
+              child: Padding(
+                padding: EdgeInsets.all(12),
+                child: Text(
+                  emoji,
+                  style: TextStyle(fontSize: 24), // Natural size
+                ),
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
 class _CompactMoodSelector extends StatelessWidget {
   const _CompactMoodSelector();
 
   @override
   Widget build(BuildContext context) {
-    return Wrap(
-      alignment: WrapAlignment.center,
-      spacing: 8,
-      runSpacing: 4,
-      children: [
-        _MoodEmojiButton(emoji: '😢', value: 1),
-        _MoodEmojiButton(emoji: '😐', value: 3),
-        _MoodEmojiButton(emoji: '😊', value: 5),
-      ],
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        // How many rows do we anticipate? (3 items max, wrap to 2 rows if narrow)
+        const maxRows = 2;
+        const runSpacing = 4.0;
+        // Total vertical space available for buttons (subtract spacing between rows)
+        final availableForButtons = constraints.maxHeight - (runSpacing * (maxRows - 1));
+        // Max height per button (if they were to stack in maxRows rows)
+        final maxButtonHeight = availableForButtons / maxRows;
+
+        return Wrap(
+          alignment: WrapAlignment.center,
+          spacing: 8,
+          runSpacing: runSpacing,
+          children: [
+            _AdaptiveEmojiButton(
+              emoji: '😢',
+              value: 1,
+              maxHeight: maxButtonHeight,
+            ),
+            _AdaptiveEmojiButton(
+              emoji: '😐',
+              value: 3,
+              maxHeight: maxButtonHeight,
+            ),
+            _AdaptiveEmojiButton(
+              emoji: '😊',
+              value: 5,
+              maxHeight: maxButtonHeight,
+            ),
+          ],
+        );
+      },
     );
   }
 }
@@ -498,37 +571,6 @@ class _MoodButton extends StatelessWidget {
       state.moodSelection = value;
       state.moodSelectionTimestamp = DateTime.now();
     });
-  }
-}
-
-class _MoodEmojiButton extends StatelessWidget {
-  final String emoji;
-  final int value;
-
-  const _MoodEmojiButton({required this.emoji, required this.value});
-
-  @override
-  Widget build(BuildContext context) {
-    final scheme = Theme.of(context).colorScheme;
-    return Material(
-      color: scheme.primaryContainer,
-      borderRadius: BorderRadius.circular(16),
-      child: InkWell(
-        borderRadius: BorderRadius.circular(16),
-        onTap: () {
-          Provider.of<AppState>(context, listen: false).updateTodayState((
-            state,
-          ) {
-            state.moodSelection = value;
-            state.moodSelectionTimestamp = DateTime.now();
-          });
-        },
-        child: Padding(
-          padding: const EdgeInsets.all(12),
-          child: Text(emoji, style: const TextStyle(fontSize: 24)),
-        ),
-      ),
-    );
   }
 }
 
