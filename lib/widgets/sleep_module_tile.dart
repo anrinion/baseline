@@ -779,15 +779,7 @@ class _DeveloperModeIndicator extends StatelessWidget {
       selector: (_, appState) => appState.settings.developerModeEnabled,
       builder: (context, developerModeEnabled, child) {
         if (!developerModeEnabled) return const SizedBox.shrink();
-
-        // Use the actual tile size (finite values from parent LayoutBuilder)
-        return buildLayoutModeIndicator(
-          context,
-          tileMode,
-          enabled: true,
-          availableWidth: tileWidth,
-          availableHeight: tileHeight,
-        );
+        return buildLayoutModeIndicator(context, tileMode, enabled: true);
       },
     );
   }

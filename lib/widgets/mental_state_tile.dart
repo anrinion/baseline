@@ -207,7 +207,6 @@ class _DeveloperModeIndicator extends StatelessWidget {
       selector: (_, appState) => appState.settings.developerModeEnabled,
       builder: (context, developerModeEnabled, child) {
         if (!developerModeEnabled) return const SizedBox.shrink();
-        // Remove LayoutBuilder and let buildLayoutModeIndicator fall back to MediaQuery
         return buildLayoutModeIndicator(context, tileMode, enabled: true);
       },
     );

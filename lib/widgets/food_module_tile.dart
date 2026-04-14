@@ -174,8 +174,6 @@ class _Header extends StatelessWidget {
           context,
           mode,
           enabled: appState.settings.developerModeEnabled,
-          availableWidth: availableWidth,
-          availableHeight: availableHeight,
         ),
         IconButton(
           icon: Icon(Icons.help_outline, size: 20, color: scheme.outline),

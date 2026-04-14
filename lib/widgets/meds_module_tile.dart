@@ -93,8 +93,6 @@ class MedsModuleTile extends StatelessWidget {
                             context,
                             mode,
                             enabled: appState.settings.developerModeEnabled,
-                            availableWidth: availableWidth,
-                            availableHeight: availableHeight,
                           ),
                           IconButton(
                             icon: Icon(

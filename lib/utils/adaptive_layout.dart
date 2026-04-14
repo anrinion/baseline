@@ -99,33 +99,33 @@ AdaptiveTileMode resolveStandardTileMode({
   return AdaptiveTileMode.medium;
 }
 
-/// Builds a small indicator showing the current layout mode.
+/// Builds a small indicator showing the current layout mode letter.
 /// Used for debugging when developer mode is enabled.
 Widget buildLayoutModeIndicator(
   BuildContext context,
   AdaptiveTileMode mode, {
   bool enabled = false,
-  double? availableWidth,
-  double? availableHeight,
 }) {
   if (!enabled) return const SizedBox.shrink();
 
   final scheme = Theme.of(context).colorScheme;
   final theme = Theme.of(context);
 
-  final letter = mode.name.substring(0, 1).toUpperCase();
-
-  // Use provided constraints or fallback to screen size
-  final size = MediaQuery.of(context).size;
-  double widthValue = availableWidth ?? size.width;
-  double heightValue = availableHeight ?? size.height;
-  
-  // Handle NaN or negative values
-  if (widthValue.isNaN || widthValue < 0) widthValue = 0;
-  if (heightValue.isNaN || heightValue < 0) heightValue = 0;
-  
-  final width = widthValue.toInt();
-  final height = heightValue.toInt();
+  String letter;
+  switch (mode) {
+    case AdaptiveTileMode.micro:
+      letter = 'xs';
+      break;
+    case AdaptiveTileMode.compact:
+      letter = 's';
+      break;
+    case AdaptiveTileMode.medium:
+      letter = 'm';
+      break;
+    case AdaptiveTileMode.expanded:
+      letter = 'l';
+      break;
+  }
 
   return Container(
     padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 2),
@@ -133,27 +133,13 @@ Widget buildLayoutModeIndicator(
       color: scheme.tertiaryContainer,
       borderRadius: BorderRadius.circular(4),
     ),
-    child: Row(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        Text(
-          letter,
-          style: theme.textTheme.labelSmall?.copyWith(
-            color: scheme.onTertiaryContainer,
-            fontSize: 9,
-            fontWeight: FontWeight.w700,
-          ),
-        ),
-        const SizedBox(width: 2),
-        Text(
-          '${width}x$height',
-          style: theme.textTheme.labelSmall?.copyWith(
-            color: scheme.onTertiaryContainer,
-            fontSize: 8,
-            fontWeight: FontWeight.w500,
-          ),
-        ),
-      ],
+    child: Text(
+      letter,
+      style: theme.textTheme.labelSmall?.copyWith(
+        color: scheme.onTertiaryContainer,
+        fontSize: 9,
+        fontWeight: FontWeight.w700,
+      ),
     ),
   );
 }
