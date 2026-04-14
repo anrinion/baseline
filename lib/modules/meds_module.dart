@@ -184,10 +184,12 @@ class _MedsDialog extends StatelessWidget {
             final takenCount = meds
                 .where((m) => isMedTakenToday(appState, m))
                 .length;
+            final isEmpty = meds.isEmpty;
 
             return Column(
               mainAxisSize: MainAxisSize.min,
               children: [
+                // Header row
                 Padding(
                   padding: const EdgeInsets.fromLTRB(16, 16, 8, 8),
                   child: Row(
@@ -198,15 +200,18 @@ class _MedsDialog extends StatelessWidget {
                         size: 26,
                       ),
                       const SizedBox(width: 8),
-                      Text(
-                        l10n.medsModuleLabel,
-                        style: theme.textTheme.titleLarge?.copyWith(
-                          fontWeight: FontWeight.w600,
-                          letterSpacing: -0.3,
-                          color: scheme.onSurface,
+                      Flexible(
+                        child: Text(
+                          l10n.medsModuleLabel,
+                          style: theme.textTheme.titleLarge?.copyWith(
+                            fontWeight: FontWeight.w600,
+                            letterSpacing: -0.3,
+                            color: scheme.onSurface,
+                          ),
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
                         ),
                       ),
-                      const Spacer(),
                       IconButton(
                         icon: Icon(
                           Icons.help_outline,
@@ -214,39 +219,87 @@ class _MedsDialog extends StatelessWidget {
                           color: scheme.outline,
                         ),
                         tooltip: l10n.dialogWhyThisHelps,
+                        padding: EdgeInsets.zero,
+                        constraints: const BoxConstraints(
+                          minWidth: 36,
+                          minHeight: 36,
+                        ),
                         onPressed: () =>
                             showModuleHelp(context, BaselineModuleId.meds),
                       ),
-                      TextButton(
-                        onPressed: meds.isEmpty
-                            ? null
-                            : () => resetAllMedsForToday(appState),
-                        child: Text(l10n.dialogReset),
-                      ),
+                      if (!isEmpty)
+                        LayoutBuilder(
+                          builder: (context, constraints) {
+                            final useIconOnly = constraints.maxWidth < 60;
+                            return Tooltip(
+                              message: l10n.dialogReset,
+                              child: TextButton(
+                                onPressed: () => resetAllMedsForToday(appState),
+                                style: TextButton.styleFrom(
+                                  padding: useIconOnly
+                                      ? EdgeInsets.zero
+                                      : const EdgeInsets.symmetric(
+                                          horizontal: 8,
+                                        ),
+                                  minimumSize: Size(useIconOnly ? 36 : 0, 36),
+                                  tapTargetSize:
+                                      MaterialTapTargetSize.shrinkWrap,
+                                ),
+                                child: useIconOnly
+                                    ? Icon(
+                                        Icons.restart_alt,
+                                        size: 20,
+                                        color: scheme.outline,
+                                      )
+                                    : Text(
+                                        l10n.dialogReset,
+                                        overflow: TextOverflow.ellipsis,
+                                        maxLines: 1,
+                                      ),
+                              ),
+                            );
+                          },
+                        ),
                     ],
                   ),
                 ),
                 Divider(height: 1, color: scheme.outlineVariant),
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(20, 12, 20, 8),
-                  child: Row(
-                    children: [
-                      Text(
-                        l10n.medsTodayProgress(takenCount, meds.length),
-                        style: theme.textTheme.bodyMedium?.copyWith(
-                          color: scheme.onSurfaceVariant,
-                        ),
+
+                // Progress row – only shown when list is NOT empty
+                if (!isEmpty)
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(20, 12, 20, 8),
+                    child: Text(
+                      l10n.medsTodayProgress(takenCount, meds.length),
+                      style: theme.textTheme.bodyMedium?.copyWith(
+                        color: scheme.onSurfaceVariant,
                       ),
-                    ],
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                    ),
                   ),
-                ),
+
+                // List or empty state
                 Flexible(
-                  child: meds.isEmpty
+                  child: isEmpty
                       ? Padding(
                           padding: const EdgeInsets.fromLTRB(20, 8, 20, 20),
                           child: Column(
                             mainAxisSize: MainAxisSize.min,
                             children: [
+                              // Centered progress text for empty state
+                              Center(
+                                child: Text(
+                                  l10n.medsTodayProgress(
+                                    takenCount,
+                                    meds.length,
+                                  ),
+                                  style: theme.textTheme.bodyMedium?.copyWith(
+                                    color: scheme.onSurfaceVariant,
+                                  ),
+                                ),
+                              ),
+                              const SizedBox(height: 16),
                               Text(
                                 l10n.medsEmptyState,
                                 style: theme.textTheme.bodyMedium?.copyWith(
@@ -277,8 +330,11 @@ class _MedsDialog extends StatelessWidget {
                               appState.settings,
                               med,
                             );
-                            final snoozeTime = MedsNotificationsService.instance.getSnoozeTime(med);
-                            final isSnoozed = snoozeTime != null && snoozeTime.isAfter(DateTime.now());
+                            final snoozeTime = MedsNotificationsService.instance
+                                .getSnoozeTime(med);
+                            final isSnoozed =
+                                snoozeTime != null &&
+                                snoozeTime.isAfter(DateTime.now());
 
                             Widget? subtitle;
                             if (isSnoozed) {
@@ -286,16 +342,23 @@ class _MedsDialog extends StatelessWidget {
                                   '${snoozeTime.hour.toString().padLeft(2, '0')}:${snoozeTime.minute.toString().padLeft(2, '0')}';
                               subtitle = Text(
                                 'Snoozed until $timeStr',
-                                style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                                  color: Theme.of(context).colorScheme.primary,
-                                  fontStyle: FontStyle.italic,
-                                ),
+                                style: Theme.of(context).textTheme.bodySmall
+                                    ?.copyWith(
+                                      color: Theme.of(
+                                        context,
+                                      ).colorScheme.primary,
+                                      fontStyle: FontStyle.italic,
+                                    ),
                               );
                             }
 
                             return CheckboxListTile(
                               dense: true,
-                              title: Text(med),
+                              title: Text(
+                                med,
+                                overflow: TextOverflow.ellipsis,
+                                maxLines: 1,
+                              ),
                               subtitle: subtitle,
                               value: checked,
                               secondary: _MedReminderControl(
@@ -311,17 +374,25 @@ class _MedsDialog extends StatelessWidget {
                           },
                         ),
                 ),
+
+                // Bottom actions
                 Padding(
                   padding: const EdgeInsets.fromLTRB(8, 0, 8, 8),
                   child: Row(
                     children: [
-                      TextButton.icon(
-                        onPressed: () =>
-                            _openMedsListEditor(context, appState, l10n),
-                        icon: const Icon(Icons.edit),
-                        label: Text(l10n.medsEditListButtonLabel),
+                      Flexible(
+                        child: TextButton.icon(
+                          onPressed: () =>
+                              _openMedsListEditor(context, appState, l10n),
+                          icon: const Icon(Icons.edit, size: 18),
+                          label: Text(
+                            l10n.medsEditListButtonLabel,
+                            overflow: TextOverflow.ellipsis,
+                            maxLines: 1,
+                          ),
+                        ),
                       ),
-                      const Spacer(),
+                      const SizedBox(width: 8),
                       TextButton(
                         onPressed: () => Navigator.of(context).pop(),
                         child: Text(l10n.dialogClose),
@@ -359,11 +430,17 @@ class _MedsDialog extends StatelessWidget {
         actions: [
           TextButton(
             onPressed: () => Navigator.of(editorContext).pop(false),
-            child: Text(l10n.dialogCancel),
+            child: FittedBox(
+              fit: BoxFit.scaleDown,
+              child: Text(l10n.dialogCancel),
+            ),
           ),
           FilledButton(
             onPressed: () => Navigator.of(editorContext).pop(true),
-            child: Text(l10n.dialogSave),
+            child: FittedBox(
+              fit: BoxFit.scaleDown,
+              child: Text(l10n.dialogSave),
+            ),
           ),
         ],
       ),
