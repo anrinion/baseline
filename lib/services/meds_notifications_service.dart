@@ -377,6 +377,8 @@ class MedsNotificationsService {
           nextSchedule = nextSchedule.add(const Duration(days: 1));
         }
 
+        print(
+            'DEBUG: med=$medName, alreadyTaken=$alreadyTaken, now=$now, nextSchedule=$nextSchedule');
         await _plugin.zonedSchedule(
           notificationIdForMed(medName),
           _titleForLanguage(settings.language, medName),
