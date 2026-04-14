@@ -110,7 +110,7 @@ void main() {
       expect(find.byType(MentalStateModuleTile), findsOneWidget);
     });
 
-    testWidgets('Movement tile opens modal when tapped', (WidgetTester tester) async {
+    testWidgets('Meds tile opens modal when tapped', (WidgetTester tester) async {
       final AppState appState = (await tester.runAsync(() => createTestAppState()))!;
 
       await tester.pumpWidget(createTestableApp(
@@ -119,13 +119,13 @@ void main() {
       ));
       await tester.pumpAndSettle();
 
-      // Find movement tile (header icon has size 20, option icons don't specify size)
-      final movementIcon = find.byIcon(Icons.directions_walk);
-      expect(movementIcon, findsAtLeastNWidgets(1));
+      // Find meds tile (header icon has size 20, option icons don't specify size)
+      final medsIcon = find.byIcon(Icons.medication_outlined);
+      expect(medsIcon, findsAtLeastNWidgets(1));
 
       // Tap the first one (header icon in the Card)
       await tester.tap(find.ancestor(
-        of: movementIcon.first,
+        of: medsIcon.first,
         matching: find.byType(Card),
       ).first);
       await tester.pumpAndSettle();

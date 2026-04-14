@@ -119,6 +119,7 @@ void main() {
       service = MedsNotificationsService.instance;
       service.setAdapterForTest(mockAdapter);
       service.forceAvailableForTest();
+      service.setTestTimezone('Europe/Berlin');
       service.setCallbacks(
         onMarkMedTaken: (medName) => setMedTakenToday(appState, medName, true),
         onSnoozeMed: (medName, snoozeUntil) {},

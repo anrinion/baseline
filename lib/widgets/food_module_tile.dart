@@ -31,7 +31,7 @@ class FoodModuleTile extends StatelessWidget {
               thresholds: const AdaptiveTileThresholds(
                 microHeight: 162,
                 microWidth: 120,
-                compactHeight: 212,
+                compactHeight: 220,
                 compactWidth: 200,
                 expandedHeight: 250,
                 expandedWidth: 200,

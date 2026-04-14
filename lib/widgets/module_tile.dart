@@ -44,8 +44,10 @@ class ModuleTile extends StatelessWidget {
         final label = BaselineModuleId.localizedLabel(l10n, moduleId);
         final appState = Provider.of<AppState>(context);
 
-        final availableWidth = constraints.maxWidth - 24; // 12 padding each side
-        final availableHeight = constraints.maxHeight - 24; // 12 padding each side
+        final availableWidth =
+            constraints.maxWidth - 24; // 12 padding each side
+        final availableHeight =
+            constraints.maxHeight - 24; // 12 padding each side
 
         final mode = resolveStandardTileMode(
           availableWidth: availableWidth,
@@ -69,7 +71,9 @@ class ModuleTile extends StatelessWidget {
           clipBehavior: Clip.antiAlias,
           color: scheme.surface,
           surfaceTintColor: Colors.transparent,
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20),
+          ),
           child: InkWell(
             onTap: () => _openModule(context),
             borderRadius: BorderRadius.circular(20),
@@ -82,7 +86,17 @@ class ModuleTile extends StatelessWidget {
                   alignment: Alignment.topCenter,
                   child: isMicro
                       ? _buildMicroLayout(context, scheme, label)
-                      : _buildStandardLayout(context, scheme, l10n, label, isCompact, appState, mode, availableWidth, availableHeight),
+                      : _buildStandardLayout(
+                          context,
+                          scheme,
+                          l10n,
+                          label,
+                          isCompact,
+                          appState,
+                          mode,
+                          availableWidth,
+                          availableHeight,
+                        ),
                 ),
               ),
             ),
@@ -92,7 +106,11 @@ class ModuleTile extends StatelessWidget {
     );
   }
 
-  Widget _buildMicroLayout(BuildContext context, ColorScheme scheme, String label) {
+  Widget _buildMicroLayout(
+    BuildContext context,
+    ColorScheme scheme,
+    String label,
+  ) {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
@@ -124,15 +142,23 @@ class ModuleTile extends StatelessWidget {
     double availableWidth,
     double availableHeight,
   ) {
+    final showIndicator =
+        appState.settings.developerModeEnabled && availableWidth > 250;
+
     return Column(
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         Row(
           children: [
-            Icon(iconFor(moduleId), color: scheme.primary, size: isCompact ? 18 : 20),
+            Icon(
+              iconFor(moduleId),
+              color: scheme.primary,
+              size: isCompact ? 18 : 20,
+            ),
             const SizedBox(width: 6),
-            Expanded(
+            Flexible(
+              // ← was Expanded
               child: Text(
                 label,
                 maxLines: 2,
@@ -144,22 +170,15 @@ class ModuleTile extends StatelessWidget {
                 ),
               ),
             ),
-            buildLayoutModeIndicator(
-              context,
-              mode,
-              enabled: appState.settings.developerModeEnabled,
-            ),
+            if (showIndicator)
+              buildLayoutModeIndicator(context, mode, enabled: true),
             IconButton(
-              icon: Icon(
-                Icons.help_outline,
-                size: isCompact ? 18 : 20,
-                color: scheme.outline,
-              ),
+              icon: Icon(Icons.help_outline, size: isCompact ? 18 : 20),
               tooltip: l10n.dialogWhyThisHelps,
               padding: EdgeInsets.zero,
-              constraints: const BoxConstraints(
-                minWidth: 36,
-                minHeight: 36,
+              constraints: BoxConstraints(
+                minWidth: isCompact ? 28 : 32,
+                minHeight: isCompact ? 28 : 32,
               ),
               onPressed: () => showModuleHelp(context, moduleId),
             ),

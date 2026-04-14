@@ -163,6 +163,12 @@ class MedsNotificationsService {
     _statusCode = 'ready';
   }
 
+  @visibleForTesting
+  void setTestTimezone(String timezoneName) {
+    tz.initializeTimeZones();
+    tz.setLocalLocation(tz.getLocation(timezoneName));
+  }
+
   bool _initialized = false;
   bool _isAvailable = true;
   String _statusCode = 'not_initialized';
@@ -320,6 +326,10 @@ class MedsNotificationsService {
     return granted;
   }
 
+  bool _isSameDay(tz.TZDateTime a, tz.TZDateTime b) {
+    return a.year == b.year && a.month == b.month && a.day == b.day;
+  }
+
   Future<void> syncFromSettings(
     Settings settings, {
     bool Function(String medName)? isMedTaken,
@@ -344,24 +354,31 @@ class MedsNotificationsService {
         final minutes = entry.value;
         // Store reminder minutes for action handlers
         _medReminderMinutes[medName] = minutes;
-        final now = tz.TZDateTime.now(tz.local);
 
         // If med already taken today, schedule for tomorrow
+        final now = tz.TZDateTime.now(tz.local);
         final alreadyTaken = isMedTaken?.call(medName) ?? false;
-        final startDay = alreadyTaken ? now.add(const Duration(days: 1)) : now;
 
+        // Start with today at the reminder time
         var nextSchedule = tz.TZDateTime(
           tz.local,
-          startDay.year,
-          startDay.month,
-          startDay.day,
+          now.year,
+          now.month,
+          now.day,
           minutes ~/ 60,
           minutes % 60,
         );
-        if (!nextSchedule.isAfter(now)) {
+
+        // Advance day by day until we find a time that:
+        // - is in the future, AND
+        // - if the medication is taken today, is not today's date.
+        while (nextSchedule.isBefore(now) ||
+            (alreadyTaken && _isSameDay(nextSchedule, now))) {
           nextSchedule = nextSchedule.add(const Duration(days: 1));
         }
 
+        print(
+            'DEBUG: med=$medName, alreadyTaken=$alreadyTaken, now=$now, nextSchedule=$nextSchedule');
         await _plugin.zonedSchedule(
           notificationIdForMed(medName),
           _titleForLanguage(settings.language, medName),
