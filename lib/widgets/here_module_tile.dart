@@ -150,8 +150,6 @@ class _HereModuleTileState extends State<HereModuleTile>
                         context,
                         mode,
                         enabled: appState.settings.developerModeEnabled,
-                        availableWidth: availableWidth,
-                        availableHeight: availableHeight,
                       ),
                       IconButton(
                         icon: Icon(

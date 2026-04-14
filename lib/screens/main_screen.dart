@@ -26,10 +26,15 @@ class _MainScreenState extends State<MainScreen> {
   Widget build(BuildContext context) {
     final appState = Provider.of<AppState>(context);
     final l10n = AppLocalizations.of(context)!;
+    final size = MediaQuery.of(context).size;
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(l10n.appTitle),
+        title: Text(
+          appState.settings.developerModeEnabled
+              ? '${l10n.appTitle} (${size.width.toInt()}x${size.height.toInt()})'
+              : l10n.appTitle,
+        ),
         actions: [
           IconButton(
             icon: const Icon(Icons.settings),
