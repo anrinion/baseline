@@ -81,7 +81,13 @@ class ModuleTile extends StatelessWidget {
             child: Padding(
               padding: const EdgeInsets.fromLTRB(10, 10, 10, 8),
               child: isMicro
-                      ? _buildMicroLayout(context, scheme, label)
+                      ? _buildMicroLayout(
+                          context,
+                          scheme,
+                          label,
+                          availableWidth,
+                          availableHeight,
+                        )
                       : _buildStandardLayout(
                           context,
                           scheme,
@@ -104,23 +110,61 @@ class ModuleTile extends StatelessWidget {
     BuildContext context,
     ColorScheme scheme,
     String label,
+    double availableWidth,
+    double availableHeight,
   ) {
+    // Dynamic icon sizing: min 16, max 24, scales with available space
+    final iconSize = availableHeight < 32
+        ? (availableHeight * 0.6).clamp(16.0, 24.0)
+        : 24.0;
+
+    // Check if we can fit text at all (need at least ~14px for labelSmall)
+    final canShowText = availableHeight >= 32;
+
+    // Check if horizontal layout makes sense: plenty of width, limited height
+    final useHorizontalLayout =
+        canShowText && availableWidth >= 80 && availableHeight < 50;
+
+    if (useHorizontalLayout) {
+      return Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Icon(iconFor(moduleId), color: scheme.primary, size: iconSize),
+          const SizedBox(width: 4),
+          Flexible(
+            child: Text(
+              label,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+              style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                fontWeight: FontWeight.w600,
+                color: scheme.onSurface,
+                fontSize: 10,
+              ),
+            ),
+          ),
+        ],
+      );
+    }
+
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        Icon(iconFor(moduleId), color: scheme.primary, size: 24),
-        const SizedBox(height: 4),
-        Text(
-          label,
-          maxLines: 1,
-          overflow: TextOverflow.ellipsis,
-          textAlign: TextAlign.center,
-          style: Theme.of(context).textTheme.labelSmall?.copyWith(
-            fontWeight: FontWeight.w600,
-            color: scheme.onSurface,
-            fontSize: 10,
+        Icon(iconFor(moduleId), color: scheme.primary, size: iconSize),
+        if (canShowText) ...[
+          const SizedBox(height: 4),
+          Text(
+            label,
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+            textAlign: TextAlign.center,
+            style: Theme.of(context).textTheme.labelSmall?.copyWith(
+              fontWeight: FontWeight.w600,
+              color: scheme.onSurface,
+              fontSize: 10,
+            ),
           ),
-        ),
+        ],
       ],
     );
   }

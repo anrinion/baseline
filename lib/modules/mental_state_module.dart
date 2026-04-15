@@ -20,7 +20,7 @@ class MentalStateModule extends StatelessWidget {
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
       child: Container(
         padding: const EdgeInsets.all(24),
-        constraints: const BoxConstraints(maxWidth: 400),
+        constraints: const BoxConstraints(maxWidth: 400, maxHeight: 600),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -41,14 +41,15 @@ class MentalStateModule extends StatelessWidget {
               ],
             ),
             const SizedBox(height: 16),
-            
-            // Content based on mode
-            if (mentalStateMode == 'rightNow')
-              _MoodSelectionContent(appState: appState, l10n: l10n)
-            else if (mentalStateMode == 'goodThings')
-              _GoodThingsContent(appState: appState, l10n: l10n)
-            else
-              _ThoughtLensContent(appState: appState, l10n: l10n),
+            Flexible(
+              child: SingleChildScrollView(
+                child: mentalStateMode == 'rightNow'
+                    ? _MoodSelectionContent(appState: appState, l10n: l10n)
+                    : mentalStateMode == 'goodThings'
+                        ? _GoodThingsContent(appState: appState, l10n: l10n)
+                        : _ThoughtLensContent(appState: appState, l10n: l10n),
+              ),
+            ),
           ],
         ),
       ),
@@ -85,8 +86,10 @@ class _MoodSelectionContent extends StatelessWidget {
               ),
         ),
         const SizedBox(height: 24),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        Wrap(
+          alignment: WrapAlignment.center,
+          spacing: 12,
+          runSpacing: 16,
           children: [
             _MoodFace(
               emoji: '😢',
@@ -197,6 +200,8 @@ class _MoodFace extends StatelessWidget {
           Text(
             label,
             textAlign: TextAlign.center,
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
             style: Theme.of(context).textTheme.labelSmall?.copyWith(
                   color: isSelected
                       ? Theme.of(context).colorScheme.primary

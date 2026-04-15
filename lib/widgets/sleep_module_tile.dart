@@ -72,14 +72,14 @@ class _SleepModuleTileState extends State<SleepModuleTile> {
 
   AdaptiveTileMode _resolveTileMode(BoxConstraints constraints) {
     const horizontalPadding = 32.0;
-    const verticalMargin = 30.0; // reduced to give more usable height
+    const verticalMargin = 30.0;
     return resolveStandardTileMode(
       availableWidth: constraints.maxWidth - horizontalPadding,
       availableHeight: constraints.maxHeight - verticalMargin,
       thresholds: const AdaptiveTileThresholds(
-        microHeight: 90,
+        microHeight: 100,
         microWidth: 100,
-        compactHeight: 150,
+        compactHeight: 170,
         compactWidth: 200,
         expandedHeight: 250,
         expandedWidth: 250,
