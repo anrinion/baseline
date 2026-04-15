@@ -166,6 +166,8 @@ class _Header extends StatelessWidget {
                   fontWeight: FontWeight.w600,
                   color: scheme.onSurface,
                 ),
+            overflow: TextOverflow.ellipsis,
+            maxLines: 1,
           ),
         ),
         Text(

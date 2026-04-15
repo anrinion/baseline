@@ -241,6 +241,8 @@ class _SlidersHeader extends StatelessWidget {
                   color: scheme.onSurface,
                   fontSize: isExpanded ? null : 13,
                 ),
+                overflow: TextOverflow.ellipsis,
+                maxLines: 1,
               ),
             ),
             // Show duration chip in both expanded and medium modes

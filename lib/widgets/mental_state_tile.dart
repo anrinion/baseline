@@ -188,6 +188,8 @@ class _TileHeader extends StatelessWidget {
               color: scheme.onSurface,
               fontSize: isCompact ? 13 : null,
             ),
+            overflow: TextOverflow.ellipsis,
+            maxLines: 1,
           ),
         ),
         _DeveloperModeIndicator(tileMode: tileMode),

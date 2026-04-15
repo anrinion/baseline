@@ -84,6 +84,8 @@ class MedsModuleTile extends StatelessWidget {
                                 color: scheme.onSurface,
                                 fontSize: mode == AdaptiveTileMode.compact ? 13 : null,
                               ),
+                              overflow: TextOverflow.ellipsis,
+                              maxLines: 1,
                             ),
                           ),
                           Text(
