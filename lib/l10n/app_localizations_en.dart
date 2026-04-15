@@ -93,7 +93,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get modulesLabel => 'Modules';
 
   @override
-  String get hereModuleLabel => 'Grounding button';
+  String get hereModuleLabel => 'Grounding';
 
   @override
   String get hereModuleCustomizeLabel => 'Customize button text';

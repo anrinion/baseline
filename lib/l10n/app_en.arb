@@ -108,13 +108,13 @@
   "@modulesLabel": {
     "description": "Label for modules settings section"
   },
-  "hereModuleLabel": "Grounding button",
+  "hereModuleLabel": "Grounding",
   "@hereModuleLabel": {
-    "description": "Label for the 'I'm here' module"
+    "description": "Label for the grounding module"
   },
   "hereModuleCustomizeLabel": "Customize button text",
   "@hereModuleCustomizeLabel": {
-    "description": "Label for customizing the 'I'm here' button text"
+    "description": "Label for customizing the grounding button text"
   },
   "foodModuleLabel": "Nutrition",
   "@foodModuleLabel": {

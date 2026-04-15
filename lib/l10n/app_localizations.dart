@@ -260,13 +260,13 @@ abstract class AppLocalizations {
   /// **'Modules'**
   String get modulesLabel;
 
-  /// Label for the 'I'm here' module
+  /// Label for the grounding module
   ///
   /// In en, this message translates to:
-  /// **'Grounding button'**
+  /// **'Grounding'**
   String get hereModuleLabel;
 
-  /// Label for customizing the 'I'm here' button text
+  /// Label for customizing the grounding button text
   ///
   /// In en, this message translates to:
   /// **'Customize button text'**
