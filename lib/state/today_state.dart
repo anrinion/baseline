@@ -1,6 +1,11 @@
+import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
+import 'package:intl/intl.dart';
 
 part 'today_state.g.dart';
+
+/// Default reset time for day boundary calculations.
+const TimeOfDay kDefaultDayResetTime = TimeOfDay(hour: 0, minute: 0);
 
 @HiveType(typeId: 0)
 class TodayState extends HiveObject {
@@ -61,10 +66,20 @@ class TodayState extends HiveObject {
   String lastDayKey = '';
 
   /// Local calendar day as yyyy-MM-dd for daily reset boundaries.
-  static String dayKeyFor(DateTime dateTime) {
-    final d = dateTime.toLocal();
-    final m = d.month.toString().padLeft(2, '0');
-    final day = d.day.toString().padLeft(2, '0');
-    return '${d.year}-$m-$day';
+  static String dayKeyFor(
+    DateTime moment, {
+    TimeOfDay resetTime = kDefaultDayResetTime,
+  }) {
+    final reset = DateTime(
+      moment.year,
+      moment.month,
+      moment.day,
+      resetTime.hour,
+      resetTime.minute,
+    );
+    final adjusted = moment.isBefore(reset)
+        ? moment.subtract(const Duration(days: 1))
+        : moment;
+    return DateFormat('yyyy-MM-dd').format(adjusted);
   }
 }

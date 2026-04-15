@@ -26,9 +26,11 @@ void main() {
   });
 
   group('App Restart Mid-Day', () {
-    testWidgets('state persists across app restart simulation', skip: true, (WidgetTester tester) async {
+    testWidgets('state persists across app restart simulation', skip: true,
+        (WidgetTester tester) async {
       // Simulate first app session
       final appState1 = await createTestAppState();
+      addTearDown(() => appState1.dispose());
 
       // User activity during first session
       appState1.updateTodayState((state) {
@@ -52,6 +54,7 @@ void main() {
       // Simulate app restart by creating new AppState instance
       // Hive data persists, so new AppState should load existing data
       final appState2 = await createTestAppState();
+      addTearDown(() => appState2.dispose());
 
       await tester.pumpWidget(createTestableApp(
         home: const MainScreen(),
@@ -67,7 +70,8 @@ void main() {
       expect(appState2.todayState.goodThings, equals(['Good coffee']));
     });
 
-    testWidgets('same-day restart does not reset state', skip: true, (WidgetTester tester) async {
+    testWidgets('same-day restart does not reset state', skip: true,
+        (WidgetTester tester) async {
       final todayKey = TodayState.dayKeyFor(DateTime.now());
 
       // First session
@@ -80,6 +84,8 @@ void main() {
 
       // Simulate restart
       final appState = AppState();
+      addTearDown(() => appState.dispose());
+
       await Future.delayed(const Duration(milliseconds: 100));
 
       await tester.pumpWidget(createTestableApp(
@@ -98,11 +104,11 @@ void main() {
   group('Midnight Rollover - TodayState Reset', () {
     test('state resets when day changes', () async {
       final todayBox = Hive.box<TodayState>('todayState');
-      
+
       // Create state from "yesterday"
       final yesterday = DateTime.now().subtract(const Duration(days: 1));
       final yesterdayKey = TodayState.dayKeyFor(yesterday);
-      
+
       final yesterdayState = TodayState()
         ..proteinCount = 5
         ..moved = true
@@ -110,7 +116,7 @@ void main() {
         ..goodThings = ['Yesterday thing']
         ..thoughtLensIndex = 2
         ..lastDayKey = yesterdayKey;
-      
+
       await todayBox.put('today', yesterdayState);
 
       // Verify yesterday's data is stored
@@ -125,12 +131,12 @@ void main() {
 
     test('manual day boundary check resets state correctly', () async {
       final todayBox = Hive.box<TodayState>('todayState');
-      
+
       // Create yesterday's state
       final yesterday = DateTime.now().subtract(const Duration(days: 1));
       final yesterdayKey = TodayState.dayKeyFor(yesterday);
       final todayKey = TodayState.dayKeyFor(DateTime.now());
-      
+
       final oldState = TodayState()
         ..proteinCount = 5
         ..moved = true
@@ -138,7 +144,7 @@ void main() {
         ..goodThings = ['Old thing']
         ..thoughtLensIndex = 2
         ..lastDayKey = yesterdayKey;
-      
+
       await todayBox.put('today', oldState);
 
       // Simulate day boundary detection
@@ -149,7 +155,7 @@ void main() {
           ..lastDayKey = todayKey
           ..thoughtLensIndex = (yesterdayIndex + 1) % 10 // Different from yesterday
           ..yesterdayThoughtLensIndex = yesterdayIndex;
-        
+
         await todayBox.put('today', newState);
       }
 
@@ -162,8 +168,10 @@ void main() {
       expect(resetState?.lastDayKey, equals(todayKey));
     });
 
-    testWidgets('today reset button clears all activity', (WidgetTester tester) async {
+    testWidgets('today reset button clears all activity',
+        (WidgetTester tester) async {
       final appState = (await tester.runAsync(() => createTestAppState()))!;
+      addTearDown(() => appState.dispose());
 
       // Add some activity
       appState.updateTodayState((state) {
@@ -185,26 +193,28 @@ void main() {
       expect(appState.todayState.moved, isFalse);
       expect(appState.todayState.moodSelection, isNull);
       expect(appState.todayState.goodThings, isEmpty);
-      
+
       // Day key should be preserved
-      expect(appState.todayState.lastDayKey, equals(TodayState.dayKeyFor(DateTime.now())));
+      expect(appState.todayState.lastDayKey,
+          equals(TodayState.dayKeyFor(DateTime.now())));
     });
   });
 
   group('Language Persistence', () {
     test('language setting persists to Hive', () async {
       final settingsBox = Hive.box<Settings>('settings');
-      
-      final settings = Settings()
-        ..language = 'ru';
+
+      final settings = Settings()..language = 'ru';
       await settingsBox.put('settings', settings);
 
       final retrieved = settingsBox.get('settings');
       expect(retrieved?.language, equals('ru'));
     });
 
-    testWidgets('language change updates and persists', (WidgetTester tester) async {
+    testWidgets('language change updates and persists',
+        (WidgetTester tester) async {
       final appState = (await tester.runAsync(() => createTestAppState()))!;
+      addTearDown(() => appState.dispose());
 
       // Initially English
       expect(appState.settings.language, equals('en'));
@@ -223,15 +233,17 @@ void main() {
       expect(persisted?.language, equals('ru'));
     });
 
-    testWidgets('language persists across app restart', skip: true, (WidgetTester tester) async {
+    testWidgets('language persists across app restart', skip: true,
+        (WidgetTester tester) async {
       // First session - set Russian
       final settingsBox = Hive.box<Settings>('settings');
-      final settings1 = Settings()
-        ..language = 'ru';
+      final settings1 = Settings()..language = 'ru';
       await settingsBox.put('settings', settings1);
 
       // Simulate restart
       final appState = AppState();
+      addTearDown(() => appState.dispose());
+
       await Future.delayed(const Duration(milliseconds: 100));
 
       // Verify Russian persisted
@@ -242,20 +254,21 @@ void main() {
   group('Theme Persistence', () {
     test('theme setting persists to Hive', () async {
       final settingsBox = Hive.box<Settings>('settings');
-      
-      final settings = Settings()
-        ..theme = 'dark2';
+
+      final settings = Settings()..theme = 'dark2';
       await settingsBox.put('settings', settings);
 
       final retrieved = settingsBox.get('settings');
       expect(retrieved?.theme, equals('dark2'));
     });
 
-    testWidgets('all four themes can be set and persisted', (WidgetTester tester) async {
+    testWidgets('all four themes can be set and persisted',
+        (WidgetTester tester) async {
       final themes = ['light1', 'light2', 'dark1', 'dark2'];
-      
+
       for (final theme in themes) {
         final appState = (await tester.runAsync(() => createTestAppState()))!;
+        addTearDown(() => appState.dispose());
 
         appState.updateSettings((s) {
           s.theme = theme;
@@ -266,15 +279,16 @@ void main() {
       }
     });
 
-    testWidgets('theme persists across app restart', (WidgetTester tester) async {
+    testWidgets('theme persists across app restart',
+        (WidgetTester tester) async {
       // Set dark theme
       final settingsBox = Hive.box<Settings>('settings');
-      final settings = Settings()
-        ..theme = 'dark1';
+      final settings = Settings()..theme = 'dark1';
       await settingsBox.put('settings', settings);
 
       // Simulate restart
       final appState = (await tester.runAsync(() => createTestAppState()))!;
+      addTearDown(() => appState.dispose());
 
       // Verify dark theme persisted
       expect(appState.settings.theme, equals('dark1'));
@@ -282,8 +296,10 @@ void main() {
   });
 
   group('Out-of-Order Tile Interactions', () {
-    testWidgets('tiles can be tapped in any order', skip: true, (WidgetTester tester) async {
+    testWidgets('tiles can be tapped in any order', skip: true,
+        (WidgetTester tester) async {
       final appState = (await tester.runAsync(() => createTestAppState()))!;
+      addTearDown(() => appState.dispose());
 
       await tester.pumpWidget(createTestableApp(
         home: const MainScreen(),
@@ -324,8 +340,10 @@ void main() {
       expect(tester.takeException(), isNull);
     });
 
-    testWidgets('state updates work correctly regardless of order', (WidgetTester tester) async {
+    testWidgets('state updates work correctly regardless of order',
+        (WidgetTester tester) async {
       final appState = (await tester.runAsync(() => createTestAppState()))!;
+      addTearDown(() => appState.dispose());
 
       // Update in random order
       appState.updateTodayState((s) => s.moodSelection = 3);
@@ -340,8 +358,10 @@ void main() {
       expect(appState.todayState.goodThings, equals(['Thing']));
     });
 
-    testWidgets('rapid successive state updates work correctly', (WidgetTester tester) async {
+    testWidgets('rapid successive state updates work correctly',
+        (WidgetTester tester) async {
       final appState = (await tester.runAsync(() => createTestAppState()))!;
+      addTearDown(() => appState.dispose());
 
       // Rapid updates
       for (var i = 0; i < 10; i++) {
@@ -361,8 +381,10 @@ void main() {
   });
 
   group('Edge Cases - Data Integrity', () {
-    testWidgets('empty good things list is handled', (WidgetTester tester) async {
+    testWidgets('empty good things list is handled',
+        (WidgetTester tester) async {
       final appState = (await tester.runAsync(() => createTestAppState()))!;
+      addTearDown(() => appState.dispose());
 
       appState.updateTodayState((s) {
         s.goodThings = [];
@@ -371,8 +393,10 @@ void main() {
       expect(appState.todayState.goodThings, isEmpty);
     });
 
-    testWidgets('good things with empty strings are filtered', (WidgetTester tester) async {
+    testWidgets('good things with empty strings are filtered',
+        (WidgetTester tester) async {
       final appState = (await tester.runAsync(() => createTestAppState()))!;
+      addTearDown(() => appState.dispose());
 
       // Simulate adding items then clearing one
       appState.updateTodayState((s) {
@@ -384,8 +408,10 @@ void main() {
       expect(appState.todayState.goodThings, hasLength(3));
     });
 
-    testWidgets('mood selection out of range is stored as-is', (WidgetTester tester) async {
+    testWidgets('mood selection out of range is stored as-is',
+        (WidgetTester tester) async {
       final appState = (await tester.runAsync(() => createTestAppState()))!;
+      addTearDown(() => appState.dispose());
 
       // Store invalid mood value
       appState.updateTodayState((s) {
@@ -395,11 +421,13 @@ void main() {
       expect(appState.todayState.moodSelection, equals(99));
     });
 
-    testWidgets('food counts clamp to max portions', (WidgetTester tester) async {
+    testWidgets('food counts clamp to max portions',
+        (WidgetTester tester) async {
       final appState = (await tester.runAsync(() => createTestAppState()))!;
+      addTearDown(() => appState.dispose());
 
       final proteinDef = FoodCategoryDef.all[0];
-      
+
       // Try to set above max
       appState.updateTodayState((s) {
         proteinDef.setCount(s, 100);
@@ -412,11 +440,13 @@ void main() {
       );
     });
 
-    testWidgets('negative food counts are clamped to zero', (WidgetTester tester) async {
+    testWidgets('negative food counts are clamped to zero',
+        (WidgetTester tester) async {
       final appState = (await tester.runAsync(() => createTestAppState()))!;
+      addTearDown(() => appState.dispose());
 
       final proteinDef = FoodCategoryDef.all[0];
-      
+
       // Try to set negative
       appState.updateTodayState((s) {
         proteinDef.setCount(s, -5);
@@ -436,9 +466,8 @@ void main() {
 
     test('first launch flag can be set to false', () async {
       final settingsBox = Hive.box<Settings>('settings');
-      
-      final settings = Settings()
-        ..isFirstLaunch = false;
+
+      final settings = Settings()..isFirstLaunch = false;
       await settingsBox.put('settings', settings);
 
       final retrieved = settingsBox.get('settings');
@@ -447,18 +476,20 @@ void main() {
 
     test('legacy settings get default modules including "here"', () async {
       final settings = Settings();
-      
+
       // Ensure baseline defaults are applied
       settings.ensureBaselineModuleDefaults();
-      
+
       // Should include 'here' module
       expect(settings.enabledModuleIds.contains('here'), isTrue);
     });
   });
 
   group('Simultaneous State Access', () {
-    testWidgets('multiple read operations work correctly', (WidgetTester tester) async {
+    testWidgets('multiple read operations work correctly',
+        (WidgetTester tester) async {
       final appState = (await tester.runAsync(() => createTestAppState()))!;
+      addTearDown(() => appState.dispose());
 
       // Set some state
       appState.updateTodayState((s) {

@@ -11,6 +11,9 @@ import 'package:baseline/l10n/localization_service.dart';
 import 'package:baseline/state/app_state.dart';
 import 'package:baseline/state/settings.dart';
 import 'package:baseline/state/today_state.dart';
+import 'package:baseline/services/timer_service.dart';
+
+import 'fake_timer_service.dart';
 
 /// Initialize Hive for testing (in-memory)
 Future<void> initTestHive() async {
@@ -50,22 +53,26 @@ Future<void> reopenTestBoxes() async {
 /// 
 /// For widget tests, wrap the call in tester.runAsync():
 ///   final appState = await tester.runAsync(() => createTestAppState());
-Future<AppState> createTestAppState() async {
+///
+/// Optionally pass a [TimerService] for controlling timers in tests.
+/// Defaults to [FakeTimerService] for test isolation.
+Future<AppState> createTestAppState({TimerService? timerService}) async {
   // Ensure boxes are open
   await reopenTestBoxes();
-  
+
   // Verify boxes are actually open
   if (!Hive.isBoxOpen('todayState') || !Hive.isBoxOpen('settings')) {
     throw StateError('Hive boxes not open');
   }
-  
-  // Create AppState
-  final appState = AppState();
-  
+
+  // Create AppState with optional timer service (defaults to FakeTimerService)
+  final appState = AppState(timerService: timerService ?? FakeTimerService());
+
   // Wait for async _init() to complete
-  // _init() does: box assignment, data loading, _applyDayBoundary(), notifyListeners()
-  await Future.delayed(const Duration(milliseconds: 200));
-  
+  // _init() does: box assignment, data loading, _applyDayBoundary(), callback setup, notifyListeners()
+  // Need enough time for full initialization including MedsNotificationsService callbacks
+  await Future.delayed(const Duration(milliseconds: 300));
+
   return appState;
 }
 
@@ -76,10 +83,12 @@ Widget createTestableWidget({
   LocalizationService? localizationService,
   Locale locale = const Locale('en'),
 }) {
+  // Use FakeTimerService by default for test isolation if no appState provided
+  final effectiveAppState = appState ?? AppState(timerService: FakeTimerService());
   return MultiProvider(
     providers: [
       ChangeNotifierProvider<AppState>.value(
-        value: appState ?? AppState(),
+        value: effectiveAppState,
       ),
       ChangeNotifierProvider<LocalizationService>.value(
         value: localizationService ?? _createMockLocalizationService(locale),
@@ -111,10 +120,13 @@ Widget createTestableApp({
 }) {
   final mockLocalizationService = _createMockLocalizationService(locale);
   
+  // Use FakeTimerService by default for test isolation if no appState provided
+  final effectiveAppState = appState ?? AppState(timerService: FakeTimerService());
+  
   return MultiProvider(
     providers: [
       ChangeNotifierProvider<AppState>.value(
-        value: appState ?? AppState(),
+        value: effectiveAppState,
       ),
       ChangeNotifierProvider<LocalizationService>.value(
         value: mockLocalizationService,
