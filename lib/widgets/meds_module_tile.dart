@@ -61,12 +61,7 @@ class MedsModuleTile extends StatelessWidget {
             borderRadius: BorderRadius.circular(20),
             child: Padding(
               padding: const EdgeInsets.all(16),
-              child: ClipRect(
-                child: OverflowBox(
-                  minHeight: 0,
-                  maxHeight: double.infinity,
-                  alignment: Alignment.topCenter,
-                  child: Column(
+              child: Column(
                     mainAxisSize: MainAxisSize.min,
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
@@ -131,8 +126,6 @@ class MedsModuleTile extends StatelessWidget {
                         ),
                     ],
                   ),
-                ),
-              ),
             ),
           ),
         );
