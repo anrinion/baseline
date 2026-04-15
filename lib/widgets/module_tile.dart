@@ -80,12 +80,7 @@ class ModuleTile extends StatelessWidget {
             borderRadius: BorderRadius.circular(20),
             child: Padding(
               padding: const EdgeInsets.fromLTRB(10, 10, 10, 8),
-              child: ClipRect(
-                child: OverflowBox(
-                  minHeight: 0,
-                  maxHeight: double.infinity,
-                  alignment: Alignment.topCenter,
-                  child: isMicro
+              child: isMicro
                       ? _buildMicroLayout(context, scheme, label)
                       : _buildStandardLayout(
                           context,
@@ -98,8 +93,6 @@ class ModuleTile extends StatelessWidget {
                           availableWidth,
                           availableHeight,
                         ),
-                ),
-              ),
             ),
           ),
         );
