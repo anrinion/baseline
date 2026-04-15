@@ -27,7 +27,7 @@ class MovementModuleTile extends StatelessWidget {
         final availableWidth =
             constraints.maxWidth - 32; // 16 padding on each side
         final availableHeight =
-            constraints.maxHeight - 64; // rough header/margins
+            constraints.maxHeight - 48; // rough header/margins
 
         AdaptiveTileMode mode = AdaptiveTileMode.medium;
         final buttonTextStyle =
@@ -41,7 +41,7 @@ class MovementModuleTile extends StatelessWidget {
             availableHeight: availableHeight,
             thresholds: const AdaptiveTileThresholds(
               microHeight: 40,
-              microWidth: 120,
+              microWidth: 100,
               compactHeight: 100,
               compactWidth: 220,
               expandedHeight: 140,
@@ -137,7 +137,7 @@ class MovementModuleTile extends StatelessWidget {
                         Icon(
                           Icons.directions_walk,
                           color: scheme.primary,
-                          size: 20,
+                          size: mode == AdaptiveTileMode.compact ? 18 : 20,
                         ),
                         const SizedBox(width: 6),
                         Expanded(
@@ -146,6 +146,7 @@ class MovementModuleTile extends StatelessWidget {
                             style: theme.textTheme.titleSmall?.copyWith(
                               fontWeight: FontWeight.w600,
                               color: scheme.onSurface,
+                              fontSize: mode == AdaptiveTileMode.compact ? 13 : null,
                             ),
                           ),
                         ),
@@ -157,7 +158,7 @@ class MovementModuleTile extends StatelessWidget {
                         IconButton(
                           icon: Icon(
                             Icons.help_outline,
-                            size: 20,
+                            size: mode == AdaptiveTileMode.compact ? 18 : 20,
                             color: scheme.outline,
                           ),
                           tooltip: l10n.dialogWhyThisHelps,
@@ -265,6 +266,10 @@ class MovementModuleTile extends StatelessWidget {
     final scheme = theme.colorScheme;
     final l10n = AppLocalizations.of(context)!;
 
+    final limit = mode == AdaptiveTileMode.expanded ? 5 : 3;
+    final visibleOptions = options.take(limit).toList();
+    final hiddenCount = options.length - visibleOptions.length;
+
     return Column(
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -283,34 +288,57 @@ class MovementModuleTile extends StatelessWidget {
           spacing: 8,
           runSpacing: 8,
           alignment: WrapAlignment.center,
-          children: options.map((option) {
-            final iconForOpt = getMovementIconByName(option.iconName);
-            if (mode == AdaptiveTileMode.compact) {
-              return Material(
-                color: scheme.primaryContainer,
-                borderRadius: BorderRadius.circular(16),
-                child: InkWell(
+          children: [
+            ...visibleOptions.map((option) {
+              final iconForOpt = getMovementIconByName(option.iconName);
+              if (mode == AdaptiveTileMode.compact) {
+                return Material(
+                  color: scheme.primaryContainer,
                   borderRadius: BorderRadius.circular(16),
-                  onTap: () => completeMovementExercise(appState),
-                  child: Padding(
-                    padding: const EdgeInsets.all(12),
-                    child: Icon(iconForOpt, color: scheme.onPrimaryContainer),
+                  child: InkWell(
+                    borderRadius: BorderRadius.circular(16),
+                    onTap: () => completeMovementExercise(appState),
+                    child: Padding(
+                      padding: const EdgeInsets.all(12),
+                      child: Icon(iconForOpt, color: scheme.onPrimaryContainer),
+                    ),
                   ),
+                );
+              } else {
+                return ElevatedButton.icon(
+                  onPressed: () => completeMovementExercise(appState),
+                  icon: Icon(iconForOpt, size: 18),
+                  label: Text(option.text),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: scheme.primaryContainer,
+                    foregroundColor: scheme.onPrimaryContainer,
+                    elevation: 0,
+                  ),
+                );
+              }
+            }),
+            if (hiddenCount > 0)
+              if (mode == AdaptiveTileMode.compact)
+                Material(
+                  color: scheme.surfaceContainerHighest,
+                  borderRadius: BorderRadius.circular(16),
+                  child: InkWell(
+                    borderRadius: BorderRadius.circular(16),
+                    onTap: () => showMovementModule(context),
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
+                      child: Text('+$hiddenCount', style: theme.textTheme.labelMedium),
+                    ),
+                  ),
+                )
+              else
+                ActionChip(
+                  label: Text('+$hiddenCount'),
+                  onPressed: () => showMovementModule(context),
+                  backgroundColor: scheme.surfaceContainerHighest,
+                  side: BorderSide.none,
                 ),
-              );
-            } else {
-              return ElevatedButton.icon(
-                onPressed: () => completeMovementExercise(appState),
-                icon: Icon(iconForOpt, size: 18),
-                label: Text(option.text),
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: scheme.primaryContainer,
-                  foregroundColor: scheme.onPrimaryContainer,
-                  elevation: 0,
-                ),
-              );
-            }
-          }).toList(),
+          ],
         ),
       ],
     );

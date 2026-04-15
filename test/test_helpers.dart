@@ -134,7 +134,7 @@ Widget createTestableApp({
     ],
     child: MaterialApp(
       title: 'Baseline Test',
-      theme: theme,
+      theme: theme ?? ThemeData(fontFamily: 'Roboto'),
       locale: locale,
       localizationsDelegates: const [
         AppLocalizations.delegate,
