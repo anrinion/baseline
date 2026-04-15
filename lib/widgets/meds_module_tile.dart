@@ -28,15 +28,15 @@ class MedsModuleTile extends StatelessWidget {
             .length;
 
         final availableWidth = constraints.maxWidth - 32;
-        final availableHeight = constraints.maxHeight - 64;
+        final availableHeight = constraints.maxHeight - 48;
 
         final mode = resolveStandardTileMode(
           availableWidth: availableWidth,
           availableHeight: availableHeight,
           thresholds: const AdaptiveTileThresholds(
             microHeight: 55,
-            microWidth: 140,
-            compactHeight: 110,
+            microWidth: 100,
+            compactHeight: 85,
             compactWidth: 220,
             expandedHeight: 140,
             expandedWidth: 360,
@@ -75,7 +75,7 @@ class MedsModuleTile extends StatelessWidget {
                           Icon(
                             Icons.medication_outlined,
                             color: scheme.primary,
-                            size: 20,
+                            size: mode == AdaptiveTileMode.compact ? 18 : 20,
                           ),
                           const SizedBox(width: 6),
                           Expanded(
@@ -87,7 +87,15 @@ class MedsModuleTile extends StatelessWidget {
                               style: theme.textTheme.titleSmall?.copyWith(
                                 fontWeight: FontWeight.w600,
                                 color: scheme.onSurface,
+                                fontSize: mode == AdaptiveTileMode.compact ? 13 : null,
                               ),
+                            ),
+                          ),
+                          Text(
+                            '$takenCount/${meds.length}',
+                            style: theme.textTheme.labelMedium?.copyWith(
+                              fontWeight: FontWeight.w600,
+                              color: scheme.primary,
                             ),
                           ),
                           buildLayoutModeIndicator(
@@ -98,7 +106,7 @@ class MedsModuleTile extends StatelessWidget {
                           IconButton(
                             icon: Icon(
                               Icons.help_outline,
-                              size: 20,
+                              size: mode == AdaptiveTileMode.compact ? 18 : 20,
                               color: scheme.outline,
                             ),
                             tooltip: l10n.dialogWhyThisHelps,
@@ -174,28 +182,12 @@ class _MedsContent extends StatelessWidget {
     final appState = Provider.of<AppState>(context, listen: false);
     final progressText = l10n.medsTodayProgress(takenCount, meds.length);
 
-    if (mode == AdaptiveTileMode.compact) {
-      return Text(
-        progressText,
-        style: theme.textTheme.bodyMedium?.copyWith(
-          fontWeight: FontWeight.w600,
-        ),
-        textAlign: TextAlign.center,
-      );
-    }
-
-    final visible = meds.take(3).toList();
+    final takeCount = mode == AdaptiveTileMode.compact ? 1 : 3;
+    final visible = meds.take(takeCount).toList();
 
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
-        Text(
-          progressText,
-          style: theme.textTheme.bodySmall?.copyWith(
-            color: theme.colorScheme.onSurfaceVariant,
-          ),
-        ),
-        const SizedBox(height: 6),
         for (final med in visible)
           _MedItemTile(
             med: med,
@@ -242,20 +234,57 @@ class _MedItemTile extends StatelessWidget {
       );
     }
 
-    return CheckboxListTile(
-      dense: true,
-      contentPadding: EdgeInsets.zero,
-      title: Text(med, maxLines: 1, overflow: TextOverflow.ellipsis),
-      subtitle: subtitle,
-      value: isTaken,
-      controlAffinity: ListTileControlAffinity.leading,
-      onChanged: (value) {
-        setMedTakenToday(appState, med, value == true);
-        // Clear snooze when marking as taken
-        if (value == true) {
+    final scheme = Theme.of(context).colorScheme;
+
+    // In extremely narrow bounds, CheckboxListTile throws constraint errors.
+    // We build a custom highly-compact row to gracefully degenerate.
+    final tileContent = Row(
+      children: [
+        SizedBox(
+          width: 32,
+          height: 32,
+          child: Checkbox(
+            value: isTaken,
+            visualDensity: VisualDensity.compact,
+            onChanged: (value) {
+              setMedTakenToday(appState, med, value == true);
+              if (value == true) {
+                MedsNotificationsService.instance.clearSnooze(med);
+              }
+            },
+          ),
+        ),
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text(med, maxLines: 1, overflow: TextOverflow.ellipsis, style: const TextStyle(fontSize: 13)),
+              if (subtitle != null)
+                DefaultTextStyle(
+                  style: TextStyle(fontSize: 10, color: scheme.onSurfaceVariant),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  child: subtitle,
+                ),
+            ],
+          ),
+        ),
+      ],
+    );
+
+    return InkWell(
+      onTap: () {
+        setMedTakenToday(appState, med, !isTaken);
+        if (!isTaken) {
           MedsNotificationsService.instance.clearSnooze(med);
         }
       },
+      child: ConstrainedBox(
+        constraints: const BoxConstraints(minHeight: 36, maxHeight: 48),
+        child: tileContent,
+      ),
     );
   }
 }

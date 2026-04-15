@@ -89,14 +89,14 @@ class MentalStateModuleTile extends StatelessWidget {
 
   AdaptiveTileMode _resolveTileMode(BoxConstraints constraints) {
     const horizontalPadding = 32.0;
-    const verticalMargin = 64.0;
+    const verticalMargin = 48.0;
     return resolveStandardTileMode(
       availableWidth: constraints.maxWidth - horizontalPadding,
       availableHeight: constraints.maxHeight - verticalMargin,
       thresholds: const AdaptiveTileThresholds(
         microHeight: 55,
-        microWidth: 120,
-        compactHeight: 100,
+        microWidth: 100,
+        compactHeight: 80,
         compactWidth: 220,
         expandedHeight: 140,
         expandedWidth: 400,
@@ -174,7 +174,7 @@ class _TileHeader extends StatelessWidget {
     final l10n = AppLocalizations.of(context)!;
     final theme = Theme.of(context);
     final scheme = theme.colorScheme;
-    final iconSize = isCompact ? 16.0 : 20.0;
+    final iconSize = isCompact ? 18.0 : 20.0;
 
     return Row(
       children: [
@@ -191,7 +191,7 @@ class _TileHeader extends StatelessWidget {
           ),
         ),
         _DeveloperModeIndicator(tileMode: tileMode),
-        if (!isCompact) _HelpButton(moduleId: BaselineModuleId.mentalState),
+        _HelpButton(moduleId: BaselineModuleId.mentalState, isCompact: isCompact),
       ],
     );
   }
@@ -216,8 +216,9 @@ class _DeveloperModeIndicator extends StatelessWidget {
 
 class _HelpButton extends StatelessWidget {
   final String moduleId;
+  final bool isCompact;
 
-  const _HelpButton({required this.moduleId});
+  const _HelpButton({required this.moduleId, this.isCompact = false});
 
   @override
   Widget build(BuildContext context) {
@@ -225,7 +226,7 @@ class _HelpButton extends StatelessWidget {
     return IconButton(
       icon: Icon(
         Icons.help_outline,
-        size: 20,
+        size: isCompact ? 18 : 20,
         color: Theme.of(context).colorScheme.outline,
       ),
       tooltip: l10n.dialogWhyThisHelps,
@@ -364,34 +365,16 @@ class _CompactMoodSelector extends StatelessWidget {
   Widget build(BuildContext context) {
     return LayoutBuilder(
       builder: (context, constraints) {
-        // How many rows do we anticipate? (3 items max, wrap to 2 rows if narrow)
-        const maxRows = 2;
-        const runSpacing = 4.0;
-        // Total vertical space available for buttons (subtract spacing between rows)
-        final availableForButtons = constraints.maxHeight - (runSpacing * (maxRows - 1));
-        // Max height per button (if they were to stack in maxRows rows)
-        final maxButtonHeight = availableForButtons / maxRows;
-
-        return Wrap(
-          alignment: WrapAlignment.center,
-          spacing: 8,
-          runSpacing: runSpacing,
+        // Fixed-height row of exactly 3 emoji buttons (bad / neutral / good).
+        // Using a Row with Expanded children ensures they fill available width
+        // and AspectRatio(1) keeps them square — no blank space below.
+        final buttonSize = constraints.maxHeight.clamp(32.0, 72.0);
+        return Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
-            _AdaptiveEmojiButton(
-              emoji: '😢',
-              value: 1,
-              maxHeight: maxButtonHeight,
-            ),
-            _AdaptiveEmojiButton(
-              emoji: '😐',
-              value: 3,
-              maxHeight: maxButtonHeight,
-            ),
-            _AdaptiveEmojiButton(
-              emoji: '😊',
-              value: 5,
-              maxHeight: maxButtonHeight,
-            ),
+            Expanded(child: _AdaptiveEmojiButton(emoji: '😢', value: 1, maxHeight: buttonSize)),
+            Expanded(child: _AdaptiveEmojiButton(emoji: '😐', value: 3, maxHeight: buttonSize)),
+            Expanded(child: _AdaptiveEmojiButton(emoji: '😊', value: 5, maxHeight: buttonSize)),
           ],
         );
       },
@@ -409,170 +392,67 @@ class _ExpandedMoodSelector extends StatelessWidget {
     final isExpanded = tileMode == AdaptiveTileMode.expanded;
     final l10n = AppLocalizations.of(context)!;
 
-    return Column(
-      children: [
-        if (isExpanded) ...[
-          Text(
-            l10n.cbtRightNowQuestion,
-            textAlign: TextAlign.center,
-            style: Theme.of(context).textTheme.bodyMedium,
-          ),
-          const SizedBox(height: 12),
-        ],
-        Expanded(
-          child: LayoutBuilder(
-            builder: (context, constraints) {
-              return _ResponsiveMoodGrid(
-                availableWidth: constraints.maxWidth,
-                availableHeight: constraints.maxHeight,
-                isExpanded: isExpanded,
-              );
-            },
-          ),
-        ),
-      ],
-    );
-  }
-}
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        // Show all 5 moods if they fit in one row (min button 40px + 8 spacing each).
+        // If not, fall back to the curated 3 (bad/neutral/good) to guarantee
+        // the positive option is always visible.
+        const minButtonWidth = 40.0;
+        const spacing = 8.0;
+        final fitsAll5 = constraints.maxWidth >= 5 * minButtonWidth + 4 * spacing;
+        final moods = fitsAll5
+            ? const [
+                (emoji: '😢', value: 1),
+                (emoji: '😕', value: 2),
+                (emoji: '😐', value: 3),
+                (emoji: '🙂', value: 4),
+                (emoji: '😊', value: 5),
+              ]
+            : const [
+                (emoji: '😢', value: 1),
+                (emoji: '😐', value: 3),
+                (emoji: '😊', value: 5),
+              ];
 
-class _ResponsiveMoodGrid extends StatelessWidget {
-  final double availableWidth;
-  final double availableHeight;
-  final bool isExpanded;
+        final buttonMaxHeight = constraints.maxHeight.clamp(32.0, 80.0);
 
-  const _ResponsiveMoodGrid({
-    required this.availableWidth,
-    required this.availableHeight,
-    required this.isExpanded,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    final l10n = AppLocalizations.of(context)!;
-    final minButtonWidth = isExpanded ? 64.0 : 44.0;
-    final columns = (availableWidth / minButtonWidth).floor().clamp(2, 5);
-    final buttonWidth = (availableWidth - (columns - 1) * 8) / columns;
-    final useCompact = availableHeight < 60 || buttonWidth < 50;
-
-    return Wrap(
-      spacing: 8,
-      runSpacing: 8,
-      alignment: WrapAlignment.center,
-      children: [
-        _MoodButton(
-          emoji: '😢',
-          label: l10n.cbtMoodVerySad,
-          value: 1,
-          width: buttonWidth,
-          useCompact: useCompact,
-          isExpanded: isExpanded,
-        ),
-        _MoodButton(
-          emoji: '😕',
-          label: l10n.cbtMoodSad,
-          value: 2,
-          width: buttonWidth,
-          useCompact: useCompact,
-          isExpanded: isExpanded,
-        ),
-        _MoodButton(
-          emoji: '😐',
-          label: l10n.cbtMoodNeutral,
-          value: 3,
-          width: buttonWidth,
-          useCompact: useCompact,
-          isExpanded: isExpanded,
-        ),
-        _MoodButton(
-          emoji: '🙂',
-          label: l10n.cbtMoodGood,
-          value: 4,
-          width: buttonWidth,
-          useCompact: useCompact,
-          isExpanded: isExpanded,
-        ),
-        _MoodButton(
-          emoji: '😊',
-          label: l10n.cbtMoodVeryGood,
-          value: 5,
-          width: buttonWidth,
-          useCompact: useCompact,
-          isExpanded: isExpanded,
-        ),
-      ],
-    );
-  }
-}
-
-class _MoodButton extends StatelessWidget {
-  final String emoji;
-  final String label;
-  final int value;
-  final double width;
-  final bool useCompact;
-  final bool isExpanded;
-
-  const _MoodButton({
-    required this.emoji,
-    required this.label,
-    required this.value,
-    required this.width,
-    required this.useCompact,
-    required this.isExpanded,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    final scheme = theme.colorScheme;
-    final showLabel = !useCompact;
-    final emojiSize = useCompact ? 20.0 : (isExpanded ? 28.0 : 24.0);
-    final labelSize = useCompact ? 9.0 : (isExpanded ? 12.0 : 11.0);
-    final padding = useCompact ? 6.0 : (isExpanded ? 12.0 : 10.0);
-
-    return SizedBox(
-      width: width,
-      child: Material(
-        color: scheme.primaryContainer,
-        borderRadius: BorderRadius.circular(12),
-        child: InkWell(
-          borderRadius: BorderRadius.circular(12),
-          onTap: () => _updateMood(context, value),
-          child: Padding(
-            padding: EdgeInsets.all(padding),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Text(emoji, style: TextStyle(fontSize: emojiSize)),
-                if (showLabel) ...[
-                  const SizedBox(height: 2),
-                  Text(
-                    label,
-                    style: theme.textTheme.labelSmall?.copyWith(
-                      color: scheme.onPrimaryContainer,
-                      fontSize: labelSize,
+        return Column(
+          children: [
+            if (isExpanded) ...[
+              Text(
+                l10n.cbtRightNowQuestion,
+                textAlign: TextAlign.center,
+                style: Theme.of(context).textTheme.bodyMedium,
+              ),
+              const SizedBox(height: 8),
+            ],
+            Expanded(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  for (final m in moods)
+                    Expanded(
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 4),
+                        child: _AdaptiveEmojiButton(
+                          emoji: m.emoji,
+                          value: m.value,
+                          maxHeight: buttonMaxHeight,
+                        ),
+                      ),
                     ),
-                    textAlign: TextAlign.center,
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                  ),
                 ],
-              ],
+              ),
             ),
-          ),
-        ),
-      ),
+          ],
+        );
+      },
     );
   }
-
-  void _updateMood(BuildContext context, int value) {
-    final appState = Provider.of<AppState>(context, listen: false);
-    appState.updateTodayState((state) {
-      state.moodSelection = value;
-      state.moodSelectionTimestamp = clock.now();
-    });
-  }
 }
+
+
 
 class _MoodCompletedView extends StatelessWidget {
   final int mood;
@@ -608,6 +488,22 @@ class _CompactMoodCompleted extends StatelessWidget {
             color: const Color(0xFF059669),
             fontWeight: FontWeight.w600,
           ),
+        ),
+        const SizedBox(width: 8),
+        IconButton(
+          onPressed: () {
+            Provider.of<AppState>(
+              context,
+              listen: false,
+            ).updateTodayState((state) => state.moodSelection = null);
+          },
+          icon: const Icon(Icons.undo, size: 16),
+          style: IconButton.styleFrom(
+            foregroundColor: Theme.of(context).colorScheme.outline,
+            minimumSize: const Size(32, 32),
+            tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+          ),
+          tooltip: l10n.dialogReset,
         ),
       ],
     );

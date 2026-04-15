@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../l10n/app_localizations.dart';
+import '../modules/food_module.dart';
 import '../modules/mental_state_module.dart';
 import '../modules/meds_module.dart';
 import '../modules/module_help.dart';
@@ -184,17 +185,19 @@ class ModuleTile extends StatelessWidget {
             ),
           ],
         ),
-        const SizedBox(height: 8),
-        Text(
-          l10n.tapToOpen,
-          textAlign: TextAlign.center,
-          maxLines: 1,
-          overflow: TextOverflow.ellipsis,
-          style: Theme.of(context).textTheme.bodySmall?.copyWith(
-            color: scheme.onSurfaceVariant,
-            fontSize: isCompact ? 9 : 10,
+        if (!isCompact) ...[
+          const SizedBox(height: 8),
+          Text(
+            l10n.tapToOpen,
+            textAlign: TextAlign.center,
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+            style: Theme.of(context).textTheme.bodySmall?.copyWith(
+              color: scheme.onSurfaceVariant,
+              fontSize: 10,
+            ),
           ),
-        ),
+        ],
       ],
     );
   }
@@ -216,6 +219,10 @@ class ModuleTile extends StatelessWidget {
     }
     if (moduleId == BaselineModuleId.meds) {
       showMedsModule(context);
+      return;
+    }
+    if (moduleId == BaselineModuleId.food) {
+      showFoodModule(context);
       return;
     }
 

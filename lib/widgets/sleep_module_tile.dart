@@ -72,16 +72,16 @@ class _SleepModuleTileState extends State<SleepModuleTile> {
 
   AdaptiveTileMode _resolveTileMode(BoxConstraints constraints) {
     const horizontalPadding = 32.0;
-    const verticalMargin = 48.0; // reduced from 64 to give more usable height
+    const verticalMargin = 36.0; // reduced to give more usable height
     return resolveStandardTileMode(
       availableWidth: constraints.maxWidth - horizontalPadding,
       availableHeight: constraints.maxHeight - verticalMargin,
       thresholds: const AdaptiveTileThresholds(
-        microHeight: 100,
+        microHeight: 90,
         microWidth: 100,
-        compactHeight: 150,
+        compactHeight: 120,
         compactWidth: 200,
-        expandedHeight: 180,
+        expandedHeight: 250,
         expandedWidth: 250,
       ),
     );
@@ -173,7 +173,7 @@ class _SlidersSleepView extends StatelessWidget {
       surfaceTintColor: Colors.transparent,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
       child: Padding(
-        padding: EdgeInsets.all(isExpanded ? 16 : 12),
+        padding: EdgeInsets.all(isExpanded ? 16 : 8),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -251,7 +251,7 @@ class _SlidersHeader extends StatelessWidget {
               tileWidth: tileWidth,
               tileHeight: tileHeight,
             ),
-            if (isExpanded) _HelpButton(moduleId: BaselineModuleId.sleep),
+            _HelpButton(moduleId: BaselineModuleId.sleep),
           ],
         );
       },
@@ -270,18 +270,29 @@ class _SleepDurationChip extends StatelessWidget {
     final scheme = Theme.of(context).colorScheme;
     final isHealthy = duration.isHealthy;
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: compact ? 8 : 12, vertical: compact ? 4 : 6),
+      padding: EdgeInsets.symmetric(
+        horizontal: compact ? 8 : 12,
+        vertical: compact ? 4 : 6,
+      ),
       decoration: BoxDecoration(
-        color: isHealthy ? scheme.primaryContainer : scheme.surfaceContainerHighest,
+        color: isHealthy
+            ? scheme.primaryContainer
+            : scheme.surfaceContainerHighest,
         borderRadius: BorderRadius.circular(8),
       ),
       child: Text(
         duration.format(),
-        style: (compact ? Theme.of(context).textTheme.bodySmall : Theme.of(context).textTheme.titleMedium)?.copyWith(
-          fontWeight: FontWeight.w700,
-          color: isHealthy ? scheme.onPrimaryContainer : scheme.onSurface,
-          fontSize: compact ? 11 : null,
-        ),
+        style:
+            (compact
+                    ? Theme.of(context).textTheme.bodySmall
+                    : Theme.of(context).textTheme.titleMedium)
+                ?.copyWith(
+                  fontWeight: FontWeight.w700,
+                  color: isHealthy
+                      ? scheme.onPrimaryContainer
+                      : scheme.onSurface,
+                  fontSize: compact ? 11 : null,
+                ),
       ),
     );
   }
@@ -312,8 +323,9 @@ class _ResponsiveSliderLayout extends StatelessWidget {
       builder: (context, constraints) {
         // Prefer vertical layout (stacked sliders) for better usability.
         // Only use horizontal if width is very large (>500) AND height is very tight (<180)
-        final preferVertical = constraints.maxWidth < 500 || constraints.maxHeight >= 180;
-        
+        final preferVertical =
+            constraints.maxWidth < 500 || constraints.maxHeight >= 180;
+
         if (preferVertical) {
           // Vertical stacked sliders - super compact
           return Column(
@@ -401,20 +413,21 @@ class _CompactSleepSummaryView extends StatelessWidget {
         onTap: () => showSleepModule(context),
         borderRadius: BorderRadius.circular(20),
         child: Padding(
-          padding: const EdgeInsets.all(12),
+          padding: const EdgeInsets.all(8),
           child: Column(
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              _CompactHeader(
-                tileWidth: tileWidth,
-                tileHeight: tileHeight,
-              ),
-              const SizedBox(height: 6),
-              _SleepSummaryDisplay(
-                mode: AdaptiveTileMode.compact,
-                localBedTime: localBedTime,
-                localWakeTime: localWakeTime,
+              _CompactHeader(tileWidth: tileWidth, tileHeight: tileHeight),
+              const SizedBox(height: 2),
+              Flexible(
+                child: ClipRect(
+                  child: _SleepSummaryDisplay(
+                    mode: AdaptiveTileMode.compact,
+                    localBedTime: localBedTime,
+                    localWakeTime: localWakeTime,
+                  ),
+                ),
               ),
             ],
           ),
@@ -428,10 +441,7 @@ class _CompactHeader extends StatelessWidget {
   final double tileWidth;
   final double tileHeight;
 
-  const _CompactHeader({
-    required this.tileWidth,
-    required this.tileHeight,
-  });
+  const _CompactHeader({required this.tileWidth, required this.tileHeight});
 
   @override
   Widget build(BuildContext context) {
@@ -480,8 +490,11 @@ class _SleepSummaryDisplay extends StatelessWidget {
   Widget build(BuildContext context) {
     return Consumer<AppState>(
       builder: (context, appState, child) {
-        final bedTime = (localBedTime?.round() ?? appState.todayState.sleepBedTimeMinutes);
-        final wakeTime = (localWakeTime?.round() ?? appState.todayState.sleepWakeTimeMinutes);
+        final bedTime =
+            (localBedTime?.round() ?? appState.todayState.sleepBedTimeMinutes);
+        final wakeTime =
+            (localWakeTime?.round() ??
+            appState.todayState.sleepWakeTimeMinutes);
         final duration = _calculateSleepDuration(bedTime, wakeTime);
 
         if (mode == AdaptiveTileMode.compact) {
@@ -676,7 +689,9 @@ class _SleepSlider extends StatelessWidget {
         final double labelFontSize = superCompact ? 11 : (compact ? 12 : 13);
         final double timeFontSize = superCompact ? 13 : (compact ? 14 : 16);
         final double iconSize = superCompact ? 14 : (compact ? 16 : 18);
-        final double sliderHeight = superCompact ? 20.0 : (compact ? 24.0 : 30.0);
+        final double sliderHeight = superCompact
+            ? 20.0
+            : (compact ? 24.0 : 30.0);
 
         return Column(
           mainAxisSize: MainAxisSize.min,
@@ -728,9 +743,18 @@ class _SleepSlider extends StatelessWidget {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text('00:00', style: _sliderLabelStyle(theme, superCompact || compact)),
-                  Text('12:00', style: _sliderLabelStyle(theme, superCompact || compact)),
-                  Text('23:59', style: _sliderLabelStyle(theme, superCompact || compact)),
+                  Text(
+                    '00:00',
+                    style: _sliderLabelStyle(theme, superCompact || compact),
+                  ),
+                  Text(
+                    '12:00',
+                    style: _sliderLabelStyle(theme, superCompact || compact),
+                  ),
+                  Text(
+                    '23:59',
+                    style: _sliderLabelStyle(theme, superCompact || compact),
+                  ),
                 ],
               ),
             ),

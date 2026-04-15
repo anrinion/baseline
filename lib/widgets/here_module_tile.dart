@@ -104,7 +104,7 @@ class _HereModuleTileState extends State<HereModuleTile>
           availableWidth: availableWidth,
           availableHeight: availableHeight,
           thresholds: const AdaptiveTileThresholds(
-            microHeight: 40,
+            microHeight: 70,
             microWidth: 100,
             compactHeight: 80,
             compactWidth: 200,
@@ -119,69 +119,75 @@ class _HereModuleTileState extends State<HereModuleTile>
 
         final isCompact = mode == AdaptiveTileMode.compact;
 
-        return Center(
-          child: ConstrainedBox(
-            constraints: const BoxConstraints(maxWidth: 500),
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  // ── Header row (icon + title + help) ──
-                  Row(
-                    children: [
-                      Icon(
-                        Icons.center_focus_strong_outlined,
-                        color: scheme.primary,
+        return Card(
+          margin: EdgeInsets.all(isCompact ? 8 : 12),
+          elevation: 0,
+          clipBehavior: Clip.antiAlias,
+          color: scheme.surface,
+          surfaceTintColor: Colors.transparent,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20),
+          ),
+          child: Padding(
+            padding: EdgeInsets.all(isCompact ? 8 : 16),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                // ── Header row (icon + title + help) ──
+                Row(
+                  children: [
+                    Icon(
+                      Icons.center_focus_strong_outlined,
+                      color: scheme.primary,
+                      size: isCompact ? 18 : 20,
+                    ),
+                    const SizedBox(width: 6),
+                    Expanded(
+                      child: Text(
+                        l10n.grounding,
+                        style: theme.textTheme.titleSmall?.copyWith(
+                          fontWeight: FontWeight.w600,
+                          color: scheme.onSurface,
+                          fontSize: isCompact ? 13 : null,
+                        ),
+                      ),
+                    ),
+                    buildLayoutModeIndicator(
+                      context,
+                      mode,
+                      enabled: appState.settings.developerModeEnabled,
+                    ),
+                    IconButton(
+                      icon: Icon(
+                        Icons.help_outline,
                         size: isCompact ? 18 : 20,
+                        color: scheme.outline,
                       ),
-                      const SizedBox(width: 6),
-                      Expanded(
-                        child: Text(
-                          l10n.grounding,
-                          style: theme.textTheme.titleSmall?.copyWith(
-                            fontWeight: FontWeight.w600,
-                            color: scheme.onSurface,
-                            fontSize: isCompact ? 13 : null,
-                          ),
-                        ),
+                      tooltip: l10n.dialogWhyThisHelps,
+                      padding: EdgeInsets.zero,
+                      constraints: const BoxConstraints(
+                        minWidth: 36,
+                        minHeight: 36,
                       ),
-                      buildLayoutModeIndicator(
-                        context,
-                        mode,
-                        enabled: appState.settings.developerModeEnabled,
-                      ),
-                      IconButton(
-                        icon: Icon(
-                          Icons.help_outline,
-                          size: isCompact ? 18 : 20,
-                          color: scheme.outline,
-                        ),
-                        tooltip: l10n.dialogWhyThisHelps,
-                        padding: EdgeInsets.zero,
-                        constraints: const BoxConstraints(
-                          minWidth: 36,
-                          minHeight: 36,
-                        ),
-                        onPressed: () =>
-                            showModuleHelp(context, BaselineModuleId.here),
-                      ),
-                    ],
-                  ),
+                      onPressed: () =>
+                          showModuleHelp(context, BaselineModuleId.here),
+                    ),
+                  ],
+                ),
 
-                  const SizedBox(height: 8),
+                const SizedBox(height: 8),
 
-                  // ── Button / affirmation ──
-                  AnimatedSwitcher(
-                    duration: const Duration(milliseconds: 400),
-                    switchInCurve: Curves.easeOutCubic,
-                    switchOutCurve: Curves.easeInCubic,
-                    child: _activePhrase != null
-                        ? _buildAffirmation(theme, scheme, isCompact)
-                        : _buildButton(theme, scheme, label, isCompact),
-                  ),
-                ],
-              ),
+                // ── Button / affirmation ──
+                AnimatedSwitcher(
+                  duration: const Duration(milliseconds: 400),
+                  switchInCurve: Curves.easeOutCubic,
+                  switchOutCurve: Curves.easeInCubic,
+                  child: _activePhrase != null
+                      ? _buildAffirmation(theme, scheme, isCompact)
+                      : _buildButton(theme, scheme, label, isCompact),
+                ),
+              ],
             ),
           ),
         );

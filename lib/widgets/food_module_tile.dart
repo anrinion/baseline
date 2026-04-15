@@ -29,9 +29,9 @@ class FoodModuleTile extends StatelessWidget {
               availableWidth: availableWidth,
               availableHeight: availableHeight,
               thresholds: const AdaptiveTileThresholds(
-                microHeight: 162,
-                microWidth: 120,
-                compactHeight: 220,
+                microHeight: 120,
+                microWidth: 100,
+                compactHeight: 160,
                 compactWidth: 200,
                 expandedHeight: 250,
                 expandedWidth: 200,
@@ -100,22 +100,27 @@ class _FoodModuleContent extends StatelessWidget {
     final appState = context.read<AppState>();
     final l10n = AppLocalizations.of(context)!;
 
+    final hideHeader = availableHeight < 140;
+
     return Padding(
-      padding: const EdgeInsets.all(12),
+      padding: EdgeInsets.all(hideHeader ? 8 : 12),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          _Header(
-            mode: mode,
-            total: total,
-            maxTotal: maxTotal,
-            availableWidth: availableWidth,
-            availableHeight: availableHeight,
-          ),
-          const SizedBox(height: 12),
+          if (!hideHeader) ...[
+            _Header(
+              mode: mode,
+              total: total,
+              maxTotal: maxTotal,
+              availableWidth: availableWidth,
+              availableHeight: availableHeight,
+            ),
+            const SizedBox(height: 12),
+          ],
           Expanded(
             child: _CategoryList(
               mode: mode,
+              hideHeader: hideHeader,
               appState: appState,
               l10n: l10n,
             ),
@@ -194,11 +199,13 @@ class _Header extends StatelessWidget {
 class _CategoryList extends StatelessWidget {
   const _CategoryList({
     required this.mode,
+    required this.hideHeader,
     required this.appState,
     required this.l10n,
   });
 
   final AdaptiveTileMode mode;
+  final bool hideHeader;
   final AppState appState;
   final AppLocalizations l10n;
 
@@ -215,11 +222,11 @@ class _CategoryList extends StatelessWidget {
 
         switch (mode) {
           case AdaptiveTileMode.compact:
-            useUltraCompact = spacePerItem < 28;
+            useUltraCompact = hideHeader || spacePerItem < 28;
             useCompact = true;
             break;
           case AdaptiveTileMode.medium:
-            useUltraCompact = false;
+            useUltraCompact = hideHeader;
             useCompact = spacePerItem < 40;
             break;
           case AdaptiveTileMode.expanded:
@@ -234,22 +241,26 @@ class _CategoryList extends StatelessWidget {
         // Hide labels if extremely narrow (only in compact mode).
         final hideLabels = mode == AdaptiveTileMode.compact && constraints.maxWidth < 180;
 
-        return Column(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          mainAxisSize: MainAxisSize.max,
-          children: [
-            for (final category in FoodCategoryDef.all)
-              _CategoryRow(
-                category: category,
-                mode: mode,
-                useCompact: useCompact,
-                useUltraCompact: useUltraCompact,
-                hideLabels: hideLabels,
-                appState: appState,
-                l10n: l10n,
-              ),
-          ],
+        return ClipRect(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            mainAxisSize: MainAxisSize.max,
+            children: [
+              for (final category in FoodCategoryDef.all)
+                Flexible(
+                  child: _CategoryRow(
+                    category: category,
+                    mode: mode,
+                    useCompact: useCompact,
+                    useUltraCompact: useUltraCompact,
+                    hideLabels: hideLabels,
+                    appState: appState,
+                    l10n: l10n,
+                  ),
+                ),
+            ],
+          ),
         );
       },
     );
