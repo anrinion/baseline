@@ -101,7 +101,7 @@ class MovementModuleTile extends StatelessWidget {
           );
 
           // Fixed overhead
-          const layoutOverhead = 28.0;
+          const layoutOverhead = 40.0;
 
           // Wrap requires constraints
           final requiredExpandedHeight =
@@ -113,14 +113,14 @@ class MovementModuleTile extends StatelessWidget {
           final requiredMediumHeight = layoutOverhead + AdaptiveSizing.calculateWrapHeight(
             textItemWidths,
             availableWidth,
-            40,
+            50,
             8,
             8,
           );
           final requiredCompactHeight = layoutOverhead + AdaptiveSizing.calculateWrapHeight(
             List.filled(options.length, 48.0),
             availableWidth,
-            48,
+            24,
             8,
             8,
           );
