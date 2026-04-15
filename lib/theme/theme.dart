@@ -1,3 +1,4 @@
+import 'package:clock/clock.dart';
 import 'package:flutter/material.dart';
 
 import '../state/settings.dart';
@@ -18,7 +19,7 @@ abstract final class BaselineTheme {
       case Settings.themeModeDevice:
         return ThemeMode.system;
       case Settings.themeModeSchedule:
-        return isScheduledDarkAt(settings, now ?? DateTime.now())
+        return isScheduledDarkAt(settings, now ?? clock.now())
             ? ThemeMode.dark
             : ThemeMode.light;
       case Settings.themeModeManual:
@@ -41,7 +42,7 @@ abstract final class BaselineTheme {
             ? settings.darkThemeKey
             : settings.lightThemeKey;
       case Settings.themeModeSchedule:
-        return isScheduledDarkAt(settings, now ?? DateTime.now())
+        return isScheduledDarkAt(settings, now ?? clock.now())
             ? settings.darkThemeKey
             : settings.lightThemeKey;
       case Settings.themeModeManual:

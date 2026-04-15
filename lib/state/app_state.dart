@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:clock/clock.dart';
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 
@@ -70,7 +71,7 @@ class AppState extends ChangeNotifier with WidgetsBindingObserver {
   /// If the calendar day changed since last save, wipe [todayState].
   /// Empty [lastDayKey] means migration or first run: stamp today without wiping.
   void _applyDayBoundary() {
-    final todayKey = TodayState.dayKeyFor(DateTime.now());
+    final todayKey = TodayState.dayKeyFor(clock.now());
     if (todayState.lastDayKey.isEmpty) {
       todayState.lastDayKey = todayKey;
       // Initialize with a random distortion for first run
@@ -91,7 +92,7 @@ class AppState extends ChangeNotifier with WidgetsBindingObserver {
 
   /// Clears all of today's activity but keeps the current calendar day bucket.
   void resetTodayManual() {
-    final todayKey = TodayState.dayKeyFor(DateTime.now());
+    final todayKey = TodayState.dayKeyFor(clock.now());
     todayState = TodayState()..lastDayKey = todayKey;
     todayBox.put('today', todayState);
     notifyListeners();
@@ -133,7 +134,7 @@ class AppState extends ChangeNotifier with WidgetsBindingObserver {
   ThemeData get darkTheme => BaselineTheme.darkTheme(settings);
 
   ThemeMode get materialThemeMode {
-    return BaselineTheme.materialThemeMode(settings, now: DateTime.now());
+    return BaselineTheme.materialThemeMode(settings, now: clock.now());
   }
 
   String resolvedThemeKey({DateTime? now, Brightness? platformBrightness}) {
@@ -145,7 +146,7 @@ class AppState extends ChangeNotifier with WidgetsBindingObserver {
   }
 
   ThemeData get currentTheme {
-    return BaselineTheme.currentTheme(settings, now: DateTime.now());
+    return BaselineTheme.currentTheme(settings, now: clock.now());
   }
 
   @override
@@ -178,7 +179,7 @@ class AppState extends ChangeNotifier with WidgetsBindingObserver {
       return;
     }
 
-    final now = DateTime.now();
+    final now = clock.now();
     final nextBoundary = BaselineTheme.nextThemeBoundary(settings, now);
     final delay = nextBoundary.difference(now);
 

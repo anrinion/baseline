@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:clock/clock.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -149,7 +150,7 @@ class _MoodSelectionContent extends StatelessWidget {
     if (_canChangeMood()) {
       appState.updateTodayState((state) {
         state.moodSelection = value;
-        state.moodSelectionTimestamp = DateTime.now();
+        state.moodSelectionTimestamp = clock.now();
       });
     }
   }
@@ -488,6 +489,6 @@ bool canChangeMood(AppState appState) {
   if (currentMood == null) return true;
   if (moodTimestamp == null) return true;
   
-  final oneHourAgo = DateTime.now().subtract(const Duration(hours: 1));
+  final oneHourAgo = clock.now().subtract(const Duration(hours: 1));
   return moodTimestamp.isBefore(oneHourAgo);
 }

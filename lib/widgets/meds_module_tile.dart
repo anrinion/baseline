@@ -1,3 +1,4 @@
+import 'package:clock/clock.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -226,7 +227,7 @@ class _MedItemTile extends StatelessWidget {
     final theme = Theme.of(context);
     final isTaken = isMedTakenToday(appState, med);
     final snoozeTime = MedsNotificationsService.instance.getSnoozeTime(med);
-    final isSnoozed = snoozeTime != null && snoozeTime.isAfter(DateTime.now());
+    final isSnoozed = snoozeTime != null && snoozeTime.isAfter(clock.now());
 
     Widget? subtitle;
     if (isSnoozed) {

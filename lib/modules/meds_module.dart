@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:clock/clock.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
@@ -334,7 +335,7 @@ class _MedsDialog extends StatelessWidget {
                                 .getSnoozeTime(med);
                             final isSnoozed =
                                 snoozeTime != null &&
-                                snoozeTime.isAfter(DateTime.now());
+                                snoozeTime.isAfter(clock.now());
 
                             Widget? subtitle;
                             if (isSnoozed) {

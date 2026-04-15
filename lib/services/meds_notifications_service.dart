@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:developer';
 
+import 'package:clock/clock.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
@@ -356,7 +357,7 @@ class MedsNotificationsService {
         _medReminderMinutes[medName] = minutes;
 
         // If med already taken today, schedule for tomorrow
-        final now = tz.TZDateTime.now(tz.local);
+        final now = tz.TZDateTime.from(clock.now(), tz.local);
         final alreadyTaken = isMedTaken?.call(medName) ?? false;
 
         // Start with today at the reminder time
@@ -514,7 +515,7 @@ class MedsNotificationsService {
       await ensureInitialized();
       if (!_isAvailable) return 'Service not available: $_statusCode';
 
-      final now = tz.TZDateTime.now(tz.local);
+      final now = tz.TZDateTime.from(clock.now(), tz.local);
       final scheduledTime = now.add(const Duration(seconds: 3));
 
       await _plugin.zonedSchedule(
@@ -577,7 +578,7 @@ class MedsNotificationsService {
   }
 
   void _handleSnooze(String medName) {
-    final snoozeUntil = DateTime.now().add(const Duration(minutes: 10));
+    final snoozeUntil = clock.now().add(const Duration(minutes: 10));
     final timeStr =
         '${snoozeUntil.hour.toString().padLeft(2, '0')}:${snoozeUntil.minute.toString().padLeft(2, '0')}';
 
@@ -630,7 +631,7 @@ class MedsNotificationsService {
         _medReminderMinutes[medName] ?? 480; // 8:00 AM default
 
     // Reschedule for tomorrow (since cancel() stops all future repetitions)
-    final tomorrow = tz.TZDateTime.now(tz.local).add(const Duration(days: 1));
+    final tomorrow = tz.TZDateTime.from(clock.now(), tz.local).add(const Duration(days: 1));
     final nextSchedule = tz.TZDateTime(
       tz.local,
       tomorrow.year,

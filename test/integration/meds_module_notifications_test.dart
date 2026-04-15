@@ -1,3 +1,4 @@
+import 'package:clock/clock.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:hive/hive.dart';
@@ -132,151 +133,166 @@ void main() {
     });
 
     test('1. Set alarm -> mark med as taken -> alarm cancelled', () async {
-      final medName = 'Vitamin D';
-      final medId = service.notificationIdForMed(medName);
+      final fixedTime = DateTime(2024, 6, 15, 7, 0); // 7:00 AM before reminder
+      await withClock(Clock.fixed(fixedTime), () async {
+        final medName = 'Vitamin D';
+        final medId = service.notificationIdForMed(medName);
 
-      // Set up medication with reminder
-      setMedsList(appState, [medName]);
-      setMedsReminderMinutesForMedOnSettings(appState.settings, medName, 480); // 8:00 AM
+        // Set up medication with reminder
+        setMedsList(appState, [medName]);
+        setMedsReminderMinutesForMedOnSettings(appState.settings, medName, 480); // 8:00 AM
 
-      // Sync to schedule alarm
-      await service.syncFromSettings(
-        appState.settings,
-        isMedTaken: (m) => isMedTakenToday(appState, m),
-      );
+        // Sync to schedule alarm
+        await service.syncFromSettings(
+          appState.settings,
+          isMedTaken: (m) => isMedTakenToday(appState, m),
+        );
 
-      // Verify alarm scheduled
-      expect(mockAdapter.isScheduled(medId), isTrue, reason: 'Alarm should be scheduled');
+        // Verify alarm scheduled
+        expect(mockAdapter.isScheduled(medId), isTrue, reason: 'Alarm should be scheduled');
 
-      // Mark med as taken via module
-      setMedTakenToday(appState, medName, true);
+        // Mark med as taken via module
+        setMedTakenToday(appState, medName, true);
 
-      // Wait for async cancel to complete
-      await Future.delayed(Duration.zero);
+        // Wait for async cancel to complete
+        await Future.delayed(Duration.zero);
 
-      // Verify alarm was cancelled
-      expect(mockAdapter.cancelledIds.contains(medId), isTrue, reason: 'Alarm should be cancelled when taken');
-      expect(mockAdapter.isScheduled(medId), isFalse, reason: 'Alarm should not be in scheduled list');
+        // Verify alarm was cancelled
+        expect(mockAdapter.cancelledIds.contains(medId), isTrue, reason: 'Alarm should be cancelled when taken');
+        expect(mockAdapter.isScheduled(medId), isFalse, reason: 'Alarm should not be in scheduled list');
+      });
     });
 
     test('2. Set alarm -> snooze -> mark taken -> no snooze, alarm cancelled', () async {
-      final medName = 'Omega-3';
-      final medId = service.notificationIdForMed(medName);
+      final fixedTime = DateTime(2024, 6, 15, 7, 0); // 7:00 AM before reminder
+      await withClock(Clock.fixed(fixedTime), () async {
+        final medName = 'Omega-3';
+        final medId = service.notificationIdForMed(medName);
 
-      // Set up medication
-      setMedsList(appState, [medName]);
-      setMedsReminderMinutesForMedOnSettings(appState.settings, medName, 480);
+        // Set up medication
+        setMedsList(appState, [medName]);
+        setMedsReminderMinutesForMedOnSettings(appState.settings, medName, 480);
 
-      // Schedule
-      await service.syncFromSettings(
-        appState.settings,
-        isMedTaken: (m) => isMedTakenToday(appState, m),
-      );
-      expect(mockAdapter.isScheduled(medId), isTrue);
+        // Schedule
+        await service.syncFromSettings(
+          appState.settings,
+          isMedTaken: (m) => isMedTakenToday(appState, m),
+        );
+        expect(mockAdapter.isScheduled(medId), isTrue);
 
-      // Simulate snooze
-      service.snoozedMedsForTest[medName] = DateTime.now().add(const Duration(minutes: 10));
-      expect(service.isMedSnoozed(medName), isTrue);
+        // Simulate snooze
+        service.snoozedMedsForTest[medName] = clock.now().add(const Duration(minutes: 10));
+        expect(service.isMedSnoozed(medName), isTrue);
 
-      // Mark as taken
-      setMedTakenToday(appState, medName, true);
+        // Mark as taken
+        setMedTakenToday(appState, medName, true);
 
-      // Wait for async cancel to complete
-      await Future.delayed(Duration.zero);
+        // Wait for async cancel to complete
+        await Future.delayed(Duration.zero);
 
-      // Verify snooze cleared and alarm cancelled
-      expect(service.isMedSnoozed(medName), isFalse, reason: 'Snooze should be cleared');
-      expect(mockAdapter.cancelledIds.contains(medId), isTrue, reason: 'Alarm should be cancelled');
+        // Verify snooze cleared and alarm cancelled
+        expect(service.isMedSnoozed(medName), isFalse, reason: 'Snooze should be cleared');
+        expect(mockAdapter.cancelledIds.contains(medId), isTrue, reason: 'Alarm should be cancelled');
+      });
     });
 
     test('4. Mark taken -> reschedule alarm for later today -> no alarm today', () async {
-      final medName = 'B12';
-      final medId = service.notificationIdForMed(medName);
+      final fixedTime = DateTime(2024, 6, 15, 10, 0); // 10:00 AM, already past 8:00 AM reminder
+      await withClock(Clock.fixed(fixedTime), () async {
+        final medName = 'B12';
+        final medId = service.notificationIdForMed(medName);
 
-      // Set up and mark as taken
-      setMedsList(appState, [medName]);
-      setMedsReminderMinutesForMedOnSettings(appState.settings, medName, 480);
-      setMedTakenToday(appState, medName, true);
-      expect(isMedTakenToday(appState, medName), isTrue);
+        // Set up and mark as taken
+        setMedsList(appState, [medName]);
+        setMedsReminderMinutesForMedOnSettings(appState.settings, medName, 480);
+        setMedTakenToday(appState, medName, true);
+        expect(isMedTakenToday(appState, medName), isTrue);
 
-      // Sync (simulates user modifying alarm time after marking taken)
-      await service.syncFromSettings(
-        appState.settings,
-        isMedTaken: (m) => isMedTakenToday(appState, m),
-      );
+        // Sync (simulates user modifying alarm time after marking taken)
+        await service.syncFromSettings(
+          appState.settings,
+          isMedTaken: (m) => isMedTakenToday(appState, m),
+        );
 
-      // Verify alarm scheduled for tomorrow, not today
-      final scheduledTime = mockAdapter.getScheduledTime(medId);
-      expect(scheduledTime, isNotNull);
+        // Verify alarm scheduled for tomorrow, not today
+        final scheduledTime = mockAdapter.getScheduledTime(medId);
+        expect(scheduledTime, isNotNull);
 
-      final tomorrow = DateTime.now().add(const Duration(days: 1));
-      expect(scheduledTime!.day, equals(tomorrow.day), reason: 'Should schedule for tomorrow, not today');
+        final tomorrow = clock.now().add(const Duration(days: 1));
+        expect(scheduledTime!.day, equals(tomorrow.day), reason: 'Should schedule for tomorrow, not today');
+      });
     });
 
     test('5. Taken -> set alarm for later today -> no alarm today', () async {
-      final medName = 'Iron';
-      final medId = service.notificationIdForMed(medName);
+      final fixedTime = DateTime(2024, 6, 15, 10, 0); // 10:00 AM
+      await withClock(Clock.fixed(fixedTime), () async {
+        final medName = 'Iron';
+        final medId = service.notificationIdForMed(medName);
 
-      // Mark as taken first
-      setMedsList(appState, [medName]);
-      setMedTakenToday(appState, medName, true);
+        // Mark as taken first
+        setMedsList(appState, [medName]);
+        setMedTakenToday(appState, medName, true);
 
-      // Now set alarm for today (in the future)
-      final now = DateTime.now();
-      final futureMinutes = now.hour * 60 + now.minute + 30; // 30 min from now
-      setMedsReminderMinutesForMedOnSettings(appState.settings, medName, futureMinutes);
+        // Now set alarm for today (in the future)
+        final now = clock.now();
+        final futureMinutes = now.hour * 60 + now.minute + 30; // 30 min from now
+        setMedsReminderMinutesForMedOnSettings(appState.settings, medName, futureMinutes);
 
-      // Sync
-      await service.syncFromSettings(
-        appState.settings,
-        isMedTaken: (m) => isMedTakenToday(appState, m),
-      );
+        // Sync
+        await service.syncFromSettings(
+          appState.settings,
+          isMedTaken: (m) => isMedTakenToday(appState, m),
+        );
 
-      // Should schedule for tomorrow since already taken
-      final scheduledTime = mockAdapter.getScheduledTime(medId);
-      expect(scheduledTime, isNotNull);
-      expect(scheduledTime!.day, isNot(equals(now.day)), reason: 'Should not schedule for today when already taken');
+        // Should schedule for tomorrow since already taken
+        final scheduledTime = mockAdapter.getScheduledTime(medId);
+        expect(scheduledTime, isNotNull);
+        expect(scheduledTime!.day, isNot(equals(now.day)), reason: 'Should not schedule for today when already taken');
+      });
     });
 
     test('6. Alarm -> snooze -> reschedule for later -> snooze preserved -> mark taken -> all cleared', () async {
-      final medName = 'Magnesium';
-      final medId = service.notificationIdForMed(medName);
+      final fixedTime = DateTime(2024, 6, 15, 7, 0); // 7:00 AM before reminder
+      await withClock(Clock.fixed(fixedTime), () async {
+        final medName = 'Magnesium';
+        final medId = service.notificationIdForMed(medName);
 
-      // Set up and schedule
-      setMedsList(appState, [medName]);
-      setMedsReminderMinutesForMedOnSettings(appState.settings, medName, 480);
-      await service.syncFromSettings(
-        appState.settings,
-        isMedTaken: (m) => isMedTakenToday(appState, m),
-      );
+        // Set up and schedule
+        setMedsList(appState, [medName]);
+        setMedsReminderMinutesForMedOnSettings(appState.settings, medName, 480);
+        await service.syncFromSettings(
+          appState.settings,
+          isMedTaken: (m) => isMedTakenToday(appState, m),
+        );
 
-      // Snooze
-      service.snoozedMedsForTest[medName] = DateTime.now().add(const Duration(minutes: 10));
-      expect(service.isMedSnoozed(medName), isTrue);
+        // Snooze
+        service.snoozedMedsForTest[medName] = clock.now().add(const Duration(minutes: 10));
+        expect(service.isMedSnoozed(medName), isTrue);
 
-      // Reschedule alarm for later time
-      final now = DateTime.now();
-      final laterMinutes = now.hour * 60 + now.minute + 60; // 1 hour from now
-      setMedsReminderMinutesForMedOnSettings(appState.settings, medName, laterMinutes);
+        // Reschedule alarm for later time
+        final now = clock.now();
+        final laterMinutes = now.hour * 60 + now.minute + 60; // 1 hour from now
+        setMedsReminderMinutesForMedOnSettings(appState.settings, medName, laterMinutes);
 
-      // Re-sync (this should preserve snooze and reschedule)
-      await service.syncFromSettings(
-        appState.settings,
-        isMedTaken: (m) => isMedTakenToday(appState, m),
-      );
+        // Re-sync (this should preserve snooze and reschedule)
+        await service.syncFromSettings(
+          appState.settings,
+          isMedTaken: (m) => isMedTakenToday(appState, m),
+        );
 
-      // Snooze should still be active
-      expect(service.isMedSnoozed(medName), isTrue, reason: 'Snooze should be preserved after reschedule');
+        // Snooze should still be active
+        expect(service.isMedSnoozed(medName), isTrue, reason: 'Snooze should be preserved after reschedule');
 
-      // Mark as taken
-      setMedTakenToday(appState, medName, true);
+        // Mark as taken
+        setMedTakenToday(appState, medName, true);
 
-      // Wait for async cancel to complete
-      await Future.delayed(Duration.zero);
+        // Wait for async cancel to complete
+        await Future.delayed(Duration.zero);
 
-      // Both snooze and alarm should be cleared
-      expect(service.isMedSnoozed(medName), isFalse, reason: 'Snooze should be cleared');
-      expect(mockAdapter.cancelledIds.contains(medId), isTrue, reason: 'Alarm should be cancelled');
+        // Both snooze and alarm should be cleared
+        expect(service.isMedSnoozed(medName), isFalse, reason: 'Snooze should be cleared');
+        expect(mockAdapter.cancelledIds.contains(medId), isTrue, reason: 'Alarm should be cancelled');
+      });
     });
   });
 }

@@ -1,5 +1,7 @@
 import 'dart:math';
 
+import 'package:clock/clock.dart';
+
 /// Shared constants for Mental State functionality
 class MentalStateConstants {
   MentalStateConstants._();
@@ -84,7 +86,7 @@ class MentalStateConstants {
       };
     }
     
-    final random = Random(DateTime.now().millisecondsSinceEpoch);
+    final random = Random(clock.now().millisecondsSinceEpoch);
     int newIndex;
     
     do {
@@ -100,7 +102,7 @@ class MentalStateConstants {
       return 0;
     }
     
-    final random = Random(DateTime.now().millisecondsSinceEpoch);
+    final random = Random(clock.now().millisecondsSinceEpoch);
     int newIndex;
     
     do {

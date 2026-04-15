@@ -1,3 +1,4 @@
+import 'package:clock/clock.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -288,7 +289,7 @@ class _RightNowContent extends StatelessWidget {
     final timestamp = appState.todayState.moodSelectionTimestamp;
     if (mood == null) return true;
     if (timestamp == null) return true;
-    final oneHourAgo = DateTime.now().subtract(const Duration(hours: 1));
+    final oneHourAgo = clock.now().subtract(const Duration(hours: 1));
     return timestamp.isBefore(oneHourAgo);
   }
 }
@@ -337,7 +338,7 @@ class _AdaptiveEmojiButton extends StatelessWidget {
                 Provider.of<AppState>(context, listen: false).updateTodayState(
                   (state) {
                     state.moodSelection = value;
-                    state.moodSelectionTimestamp = DateTime.now();
+                    state.moodSelectionTimestamp = clock.now();
                   },
                 );
               },
@@ -568,7 +569,7 @@ class _MoodButton extends StatelessWidget {
     final appState = Provider.of<AppState>(context, listen: false);
     appState.updateTodayState((state) {
       state.moodSelection = value;
-      state.moodSelectionTimestamp = DateTime.now();
+      state.moodSelectionTimestamp = clock.now();
     });
   }
 }
