@@ -79,7 +79,7 @@ class _SleepModuleTileState extends State<SleepModuleTile> {
       thresholds: const AdaptiveTileThresholds(
         microHeight: 90,
         microWidth: 100,
-        compactHeight: 120,
+        compactHeight: 160,
         compactWidth: 200,
         expandedHeight: 250,
         expandedWidth: 250,
