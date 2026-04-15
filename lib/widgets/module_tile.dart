@@ -151,11 +151,10 @@ class ModuleTile extends StatelessWidget {
               size: isCompact ? 18 : 20,
             ),
             const SizedBox(width: 6),
-            Flexible(
-              // ← was Expanded
+            Expanded(
               child: Text(
                 label,
-                maxLines: 2,
+                maxLines: 1,
                 overflow: TextOverflow.ellipsis,
                 style: Theme.of(context).textTheme.titleSmall?.copyWith(
                   fontWeight: FontWeight.w600,

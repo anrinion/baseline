@@ -101,7 +101,7 @@ class MovementModuleTile extends StatelessWidget {
           );
 
           // Fixed overhead
-          const layoutOverhead = 30.0;
+          const layoutOverhead = 28.0;
 
           // Wrap requires constraints
           final requiredExpandedHeight =
@@ -151,8 +151,10 @@ class MovementModuleTile extends StatelessWidget {
           return const ModuleTile(moduleId: BaselineModuleId.movement);
         }
 
+        final isCompact = mode == AdaptiveTileMode.compact;
+
         return Card(
-          margin: const EdgeInsets.all(12),
+          margin: EdgeInsets.all(isCompact ? 6 : 12),
           elevation: 0,
           clipBehavior: Clip.antiAlias,
           color: scheme.surface,
@@ -161,7 +163,7 @@ class MovementModuleTile extends StatelessWidget {
             borderRadius: BorderRadius.circular(20),
           ),
           child: Padding(
-            padding: const EdgeInsets.all(16),
+            padding: EdgeInsets.all(isCompact ? 6 : 12),
             child: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
@@ -207,11 +209,13 @@ class MovementModuleTile extends StatelessWidget {
                         ),
                       ],
                     ),
-                    const SizedBox(height: 8),
+                    const SizedBox(height: 4),
                     Expanded(
-                      child: hasMoved
-                          ? _buildCompletedState(context, appState, mode, l10n)
-                          : _buildChoicesState(context, appState, options, mode),
+                      child: Center(
+                        child: hasMoved
+                            ? _buildCompletedState(context, appState, mode, l10n)
+                            : _buildChoicesState(context, appState, options, mode),
+                      ),
                     ),
                   ],
                 ),
@@ -256,7 +260,8 @@ class MovementModuleTile extends StatelessWidget {
 
     // Medium or Expanded
     return Column(
-      mainAxisSize: MainAxisSize.min,
+      mainAxisSize: MainAxisSize.max,
+      mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -338,7 +343,8 @@ class MovementModuleTile extends StatelessWidget {
     }
 
     return Column(
-      mainAxisSize: MainAxisSize.min,
+      mainAxisSize: MainAxisSize.max,
+      mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         if (mode == AdaptiveTileMode.expanded) ...[
@@ -349,7 +355,7 @@ class MovementModuleTile extends StatelessWidget {
             ),
             textAlign: TextAlign.center,
           ),
-          const SizedBox(height: 12),
+          const SizedBox(height: 8),
         ],
         Wrap(
           spacing: 8,
