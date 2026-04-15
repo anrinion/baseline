@@ -151,6 +151,8 @@ class _HereModuleTileState extends State<HereModuleTile>
                           color: scheme.onSurface,
                           fontSize: isCompact ? 13 : null,
                         ),
+                        overflow: TextOverflow.ellipsis,
+                        maxLines: 1,
                       ),
                     ),
                     buildLayoutModeIndicator(
