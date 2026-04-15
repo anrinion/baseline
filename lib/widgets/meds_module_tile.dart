@@ -28,7 +28,7 @@ class MedsModuleTile extends StatelessWidget {
             .length;
 
         final availableWidth = constraints.maxWidth - 32;
-        final availableHeight = constraints.maxHeight - 48;
+        final availableHeight = constraints.maxHeight - 40;
 
         final mode = resolveStandardTileMode(
           availableWidth: availableWidth,
@@ -36,8 +36,8 @@ class MedsModuleTile extends StatelessWidget {
           thresholds: const AdaptiveTileThresholds(
             microHeight: 55,
             microWidth: 100,
-            compactHeight: 85,
-            compactWidth: 220,
+            compactHeight: 100,
+            compactWidth: 120,
             expandedHeight: 140,
             expandedWidth: 360,
           ),
@@ -47,8 +47,10 @@ class MedsModuleTile extends StatelessWidget {
           return const ModuleTile(moduleId: BaselineModuleId.meds);
         }
 
+        final isCompact = mode == AdaptiveTileMode.compact;
+
         return Card(
-          margin: const EdgeInsets.all(12),
+          margin: EdgeInsets.all(isCompact ? 6 : 12),
           elevation: 0,
           clipBehavior: Clip.antiAlias,
           color: scheme.surface,
@@ -60,9 +62,8 @@ class MedsModuleTile extends StatelessWidget {
             onTap: () => showMedsModule(context),
             borderRadius: BorderRadius.circular(20),
             child: Padding(
-              padding: const EdgeInsets.all(16),
+              padding: EdgeInsets.all(isCompact ? 6 : 12),
               child: Column(
-                    mainAxisSize: MainAxisSize.min,
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
                       Row(
@@ -117,14 +118,18 @@ class MedsModuleTile extends StatelessWidget {
                           ),
                         ],
                       ),
-                      const SizedBox(height: 8),
+                      const SizedBox(height: 4),
                       if (meds.isEmpty)
-                        _EmptyMedsState(mode: mode)
+                        Expanded(child: Center(child: _EmptyMedsState(mode: mode)))
                       else
-                        _MedsContent(
-                          mode: mode,
-                          meds: meds,
-                          takenCount: takenCount,
+                        Expanded(
+                          child: Center(
+                            child: _MedsContent(
+                              mode: mode,
+                              meds: meds,
+                              takenCount: takenCount,
+                            ),
+                          ),
                         ),
                     ],
                   ),
@@ -181,7 +186,8 @@ class _MedsContent extends StatelessWidget {
     final visible = meds.take(takeCount).toList();
 
     return Column(
-      mainAxisSize: MainAxisSize.min,
+      mainAxisSize: MainAxisSize.max,
+      mainAxisAlignment: MainAxisAlignment.center,
       children: [
         for (final med in visible)
           _MedItemTile(

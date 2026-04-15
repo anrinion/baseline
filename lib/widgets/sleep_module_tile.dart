@@ -72,14 +72,14 @@ class _SleepModuleTileState extends State<SleepModuleTile> {
 
   AdaptiveTileMode _resolveTileMode(BoxConstraints constraints) {
     const horizontalPadding = 32.0;
-    const verticalMargin = 36.0; // reduced to give more usable height
+    const verticalMargin = 30.0; // reduced to give more usable height
     return resolveStandardTileMode(
       availableWidth: constraints.maxWidth - horizontalPadding,
       availableHeight: constraints.maxHeight - verticalMargin,
       thresholds: const AdaptiveTileThresholds(
         microHeight: 90,
         microWidth: 100,
-        compactHeight: 160,
+        compactHeight: 150,
         compactWidth: 200,
         expandedHeight: 250,
         expandedWidth: 250,
@@ -173,9 +173,8 @@ class _SlidersSleepView extends StatelessWidget {
       surfaceTintColor: Colors.transparent,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
       child: Padding(
-        padding: EdgeInsets.all(isExpanded ? 16 : 8),
+        padding: EdgeInsets.all(isExpanded ? 12 : 6),
         child: Column(
-          mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             _SlidersHeader(
@@ -183,15 +182,19 @@ class _SlidersSleepView extends StatelessWidget {
               tileWidth: tileWidth,
               tileHeight: tileHeight,
             ),
-            const SizedBox(height: 8),
-            _ResponsiveSliderLayout(
-              mode: mode,
-              localBedTime: localBedTime,
-              localWakeTime: localWakeTime,
-              onBedTimeChanged: onBedTimeChanged,
-              onWakeTimeChanged: onWakeTimeChanged,
-              onBedTimeChangeEnd: onBedTimeChangeEnd,
-              onWakeTimeChangeEnd: onWakeTimeChangeEnd,
+            const SizedBox(height: 4),
+            Expanded(
+              child: Center(
+                child: _ResponsiveSliderLayout(
+                  mode: mode,
+                  localBedTime: localBedTime,
+                  localWakeTime: localWakeTime,
+                  onBedTimeChanged: onBedTimeChanged,
+                  onWakeTimeChanged: onWakeTimeChanged,
+                  onBedTimeChangeEnd: onBedTimeChangeEnd,
+                  onWakeTimeChangeEnd: onWakeTimeChangeEnd,
+                ),
+              ),
             ),
           ],
         ),
@@ -408,7 +411,7 @@ class _CompactSleepSummaryView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      margin: const EdgeInsets.all(12),
+      margin: const EdgeInsets.all(6),
       elevation: 0,
       clipBehavior: Clip.antiAlias,
       color: Theme.of(context).colorScheme.surface,

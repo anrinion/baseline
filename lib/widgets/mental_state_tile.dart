@@ -89,7 +89,7 @@ class MentalStateModuleTile extends StatelessWidget {
 
   AdaptiveTileMode _resolveTileMode(BoxConstraints constraints) {
     const horizontalPadding = 32.0;
-    const verticalMargin = 48.0;
+    const verticalMargin = 40.0;
     return resolveStandardTileMode(
       availableWidth: constraints.maxWidth - horizontalPadding,
       availableHeight: constraints.maxHeight - verticalMargin,
@@ -122,7 +122,7 @@ class _MentalStateTileContent extends StatelessWidget {
         final isCompact = mode == AdaptiveTileMode.compact;
 
         return Card(
-          margin: EdgeInsets.all(isCompact ? 8 : 12),
+          margin: EdgeInsets.all(isCompact ? 6 : 12),
           elevation: 0,
           clipBehavior: Clip.antiAlias,
           color: Theme.of(context).colorScheme.surface,
@@ -131,7 +131,7 @@ class _MentalStateTileContent extends StatelessWidget {
             borderRadius: BorderRadius.circular(20),
           ),
           child: Padding(
-            padding: EdgeInsets.all(isCompact ? 8 : 16),
+            padding: EdgeInsets.all(isCompact ? 6 : 12),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
@@ -142,9 +142,11 @@ class _MentalStateTileContent extends StatelessWidget {
                 ),
                 SizedBox(height: isCompact ? 4 : 8),
                 Expanded(
-                  child: _ModeContentSwitcher(
-                    mode: mentalStateMode,
-                    tileMode: mode,
+                  child: Center(
+                    child: _ModeContentSwitcher(
+                      mode: mentalStateMode,
+                      tileMode: mode,
+                    ),
                   ),
                 ),
               ],
@@ -392,16 +394,16 @@ class _ExpandedMoodSelector extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isExpanded = tileMode == AdaptiveTileMode.expanded;
+    final isMedium = tileMode == AdaptiveTileMode.medium;
     final l10n = AppLocalizations.of(context)!;
 
     return LayoutBuilder(
       builder: (context, constraints) {
-        // Show all 5 moods if they fit in one row (min button 40px + 8 spacing each).
-        // If not, fall back to the curated 3 (bad/neutral/good) to guarantee
-        // the positive option is always visible.
+        // Medium mode always shows all 5 moods.
+        // Expanded mode shows all 5 if they fit, otherwise falls back to 3.
         const minButtonWidth = 40.0;
         const spacing = 8.0;
-        final fitsAll5 = constraints.maxWidth >= 5 * minButtonWidth + 4 * spacing;
+        final fitsAll5 = isMedium || constraints.maxWidth >= 5 * minButtonWidth + 4 * spacing;
         final moods = fitsAll5
             ? const [
                 (emoji: '😢', value: 1),

@@ -97,19 +97,19 @@ class _HereModuleTileState extends State<HereModuleTile>
             ? constraints.maxWidth - 40 // 20 padding each side
             : 300.0; // fallback
         final availableHeight = constraints.maxHeight.isFinite 
-            ? constraints.maxHeight - 64 // header + margins
+            ? constraints.maxHeight - 56 // header + margins
             : 100.0; // fallback
 
         final mode = resolveStandardTileMode(
           availableWidth: availableWidth,
           availableHeight: availableHeight,
           thresholds: const AdaptiveTileThresholds(
-            microHeight: 70,
+            microHeight: 60,
             microWidth: 100,
-            compactHeight: 80,
-            compactWidth: 200,
+            compactHeight: 60,
+            compactWidth: 100,
             expandedHeight: 100,
-            expandedWidth: 400,
+            expandedWidth: 100,
           ),
         );
 
@@ -120,7 +120,7 @@ class _HereModuleTileState extends State<HereModuleTile>
         final isCompact = mode == AdaptiveTileMode.compact;
 
         return Card(
-          margin: EdgeInsets.all(isCompact ? 8 : 12),
+          margin: EdgeInsets.all(isCompact ? 6 : 12),
           elevation: 0,
           clipBehavior: Clip.antiAlias,
           color: scheme.surface,
@@ -129,9 +129,8 @@ class _HereModuleTileState extends State<HereModuleTile>
             borderRadius: BorderRadius.circular(20),
           ),
           child: Padding(
-            padding: EdgeInsets.all(isCompact ? 8 : 16),
+            padding: EdgeInsets.all(isCompact ? 6 : 12),
             child: Column(
-              mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 // ── Header row (icon + title + help) ──
@@ -178,16 +177,18 @@ class _HereModuleTileState extends State<HereModuleTile>
                   ],
                 ),
 
-                const SizedBox(height: 8),
+                const SizedBox(height: 4),
 
                 // ── Button / affirmation ──
-                AnimatedSwitcher(
-                  duration: const Duration(milliseconds: 400),
-                  switchInCurve: Curves.easeOutCubic,
-                  switchOutCurve: Curves.easeInCubic,
-                  child: _activePhrase != null
-                      ? _buildAffirmation(theme, scheme, isCompact)
-                      : _buildButton(theme, scheme, label, isCompact),
+                Expanded(
+                  child: AnimatedSwitcher(
+                    duration: const Duration(milliseconds: 400),
+                    switchInCurve: Curves.easeOutCubic,
+                    switchOutCurve: Curves.easeInCubic,
+                    child: _activePhrase != null
+                        ? _buildAffirmation(theme, scheme, isCompact)
+                        : _buildButton(theme, scheme, label, isCompact),
+                  ),
                 ),
               ],
             ),
@@ -198,9 +199,9 @@ class _HereModuleTileState extends State<HereModuleTile>
   }
 
   Widget _buildButton(ThemeData theme, ColorScheme scheme, String label, bool isCompact) {
-    return SizedBox(
+    return Align(
       key: const ValueKey('btn'),
-      width: double.infinity,
+      alignment: Alignment.center,
       child: ElevatedButton(
         onPressed: () => _onPressed(context),
         style: ElevatedButton.styleFrom(
@@ -228,19 +229,16 @@ class _HereModuleTileState extends State<HereModuleTile>
     return FadeTransition(
       key: const ValueKey('phrase'),
       opacity: _fadeIn,
-      child: SizedBox(
-        width: double.infinity,
-        height: isCompact ? 44 : 52,
-        child: Center(
-          child: Text(
-            _activePhrase!,
-            textAlign: TextAlign.center,
-            style: theme.textTheme.titleMedium?.copyWith(
-              fontWeight: FontWeight.w500,
-              color: scheme.onSurfaceVariant,
-              fontStyle: FontStyle.italic,
-              fontSize: isCompact ? 14 : null,
-            ),
+      child: Align(
+        alignment: Alignment.center,
+        child: Text(
+          _activePhrase!,
+          textAlign: TextAlign.center,
+          style: theme.textTheme.titleMedium?.copyWith(
+            fontWeight: FontWeight.w500,
+            color: scheme.onSurfaceVariant,
+            fontStyle: FontStyle.italic,
+            fontSize: isCompact ? 14 : null,
           ),
         ),
       ),
