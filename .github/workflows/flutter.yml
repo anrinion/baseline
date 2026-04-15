@@ -76,7 +76,7 @@ jobs:
           if [ -n "$KEYSTORE_BASE64" ]; then
             echo "Decoding baseline-app-key.jks"
             echo "$KEYSTORE_BASE64" | base64 --decode > android/app/baseline-app-key.jks
-            echo "storeFile=app/baseline-app-key.jks" > android/key.properties
+            echo "storeFile=baseline-app-key.jks" > android/key.properties
             echo "storePassword=${{ secrets.KEYSTORE_PASSWORD }}" >> android/key.properties
             echo "keyAlias=${{ secrets.KEY_ALIAS }}" >> android/key.properties
             echo "keyPassword=${{ secrets.KEY_PASSWORD }}" >> android/key.properties
