@@ -9,6 +9,45 @@ import '../state/app_state.dart';
 import '../utils/adaptive_layout.dart';
 import 'module_tile.dart';
 
+class _AdaptiveIconButton extends StatelessWidget {
+  final VoidCallback onTap;
+  final Widget child;
+  final double maxHeight;
+  final Color backgroundColor;
+
+  const _AdaptiveIconButton({
+    required this.onTap,
+    required this.child,
+    required this.maxHeight,
+    required this.backgroundColor,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return ConstrainedBox(
+      constraints: BoxConstraints(maxHeight: maxHeight),
+      child: AspectRatio(
+        aspectRatio: 1,
+        child: FittedBox(
+          fit: BoxFit.scaleDown,
+          child: Material(
+            color: backgroundColor,
+            borderRadius: BorderRadius.circular(16),
+            child: InkWell(
+              borderRadius: BorderRadius.circular(16),
+              onTap: onTap,
+              child: Padding(
+                padding: const EdgeInsets.all(12),
+                child: child,
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
 class MovementModuleTile extends StatelessWidget {
   const MovementModuleTile({super.key});
 
@@ -124,7 +163,6 @@ class MovementModuleTile extends StatelessWidget {
           child: Padding(
             padding: const EdgeInsets.all(16),
             child: Column(
-                  mainAxisSize: MainAxisSize.min,
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
                     Row(
@@ -168,10 +206,11 @@ class MovementModuleTile extends StatelessWidget {
                       ],
                     ),
                     const SizedBox(height: 8),
-                    if (hasMoved)
-                      _buildCompletedState(context, appState, mode, l10n)
-                    else
-                      _buildChoicesState(context, appState, options, mode),
+                    Expanded(
+                      child: hasMoved
+                          ? _buildCompletedState(context, appState, mode, l10n)
+                          : _buildChoicesState(context, appState, options, mode),
+                    ),
                   ],
                 ),
           ),
@@ -263,6 +302,39 @@ class MovementModuleTile extends StatelessWidget {
     final visibleOptions = options.take(limit).toList();
     final hiddenCount = options.length - visibleOptions.length;
 
+    if (mode == AdaptiveTileMode.compact) {
+      return LayoutBuilder(
+        builder: (context, constraints) {
+          final buttonHeight = constraints.maxHeight.clamp(32.0, 56.0);
+          return Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              ...visibleOptions.map((option) {
+                final iconForOpt = getMovementIconByName(option.iconName);
+                return Expanded(
+                  child: _AdaptiveIconButton(
+                    onTap: () => completeMovementExercise(appState),
+                    maxHeight: buttonHeight,
+                    backgroundColor: scheme.primaryContainer,
+                    child: Icon(iconForOpt, color: scheme.onPrimaryContainer),
+                  ),
+                );
+              }),
+              if (hiddenCount > 0)
+                Expanded(
+                  child: _AdaptiveIconButton(
+                    onTap: () => showMovementModule(context),
+                    maxHeight: buttonHeight,
+                    backgroundColor: scheme.surfaceContainerHighest,
+                    child: Text('+$hiddenCount', style: theme.textTheme.labelMedium),
+                  ),
+                ),
+            ],
+          );
+        },
+      );
+    }
+
     return Column(
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -284,53 +356,24 @@ class MovementModuleTile extends StatelessWidget {
           children: [
             ...visibleOptions.map((option) {
               final iconForOpt = getMovementIconByName(option.iconName);
-              if (mode == AdaptiveTileMode.compact) {
-                return Material(
-                  color: scheme.primaryContainer,
-                  borderRadius: BorderRadius.circular(16),
-                  child: InkWell(
-                    borderRadius: BorderRadius.circular(16),
-                    onTap: () => completeMovementExercise(appState),
-                    child: Padding(
-                      padding: const EdgeInsets.all(12),
-                      child: Icon(iconForOpt, color: scheme.onPrimaryContainer),
-                    ),
-                  ),
-                );
-              } else {
-                return ElevatedButton.icon(
-                  onPressed: () => completeMovementExercise(appState),
-                  icon: Icon(iconForOpt, size: 18),
-                  label: Text(option.text),
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: scheme.primaryContainer,
-                    foregroundColor: scheme.onPrimaryContainer,
-                    elevation: 0,
-                  ),
-                );
-              }
+              return ElevatedButton.icon(
+                onPressed: () => completeMovementExercise(appState),
+                icon: Icon(iconForOpt, size: 18),
+                label: Text(option.text),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: scheme.primaryContainer,
+                  foregroundColor: scheme.onPrimaryContainer,
+                  elevation: 0,
+                ),
+              );
             }),
             if (hiddenCount > 0)
-              if (mode == AdaptiveTileMode.compact)
-                Material(
-                  color: scheme.surfaceContainerHighest,
-                  borderRadius: BorderRadius.circular(16),
-                  child: InkWell(
-                    borderRadius: BorderRadius.circular(16),
-                    onTap: () => showMovementModule(context),
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
-                      child: Text('+$hiddenCount', style: theme.textTheme.labelMedium),
-                    ),
-                  ),
-                )
-              else
-                ActionChip(
-                  label: Text('+$hiddenCount'),
-                  onPressed: () => showMovementModule(context),
-                  backgroundColor: scheme.surfaceContainerHighest,
-                  side: BorderSide.none,
-                ),
+              ActionChip(
+                label: Text('+$hiddenCount'),
+                onPressed: () => showMovementModule(context),
+                backgroundColor: scheme.surfaceContainerHighest,
+                side: BorderSide.none,
+              ),
           ],
         ),
       ],
