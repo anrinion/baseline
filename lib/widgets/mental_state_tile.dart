@@ -10,6 +10,66 @@ import '../state/app_state.dart';
 import '../utils/adaptive_layout.dart';
 import 'module_tile.dart';
 
+// ==================== Enums & Extensions ====================
+
+enum MentalStateMode {
+  rightNow,
+  goodThings,
+  thoughtLens;
+
+  static MentalStateMode fromString(String value) {
+    return MentalStateMode.values.firstWhere(
+      (e) => e.name == value,
+      orElse: () => MentalStateMode.rightNow,
+    );
+  }
+}
+
+extension MentalStateModeExtension on MentalStateMode {
+  IconData get icon {
+    switch (this) {
+      case MentalStateMode.rightNow:
+        return Icons.mood;
+      case MentalStateMode.goodThings:
+        return Icons.favorite;
+      case MentalStateMode.thoughtLens:
+        return Icons.psychology;
+    }
+  }
+
+  String title(AppLocalizations l10n) {
+    switch (this) {
+      case MentalStateMode.rightNow:
+        return l10n.cbtModeRightNow;
+      case MentalStateMode.goodThings:
+        return l10n.cbtModeGoodThings;
+      case MentalStateMode.thoughtLens:
+        return l10n.cbtModeThoughtLens;
+    }
+  }
+}
+
+extension MoodEmojiExtension on int {
+  String get emoji {
+    switch (this) {
+      case 1:
+        return '😢';
+      case 2:
+        return '😕';
+      case 3:
+        return '😐';
+      case 4:
+        return '🙂';
+      case 5:
+        return '😊';
+      default:
+        return '😐';
+    }
+  }
+}
+
+// ==================== Main Widget ====================
+
 class MentalStateModuleTile extends StatelessWidget {
   const MentalStateModuleTile({super.key});
 
@@ -17,270 +77,568 @@ class MentalStateModuleTile extends StatelessWidget {
   Widget build(BuildContext context) {
     return LayoutBuilder(
       builder: (context, constraints) {
-        final appState = Provider.of<AppState>(context);
-        final theme = Theme.of(context);
-        final scheme = theme.colorScheme;
-        final l10n = AppLocalizations.of(context)!;
-
-        final mentalStateMode = appState.settings.mentalStateMode;
-
-        final availableWidth =
-            constraints.maxWidth - 32; // 16 padding on each side
-        final availableHeight =
-            constraints.maxHeight - 64; // rough header/margins
-
-        final mode = resolveStandardTileMode(
-          availableWidth: availableWidth,
-          availableHeight: availableHeight,
-          thresholds: const AdaptiveTileThresholds(
-            microHeight: 55,
-            microWidth: 120,
-            compactHeight: 100,
-            compactWidth: 220,
-            expandedHeight: 140,
-            expandedWidth: 400,
-          ),
-        );
-
+        final mode = _resolveTileMode(constraints);
         if (mode == AdaptiveTileMode.micro) {
-          // Micro: use standard tile that opens a popup.
           return const ModuleTile(moduleId: BaselineModuleId.mentalState);
         }
+        return _MentalStateTileContent(mode: mode);
+      },
+    );
+  }
+
+  AdaptiveTileMode _resolveTileMode(BoxConstraints constraints) {
+    const horizontalPadding = 32.0;
+    const verticalMargin = 64.0;
+    return resolveStandardTileMode(
+      availableWidth: constraints.maxWidth - horizontalPadding,
+      availableHeight: constraints.maxHeight - verticalMargin,
+      thresholds: const AdaptiveTileThresholds(
+        microHeight: 55,
+        microWidth: 120,
+        compactHeight: 100,
+        compactWidth: 220,
+        expandedHeight: 140,
+        expandedWidth: 400,
+      ),
+    );
+  }
+}
+
+// ==================== Content Wrapper ====================
+
+class _MentalStateTileContent extends StatelessWidget {
+  final AdaptiveTileMode mode;
+
+  const _MentalStateTileContent({required this.mode});
+
+  @override
+  Widget build(BuildContext context) {
+    return Consumer<AppState>(
+      builder: (context, appState, child) {
+        final mentalStateMode = MentalStateMode.fromString(
+          appState.settings.mentalStateMode,
+        );
+        final isCompact = mode == AdaptiveTileMode.compact;
 
         return Card(
-          margin: const EdgeInsets.all(12),
+          margin: EdgeInsets.all(isCompact ? 8 : 12),
           elevation: 0,
           clipBehavior: Clip.antiAlias,
-          color: scheme.surface,
+          color: Theme.of(context).colorScheme.surface,
           surfaceTintColor: Colors.transparent,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(20),
           ),
           child: Padding(
-            padding: const EdgeInsets.all(16),
-            child: ClipRect(
-              child: OverflowBox(
-                minHeight: 0,
-                maxHeight: double.infinity,
-                alignment: Alignment.topCenter,
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    Row(
-                      children: [
-                        Icon(
-                          _getModeIcon(mentalStateMode),
-                          color: scheme.primary,
-                          size: 20,
-                        ),
-                        const SizedBox(width: 6),
-                        Expanded(
-                          child: Text(
-                            _getModeTitle(l10n, mentalStateMode),
-                            style: theme.textTheme.titleSmall?.copyWith(
-                              fontWeight: FontWeight.w600,
-                              color: scheme.onSurface,
-                            ),
-                          ),
-                        ),
-                        buildLayoutModeIndicator(
-                          context,
-                          mode,
-                          enabled: appState.settings.developerModeEnabled,
-                        ),
-                        IconButton(
-                          icon: Icon(
-                            Icons.help_outline,
-                            size: 20,
-                            color: scheme.outline,
-                          ),
-                          tooltip: l10n.dialogWhyThisHelps,
-                          padding: EdgeInsets.zero,
-                          constraints: const BoxConstraints(
-                            minWidth: 36,
-                            minHeight: 36,
-                          ),
-                          onPressed: () =>
-                              showModuleHelp(context, BaselineModuleId.mentalState),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 8),
-                    _buildContent(context, appState, mentalStateMode, mode, l10n),
-                  ],
+            padding: EdgeInsets.all(isCompact ? 8 : 16),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                _TileHeader(
+                  mode: mentalStateMode,
+                  tileMode: mode,
+                  isCompact: isCompact,
                 ),
-              ),
+                SizedBox(height: isCompact ? 4 : 8),
+                Expanded(
+                  child: _ModeContentSwitcher(
+                    mode: mentalStateMode,
+                    tileMode: mode,
+                  ),
+                ),
+              ],
             ),
           ),
         );
       },
     );
   }
+}
 
-  Widget _buildContent(
-    BuildContext context,
-    AppState appState,
-    String mentalStateMode,
-    AdaptiveTileMode mode,
-    AppLocalizations l10n,
-  ) {
-    switch (mentalStateMode) {
-      case 'rightNow':
-        return _buildRightNowContent(context, appState, mode, l10n);
-      case 'goodThings':
-        return _buildGoodThingsContent(context, appState, mode, l10n);
-      case 'thoughtLens':
-        return _buildThoughtLensContent(context, appState, mode, l10n);
-      default:
-        return _buildRightNowContent(context, appState, mode, l10n);
-    }
-  }
+// ==================== Header ====================
 
-  Widget _buildRightNowContent(
-    BuildContext context,
-    AppState appState,
-    AdaptiveTileMode mode,
-    AppLocalizations l10n,
-  ) {
+class _TileHeader extends StatelessWidget {
+  final MentalStateMode mode;
+  final AdaptiveTileMode tileMode;
+  final bool isCompact;
+
+  const _TileHeader({
+    required this.mode,
+    required this.tileMode,
+    required this.isCompact,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     final theme = Theme.of(context);
     final scheme = theme.colorScheme;
-    final currentMood = appState.todayState.moodSelection;
-    final moodTimestamp = appState.todayState.moodSelectionTimestamp;
-    
-    // Check if 1 hour has passed since mood selection
+    final iconSize = isCompact ? 16.0 : 20.0;
+
+    return Row(
+      children: [
+        Icon(mode.icon, color: scheme.primary, size: iconSize),
+        const SizedBox(width: 6),
+        Expanded(
+          child: Text(
+            mode.title(l10n),
+            style: theme.textTheme.titleSmall?.copyWith(
+              fontWeight: FontWeight.w600,
+              color: scheme.onSurface,
+              fontSize: isCompact ? 13 : null,
+            ),
+          ),
+        ),
+        _DeveloperModeIndicator(tileMode: tileMode),
+        if (!isCompact) _HelpButton(moduleId: BaselineModuleId.mentalState),
+      ],
+    );
+  }
+}
+
+class _DeveloperModeIndicator extends StatelessWidget {
+  final AdaptiveTileMode tileMode;
+
+  const _DeveloperModeIndicator({required this.tileMode});
+
+  @override
+  Widget build(BuildContext context) {
+    return Selector<AppState, bool>(
+      selector: (_, appState) => appState.settings.developerModeEnabled,
+      builder: (context, developerModeEnabled, child) {
+        if (!developerModeEnabled) return const SizedBox.shrink();
+        return buildLayoutModeIndicator(context, tileMode, enabled: true);
+      },
+    );
+  }
+}
+
+class _HelpButton extends StatelessWidget {
+  final String moduleId;
+
+  const _HelpButton({required this.moduleId});
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+    return IconButton(
+      icon: Icon(
+        Icons.help_outline,
+        size: 20,
+        color: Theme.of(context).colorScheme.outline,
+      ),
+      tooltip: l10n.dialogWhyThisHelps,
+      padding: EdgeInsets.zero,
+      constraints: const BoxConstraints(minWidth: 36, minHeight: 36),
+      onPressed: () => showModuleHelp(context, moduleId),
+    );
+  }
+}
+
+// ==================== Content Switcher ====================
+
+class _ModeContentSwitcher extends StatelessWidget {
+  final MentalStateMode mode;
+  final AdaptiveTileMode tileMode;
+
+  const _ModeContentSwitcher({required this.mode, required this.tileMode});
+
+  @override
+  Widget build(BuildContext context) {
+    switch (mode) {
+      case MentalStateMode.rightNow:
+        return _RightNowContent(tileMode: tileMode);
+      case MentalStateMode.goodThings:
+        return _GoodThingsContent(tileMode: tileMode);
+      case MentalStateMode.thoughtLens:
+        return _ThoughtLensContent(tileMode: tileMode);
+    }
+  }
+}
+
+// ==================== Right Now Mode ====================
+
+class _RightNowContent extends StatelessWidget {
+  final AdaptiveTileMode tileMode;
+
+  const _RightNowContent({required this.tileMode});
+
+  @override
+  Widget build(BuildContext context) {
+    return Selector<
+      AppState,
+      ({int? mood, DateTime? timestamp, bool canChange})
+    >(
+      selector: (_, appState) => (
+        mood: appState.todayState.moodSelection,
+        timestamp: appState.todayState.moodSelectionTimestamp,
+        canChange: _canChangeMood(appState),
+      ),
+      builder: (context, data, child) {
+        if (data.mood != null && !data.canChange) {
+          return _MoodCompletedView(mood: data.mood!, tileMode: tileMode);
+        }
+        return _MoodSelectionView(tileMode: tileMode);
+      },
+    );
+  }
+
+  bool _canChangeMood(AppState appState) {
+    final mood = appState.todayState.moodSelection;
+    final timestamp = appState.todayState.moodSelectionTimestamp;
+    if (mood == null) return true;
+    if (timestamp == null) return true;
     final oneHourAgo = DateTime.now().subtract(const Duration(hours: 1));
-    final canChangeMood = currentMood == null || 
-        (moodTimestamp != null && moodTimestamp.isBefore(oneHourAgo));
+    return timestamp.isBefore(oneHourAgo);
+  }
+}
 
-    if (currentMood != null && !canChangeMood) {
-      return _buildMoodCompleted(context, currentMood, mode, l10n);
+class _MoodSelectionView extends StatelessWidget {
+  final AdaptiveTileMode tileMode;
+
+  const _MoodSelectionView({required this.tileMode});
+
+  @override
+  Widget build(BuildContext context) {
+    if (tileMode == AdaptiveTileMode.compact) {
+      return const _CompactMoodSelector();
     }
+    return _ExpandedMoodSelector(tileMode: tileMode);
+  }
+}
 
-    if (mode == AdaptiveTileMode.compact) {
-      // Compact: show mood emojis in a row
-      return Wrap(
-        alignment: WrapAlignment.center,
-        spacing: 8,
-        runSpacing: 4,
-        children: [
-          _CompactMoodButton(
-            emoji: '😢',
-            onTap: () => _selectMood(appState, 1),
-          ),
-          _CompactMoodButton(
-            emoji: '😐',
-            onTap: () => _selectMood(appState, 3),
-          ),
-          _CompactMoodButton(
-            emoji: '😊',
-            onTap: () => _selectMood(appState, 5),
-          ),
-        ],
-      );
-    }
+class _AdaptiveEmojiButton extends StatelessWidget {
+  final String emoji;
+  final int value;
+  final double maxHeight;
 
-    // Medium or Expanded: show all mood options
+  const _AdaptiveEmojiButton({
+    required this.emoji,
+    required this.value,
+    required this.maxHeight,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final scheme = Theme.of(context).colorScheme;
+
+    return ConstrainedBox(
+      constraints: BoxConstraints(maxHeight: maxHeight),
+      child: AspectRatio(
+        aspectRatio: 1,
+        child: FittedBox(
+          fit: BoxFit.scaleDown,
+          child: Material(
+            color: scheme.primaryContainer,
+            borderRadius: BorderRadius.circular(16),
+            child: InkWell(
+              borderRadius: BorderRadius.circular(16),
+              onTap: () {
+                Provider.of<AppState>(context, listen: false).updateTodayState(
+                  (state) {
+                    state.moodSelection = value;
+                    state.moodSelectionTimestamp = DateTime.now();
+                  },
+                );
+              },
+              child: Padding(
+                padding: EdgeInsets.all(12),
+                child: Text(
+                  emoji,
+                  style: TextStyle(fontSize: 24), // Natural size
+                ),
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class _CompactMoodSelector extends StatelessWidget {
+  const _CompactMoodSelector();
+
+  @override
+  Widget build(BuildContext context) {
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        // How many rows do we anticipate? (3 items max, wrap to 2 rows if narrow)
+        const maxRows = 2;
+        const runSpacing = 4.0;
+        // Total vertical space available for buttons (subtract spacing between rows)
+        final availableForButtons = constraints.maxHeight - (runSpacing * (maxRows - 1));
+        // Max height per button (if they were to stack in maxRows rows)
+        final maxButtonHeight = availableForButtons / maxRows;
+
+        return Wrap(
+          alignment: WrapAlignment.center,
+          spacing: 8,
+          runSpacing: runSpacing,
+          children: [
+            _AdaptiveEmojiButton(
+              emoji: '😢',
+              value: 1,
+              maxHeight: maxButtonHeight,
+            ),
+            _AdaptiveEmojiButton(
+              emoji: '😐',
+              value: 3,
+              maxHeight: maxButtonHeight,
+            ),
+            _AdaptiveEmojiButton(
+              emoji: '😊',
+              value: 5,
+              maxHeight: maxButtonHeight,
+            ),
+          ],
+        );
+      },
+    );
+  }
+}
+
+class _ExpandedMoodSelector extends StatelessWidget {
+  final AdaptiveTileMode tileMode;
+
+  const _ExpandedMoodSelector({required this.tileMode});
+
+  @override
+  Widget build(BuildContext context) {
+    final isExpanded = tileMode == AdaptiveTileMode.expanded;
+    final l10n = AppLocalizations.of(context)!;
+
     return Column(
       children: [
-        if (mode == AdaptiveTileMode.expanded)
+        if (isExpanded) ...[
           Text(
             l10n.cbtRightNowQuestion,
             textAlign: TextAlign.center,
-            style: theme.textTheme.bodyMedium?.copyWith(
-              color: scheme.onSurface,
-            ),
+            style: Theme.of(context).textTheme.bodyMedium,
           ),
-        if (mode == AdaptiveTileMode.expanded) const SizedBox(height: 12),
-        Wrap(
-          spacing: 8,
-          runSpacing: 8,
-          alignment: WrapAlignment.center,
-          children: [
-            _MoodButton(
-              emoji: '😢',
-              label: l10n.cbtMoodVerySad,
-              onTap: () => _selectMood(appState, 1),
-            ),
-            _MoodButton(
-              emoji: '😕',
-              label: l10n.cbtMoodSad,
-              onTap: () => _selectMood(appState, 2),
-            ),
-            _MoodButton(
-              emoji: '😐',
-              label: l10n.cbtMoodNeutral,
-              onTap: () => _selectMood(appState, 3),
-            ),
-            _MoodButton(
-              emoji: '🙂',
-              label: l10n.cbtMoodGood,
-              onTap: () => _selectMood(appState, 4),
-            ),
-            _MoodButton(
-              emoji: '😊',
-              label: l10n.cbtMoodVeryGood,
-              onTap: () => _selectMood(appState, 5),
-            ),
-          ],
+          const SizedBox(height: 12),
+        ],
+        Expanded(
+          child: LayoutBuilder(
+            builder: (context, constraints) {
+              return _ResponsiveMoodGrid(
+                availableWidth: constraints.maxWidth,
+                availableHeight: constraints.maxHeight,
+                isExpanded: isExpanded,
+              );
+            },
+          ),
         ),
       ],
     );
   }
+}
 
-  Widget _buildMoodCompleted(
-    BuildContext context,
-    int mood,
-    AdaptiveTileMode mode,
-    AppLocalizations l10n,
-  ) {
+class _ResponsiveMoodGrid extends StatelessWidget {
+  final double availableWidth;
+  final double availableHeight;
+  final bool isExpanded;
+
+  const _ResponsiveMoodGrid({
+    required this.availableWidth,
+    required this.availableHeight,
+    required this.isExpanded,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+    final minButtonWidth = isExpanded ? 64.0 : 44.0;
+    final columns = (availableWidth / minButtonWidth).floor().clamp(2, 5);
+    final buttonWidth = (availableWidth - (columns - 1) * 8) / columns;
+    final useCompact = availableHeight < 60 || buttonWidth < 50;
+
+    return Wrap(
+      spacing: 8,
+      runSpacing: 8,
+      alignment: WrapAlignment.center,
+      children: [
+        _MoodButton(
+          emoji: '😢',
+          label: l10n.cbtMoodVerySad,
+          value: 1,
+          width: buttonWidth,
+          useCompact: useCompact,
+          isExpanded: isExpanded,
+        ),
+        _MoodButton(
+          emoji: '😕',
+          label: l10n.cbtMoodSad,
+          value: 2,
+          width: buttonWidth,
+          useCompact: useCompact,
+          isExpanded: isExpanded,
+        ),
+        _MoodButton(
+          emoji: '😐',
+          label: l10n.cbtMoodNeutral,
+          value: 3,
+          width: buttonWidth,
+          useCompact: useCompact,
+          isExpanded: isExpanded,
+        ),
+        _MoodButton(
+          emoji: '🙂',
+          label: l10n.cbtMoodGood,
+          value: 4,
+          width: buttonWidth,
+          useCompact: useCompact,
+          isExpanded: isExpanded,
+        ),
+        _MoodButton(
+          emoji: '😊',
+          label: l10n.cbtMoodVeryGood,
+          value: 5,
+          width: buttonWidth,
+          useCompact: useCompact,
+          isExpanded: isExpanded,
+        ),
+      ],
+    );
+  }
+}
+
+class _MoodButton extends StatelessWidget {
+  final String emoji;
+  final String label;
+  final int value;
+  final double width;
+  final bool useCompact;
+  final bool isExpanded;
+
+  const _MoodButton({
+    required this.emoji,
+    required this.label,
+    required this.value,
+    required this.width,
+    required this.useCompact,
+    required this.isExpanded,
+  });
+
+  @override
+  Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final scheme = theme.colorScheme;
-    final moodEmoji = _getMoodEmoji(mood);
+    final showLabel = !useCompact;
+    final emojiSize = useCompact ? 20.0 : (isExpanded ? 28.0 : 24.0);
+    final labelSize = useCompact ? 9.0 : (isExpanded ? 12.0 : 11.0);
+    final padding = useCompact ? 6.0 : (isExpanded ? 12.0 : 10.0);
 
-    if (mode == AdaptiveTileMode.compact) {
-      return Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Text(
-            moodEmoji,
-            style: const TextStyle(fontSize: 24),
-          ),
-          const SizedBox(width: 8),
-          Text(
-            l10n.cbtMoodRecorded,
-            style: theme.textTheme.bodyMedium?.copyWith(
-              color: const Color(0xFF059669),
-              fontWeight: FontWeight.w600,
+    return SizedBox(
+      width: width,
+      child: Material(
+        color: scheme.primaryContainer,
+        borderRadius: BorderRadius.circular(12),
+        child: InkWell(
+          borderRadius: BorderRadius.circular(12),
+          onTap: () => _updateMood(context, value),
+          child: Padding(
+            padding: EdgeInsets.all(padding),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(emoji, style: TextStyle(fontSize: emojiSize)),
+                if (showLabel) ...[
+                  const SizedBox(height: 2),
+                  Text(
+                    label,
+                    style: theme.textTheme.labelSmall?.copyWith(
+                      color: scheme.onPrimaryContainer,
+                      fontSize: labelSize,
+                    ),
+                    textAlign: TextAlign.center,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ],
+              ],
             ),
           ),
-        ],
-      );
-    }
+        ),
+      ),
+    );
+  }
 
+  void _updateMood(BuildContext context, int value) {
+    final appState = Provider.of<AppState>(context, listen: false);
+    appState.updateTodayState((state) {
+      state.moodSelection = value;
+      state.moodSelectionTimestamp = DateTime.now();
+    });
+  }
+}
+
+class _MoodCompletedView extends StatelessWidget {
+  final int mood;
+  final AdaptiveTileMode tileMode;
+
+  const _MoodCompletedView({required this.mood, required this.tileMode});
+
+  @override
+  Widget build(BuildContext context) {
+    if (tileMode == AdaptiveTileMode.compact) {
+      return _CompactMoodCompleted(mood: mood);
+    }
+    return _ExpandedMoodCompleted(mood: mood);
+  }
+}
+
+class _CompactMoodCompleted extends StatelessWidget {
+  final int mood;
+
+  const _CompactMoodCompleted({required this.mood});
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Text(mood.emoji, style: const TextStyle(fontSize: 24)),
+        const SizedBox(width: 8),
+        Text(
+          l10n.cbtMoodRecorded,
+          style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+            color: const Color(0xFF059669),
+            fontWeight: FontWeight.w600,
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+class _ExpandedMoodCompleted extends StatelessWidget {
+  final int mood;
+
+  const _ExpandedMoodCompleted({required this.mood});
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+    final scheme = Theme.of(context).colorScheme;
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text(
-              moodEmoji,
-              style: const TextStyle(fontSize: 32),
-            ),
+            Text(mood.emoji, style: const TextStyle(fontSize: 32)),
             const SizedBox(width: 12),
             Text(
               l10n.cbtMoodRecorded,
-              style: theme.textTheme.bodyMedium,
+              style: Theme.of(context).textTheme.bodyMedium,
             ),
           ],
         ),
         const SizedBox(height: 12),
         OutlinedButton(
-          onPressed: () => _selectMood(
-            Provider.of<AppState>(context, listen: false),
-            null,
-          ),
+          onPressed: () => _resetMood(context),
           style: OutlinedButton.styleFrom(
             foregroundColor: scheme.onSurfaceVariant,
             side: BorderSide(color: scheme.outlineVariant),
@@ -294,136 +652,142 @@ class MentalStateModuleTile extends StatelessWidget {
     );
   }
 
-  Widget _buildGoodThingsContent(
-    BuildContext context,
-    AppState appState,
-    AdaptiveTileMode mode,
-    AppLocalizations l10n,
-  ) {
-    final theme = Theme.of(context);
-    final scheme = theme.colorScheme;
-    final goodThings = appState.todayState.goodThings;
+  void _resetMood(BuildContext context) {
+    Provider.of<AppState>(
+      context,
+      listen: false,
+    ).updateTodayState((state) => state.moodSelection = null);
+  }
+}
 
-    if (goodThings.isNotEmpty) {
-      return _buildGoodThingsCompleted(context, goodThings, mode, l10n);
-    }
+// ==================== Good Things Mode ====================
 
-    if (mode == AdaptiveTileMode.compact) {
-      return ElevatedButton(
+class _GoodThingsContent extends StatelessWidget {
+  final AdaptiveTileMode tileMode;
+
+  const _GoodThingsContent({required this.tileMode});
+
+  @override
+  Widget build(BuildContext context) {
+    return Selector<AppState, List<String>>(
+      selector: (_, appState) => appState.todayState.goodThings,
+      builder: (context, goodThings, child) {
+        if (goodThings.isNotEmpty) {
+          return _GoodThingsCompletedView(
+            goodThings: goodThings,
+            tileMode: tileMode,
+          );
+        }
+        return _GoodThingsEmptyView(tileMode: tileMode);
+      },
+    );
+  }
+}
+
+class _GoodThingsEmptyView extends StatelessWidget {
+  final AdaptiveTileMode tileMode;
+
+  const _GoodThingsEmptyView({required this.tileMode});
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+    final scheme = Theme.of(context).colorScheme;
+
+    if (tileMode == AdaptiveTileMode.compact) {
+      return _CompactActionButton(
         onPressed: () => showMentalStateModule(context),
-        style: ElevatedButton.styleFrom(
-          backgroundColor: scheme.primaryContainer,
-          foregroundColor: scheme.onPrimaryContainer,
-          elevation: 0,
-          padding: const EdgeInsets.all(12),
-          minimumSize: const Size(44, 44),
-        ),
-        child: const Icon(Icons.add, size: 20),
+        icon: Icons.add,
+        backgroundColor: scheme.primaryContainer,
+        foregroundColor: scheme.onPrimaryContainer,
       );
     }
 
     return Column(
       children: [
-        if (mode == AdaptiveTileMode.expanded) ...[
+        if (tileMode == AdaptiveTileMode.expanded)
           Text(
             l10n.cbtGoodThingsQuestion,
             textAlign: TextAlign.center,
-            style: theme.textTheme.bodyMedium?.copyWith(
-              color: scheme.onSurface,
-            ),
+            style: Theme.of(context).textTheme.bodyMedium,
           ),
-          const SizedBox(height: 12),
-          // Show good things inline in expanded mode
-          ...goodThings.asMap().entries.map((entry) {
-            final index = entry.key + 1;
-            final thing = entry.value;
-            return Padding(
-              padding: const EdgeInsets.only(bottom: 8),
-              child: Row(
-                children: [
-                  Container(
-                    width: 24,
-                    height: 24,
-                    decoration: BoxDecoration(
-                      color: scheme.primary,
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                    child: Center(
-                      child: Text(
-                        '$index',
-                        style: TextStyle(
-                          color: scheme.onPrimary,
-                          fontSize: 12,
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ),
-                    ),
-                  ),
-                  const SizedBox(width: 12),
-                  Expanded(
-                    child: Text(
-                      thing,
-                      style: theme.textTheme.bodyMedium,
-                    ),
-                  ),
-                ],
-              ),
-            );
-          }),
-          if (goodThings.isNotEmpty) const SizedBox(height: 12),
-        ],
-        // Show button in all cases when list is empty, or when not in expanded mode
-        if (goodThings.isEmpty || mode != AdaptiveTileMode.expanded)
-          ElevatedButton.icon(
-            onPressed: () => showMentalStateModule(context),
-            icon: Icon(goodThings.isEmpty ? Icons.edit_note : Icons.add, size: 18),
-            label: Text(goodThings.isEmpty ? l10n.cbtModeGoodThings : l10n.dialogClose),
-            style: ElevatedButton.styleFrom(
-              backgroundColor: scheme.primaryContainer,
-              foregroundColor: scheme.onPrimaryContainer,
-              elevation: 0,
-            ),
+        const SizedBox(height: 12),
+        ElevatedButton.icon(
+          onPressed: () => showMentalStateModule(context),
+          icon: const Icon(Icons.edit_note, size: 18),
+          label: Text(l10n.cbtModeGoodThings),
+          style: ElevatedButton.styleFrom(
+            backgroundColor: scheme.primaryContainer,
+            foregroundColor: scheme.onPrimaryContainer,
+            elevation: 0,
           ),
+        ),
       ],
     );
   }
+}
 
-  Widget _buildGoodThingsCompleted(
-    BuildContext context,
-    List<String> goodThings,
-    AdaptiveTileMode mode,
-    AppLocalizations l10n,
-  ) {
-    final theme = Theme.of(context);
-    final scheme = theme.colorScheme;
+class _GoodThingsCompletedView extends StatelessWidget {
+  final List<String> goodThings;
+  final AdaptiveTileMode tileMode;
 
-    if (mode == AdaptiveTileMode.compact) {
-      return Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          const Icon(Icons.check_circle, size: 24, color: Color(0xFF059669)),
-          const SizedBox(width: 8),
-          Text(
-            '${goodThings.length} ${l10n.cbtModeGoodThings.toLowerCase()}',
-            style: theme.textTheme.bodyMedium?.copyWith(
-              color: const Color(0xFF059669),
-              fontWeight: FontWeight.w600,
-            ),
-          ),
-          const SizedBox(width: 8),
-          IconButton(
-            onPressed: () => showMentalStateModule(context),
-            icon: const Icon(Icons.edit, size: 16),
-            style: IconButton.styleFrom(
-              foregroundColor: const Color(0xFF059669),
-              minimumSize: const Size(32, 32),
-              tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-            ),
-          ),
-        ],
-      );
+  const _GoodThingsCompletedView({
+    required this.goodThings,
+    required this.tileMode,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    if (tileMode == AdaptiveTileMode.compact) {
+      return _CompactGoodThingsCompleted(goodThings: goodThings);
     }
+    return _ExpandedGoodThingsCompleted(goodThings: goodThings);
+  }
+}
 
+class _CompactGoodThingsCompleted extends StatelessWidget {
+  final List<String> goodThings;
+
+  const _CompactGoodThingsCompleted({required this.goodThings});
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        const Icon(Icons.check_circle, size: 24, color: Color(0xFF059669)),
+        const SizedBox(width: 8),
+        Text(
+          '${goodThings.length} ${l10n.cbtModeGoodThings.toLowerCase()}',
+          style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+            color: const Color(0xFF059669),
+            fontWeight: FontWeight.w600,
+          ),
+        ),
+        const SizedBox(width: 8),
+        IconButton(
+          onPressed: () => showMentalStateModule(context),
+          icon: const Icon(Icons.edit, size: 16),
+          style: IconButton.styleFrom(
+            foregroundColor: const Color(0xFF059669),
+            minimumSize: const Size(32, 32),
+            tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+class _ExpandedGoodThingsCompleted extends StatelessWidget {
+  final List<String> goodThings;
+
+  const _ExpandedGoodThingsCompleted({required this.goodThings});
+
+  @override
+  Widget build(BuildContext context) {
+    final scheme = Theme.of(context).colorScheme;
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
@@ -433,8 +797,8 @@ class MentalStateModuleTile extends StatelessWidget {
             const Icon(Icons.celebration, size: 32, color: Color(0xFF059669)),
             const SizedBox(width: 12),
             Text(
-              '${goodThings.length} ${l10n.cbtModeGoodThings.toLowerCase()}',
-              style: theme.textTheme.bodyMedium,
+              '${goodThings.length} good things',
+              style: Theme.of(context).textTheme.bodyMedium,
             ),
           ],
         ),
@@ -453,128 +817,74 @@ class MentalStateModuleTile extends StatelessWidget {
       ],
     );
   }
+}
 
-  Widget _buildThoughtLensContent(
-    BuildContext context,
-    AppState appState,
-    AdaptiveTileMode mode,
-    AppLocalizations l10n,
-  ) {
-    final theme = Theme.of(context);
-    final scheme = theme.colorScheme;
+// ==================== Thought Lens Mode ====================
 
-    if (mode == AdaptiveTileMode.compact) {
-      return ElevatedButton(
-        onPressed: () => showMentalStateModule(context),
-        style: ElevatedButton.styleFrom(
-          backgroundColor: scheme.primaryContainer,
-          foregroundColor: scheme.onPrimaryContainer,
-          elevation: 0,
-          padding: const EdgeInsets.all(12),
-          minimumSize: const Size(44, 44),
-        ),
-        child: const Icon(Icons.psychology, size: 20),
-      );
-    }
+class _ThoughtLensContent extends StatelessWidget {
+  final AdaptiveTileMode tileMode;
+
+  const _ThoughtLensContent({required this.tileMode});
+
+  @override
+  Widget build(BuildContext context) {
+    return Selector<AppState, int>(
+      selector: (_, appState) => appState.todayState.thoughtLensIndex,
+      builder: (context, thoughtLensIndex, child) {
+        if (tileMode == AdaptiveTileMode.compact) {
+          return _CompactActionButton(
+            onPressed: () => showMentalStateModule(context),
+            icon: Icons.psychology,
+            backgroundColor: Theme.of(context).colorScheme.primaryContainer,
+            foregroundColor: Theme.of(context).colorScheme.onPrimaryContainer,
+          );
+        }
+        return _ExpandedThoughtLensContent(
+          thoughtLensIndex: thoughtLensIndex,
+          tileMode: tileMode,
+        );
+      },
+    );
+  }
+}
+
+class _ExpandedThoughtLensContent extends StatelessWidget {
+  final int thoughtLensIndex;
+  final AdaptiveTileMode tileMode;
+
+  const _ExpandedThoughtLensContent({
+    required this.thoughtLensIndex,
+    required this.tileMode,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+    final scheme = Theme.of(context).colorScheme;
+    final isExpanded = tileMode == AdaptiveTileMode.expanded;
 
     return Column(
       children: [
-        if (mode == AdaptiveTileMode.expanded) ...[
+        if (isExpanded) ...[
           Text(
             l10n.cbtThoughtLensTitle,
             textAlign: TextAlign.center,
-            style: theme.textTheme.bodyMedium?.copyWith(
-              color: scheme.onSurface,
-            ),
+            style: Theme.of(context).textTheme.bodyMedium,
           ),
           const SizedBox(height: 12),
-          // Show thought lens content inline in expanded mode
-          Container(
-            padding: const EdgeInsets.all(16),
-            decoration: BoxDecoration(
-              color: scheme.surface,
-              borderRadius: BorderRadius.circular(12),
-            ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  MentalStateConstants.getDistortion(appState.todayState.thoughtLensIndex)['title'] ?? 'Unknown',
-                  style: theme.textTheme.titleMedium?.copyWith(
-                    fontWeight: FontWeight.w600,
-                    color: scheme.primary,
-                  ),
-                ),
-                const SizedBox(height: 12),
-                Text(
-                  MentalStateConstants.getDistortion(appState.todayState.thoughtLensIndex)['description'] ?? '',
-                  style: theme.textTheme.bodyMedium,
-                ),
-                const SizedBox(height: 12),
-                Container(
-                  padding: const EdgeInsets.all(12),
-                  decoration: BoxDecoration(
-                    color: scheme.surface,
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        l10n.cbtThoughtLensExample,
-                        style: theme.textTheme.labelSmall?.copyWith(
-                          color: scheme.onSurfaceVariant,
-                        ),
-                      ),
-                      const SizedBox(height: 4),
-                      Text(
-                        MentalStateConstants.getDistortion(appState.todayState.thoughtLensIndex)['example'] ?? '',
-                        style: theme.textTheme.bodySmall?.copyWith(
-                          fontStyle: FontStyle.italic,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-            ),
-          ),
+          _DistortionCard(index: thoughtLensIndex),
           const SizedBox(height: 12),
-          Row(
-            children: [
-              Expanded(
-                child: OutlinedButton(
-                  onPressed: () {
-                    appState.updateTodayState((state) {
-                      state.thoughtLensIndex = ((appState.todayState.thoughtLensIndex - 1 + MentalStateConstants.distortionCount) % MentalStateConstants.distortionCount);
-                    });
-                  },
-                  child: Text(l10n.cbtThoughtLensPrevious),
-                ),
-              ),
-              const SizedBox(width: 12),
-              Expanded(
-                child: ElevatedButton(
-                  onPressed: () {
-                    appState.updateTodayState((state) {
-                      state.thoughtLensIndex = ((appState.todayState.thoughtLensIndex + 1) % MentalStateConstants.distortionCount);
-                    });
-                  },
-                  child: Text(l10n.cbtThoughtLensNext),
-                ),
-              ),
-            ],
-          ),
+          _ThoughtLensNavigation(index: thoughtLensIndex),
           const SizedBox(height: 8),
           Text(
-            '${appState.todayState.thoughtLensIndex + 1} / ${MentalStateConstants.distortionCount}',
+            '${thoughtLensIndex + 1} / ${MentalStateConstants.distortionCount}',
             textAlign: TextAlign.center,
-            style: theme.textTheme.bodySmall?.copyWith(
-              color: scheme.onSurfaceVariant,
-            ),
+            style: Theme.of(
+              context,
+            ).textTheme.bodySmall?.copyWith(color: scheme.onSurfaceVariant),
           ),
         ],
-        if (mode != AdaptiveTileMode.expanded)
+        if (!isExpanded)
           ElevatedButton.icon(
             onPressed: () => showMentalStateModule(context),
             icon: const Icon(Icons.psychology, size: 18),
@@ -588,138 +898,136 @@ class MentalStateModuleTile extends StatelessWidget {
       ],
     );
   }
-
-  /// Checks if mood can be changed based on timestamp (1-hour cooldown)
-  bool _canChangeMood(AppState appState) {
-    return canChangeMood(appState);
-  }
-
-  void _selectMood(AppState appState, int? value) {
-    if (value == null || _canChangeMood(appState)) {
-      appState.updateTodayState((state) {
-        state.moodSelection = value;
-        state.moodSelectionTimestamp = value != null ? DateTime.now() : null;
-      });
-    }
-  }
-
-  
-  IconData _getModeIcon(String mode) {
-    switch (mode) {
-      case 'rightNow':
-        return Icons.mood;
-      case 'goodThings':
-        return Icons.favorite;
-      case 'thoughtLens':
-        return Icons.psychology;
-      default:
-        return Icons.mood;
-    }
-  }
-
-  String _getModeTitle(AppLocalizations l10n, String mode) {
-    switch (mode) {
-      case 'rightNow':
-        return l10n.cbtModeRightNow;
-      case 'goodThings':
-        return l10n.cbtModeGoodThings;
-      case 'thoughtLens':
-        return l10n.cbtModeThoughtLens;
-      default:
-        return l10n.mentalStateModuleLabel;
-    }
-  }
-
-  String _getMoodEmoji(int mood) {
-    switch (mood) {
-      case 1:
-        return '😢';
-      case 2:
-        return '😕';
-      case 3:
-        return '😐';
-      case 4:
-        return '🙂';
-      case 5:
-        return '😊';
-      default:
-        return '😐';
-    }
-  }
 }
 
-class _MoodButton extends StatelessWidget {
-  final String emoji;
-  final String label;
-  final VoidCallback onTap;
+class _DistortionCard extends StatelessWidget {
+  final int index;
 
-  const _MoodButton({
-    required this.emoji,
-    required this.label,
-    required this.onTap,
-  });
+  const _DistortionCard({required this.index});
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final scheme = theme.colorScheme;
+    final distortion = MentalStateConstants.getDistortion(index);
+    final l10n = AppLocalizations.of(context)!;
 
-    return Material(
-      color: scheme.primaryContainer,
-      borderRadius: BorderRadius.circular(16),
-      child: InkWell(
-        borderRadius: BorderRadius.circular(16),
-        onTap: onTap,
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Text(emoji, style: const TextStyle(fontSize: 24)),
-              const SizedBox(height: 2),
-              Text(
-                label,
-                style: theme.textTheme.labelSmall?.copyWith(
-                  color: scheme.onPrimaryContainer,
-                ),
-                textAlign: TextAlign.center,
-              ),
-            ],
+    return Container(
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: scheme.surface,
+        borderRadius: BorderRadius.circular(12),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            distortion['title'] ?? 'Unknown',
+            style: theme.textTheme.titleMedium?.copyWith(
+              fontWeight: FontWeight.w600,
+              color: scheme.primary,
+            ),
           ),
-        ),
+          const SizedBox(height: 12),
+          Text(
+            distortion['description'] ?? '',
+            style: theme.textTheme.bodyMedium,
+          ),
+          const SizedBox(height: 12),
+          Container(
+            padding: const EdgeInsets.all(12),
+            decoration: BoxDecoration(
+              color: scheme.surface,
+              borderRadius: BorderRadius.circular(8),
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  l10n.cbtThoughtLensExample,
+                  style: theme.textTheme.labelSmall?.copyWith(
+                    color: scheme.onSurfaceVariant,
+                  ),
+                ),
+                const SizedBox(height: 4),
+                Text(
+                  distortion['example'] ?? '',
+                  style: theme.textTheme.bodySmall?.copyWith(
+                    fontStyle: FontStyle.italic,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
       ),
     );
   }
 }
 
-class _CompactMoodButton extends StatelessWidget {
-  final String emoji;
-  final VoidCallback onTap;
+class _ThoughtLensNavigation extends StatelessWidget {
+  final int index;
 
-  const _CompactMoodButton({
-    required this.emoji,
-    required this.onTap,
+  const _ThoughtLensNavigation({required this.index});
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+    return Row(
+      children: [
+        Expanded(
+          child: OutlinedButton(
+            onPressed: () => _navigate(context, -1),
+            child: Text(l10n.cbtThoughtLensPrevious),
+          ),
+        ),
+        const SizedBox(width: 12),
+        Expanded(
+          child: ElevatedButton(
+            onPressed: () => _navigate(context, 1),
+            child: Text(l10n.cbtThoughtLensNext),
+          ),
+        ),
+      ],
+    );
+  }
+
+  void _navigate(BuildContext context, int delta) {
+    final appState = Provider.of<AppState>(context, listen: false);
+    final count = MentalStateConstants.distortionCount;
+    appState.updateTodayState((state) {
+      state.thoughtLensIndex = (index + delta + count) % count;
+    });
+  }
+}
+
+// ==================== Reusable Components ====================
+
+class _CompactActionButton extends StatelessWidget {
+  final VoidCallback onPressed;
+  final IconData icon;
+  final Color backgroundColor;
+  final Color foregroundColor;
+
+  const _CompactActionButton({
+    required this.onPressed,
+    required this.icon,
+    required this.backgroundColor,
+    required this.foregroundColor,
   });
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    final scheme = theme.colorScheme;
-
-    return Material(
-      color: scheme.primaryContainer,
-      borderRadius: BorderRadius.circular(16),
-      child: InkWell(
-        borderRadius: BorderRadius.circular(16),
-        onTap: onTap,
-        child: Padding(
-          padding: const EdgeInsets.all(12),
-          child: Text(
-            emoji,
-            style: const TextStyle(fontSize: 24),
-          ),
-        ),
+    return ElevatedButton(
+      onPressed: onPressed,
+      style: ElevatedButton.styleFrom(
+        backgroundColor: backgroundColor,
+        foregroundColor: foregroundColor,
+        elevation: 0,
+        padding: const EdgeInsets.all(12),
+        minimumSize: const Size(44, 44),
       ),
+      child: Icon(icon, size: 20),
     );
   }
 }

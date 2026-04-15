@@ -7,6 +7,7 @@ import '../utils/adaptive_layout.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 
+import 'module_tile.dart';
 import '../modules/module_help.dart';
 import '../modules/module_ids.dart';
 import '../state/app_state.dart';
@@ -84,97 +85,123 @@ class _HereModuleTileState extends State<HereModuleTile>
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    final scheme = theme.colorScheme;
-    final l10n = AppLocalizations.of(context)!;
-    final label = context.select<AppState, String>(
-      (s) => s.settings.hereButtonText,
-    );
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final theme = Theme.of(context);
+        final scheme = theme.colorScheme;
+        final l10n = AppLocalizations.of(context)!;
+        final appState = Provider.of<AppState>(context);
+        final label = appState.settings.hereButtonText;
 
-    return Center(
-      child: ConstrainedBox(
-        constraints: const BoxConstraints(maxWidth: 500),
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              // ── Header row (icon + title + help) ──
-              Row(
+        final availableWidth = constraints.maxWidth.isFinite 
+            ? constraints.maxWidth - 40 // 20 padding each side
+            : 300.0; // fallback
+        final availableHeight = constraints.maxHeight.isFinite 
+            ? constraints.maxHeight - 64 // header + margins
+            : 100.0; // fallback
+
+        final mode = resolveStandardTileMode(
+          availableWidth: availableWidth,
+          availableHeight: availableHeight,
+          thresholds: const AdaptiveTileThresholds(
+            microHeight: 40,
+            microWidth: 100,
+            compactHeight: 80,
+            compactWidth: 200,
+            expandedHeight: 100,
+            expandedWidth: 400,
+          ),
+        );
+
+        if (mode == AdaptiveTileMode.micro) {
+          return const ModuleTile(moduleId: BaselineModuleId.here);
+        }
+
+        final isCompact = mode == AdaptiveTileMode.compact;
+
+        return Center(
+          child: ConstrainedBox(
+            constraints: const BoxConstraints(maxWidth: 500),
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
                 children: [
-                  Icon(
-                    Icons.center_focus_strong_outlined,
-                    color: scheme.primary,
-                    size: 20,
-                  ),
-                  const SizedBox(width: 6),
-                  Expanded(
-                    child: Text(
-                      l10n.grounding,
-                      style: theme.textTheme.titleSmall?.copyWith(
-                        fontWeight: FontWeight.w600,
-                        color: scheme.onSurface,
+                  // ── Header row (icon + title + help) ──
+                  Row(
+                    children: [
+                      Icon(
+                        Icons.center_focus_strong_outlined,
+                        color: scheme.primary,
+                        size: isCompact ? 18 : 20,
                       ),
-                    ),
+                      const SizedBox(width: 6),
+                      Expanded(
+                        child: Text(
+                          l10n.grounding,
+                          style: theme.textTheme.titleSmall?.copyWith(
+                            fontWeight: FontWeight.w600,
+                            color: scheme.onSurface,
+                            fontSize: isCompact ? 13 : null,
+                          ),
+                        ),
+                      ),
+                      buildLayoutModeIndicator(
+                        context,
+                        mode,
+                        enabled: appState.settings.developerModeEnabled,
+                      ),
+                      IconButton(
+                        icon: Icon(
+                          Icons.help_outline,
+                          size: isCompact ? 18 : 20,
+                          color: scheme.outline,
+                        ),
+                        tooltip: l10n.dialogWhyThisHelps,
+                        padding: EdgeInsets.zero,
+                        constraints: const BoxConstraints(
+                          minWidth: 36,
+                          minHeight: 36,
+                        ),
+                        onPressed: () =>
+                            showModuleHelp(context, BaselineModuleId.here),
+                      ),
+                    ],
                   ),
-                  if (context.select<AppState, bool>(
-                    (s) => s.settings.developerModeEnabled,
-                  )) ...[
-                    buildLayoutModeIndicator(
-                      context,
-                      AdaptiveTileMode.medium,
-                      enabled: true,
-                    ),
-                  ],
-                  IconButton(
-                    icon: Icon(
-                      Icons.help_outline,
-                      size: 20,
-                      color: scheme.outline,
-                    ),
-                    tooltip: l10n.dialogWhyThisHelps,
-                    padding: EdgeInsets.zero,
-                    constraints: const BoxConstraints(
-                      minWidth: 36,
-                      minHeight: 36,
-                    ),
-                    onPressed: () =>
-                        showModuleHelp(context, BaselineModuleId.here),
+
+                  const SizedBox(height: 8),
+
+                  // ── Button / affirmation ──
+                  AnimatedSwitcher(
+                    duration: const Duration(milliseconds: 400),
+                    switchInCurve: Curves.easeOutCubic,
+                    switchOutCurve: Curves.easeInCubic,
+                    child: _activePhrase != null
+                        ? _buildAffirmation(theme, scheme, isCompact)
+                        : _buildButton(theme, scheme, label, isCompact),
                   ),
                 ],
               ),
-
-              const SizedBox(height: 8),
-
-              // ── Button / affirmation ──
-              AnimatedSwitcher(
-                duration: const Duration(milliseconds: 400),
-                switchInCurve: Curves.easeOutCubic,
-                switchOutCurve: Curves.easeInCubic,
-                child: _activePhrase != null
-                    ? _buildAffirmation(theme, scheme)
-                    : _buildButton(theme, scheme, label),
-              ),
-            ],
+            ),
           ),
-        ),
-      ),
+        );
+      },
     );
   }
 
-  Widget _buildButton(ThemeData theme, ColorScheme scheme, String label) {
+  Widget _buildButton(ThemeData theme, ColorScheme scheme, String label, bool isCompact) {
     return SizedBox(
       key: const ValueKey('btn'),
       width: double.infinity,
       child: ElevatedButton(
         onPressed: () => _onPressed(context),
         style: ElevatedButton.styleFrom(
-          minimumSize: const Size.fromHeight(52),
+          minimumSize: Size.fromHeight(isCompact ? 44 : 52),
           backgroundColor: scheme.primaryContainer,
           foregroundColor: scheme.onPrimaryContainer,
           elevation: 0,
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(16),
+            borderRadius: BorderRadius.circular(isCompact ? 12 : 16),
           ),
         ),
         child: Text(
@@ -182,19 +209,20 @@ class _HereModuleTileState extends State<HereModuleTile>
           style: theme.textTheme.titleMedium?.copyWith(
             fontWeight: FontWeight.w600,
             color: scheme.onPrimaryContainer,
+            fontSize: isCompact ? 14 : null,
           ),
         ),
       ),
     );
   }
 
-  Widget _buildAffirmation(ThemeData theme, ColorScheme scheme) {
+  Widget _buildAffirmation(ThemeData theme, ColorScheme scheme, bool isCompact) {
     return FadeTransition(
       key: const ValueKey('phrase'),
       opacity: _fadeIn,
       child: SizedBox(
         width: double.infinity,
-        height: 52,
+        height: isCompact ? 44 : 52,
         child: Center(
           child: Text(
             _activePhrase!,
@@ -203,6 +231,7 @@ class _HereModuleTileState extends State<HereModuleTile>
               fontWeight: FontWeight.w500,
               color: scheme.onSurfaceVariant,
               fontStyle: FontStyle.italic,
+              fontSize: isCompact ? 14 : null,
             ),
           ),
         ),

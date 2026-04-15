@@ -198,7 +198,6 @@ class _SleepDialog extends StatefulWidget {
 }
 
 class _SleepDialogState extends State<_SleepDialog> {
-  // Local state for smooth slider dragging
   double? _localBedTime;
   double? _localWakeTime;
 
@@ -207,162 +206,165 @@ class _SleepDialogState extends State<_SleepDialog> {
     final theme = Theme.of(context);
     final scheme = theme.colorScheme;
     final l10n = AppLocalizations.of(context)!;
+    final maxHeight = MediaQuery.of(context).size.height * 0.9;
 
     return Dialog(
       insetPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 24),
       backgroundColor: scheme.surface,
       surfaceTintColor: Colors.transparent,
       child: ConstrainedBox(
-        constraints: const BoxConstraints(maxWidth: 420),
-        child: Consumer<AppState>(
-          builder: (context, appState, _) {
-            final bedTime = appState.todayState.sleepBedTimeMinutes;
-            final wakeTime = appState.todayState.sleepWakeTimeMinutes;
-            final duration = calculateSleepDuration(
-              roundTo30Minutes(bedTime),
-              roundTo30Minutes(wakeTime),
-            );
+        constraints: BoxConstraints(maxWidth: 420, maxHeight: maxHeight),
+        child: SingleChildScrollView(
+          child: Consumer<AppState>(
+            builder: (context, appState, _) {
+              final bedTime = appState.todayState.sleepBedTimeMinutes;
+              final wakeTime = appState.todayState.sleepWakeTimeMinutes;
+              final duration = calculateSleepDuration(
+                roundTo30Minutes(bedTime),
+                roundTo30Minutes(wakeTime),
+              );
 
-            return Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(16, 16, 8, 8),
-                  child: Row(
-                    children: [
-                      Icon(
-                        Icons.bedtime_outlined,
-                        color: scheme.primary,
-                        size: 26,
-                      ),
-                      const SizedBox(width: 8),
-                      Text(
-                        l10n.sleepModuleLabel,
-                        style: theme.textTheme.titleLarge?.copyWith(
-                          fontWeight: FontWeight.w600,
-                          letterSpacing: -0.3,
-                          color: scheme.onSurface,
+              return Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(16, 16, 8, 8),
+                    child: Row(
+                      children: [
+                        Icon(
+                          Icons.bedtime_outlined,
+                          color: scheme.primary,
+                          size: 26,
                         ),
-                      ),
-                      const Spacer(),
-                      IconButton(
-                        icon: Icon(
-                          Icons.help_outline,
-                          size: 22,
-                          color: scheme.outline,
+                        const SizedBox(width: 8),
+                        Text(
+                          l10n.sleepModuleLabel,
+                          style: theme.textTheme.titleLarge?.copyWith(
+                            fontWeight: FontWeight.w600,
+                            letterSpacing: -0.3,
+                            color: scheme.onSurface,
+                          ),
                         ),
-                        tooltip: l10n.dialogWhyThisHelps,
-                        onPressed: () =>
-                            showModuleHelp(context, BaselineModuleId.sleep),
-                      ),
-                    ],
-                  ),
-                ),
-                Divider(height: 1, color: scheme.outlineVariant),
-                Padding(
-                  padding: const EdgeInsets.all(24),
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      // Bed time slider (using local state for smooth dragging)
-                      _buildTimeSlider(
-                        context,
-                        l10n.sleepBedTimeLabel,
-                        (_localBedTime ?? bedTime.toDouble()).round(),
-                        (_localWakeTime ?? wakeTime.toDouble()).round(),
-                        Icons.bedtime_outlined,
-                        onChanged: (value) {
-                          setState(() {
-                            _localBedTime = value;
-                          });
-                        },
-                        onChangeEnd: (value) {
-                          appState.updateTodayState((state) {
-                            state.sleepBedTimeMinutes = roundTo30Minutes(
-                              value.round(),
-                            );
-                          });
-                          setState(() {
-                            _localBedTime = null;
-                          });
-                        },
-                      ),
-                      const SizedBox(height: 24),
-                      // Wake time slider (using local state for smooth dragging)
-                      _buildTimeSlider(
-                        context,
-                        l10n.sleepWakeTimeLabel,
-                        (_localWakeTime ?? wakeTime.toDouble()).round(),
-                        (_localBedTime ?? bedTime.toDouble()).round(),
-                        Icons.wb_sunny_outlined,
-                        onChanged: (value) {
-                          setState(() {
-                            _localWakeTime = value;
-                          });
-                        },
-                        onChangeEnd: (value) {
-                          appState.updateTodayState((state) {
-                            state.sleepWakeTimeMinutes = roundTo30Minutes(
-                              value.round(),
-                            );
-                          });
-                          setState(() {
-                            _localWakeTime = null;
-                          });
-                        },
-                      ),
-                      const SizedBox(height: 32),
-                      // Duration display
-                      Container(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 32,
-                          vertical: 16,
+                        const Spacer(),
+                        IconButton(
+                          icon: Icon(
+                            Icons.help_outline,
+                            size: 22,
+                            color: scheme.outline,
+                          ),
+                          tooltip: l10n.dialogWhyThisHelps,
+                          onPressed: () =>
+                              showModuleHelp(context, BaselineModuleId.sleep),
                         ),
-                        decoration: BoxDecoration(
-                          color: isHealthySleep(duration)
-                              ? scheme.primaryContainer
-                              : scheme.surfaceContainerHighest,
-                          borderRadius: BorderRadius.circular(16),
-                        ),
-                        child: Column(
-                          children: [
-                            Text(
-                              l10n.sleepDurationLabel,
-                              style: theme.textTheme.bodySmall?.copyWith(
-                                color: isHealthySleep(duration)
-                                    ? scheme.onPrimaryContainer
-                                    : scheme.onSurfaceVariant,
-                              ),
-                            ),
-                            const SizedBox(height: 4),
-                            Text(
-                              formatDuration(duration),
-                              style: theme.textTheme.headlineSmall?.copyWith(
-                                fontWeight: FontWeight.w700,
-                                color: isHealthySleep(duration)
-                                    ? scheme.onPrimaryContainer
-                                    : scheme.onSurface,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                Align(
-                  alignment: Alignment.centerRight,
-                  child: Padding(
-                    padding: const EdgeInsets.fromLTRB(8, 0, 8, 8),
-                    child: TextButton(
-                      onPressed: () => Navigator.of(context).pop(),
-                      child: Text(l10n.dialogClose),
+                      ],
                     ),
                   ),
-                ),
-              ],
-            );
-          },
+                  Divider(height: 1, color: scheme.outlineVariant),
+                  Padding(
+                    padding: const EdgeInsets.all(24),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        // Bed time slider
+                        _buildTimeSlider(
+                          context,
+                          l10n.sleepBedTimeLabel,
+                          (_localBedTime ?? bedTime.toDouble()).round(),
+                          (_localWakeTime ?? wakeTime.toDouble()).round(),
+                          Icons.bedtime_outlined,
+                          onChanged: (value) {
+                            setState(() {
+                              _localBedTime = value;
+                            });
+                          },
+                          onChangeEnd: (value) {
+                            appState.updateTodayState((state) {
+                              state.sleepBedTimeMinutes = roundTo30Minutes(
+                                value.round(),
+                              );
+                            });
+                            setState(() {
+                              _localBedTime = null;
+                            });
+                          },
+                        ),
+                        const SizedBox(height: 24),
+                        // Wake time slider
+                        _buildTimeSlider(
+                          context,
+                          l10n.sleepWakeTimeLabel,
+                          (_localWakeTime ?? wakeTime.toDouble()).round(),
+                          (_localBedTime ?? bedTime.toDouble()).round(),
+                          Icons.wb_sunny_outlined,
+                          onChanged: (value) {
+                            setState(() {
+                              _localWakeTime = value;
+                            });
+                          },
+                          onChangeEnd: (value) {
+                            appState.updateTodayState((state) {
+                              state.sleepWakeTimeMinutes = roundTo30Minutes(
+                                value.round(),
+                              );
+                            });
+                            setState(() {
+                              _localWakeTime = null;
+                            });
+                          },
+                        ),
+                        const SizedBox(height: 32),
+                        // Duration display
+                        Container(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 32,
+                            vertical: 16,
+                          ),
+                          decoration: BoxDecoration(
+                            color: isHealthySleep(duration)
+                                ? scheme.primaryContainer
+                                : scheme.surfaceContainerHighest,
+                            borderRadius: BorderRadius.circular(16),
+                          ),
+                          child: Column(
+                            children: [
+                              Text(
+                                l10n.sleepDurationLabel,
+                                style: theme.textTheme.bodySmall?.copyWith(
+                                  color: isHealthySleep(duration)
+                                      ? scheme.onPrimaryContainer
+                                      : scheme.onSurfaceVariant,
+                                ),
+                              ),
+                              const SizedBox(height: 4),
+                              Text(
+                                formatDuration(duration),
+                                style: theme.textTheme.headlineSmall?.copyWith(
+                                  fontWeight: FontWeight.w700,
+                                  color: isHealthySleep(duration)
+                                      ? scheme.onPrimaryContainer
+                                      : scheme.onSurface,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Align(
+                    alignment: Alignment.centerRight,
+                    child: Padding(
+                      padding: const EdgeInsets.fromLTRB(8, 0, 8, 8),
+                      child: TextButton(
+                        onPressed: () => Navigator.of(context).pop(),
+                        child: Text(l10n.dialogClose),
+                      ),
+                    ),
+                  ),
+                ],
+              );
+            },
+          ),
         ),
       ),
     );

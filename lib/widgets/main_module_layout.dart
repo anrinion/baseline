@@ -41,50 +41,85 @@ class MainModuleLayout extends StatelessWidget {
     return ModuleTile(moduleId: moduleId);
   }
 
-  /// Only enabled modules; each gets equal width in the row. Single tile = full width.
-  Widget? _pairRow(BuildContext context, List<String> slotIds) {
-    final enabled = slotIds
-        .where((id) => appState.settings.isModuleEnabled(id))
-        .toList();
+  @override
+  Widget build(BuildContext context) {
+    return DeviceOrientationBuilder(
+      builder: (BuildContext context, Orientation orientation) {
+        // Collect all tiles with their original positions
+        final mentalState = appState.settings.isModuleEnabled(BaselineModuleId.mentalState)
+            ? _tile(context, BaselineModuleId.mentalState)
+            : null;
+        final sleep = appState.settings.isModuleEnabled(BaselineModuleId.sleep)
+            ? _tile(context, BaselineModuleId.sleep)
+            : null;
+        final meds = appState.settings.isModuleEnabled(BaselineModuleId.meds)
+            ? _tile(context, BaselineModuleId.meds)
+            : null;
+        final movement = appState.settings.isModuleEnabled(BaselineModuleId.movement)
+            ? _tile(context, BaselineModuleId.movement)
+            : null;
+        final food = appState.settings.isModuleEnabled(BaselineModuleId.food)
+            ? _tile(context, BaselineModuleId.food)
+            : null;
+        final here = appState.settings.isModuleEnabled(BaselineModuleId.here)
+            ? const HereModuleTile()
+            : null;
+
+        if (orientation == Orientation.landscape) {
+          // Landscape: rotate in-place - right column becomes top row, left column becomes bottom row
+          // Original layout: [mentalState, sleep] / [meds, movement] / here / food
+          // Target: [sleep, movement, food] / [mentalState, meds, here]
+          final topRow = [sleep, movement, food].whereType<Widget>().toList();
+          final bottomRow = [mentalState, meds, here].whereType<Widget>().toList();
+
+          return Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              if (topRow.isNotEmpty)
+                Expanded(
+                  flex: _flexPair,
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [for (final w in topRow) Expanded(child: w)],
+                  ),
+                ),
+              if (bottomRow.isNotEmpty)
+                Expanded(
+                  flex: _flexPair,
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [for (final w in bottomRow) Expanded(child: w)],
+                  ),
+                ),
+            ],
+          );
+        }
+
+        // Portrait: original layout
+        final r1 = _buildPairRow([mentalState, sleep]);
+        final r2 = _buildPairRow([meds, movement]);
+        final foodBand = food != null
+            ? Expanded(flex: _flexFood, child: food)
+            : null;
+
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [r1, r2, here, foodBand].whereType<Widget>().toList(),
+        );
+      },
+    );
+  }
+
+  Widget? _buildPairRow(List<Widget?> tiles) {
+    final enabled = tiles.whereType<Widget>().toList();
     if (enabled.isEmpty) return null;
 
     return Expanded(
       flex: _flexPair,
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          for (final id in enabled) Expanded(child: _tile(context, id)),
-        ],
+        children: [for (final w in enabled) Expanded(child: w)],
       ),
-    );
-  }
-
-  Widget? _foodBand(BuildContext context) {
-    if (!appState.settings.isModuleEnabled(BaselineModuleId.food)) return null;
-    return Expanded(
-      flex: _flexFood,
-      child: _tile(context, BaselineModuleId.food),
-    );
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    final r1 = _pairRow(context, [
-      BaselineModuleId.mentalState,
-      BaselineModuleId.sleep,
-    ]);
-    final r2 = _pairRow(context, [
-      BaselineModuleId.meds,
-      BaselineModuleId.movement,
-    ]);
-    final food = _foodBand(context);
-    final here = appState.settings.isModuleEnabled(BaselineModuleId.here)
-        ? const HereModuleTile()
-        : null;
-
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: [r1, r2, here, food].whereType<Widget>().toList(),
     );
   }
 }

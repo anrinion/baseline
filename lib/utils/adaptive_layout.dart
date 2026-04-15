@@ -99,7 +99,7 @@ AdaptiveTileMode resolveStandardTileMode({
   return AdaptiveTileMode.medium;
 }
 
-/// Builds a small indicator showing the current layout mode.
+/// Builds a small indicator showing the current layout mode letter.
 /// Used for debugging when developer mode is enabled.
 Widget buildLayoutModeIndicator(
   BuildContext context,
@@ -111,7 +111,21 @@ Widget buildLayoutModeIndicator(
   final scheme = Theme.of(context).colorScheme;
   final theme = Theme.of(context);
 
-  final letter = mode.name.substring(0, 1).toUpperCase();
+  String letter;
+  switch (mode) {
+    case AdaptiveTileMode.micro:
+      letter = 'xs';
+      break;
+    case AdaptiveTileMode.compact:
+      letter = 's';
+      break;
+    case AdaptiveTileMode.medium:
+      letter = 'm';
+      break;
+    case AdaptiveTileMode.expanded:
+      letter = 'l';
+      break;
+  }
 
   return Container(
     padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 2),
