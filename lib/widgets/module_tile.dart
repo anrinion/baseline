@@ -174,7 +174,11 @@ class ModuleTile extends StatelessWidget {
             if (showIndicator)
               buildLayoutModeIndicator(context, mode, enabled: true),
             IconButton(
-              icon: Icon(Icons.help_outline, size: isCompact ? 18 : 20),
+              icon: Icon(
+                Icons.help_outline,
+                size: isCompact ? 18 : 20,
+                color: scheme.outline,
+              ),
               tooltip: l10n.dialogWhyThisHelps,
               padding: EdgeInsets.zero,
               constraints: BoxConstraints(

@@ -181,7 +181,11 @@ class _Header extends StatelessWidget {
           enabled: appState.settings.developerModeEnabled,
         ),
         IconButton(
-          icon: Icon(Icons.help_outline, size: 20, color: scheme.outline),
+          icon: Icon(
+            Icons.help_outline,
+            size: mode == AdaptiveTileMode.compact ? 18 : 20,
+            color: scheme.outline,
+          ),
           tooltip: l10n.dialogWhyThisWorks,
           padding: EdgeInsets.zero,
           constraints: const BoxConstraints(minWidth: 36, minHeight: 36),

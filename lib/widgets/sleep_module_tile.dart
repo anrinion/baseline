@@ -251,7 +251,10 @@ class _SlidersHeader extends StatelessWidget {
               tileWidth: tileWidth,
               tileHeight: tileHeight,
             ),
-            _HelpButton(moduleId: BaselineModuleId.sleep),
+            _HelpButton(
+              moduleId: BaselineModuleId.sleep,
+              compact: mode == AdaptiveTileMode.compact,
+            ),
           ],
         );
       },
@@ -469,7 +472,7 @@ class _CompactHeader extends StatelessWidget {
           tileWidth: tileWidth,
           tileHeight: tileHeight,
         ),
-        _HelpButton(moduleId: BaselineModuleId.sleep),
+        const _HelpButton(moduleId: BaselineModuleId.sleep, compact: true),
       ],
     );
   }
@@ -811,8 +814,9 @@ class _DeveloperModeIndicator extends StatelessWidget {
 
 class _HelpButton extends StatelessWidget {
   final String moduleId;
+  final bool compact;
 
-  const _HelpButton({required this.moduleId});
+  const _HelpButton({required this.moduleId, this.compact = false});
 
   @override
   Widget build(BuildContext context) {
@@ -820,7 +824,7 @@ class _HelpButton extends StatelessWidget {
     return IconButton(
       icon: Icon(
         Icons.help_outline,
-        size: 20,
+        size: compact ? 18 : 20,
         color: Theme.of(context).colorScheme.outline,
       ),
       tooltip: l10n.dialogWhyThisHelps,
