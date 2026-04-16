@@ -7,6 +7,13 @@ Gentle self-care for depression, disability, chronic illness, or burnout.
 
 <img width="284" height="640" alt="screenshot" src="https://github.com/user-attachments/assets/ac8f6a8a-ecc3-4391-9470-04d514b725c8" />
 
+<img width="1224" height="2992" alt="Screenshot_20260416-232203_Baseline" src="https://github.com/user-attachments/assets/b1adc0f5-224c-465b-9ba5-49ff6daf150c" />
+<img width="1224" height="2992" alt="Screenshot_20260416-232138_Baseline" src="https://github.com/user-attachments/assets/75713817-8146-466e-b72e-e447899ffac3" />
+<img width="1224" height="2992" alt="Screenshot_20260416-232126_Baseline" src="https://github.com/user-attachments/assets/0b69740a-35a4-4cf5-960c-9c49cf10970a" />
+<img width="1224" height="2992" alt="Screenshot_20260416-232116_Baseline" src="https://github.com/user-attachments/assets/836fa056-9f41-47bd-85c7-491f7a33cfb2" />
+<img width="1080" height="923" alt="Screenshot_20260416-232050_Baseline" src="https://github.com/user-attachments/assets/d5f600c1-51da-46bd-9862-5ba37b22a5f8" />
+
+
 ## Install
 
 **Everything is under construction, and there are no tested "release" versions yet.**
