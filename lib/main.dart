@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:provider/provider.dart';
 import 'package:hive_flutter/hive_flutter.dart';
@@ -29,6 +30,8 @@ void main() async {
   final localizationService = LocalizationService();
   await localizationService.initialize(settingsBox);
 
+  // Magic var, uncomment to see widget bounds.
+  // debugPaintSizeEnabled = true;
   runApp(BaselineApp(localizationService: localizationService));
 }
 

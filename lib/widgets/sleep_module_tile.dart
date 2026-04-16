@@ -737,7 +737,7 @@ class _HorizontalCompactLayout extends StatelessWidget {
         ),
         // Duration (center) - higher flex, prioritized
         Expanded(
-          flex: 2,
+          flex: 3,
           child: Center(
             child: Text(
               duration.format(),
