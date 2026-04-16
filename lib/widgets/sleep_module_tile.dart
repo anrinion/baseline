@@ -1,3 +1,5 @@
+import 'dart:math' as math;
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -32,6 +34,54 @@ extension SleepDurationFormatting on Duration {
   }
 
   bool get isHealthy => inHours >= 7 && inHours <= 9;
+}
+
+// ==================== Shared Sleep Zone Helper ====================
+
+class SleepZone {
+  final int startMinute;
+  final int endMinute;
+  final Color color;
+  final double opacity;
+
+  const SleepZone({
+    required this.startMinute,
+    required this.endMinute,
+    required this.color,
+    this.opacity = 0.15,
+  });
+}
+
+/// Returns recommended sleep zones for both bed and wake times.
+/// Bed time recommendation: 20:00-02:00 (wraps overnight)
+/// Wake time recommendation: 07:00-12:00
+List<SleepZone> getRecommendedSleepZones(
+  BuildContext context, {
+  bool isBedTime = true,
+}) {
+  final scheme = Theme.of(context).colorScheme;
+
+  if (isBedTime) {
+    // Bed time: 20:00 (1200) to 02:00 (120) - wraps overnight
+    return [
+      SleepZone(
+        startMinute: 20 * 60,
+        endMinute: 2 * 60,
+        color: scheme.tertiaryContainer,
+        opacity: 1.0,
+      ),
+    ];
+  } else {
+    // Wake time: 07:00 (420) to 12:00 (720)
+    return [
+      SleepZone(
+        startMinute: 7 * 60,
+        endMinute: 12 * 60,
+        color: scheme.tertiaryContainer,
+        opacity: 1.0,
+      ),
+    ];
+  }
 }
 
 // ==================== Main Widget ====================
@@ -320,6 +370,17 @@ class _ResponsiveSliderLayout extends StatelessWidget {
   Widget build(BuildContext context) {
     return LayoutBuilder(
       builder: (context, constraints) {
+        if ((mode == AdaptiveTileMode.medium ||
+                mode == AdaptiveTileMode.expanded) &&
+            constraints.maxHeight <= 170) {
+          return _RangeSleepSlider(
+            onBedTimeChanged: onBedTimeChanged,
+            onWakeTimeChanged: onWakeTimeChanged,
+            onBedTimeChangeEnd: onBedTimeChangeEnd,
+            onWakeTimeChangeEnd: onWakeTimeChangeEnd,
+          );
+        }
+
         // Prefer vertical layout (stacked sliders) for better usability.
         // Only use horizontal if width is very large (>500) AND height is very tight (<180)
         final preferVertical =
@@ -450,7 +511,11 @@ class _CompactHeader extends StatelessWidget {
 
     return Row(
       children: [
-        Icon(Icons.bedtime_outlined, color: scheme.primary, size: TileIconSizes.compact),
+        Icon(
+          Icons.bedtime_outlined,
+          color: scheme.primary,
+          size: TileIconSizes.compact,
+        ),
         const SizedBox(width: TileSpacing.medium),
         Expanded(
           child: Text(
@@ -550,7 +615,11 @@ class _CompactSleepSummary extends StatelessWidget {
             Row(
               mainAxisSize: MainAxisSize.min,
               children: [
-                Icon(Icons.bedtime_outlined, size: TileIconSizes.small - 2, color: scheme.outline),
+                Icon(
+                  Icons.bedtime_outlined,
+                  size: TileIconSizes.small - 2,
+                  color: scheme.outline,
+                ),
                 const SizedBox(width: 2),
                 Text(
                   bedTime.toTimeString(),
@@ -564,7 +633,11 @@ class _CompactSleepSummary extends StatelessWidget {
             Row(
               mainAxisSize: MainAxisSize.min,
               children: [
-                Icon(Icons.wb_sunny_outlined, size: TileIconSizes.small - 2, color: scheme.outline),
+                Icon(
+                  Icons.wb_sunny_outlined,
+                  size: TileIconSizes.small - 2,
+                  color: scheme.outline,
+                ),
                 const SizedBox(width: 2),
                 Text(
                   wakeTime.toTimeString(),
@@ -617,7 +690,11 @@ class _MediumSleepSummary extends StatelessWidget {
             Row(
               mainAxisSize: MainAxisSize.min,
               children: [
-                Icon(Icons.bedtime_outlined, size: TileIconSizes.small, color: scheme.outline),
+                Icon(
+                  Icons.bedtime_outlined,
+                  size: TileIconSizes.small,
+                  color: scheme.outline,
+                ),
                 const SizedBox(width: 4),
                 Text(
                   bedTime.toTimeString(),
@@ -630,7 +707,11 @@ class _MediumSleepSummary extends StatelessWidget {
             Row(
               mainAxisSize: MainAxisSize.min,
               children: [
-                Icon(Icons.wb_sunny_outlined, size: TileIconSizes.small, color: scheme.outline),
+                Icon(
+                  Icons.wb_sunny_outlined,
+                  size: TileIconSizes.small,
+                  color: scheme.outline,
+                ),
                 const SizedBox(width: 4),
                 Text(
                   wakeTime.toTimeString(),
@@ -685,9 +766,15 @@ class _SleepSlider extends StatelessWidget {
         final displayMinutes = (localValue ?? actualMinutes.toDouble()).round();
 
         // Ultra compact styles for vertical medium mode
-        final double labelFontSize = superCompact ? TileFontSizes.labelSmall : (compact ? 12 : TileFontSizes.compactHeader);
-        final double timeFontSize = superCompact ? TileFontSizes.compactHeader : (compact ? 14 : TileIconSizes.normal - 4);
-        final double iconSize = superCompact ? TileIconSizes.small : (compact ? TileIconSizes.compact - 2 : TileIconSizes.compact);
+        final double labelFontSize = superCompact
+            ? TileFontSizes.labelSmall
+            : (compact ? 12 : TileFontSizes.compactHeader);
+        final double timeFontSize = superCompact
+            ? TileFontSizes.compactHeader
+            : (compact ? 14 : TileIconSizes.normal - 4);
+        final double iconSize = superCompact
+            ? TileIconSizes.small
+            : (compact ? TileIconSizes.compact - 2 : TileIconSizes.compact);
         final double sliderHeight = superCompact
             ? 20.0
             : (compact ? 24.0 : 30.0);
@@ -738,7 +825,9 @@ class _SleepSlider extends StatelessWidget {
               ),
             ),
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: TileSpacing.small),
+              padding: const EdgeInsets.symmetric(
+                horizontal: TileSpacing.small,
+              ),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -781,6 +870,373 @@ class _SleepSlider extends StatelessWidget {
       }
     });
   }
+}
+
+class _RangeSleepSlider extends StatefulWidget {
+  final ValueChanged<double> onBedTimeChanged;
+  final ValueChanged<double> onWakeTimeChanged;
+  final VoidCallback onBedTimeChangeEnd;
+  final VoidCallback onWakeTimeChangeEnd;
+
+  const _RangeSleepSlider({
+    required this.onBedTimeChanged,
+    required this.onWakeTimeChanged,
+    required this.onBedTimeChangeEnd,
+    required this.onWakeTimeChangeEnd,
+  });
+
+  @override
+  State<_RangeSleepSlider> createState() => _RangeSleepSliderState();
+}
+
+class _RangeSleepSliderState extends State<_RangeSleepSlider> {
+  static const int _minSleepMinutes = 30;
+  late RangeValues _currentRange;
+  bool _isDragging = false;
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    // Only initialise if not currently dragging
+    if (!_isDragging) {
+      _syncFromAppState();
+    }
+  }
+
+  void _syncFromAppState() {
+    final appState = Provider.of<AppState>(context, listen: false);
+    final bed = appState.todayState.sleepBedTimeMinutes.toDouble();
+    final wake = appState.todayState.sleepWakeTimeMinutes.toDouble();
+    final start = bed;
+    final end = wake <= bed ? wake + 1440.0 : wake;
+    _currentRange = RangeValues(start, end);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+    final theme = Theme.of(context);
+    final scheme = theme.colorScheme;
+
+    return Consumer<AppState>(
+      builder: (context, appState, child) {
+        // Only use appState to compute the displayed times (for the header)
+        final bed = _currentRange.start.round();
+        final wake = (_currentRange.end % 1440).round();
+
+        return Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // Header row – balanced with two Expanded groups
+            Row(
+              children: [
+                // Bedtime group (icon, label, time)
+                Expanded(
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Icon(
+                        Icons.bedtime_outlined,
+                        size: TileIconSizes.small,
+                        color: scheme.primary,
+                      ),
+                      const SizedBox(width: TileSpacing.medium),
+                      Flexible(
+                        flex: 1, // label can shrink
+                        child: Text(
+                          l10n.sleepBedTimeLabel,
+                          style: theme.textTheme.bodySmall?.copyWith(
+                            fontWeight: FontWeight.w600,
+                            color: scheme.onSurface,
+                            fontSize: TileFontSizes.labelSmall,
+                          ),
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ),
+                      const SizedBox(width: TileSpacing.small),
+                      Flexible(
+                        flex: 2, // time resists shrinking
+                        child: Text(
+                          bed.toTimeString(),
+                          style: theme.textTheme.bodyMedium?.copyWith(
+                            fontWeight: FontWeight.w700,
+                            color: scheme.primary,
+                          ),
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                const SizedBox(width: TileSpacing.large),
+                // Wake time group (time, label, icon)
+                Expanded(
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      Flexible(
+                        flex: 2, // time resists shrinking
+                        child: Text(
+                          wake.toTimeString(),
+                          style: theme.textTheme.bodyMedium?.copyWith(
+                            fontWeight: FontWeight.w700,
+                            color: scheme.primary,
+                          ),
+                          overflow: TextOverflow.ellipsis,
+                          textAlign: TextAlign.end,
+                        ),
+                      ),
+                      const SizedBox(width: TileSpacing.small),
+                      Flexible(
+                        flex: 1, // label can shrink
+                        child: Text(
+                          l10n.sleepWakeTimeLabel,
+                          style: theme.textTheme.bodySmall?.copyWith(
+                            fontWeight: FontWeight.w600,
+                            color: scheme.onSurface,
+                            fontSize: TileFontSizes.labelSmall,
+                          ),
+                          overflow: TextOverflow.ellipsis,
+                          textAlign: TextAlign.end,
+                        ),
+                      ),
+                      const SizedBox(width: TileSpacing.medium),
+                      Icon(
+                        Icons.wb_sunny_outlined,
+                        size: TileIconSizes.small,
+                        color: scheme.primary,
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: TileSpacing.small),
+            // Slider track
+            SizedBox(
+              height: 18,
+              child: LayoutBuilder(
+                builder: (context, constraints) {
+                  final width = constraints.maxWidth;
+                  final height = constraints.maxHeight;
+                  final trackRect = _calculateTrackRect(context, width, height);
+                  return Stack(
+                    alignment: Alignment.center,
+                    children: [
+                      CustomPaint(
+                        size: Size.infinite,
+                        painter: _SleepZonePainter(
+                          bedTime: _currentRange.start.round(),
+                          wakeTime: _currentRange.end.round(),
+                          zones: _getCombinedRecommendedZones(context),
+                          activeColor: scheme.primary,
+                          trackRect: trackRect,
+                        ),
+                      ),
+                      SliderTheme(
+                        data: SliderTheme.of(context).copyWith(
+                          activeTrackColor: Colors.transparent,
+                          inactiveTrackColor: Colors.transparent,
+                          trackHeight: 4.0,
+                          thumbShape: const RoundSliderThumbShape(
+                            enabledThumbRadius: 10.0,
+                          ),
+                          overlayShape: const RoundSliderOverlayShape(
+                            overlayRadius: 20.0,
+                          ),
+                          rangeThumbShape: const RoundRangeSliderThumbShape(
+                            enabledThumbRadius: 10.0,
+                          ),
+                          rangeTrackShape:
+                              const RectangularRangeSliderTrackShape(),
+                          showValueIndicator: ShowValueIndicator.never,
+                        ),
+                        child: RangeSlider(
+                          values: _currentRange,
+                          min: 0,
+                          max: 1440 * 2,
+                          divisions: 96,
+                          labels: RangeLabels(
+                            (_currentRange.start % 1440).round().toTimeString(),
+                            (_currentRange.end % 1440).round().toTimeString(),
+                          ),
+                          onChanged: _isDragging
+                              ? _handleDragUpdate
+                              : (values) {
+                                  setState(() {
+                                    _isDragging = true;
+                                    _currentRange = _applyConstraints(values);
+                                  });
+                                  _notifyParent(_currentRange);
+                                },
+                          onChangeEnd: (values) {
+                            setState(() {
+                              _isDragging = false;
+                              _currentRange = _applyConstraints(values);
+                            });
+                            _persistToAppState(_currentRange);
+                            widget.onBedTimeChangeEnd();
+                            widget.onWakeTimeChangeEnd();
+                          },
+                        ),
+                      ),
+                    ],
+                  );
+                },
+              ),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  RangeValues _applyConstraints(RangeValues values) {
+    double start = values.start;
+    double end = values.end;
+
+    // Enforce minimum sleep duration
+    if (end - start < _minSleepMinutes) {
+      if (_currentRange.start != start) {
+        // Left thumb moved → adjust right
+        end = start + _minSleepMinutes;
+      } else {
+        // Right thumb moved → adjust left
+        start = end - _minSleepMinutes;
+      }
+    }
+
+    // Clamp to valid 48‑hour window
+    start = start.clamp(0.0, 2880.0 - _minSleepMinutes);
+    end = end.clamp(0.0 + _minSleepMinutes, 2880.0);
+
+    return RangeValues(start, end);
+  }
+
+  void _handleDragUpdate(RangeValues values) {
+    final constrained = _applyConstraints(values);
+    setState(() {
+      _currentRange = constrained;
+    });
+    _notifyParent(constrained);
+  }
+
+  void _notifyParent(RangeValues range) {
+    final bed = (range.start % 1440).round();
+    final wake = (range.end % 1440).round();
+    widget.onBedTimeChanged(bed.toDouble());
+    widget.onWakeTimeChanged(wake.toDouble());
+  }
+
+  void _persistToAppState(RangeValues range) {
+    final appState = Provider.of<AppState>(context, listen: false);
+    final bed = (range.start % 1440).round();
+    final wake = (range.end % 1440).round();
+    appState.updateTodayState((state) {
+      state.sleepBedTimeMinutes = roundTo30Minutes(bed);
+      state.sleepWakeTimeMinutes = roundTo30Minutes(wake);
+    });
+  }
+
+  TextStyle _sliderLabelStyle(ThemeData theme) {
+    return (theme.textTheme.bodySmall ?? const TextStyle()).copyWith(
+      color: theme.colorScheme.outline,
+      fontSize: TileFontSizes.tiny,
+    );
+  }
+
+  /// Calculates the track rectangle that aligns with slider thumb centers.
+  /// The track is inset by the thumb radius on both sides.
+  Rect _calculateTrackRect(
+    BuildContext context,
+    double totalWidth,
+    double totalHeight,
+  ) {
+    final sliderTheme = SliderTheme.of(context);
+    final thumbSize =
+        sliderTheme.rangeThumbShape?.getPreferredSize(true, false) ??
+        const Size(20, 20);
+    final thumbRadius = thumbSize.width / 2;
+    final trackHeight = sliderTheme.trackHeight ?? 4.0;
+    final centerY = totalHeight / 2;
+    final trackTop = centerY - trackHeight / 2;
+    final trackBottom = centerY + trackHeight / 2;
+    return Rect.fromLTRB(
+      thumbRadius,
+      trackTop,
+      totalWidth - thumbRadius,
+      trackBottom,
+    );
+  }
+
+  /// Combines recommended zones for both bed time (20:00-02:00) and wake time (07:00-12:00).
+  List<SleepZone> _getCombinedRecommendedZones(BuildContext context) {
+    final bedZones = getRecommendedSleepZones(context, isBedTime: true);
+    final wakeZones = getRecommendedSleepZones(context, isBedTime: false);
+    // Combine both zones for the 48-hour view
+    return [...bedZones, ...wakeZones];
+  }
+}
+
+// Zone painter that aligns exactly with slider thumb centers
+class _SleepZonePainter extends CustomPainter {
+  final int bedTime;
+  final int wakeTime;
+  final List<SleepZone> zones;
+  final Color activeColor;
+  final Rect trackRect;
+
+  _SleepZonePainter({
+    required this.bedTime,
+    required this.wakeTime,
+    required this.zones,
+    required this.activeColor,
+    required this.trackRect,
+  });
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    final double trackLeft = trackRect.left;
+    final double trackWidth = trackRect.width;
+    final double trackTop = trackRect.top;
+    final double trackBottom = trackRect.bottom;
+
+    // Map minute (0-2880) to x coordinate within the track
+    double mapToX(int minutes) {
+      return trackLeft + (minutes / 2880.0) * trackWidth;
+    }
+
+    // Paint recommended zones
+    for (final zone in zones) {
+      double startX = mapToX(zone.startMinute);
+      double endX = mapToX(
+        zone.endMinute <= zone.startMinute
+            ? zone.endMinute + 1440
+            : zone.endMinute,
+      );
+      final paint = Paint()..color = zone.color.withValues(alpha: zone.opacity);
+      canvas.drawRect(
+        Rect.fromLTRB(startX, trackTop, endX, trackBottom),
+        paint,
+      );
+    }
+
+    // Paint active sleep window (bed → wake)
+    final double bedX = mapToX(bedTime);
+    final double wakeX = mapToX(
+      wakeTime <= bedTime ? wakeTime + 1440 : wakeTime,
+    );
+    final activePaint = Paint()..color = activeColor.withValues(alpha: 0.2);
+    canvas.drawRect(
+      Rect.fromLTRB(bedX, trackTop, wakeX, trackBottom),
+      activePaint,
+    );
+  }
+
+  @override
+  bool shouldRepaint(covariant CustomPainter oldDelegate) => true;
 }
 
 // ==================== Reusable Components ====================
