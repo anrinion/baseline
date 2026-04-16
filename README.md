@@ -1,18 +1,46 @@
 # The Baseline
 
-<img width="48" height="48" alt="Icon_rounded_48" src="https://github.com/user-attachments/assets/c7a550f7-979d-4823-ab4e-afa483745af9" />
-Gentle self-care for depression, disability, chronic illness, or burnout.  
+<div align="left" style="display: flex; align-items: center; gap: 16px;">
+  <img width="48" height="48" alt="App icon" src="https://github.com/user-attachments/assets/c7a550f7-979d-4823-ab4e-afa483745af9" />
+  <p style="margin: 0;"><strong>Gentle self-care for depression, disability, chronic illness, or burnout.</strong></p>
+</div>
 
-## Preview
+## About
 
-<img width="284" height="640" alt="screenshot" src="https://github.com/user-attachments/assets/ac8f6a8a-ecc3-4391-9470-04d514b725c8" />
+**The Baseline** is a minimal, gentle self-care app companion designed for people who struggle to maintain basic level of functioning (hence the name). It aims to help with these foundations, without pressure, motivation attempts or guilt promotion.
 
-<img width="1224" height="2992" alt="Screenshot_20260416-232203_Baseline" src="https://github.com/user-attachments/assets/b1adc0f5-224c-465b-9ba5-49ff6daf150c" />
-<img width="1224" height="2992" alt="Screenshot_20260416-232138_Baseline" src="https://github.com/user-attachments/assets/75713817-8146-466e-b72e-e447899ffac3" />
-<img width="1224" height="2992" alt="Screenshot_20260416-232126_Baseline" src="https://github.com/user-attachments/assets/0b69740a-35a4-4cf5-960c-9c49cf10970a" />
-<img width="1224" height="2992" alt="Screenshot_20260416-232116_Baseline" src="https://github.com/user-attachments/assets/836fa056-9f41-47bd-85c7-491f7a33cfb2" />
-<img width="1080" height="923" alt="Screenshot_20260416-232050_Baseline" src="https://github.com/user-attachments/assets/d5f600c1-51da-46bd-9862-5ba37b22a5f8" />
+### Preview
 
+<img width="306" height="748" alt="main" src="https://github.com/user-attachments/assets/836fa056-9f41-47bd-85c7-491f7a33cfb2" /><img width="306" height="748" alt="sleep" src="https://github.com/user-attachments/assets/0b69740a-35a4-4cf5-960c-9c49cf10970a" />
+<img width="306" height="748" alt="meds" src="https://github.com/user-attachments/assets/75713817-8146-466e-b72e-e447899ffac3" /><img width="306" height="748" alt="settings" src="https://github.com/user-attachments/assets/b1adc0f5-224c-465b-9ba5-49ff6daf150c" />  
+
+Compact mode:
+
+<img width="306" height="250" alt="main_compact" src="https://github.com/user-attachments/assets/d5f600c1-51da-46bd-9862-5ba37b22a5f8" /> 
+
+### Features
+
+The app consists of "modules" that can be enabled or disabled as needed.
+
+The most important modules are:
+
+- **Food** — make sure you eat at least something every day.
+- **Movement** — moving around is really beneficial.
+- **Sleep** — if you don't wear any tracking device, you may want to check that you sleep enough.
+
+Additional modules:
+
+- **Mental state** - tools inspired by Cognitive Behavioral Therapy (CBT) principles. You can use one tool at a time. Experiment with them to find what works for you.
+- **Medications** — Medication reminders with optional notifications. ⚠️ **DO NOT USE this feature for critical medications, where delay is life-threatening. Mobile OS can be quite agressive with battery optimizations and/or focus modes, so notifications might be delayed or even missed ⚠️**. 
+- **Grounding** — this is basically a big green button that you can press. It may or may not help, but it's there.
+
+### Privacy and other policies
+
+- **No tracking** — No analytics, cloud sync, or data collection. The app does not use network connection, ever.
+- **No health data access** - The app does not connect to Google Fit/Apple Health or any other health data source.
+- **No history** — The app does not store your history of sleep, medications, or food intake. The state resets each day. No user-sourced daily state persists between days *(what does persist? preferences, medications schedule, randomizer results)*.
+- **No advertising** — The app does not have any advertisements and will never have.
+- **No paywalls reducing functionality** — Available functionality will remain available and won't be removed/paywalled with the next release.
 
 ## Install
 
@@ -32,7 +60,7 @@ If you want to take your chances, there are .apk files in releases *(tip: use [O
 - [x] Adaptive mobile design
 - [x] Localization (English + Russian for now) 
 - [x] CBT module
-- [ ] Meds module
+- [x] Meds module
 - [x] Sleep module
 - [ ] Sources: explanations + references for all modules  
 - [x] Testing (unit, e2e, dogfooding)
