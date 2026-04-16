@@ -59,58 +59,65 @@ class _GroundingModuleTileState extends State<GroundingModuleTile>
 
         return TileCard(
           isCompact: mode.isCompact,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              // ── Header row (icon + title + help) ──
-              Row(
-                children: [
-                  Icon(
-                    Icons.center_focus_strong_outlined,
-                    color: scheme.primary,
-                    size: TileIconSizes.forMode(mode),
-                  ),
-                  const SizedBox(width: TileSpacing.medium),
-                  Expanded(
-                    child: Text(
-                      l10n.grounding,
-                      style: theme.textTheme.titleSmall?.copyWith(
-                        fontWeight: FontWeight.w600,
-                        color: scheme.onSurface,
-                        fontSize: mode.isCompact
-                            ? TileFontSizes.compactHeader
-                            : null,
-                      ),
-                      overflow: TextOverflow.ellipsis,
-                      maxLines: 1,
+          child: Padding(
+            padding: EdgeInsets.symmetric(
+              horizontal: TilePadding.forMode(mode),
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                // ── Header row (icon + title + help) ──
+                Row(
+                  children: [
+                    Icon(
+                      Icons.center_focus_strong_outlined,
+                      color: scheme.primary,
+                      size: TileIconSizes.forMode(mode),
                     ),
-                  ),
-                  TileModeIndicator(mode: mode),
-                  TileHelpButton(
-                    moduleId: BaselineModuleId.here,
-                    compact: mode.isCompact,
-                  ),
-                ],
-              ),
+                    const SizedBox(width: TileSpacing.medium),
+                    Expanded(
+                      child: Text(
+                        l10n.grounding,
+                        style: theme.textTheme.titleSmall?.copyWith(
+                          fontWeight: FontWeight.w600,
+                          color: scheme.onSurface,
+                          fontSize: mode.isCompact
+                              ? TileFontSizes.compactHeader
+                              : null,
+                        ),
+                        overflow: TextOverflow.ellipsis,
+                        maxLines: 1,
+                      ),
+                    ),
+                    TileModeIndicator(mode: mode),
+                    TileHelpButton(
+                      moduleId: BaselineModuleId.here,
+                      compact: mode.isCompact,
+                    ),
+                  ],
+                ),
 
-              const SizedBox(height: TileSpacing.small),
+                const SizedBox(height: TileSpacing.small),
 
-              // ── Button / affirmation ──
-              Expanded(
-                child: _controller != null
-                    ? GroundingContent(
-                        controller: _controller!,
-                        label: label,
-                        onPressed: () => _onPressed(context),
-                        minButtonHeight: mode == AdaptiveTileMode.expanded ? 52 : 44,
-                        borderRadius: mode.isCompact
-                            ? TileBorderRadius.chip + 4
-                            : TileBorderRadius.tile - 4,
-                        buttonStyle: GroundingButtonStyle.tile,
-                      )
-                    : const SizedBox.shrink(),
-              ),
-            ],
+                // ── Button / affirmation ──
+                Expanded(
+                  child: _controller != null
+                      ? GroundingContent(
+                          controller: _controller!,
+                          label: label,
+                          onPressed: () => _onPressed(context),
+                          minButtonHeight: mode == AdaptiveTileMode.expanded
+                              ? 52
+                              : 44,
+                          borderRadius: mode.isCompact
+                              ? TileBorderRadius.chip + 4
+                              : TileBorderRadius.tile - 4,
+                          buttonStyle: GroundingButtonStyle.tile,
+                        )
+                      : const SizedBox.shrink(),
+                ),
+              ],
+            ),
           ),
         );
       },
