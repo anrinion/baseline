@@ -105,14 +105,14 @@ class MainModuleLayout extends StatelessWidget {
         return Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            if (r1 != null) r1,
-            if (r2 != null) r2,
+            ?r1,
+            ?r2,
             if (here != null)
               Expanded(
                 flex: _flexPair,
                 child: here,
               ),
-            if (foodBand != null) foodBand,
+            ?foodBand,
           ],
         );
       },

@@ -8,8 +8,6 @@ import 'package:timezone/timezone.dart' as tz;
 import 'package:baseline/modules/meds_module.dart';
 import 'package:baseline/services/meds_notifications_service.dart';
 import 'package:baseline/state/app_state.dart';
-import 'package:baseline/state/settings.dart';
-import 'package:baseline/state/today_state.dart';
 
 import '../test_helpers.dart';
 

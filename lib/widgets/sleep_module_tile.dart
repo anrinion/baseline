@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../l10n/app_localizations.dart';
-import '../modules/module_help.dart';
 import '../modules/module_ids.dart';
 import '../modules/sleep_module.dart';
 import '../state/app_state.dart';
 import '../utils/adaptive_layout.dart';
+import '../utils/layout_constants.dart';
 import 'module_tile.dart';
 
 // ==================== Extensions ====================
@@ -71,8 +71,8 @@ class _SleepModuleTileState extends State<SleepModuleTile> {
   }
 
   AdaptiveTileMode _resolveTileMode(BoxConstraints constraints) {
-    const horizontalPadding = 32.0;
-    const verticalMargin = 30.0;
+    const horizontalPadding = TilePadding.normal * 2;
+    const verticalMargin = TileSpacing.large * 2;
     return resolveStandardTileMode(
       availableWidth: constraints.maxWidth - horizontalPadding,
       availableHeight: constraints.maxHeight - verticalMargin,
@@ -166,14 +166,14 @@ class _SlidersSleepView extends StatelessWidget {
   Widget build(BuildContext context) {
     final isExpanded = mode == AdaptiveTileMode.expanded;
     return Card(
-      margin: const EdgeInsets.all(12),
+      margin: const EdgeInsets.all(TileMargins.normal),
       elevation: 0,
       clipBehavior: Clip.antiAlias,
       color: Theme.of(context).colorScheme.surface,
       surfaceTintColor: Colors.transparent,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+      shape: tileShape(),
       child: Padding(
-        padding: EdgeInsets.all(isExpanded ? 12 : 6),
+        padding: EdgeInsets.all(isExpanded ? TilePadding.normal : TilePadding.compact),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
@@ -182,7 +182,7 @@ class _SlidersSleepView extends StatelessWidget {
               tileWidth: tileWidth,
               tileHeight: tileHeight,
             ),
-            const SizedBox(height: 4),
+            const SizedBox(height: TileSpacing.small),
             Expanded(
               child: Center(
                 child: _ResponsiveSliderLayout(
@@ -233,16 +233,16 @@ class _SlidersHeader extends StatelessWidget {
             Icon(
               Icons.bedtime_outlined,
               color: scheme.primary,
-              size: isExpanded ? 20 : 18,
+              size: TileIconSizes.forMode(mode),
             ),
-            const SizedBox(width: 6),
+            const SizedBox(width: TileSpacing.medium),
             Expanded(
               child: Text(
                 BaselineModuleId.localizedLabel(l10n, BaselineModuleId.sleep),
                 style: theme.textTheme.titleSmall?.copyWith(
                   fontWeight: FontWeight.w600,
                   color: scheme.onSurface,
-                  fontSize: isExpanded ? null : 13,
+                  fontSize: mode.isCompact ? TileFontSizes.compactHeader : null,
                 ),
                 overflow: TextOverflow.ellipsis,
                 maxLines: 1,
@@ -279,14 +279,14 @@ class _SleepDurationChip extends StatelessWidget {
     final isHealthy = duration.isHealthy;
     return Container(
       padding: EdgeInsets.symmetric(
-        horizontal: compact ? 8 : 12,
-        vertical: compact ? 4 : 6,
+        horizontal: compact ? TileSpacing.normal : TilePadding.normal,
+        vertical: compact ? TileSpacing.small : 6,
       ),
       decoration: BoxDecoration(
         color: isHealthy
             ? scheme.primaryContainer
             : scheme.surfaceContainerHighest,
-        borderRadius: BorderRadius.circular(8),
+        borderRadius: BorderRadius.circular(TileBorderRadius.chip),
       ),
       child: Text(
         duration.format(),
@@ -299,7 +299,7 @@ class _SleepDurationChip extends StatelessWidget {
                   color: isHealthy
                       ? scheme.onPrimaryContainer
                       : scheme.onSurface,
-                  fontSize: compact ? 11 : null,
+                  fontSize: compact ? TileFontSizes.labelSmall : null,
                 ),
       ),
     );
@@ -348,7 +348,7 @@ class _ResponsiveSliderLayout extends StatelessWidget {
                 compact: true, // Always compact in vertical mode
                 superCompact: mode == AdaptiveTileMode.medium,
               ),
-              const SizedBox(height: 8),
+              const SizedBox(height: TileSpacing.normal),
               _SleepSlider(
                 isBedTime: false,
                 localValue: localWakeTime,
@@ -411,23 +411,23 @@ class _CompactSleepSummaryView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      margin: const EdgeInsets.all(6),
+      margin: const EdgeInsets.all(TileMargins.compact),
       elevation: 0,
       clipBehavior: Clip.antiAlias,
       color: Theme.of(context).colorScheme.surface,
       surfaceTintColor: Colors.transparent,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+      shape: tileShape(),
       child: InkWell(
         onTap: () => showSleepModule(context),
         borderRadius: BorderRadius.circular(20),
         child: Padding(
-          padding: const EdgeInsets.all(8),
+          padding: const EdgeInsets.all(TilePadding.small),
           child: Column(
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               _CompactHeader(tileWidth: tileWidth, tileHeight: tileHeight),
-              const SizedBox(height: 2),
+              const SizedBox(height: TileSpacing.tiny),
               Flexible(
                 child: ClipRect(
                   child: _SleepSummaryDisplay(
@@ -459,15 +459,15 @@ class _CompactHeader extends StatelessWidget {
 
     return Row(
       children: [
-        Icon(Icons.bedtime_outlined, color: scheme.primary, size: 18),
-        const SizedBox(width: 6),
+        Icon(Icons.bedtime_outlined, color: scheme.primary, size: TileIconSizes.compact),
+        const SizedBox(width: TileSpacing.medium),
         Expanded(
           child: Text(
             BaselineModuleId.localizedLabel(l10n, BaselineModuleId.sleep),
             style: theme.textTheme.titleSmall?.copyWith(
               fontWeight: FontWeight.w600,
               color: scheme.onSurface,
-              fontSize: 13,
+              fontSize: TileFontSizes.compactHeader,
             ),
             overflow: TextOverflow.ellipsis,
           ),
@@ -546,7 +546,7 @@ class _CompactSleepSummary extends StatelessWidget {
           style: theme.textTheme.titleMedium?.copyWith(
             fontWeight: FontWeight.w700,
             color: scheme.primary,
-            fontSize: 18,
+            fontSize: TileIconSizes.normal + 4,
           ),
           overflow: TextOverflow.ellipsis,
         ),
@@ -559,7 +559,7 @@ class _CompactSleepSummary extends StatelessWidget {
             Row(
               mainAxisSize: MainAxisSize.min,
               children: [
-                Icon(Icons.bedtime_outlined, size: 12, color: scheme.outline),
+                Icon(Icons.bedtime_outlined, size: TileIconSizes.small - 2, color: scheme.outline),
                 const SizedBox(width: 2),
                 Text(
                   bedTime.toTimeString(),
@@ -573,7 +573,7 @@ class _CompactSleepSummary extends StatelessWidget {
             Row(
               mainAxisSize: MainAxisSize.min,
               children: [
-                Icon(Icons.wb_sunny_outlined, size: 12, color: scheme.outline),
+                Icon(Icons.wb_sunny_outlined, size: TileIconSizes.small - 2, color: scheme.outline),
                 const SizedBox(width: 2),
                 Text(
                   wakeTime.toTimeString(),
@@ -626,7 +626,7 @@ class _MediumSleepSummary extends StatelessWidget {
             Row(
               mainAxisSize: MainAxisSize.min,
               children: [
-                Icon(Icons.bedtime_outlined, size: 14, color: scheme.outline),
+                Icon(Icons.bedtime_outlined, size: TileIconSizes.small, color: scheme.outline),
                 const SizedBox(width: 4),
                 Text(
                   bedTime.toTimeString(),
@@ -639,7 +639,7 @@ class _MediumSleepSummary extends StatelessWidget {
             Row(
               mainAxisSize: MainAxisSize.min,
               children: [
-                Icon(Icons.wb_sunny_outlined, size: 14, color: scheme.outline),
+                Icon(Icons.wb_sunny_outlined, size: TileIconSizes.small, color: scheme.outline),
                 const SizedBox(width: 4),
                 Text(
                   wakeTime.toTimeString(),
@@ -694,9 +694,9 @@ class _SleepSlider extends StatelessWidget {
         final displayMinutes = (localValue ?? actualMinutes.toDouble()).round();
 
         // Ultra compact styles for vertical medium mode
-        final double labelFontSize = superCompact ? 11 : (compact ? 12 : 13);
-        final double timeFontSize = superCompact ? 13 : (compact ? 14 : 16);
-        final double iconSize = superCompact ? 14 : (compact ? 16 : 18);
+        final double labelFontSize = superCompact ? TileFontSizes.labelSmall : (compact ? 12 : TileFontSizes.compactHeader);
+        final double timeFontSize = superCompact ? TileFontSizes.compactHeader : (compact ? 14 : TileIconSizes.normal - 4);
+        final double iconSize = superCompact ? TileIconSizes.small : (compact ? TileIconSizes.compact - 2 : TileIconSizes.compact);
         final double sliderHeight = superCompact
             ? 20.0
             : (compact ? 24.0 : 30.0);
@@ -708,7 +708,7 @@ class _SleepSlider extends StatelessWidget {
             Row(
               children: [
                 Icon(icon, size: iconSize, color: scheme.primary),
-                const SizedBox(width: 6),
+                const SizedBox(width: TileSpacing.medium),
                 Expanded(
                   child: Text(
                     label,
@@ -731,7 +731,7 @@ class _SleepSlider extends StatelessWidget {
                 ),
               ],
             ),
-            const SizedBox(height: 4),
+            const SizedBox(height: TileSpacing.small),
             SizedBox(
               height: sliderHeight,
               child: buildSliderWithZones(
@@ -747,7 +747,7 @@ class _SleepSlider extends StatelessWidget {
               ),
             ),
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 4),
+              padding: const EdgeInsets.symmetric(horizontal: TileSpacing.small),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -775,7 +775,7 @@ class _SleepSlider extends StatelessWidget {
   TextStyle _sliderLabelStyle(ThemeData theme, bool isCompact) {
     return (theme.textTheme.bodySmall ?? const TextStyle()).copyWith(
       color: theme.colorScheme.outline,
-      fontSize: isCompact ? 7 : 9,
+      fontSize: isCompact ? TileFontSizes.tiny - 2 : TileFontSizes.tiny,
     );
   }
 
@@ -825,18 +825,7 @@ class _HelpButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final l10n = AppLocalizations.of(context)!;
-    return IconButton(
-      icon: Icon(
-        Icons.help_outline,
-        size: compact ? 18 : 20,
-        color: Theme.of(context).colorScheme.outline,
-      ),
-      tooltip: l10n.dialogWhyThisHelps,
-      padding: EdgeInsets.zero,
-      constraints: const BoxConstraints(minWidth: 36, minHeight: 36),
-      onPressed: () => showModuleHelp(context, moduleId),
-    );
+    return TileHelpButton(moduleId: moduleId, compact: compact);
   }
 }
 

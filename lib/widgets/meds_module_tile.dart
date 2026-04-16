@@ -4,11 +4,11 @@ import 'package:provider/provider.dart';
 
 import '../l10n/app_localizations.dart';
 import '../modules/meds_module.dart';
-import '../modules/module_help.dart';
 import '../modules/module_ids.dart';
 import '../services/meds_notifications_service.dart';
 import '../state/app_state.dart';
 import '../utils/adaptive_layout.dart';
+import '../utils/layout_constants.dart';
 import 'module_tile.dart';
 
 class MedsModuleTile extends StatelessWidget {
@@ -27,8 +27,8 @@ class MedsModuleTile extends StatelessWidget {
             .where((m) => isMedTakenToday(appState, m))
             .length;
 
-        final availableWidth = constraints.maxWidth - 32;
-        final availableHeight = constraints.maxHeight - 40;
+        final availableWidth = TileAvailableSpace.width(constraints.maxWidth, padding: TilePadding.small);
+        final availableHeight = TileAvailableSpace.height(constraints.maxHeight, padding: 20);
 
         final mode = resolveStandardTileMode(
           availableWidth: availableWidth,
@@ -47,23 +47,12 @@ class MedsModuleTile extends StatelessWidget {
           return const ModuleTile(moduleId: BaselineModuleId.meds);
         }
 
-        final isCompact = mode == AdaptiveTileMode.compact;
-
-        return Card(
-          margin: EdgeInsets.all(isCompact ? 6 : 12),
-          elevation: 0,
-          clipBehavior: Clip.antiAlias,
-          color: scheme.surface,
-          surfaceTintColor: Colors.transparent,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(20),
-          ),
-          child: InkWell(
-            onTap: () => showMedsModule(context),
-            borderRadius: BorderRadius.circular(20),
-            child: Padding(
-              padding: EdgeInsets.all(isCompact ? 6 : 12),
-              child: Column(
+        return TileCard(
+          isCompact: mode.isCompact,
+          onTap: () => showMedsModule(context),
+          child: Padding(
+            padding: EdgeInsets.all(TilePadding.forMode(mode)),
+            child: Column(
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
                       Row(
@@ -71,9 +60,9 @@ class MedsModuleTile extends StatelessWidget {
                           Icon(
                             Icons.medication_outlined,
                             color: scheme.primary,
-                            size: mode == AdaptiveTileMode.compact ? 18 : 20,
+                            size: TileIconSizes.forMode(mode),
                           ),
-                          const SizedBox(width: 6),
+                          const SizedBox(width: TileSpacing.medium),
                           Expanded(
                             child: Text(
                               BaselineModuleId.localizedLabel(
@@ -83,7 +72,7 @@ class MedsModuleTile extends StatelessWidget {
                               style: theme.textTheme.titleSmall?.copyWith(
                                 fontWeight: FontWeight.w600,
                                 color: scheme.onSurface,
-                                fontSize: mode == AdaptiveTileMode.compact ? 13 : null,
+                                fontSize: mode.isCompact ? TileFontSizes.compactHeader : null,
                               ),
                               overflow: TextOverflow.ellipsis,
                               maxLines: 1,
@@ -96,29 +85,14 @@ class MedsModuleTile extends StatelessWidget {
                               color: scheme.primary,
                             ),
                           ),
-                          buildLayoutModeIndicator(
-                            context,
-                            mode,
-                            enabled: appState.settings.developerModeEnabled,
-                          ),
-                          IconButton(
-                            icon: Icon(
-                              Icons.help_outline,
-                              size: mode == AdaptiveTileMode.compact ? 18 : 20,
-                              color: scheme.outline,
-                            ),
-                            tooltip: l10n.dialogWhyThisHelps,
-                            padding: EdgeInsets.zero,
-                            constraints: const BoxConstraints(
-                              minWidth: 36,
-                              minHeight: 36,
-                            ),
-                            onPressed: () =>
-                                showModuleHelp(context, BaselineModuleId.meds),
+                          TileModeIndicator(mode: mode),
+                          TileHelpButton(
+                            moduleId: BaselineModuleId.meds,
+                            compact: mode.isCompact,
                           ),
                         ],
                       ),
-                      const SizedBox(height: 4),
+                      const SizedBox(height: TileSpacing.small),
                       if (meds.isEmpty)
                         Expanded(child: Center(child: _EmptyMedsState(mode: mode)))
                       else
@@ -134,7 +108,6 @@ class MedsModuleTile extends StatelessWidget {
                     ],
                   ),
             ),
-          ),
         );
       },
     );
@@ -158,7 +131,7 @@ class _EmptyMedsState extends StatelessWidget {
         color: Theme.of(context).colorScheme.onSurfaceVariant,
       ),
       textAlign: TextAlign.center,
-      maxLines: mode == AdaptiveTileMode.compact ? 1 : 3,
+      maxLines: mode.isCompact ? 1 : 3,
       overflow: TextOverflow.ellipsis,
     );
   }
@@ -180,7 +153,6 @@ class _MedsContent extends StatelessWidget {
     final l10n = AppLocalizations.of(context)!;
     final theme = Theme.of(context);
     final appState = Provider.of<AppState>(context, listen: false);
-    final progressText = l10n.medsTodayProgress(takenCount, meds.length);
 
     final takeCount = mode == AdaptiveTileMode.compact ? 1 : 3;
     final visible = meds.take(takeCount).toList();

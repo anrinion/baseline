@@ -615,7 +615,7 @@ class MedsNotificationsService {
           UILocalNotificationDateInterpretation.wallClockTime,
       // Snooze inherits the same med reminder time - parse from original payload not available here
       // Use a default payload that won't trigger mark_taken rescheduling properly
-      payload: '$_medsPayloadPrefix${medName}::0::en',
+      payload: '$_medsPayloadPrefix$medName::0::en',
     );
   }
 

@@ -2,51 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../l10n/app_localizations.dart';
-import '../modules/module_help.dart';
 import '../modules/module_ids.dart';
 import '../modules/movement_module.dart';
 import '../state/app_state.dart';
 import '../utils/adaptive_layout.dart';
+import '../utils/layout_constants.dart';
 import 'module_tile.dart';
 
-class _AdaptiveIconButton extends StatelessWidget {
-  final VoidCallback onTap;
-  final Widget child;
-  final double maxHeight;
-  final Color backgroundColor;
-
-  const _AdaptiveIconButton({
-    required this.onTap,
-    required this.child,
-    required this.maxHeight,
-    required this.backgroundColor,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return ConstrainedBox(
-      constraints: BoxConstraints(maxHeight: maxHeight),
-      child: AspectRatio(
-        aspectRatio: 1,
-        child: FittedBox(
-          fit: BoxFit.scaleDown,
-          child: Material(
-            color: backgroundColor,
-            borderRadius: BorderRadius.circular(16),
-            child: InkWell(
-              borderRadius: BorderRadius.circular(16),
-              onTap: onTap,
-              child: Padding(
-                padding: const EdgeInsets.all(12),
-                child: child,
-              ),
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-}
 
 class MovementModuleTile extends StatelessWidget {
   const MovementModuleTile({super.key});
@@ -63,10 +25,8 @@ class MovementModuleTile extends StatelessWidget {
         final hasMoved = appState.todayState.moved;
         final options = getMovementOptions(appState, l10n);
 
-        final availableWidth =
-            constraints.maxWidth - 32; // 16 padding on each side
-        final availableHeight =
-            constraints.maxHeight - 48; // rough header/margins
+        final availableWidth = TileAvailableSpace.width(constraints.maxWidth);
+        final availableHeight = constraints.maxHeight - 48; // rough header/margins
 
         AdaptiveTileMode mode = AdaptiveTileMode.medium;
         final buttonTextStyle =
@@ -147,23 +107,13 @@ class MovementModuleTile extends StatelessWidget {
         }
 
         if (mode == AdaptiveTileMode.micro) {
-          // Micro: use standard tile that opens a popup.
           return const ModuleTile(moduleId: BaselineModuleId.movement);
         }
 
-        final isCompact = mode == AdaptiveTileMode.compact;
-
-        return Card(
-          margin: EdgeInsets.all(isCompact ? 6 : 12),
-          elevation: 0,
-          clipBehavior: Clip.antiAlias,
-          color: scheme.surface,
-          surfaceTintColor: Colors.transparent,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(20),
-          ),
+        return TileCard(
+          isCompact: mode.isCompact,
           child: Padding(
-            padding: EdgeInsets.all(isCompact ? 6 : 12),
+            padding: EdgeInsets.all(TilePadding.forMode(mode)),
             child: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
@@ -172,44 +122,29 @@ class MovementModuleTile extends StatelessWidget {
                         Icon(
                           Icons.directions_walk,
                           color: scheme.primary,
-                          size: mode == AdaptiveTileMode.compact ? 18 : 20,
+                          size: TileIconSizes.forMode(mode),
                         ),
-                        const SizedBox(width: 6),
+                        const SizedBox(width: TileSpacing.medium),
                         Expanded(
                           child: Text(
                             BaselineModuleId.localizedLabel(l10n, BaselineModuleId.movement),
                             style: theme.textTheme.titleSmall?.copyWith(
                               fontWeight: FontWeight.w600,
                               color: scheme.onSurface,
-                              fontSize: mode == AdaptiveTileMode.compact ? 13 : null,
+                              fontSize: mode.isCompact ? TileFontSizes.compactHeader : null,
                             ),
                             overflow: TextOverflow.ellipsis,
                             maxLines: 1,
                           ),
                         ),
-                        buildLayoutModeIndicator(
-                          context,
-                          mode,
-                          enabled: appState.settings.developerModeEnabled,
-                        ),
-                        IconButton(
-                          icon: Icon(
-                            Icons.help_outline,
-                            size: mode == AdaptiveTileMode.compact ? 18 : 20,
-                            color: scheme.outline,
-                          ),
-                          tooltip: l10n.dialogWhyThisHelps,
-                          padding: EdgeInsets.zero,
-                          constraints: const BoxConstraints(
-                            minWidth: 36,
-                            minHeight: 36,
-                          ),
-                          onPressed: () =>
-                              showModuleHelp(context, BaselineModuleId.movement),
+                        TileModeIndicator(mode: mode),
+                        TileHelpButton(
+                          moduleId: BaselineModuleId.movement,
+                          compact: mode.isCompact,
                         ),
                       ],
                     ),
-                    const SizedBox(height: 4),
+                    const SizedBox(height: TileSpacing.small),
                     Expanded(
                       child: Center(
                         child: hasMoved
@@ -286,7 +221,7 @@ class MovementModuleTile extends StatelessWidget {
             foregroundColor: scheme.onSurfaceVariant,
             side: BorderSide(color: scheme.outlineVariant),
             shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(40),
+              borderRadius: BorderRadius.circular(TileBorderRadius.button),
             ),
           ),
           child: Text(l10n.dialogReset),
@@ -319,7 +254,7 @@ class MovementModuleTile extends StatelessWidget {
               ...visibleOptions.map((option) {
                 final iconForOpt = getMovementIconByName(option.iconName);
                 return Expanded(
-                  child: _AdaptiveIconButton(
+                  child: TileAdaptiveIconButton(
                     onTap: () => completeMovementExercise(appState),
                     maxHeight: buttonHeight,
                     backgroundColor: scheme.primaryContainer,
@@ -329,7 +264,7 @@ class MovementModuleTile extends StatelessWidget {
               }),
               if (hiddenCount > 0)
                 Expanded(
-                  child: _AdaptiveIconButton(
+                  child: TileAdaptiveIconButton(
                     onTap: () => showMovementModule(context),
                     maxHeight: buttonHeight,
                     backgroundColor: scheme.surfaceContainerHighest,

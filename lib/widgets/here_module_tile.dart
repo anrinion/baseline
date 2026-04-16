@@ -4,11 +4,11 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 
 import '../utils/adaptive_layout.dart';
+import '../utils/layout_constants.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 
 import 'module_tile.dart';
-import '../modules/module_help.dart';
 import '../modules/module_ids.dart';
 import '../state/app_state.dart';
 import '../l10n/app_localizations.dart';
@@ -93,12 +93,12 @@ class _HereModuleTileState extends State<HereModuleTile>
         final appState = Provider.of<AppState>(context);
         final label = appState.settings.hereButtonText;
 
-        final availableWidth = constraints.maxWidth.isFinite 
-            ? constraints.maxWidth - 40 // 20 padding each side
-            : 300.0; // fallback
-        final availableHeight = constraints.maxHeight.isFinite 
-            ? constraints.maxHeight - 56 // header + margins
-            : 100.0; // fallback
+        final availableWidth = constraints.maxWidth.isFinite
+            ? TileAvailableSpace.width(constraints.maxWidth, padding: TilePadding.small + TileSpacing.normal)
+            : 300.0;
+        final availableHeight = constraints.maxHeight.isFinite
+            ? constraints.maxHeight - 56
+            : 100.0;
 
         final mode = resolveStandardTileMode(
           availableWidth: availableWidth,
@@ -117,19 +117,10 @@ class _HereModuleTileState extends State<HereModuleTile>
           return const ModuleTile(moduleId: BaselineModuleId.here);
         }
 
-        final isCompact = mode == AdaptiveTileMode.compact;
-
-        return Card(
-          margin: EdgeInsets.all(isCompact ? 6 : 12),
-          elevation: 0,
-          clipBehavior: Clip.antiAlias,
-          color: scheme.surface,
-          surfaceTintColor: Colors.transparent,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(20),
-          ),
+        return TileCard(
+          isCompact: mode.isCompact,
           child: Padding(
-            padding: EdgeInsets.all(isCompact ? 6 : 12),
+            padding: EdgeInsets.all(TilePadding.forMode(mode)),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
@@ -139,45 +130,30 @@ class _HereModuleTileState extends State<HereModuleTile>
                     Icon(
                       Icons.center_focus_strong_outlined,
                       color: scheme.primary,
-                      size: isCompact ? 18 : 20,
+                      size: TileIconSizes.forMode(mode),
                     ),
-                    const SizedBox(width: 6),
+                    const SizedBox(width: TileSpacing.medium),
                     Expanded(
                       child: Text(
                         l10n.grounding,
                         style: theme.textTheme.titleSmall?.copyWith(
                           fontWeight: FontWeight.w600,
                           color: scheme.onSurface,
-                          fontSize: isCompact ? 13 : null,
+                          fontSize: mode.isCompact ? TileFontSizes.compactHeader : null,
                         ),
                         overflow: TextOverflow.ellipsis,
                         maxLines: 1,
                       ),
                     ),
-                    buildLayoutModeIndicator(
-                      context,
-                      mode,
-                      enabled: appState.settings.developerModeEnabled,
-                    ),
-                    IconButton(
-                      icon: Icon(
-                        Icons.help_outline,
-                        size: isCompact ? 18 : 20,
-                        color: scheme.outline,
-                      ),
-                      tooltip: l10n.dialogWhyThisHelps,
-                      padding: EdgeInsets.zero,
-                      constraints: const BoxConstraints(
-                        minWidth: 36,
-                        minHeight: 36,
-                      ),
-                      onPressed: () =>
-                          showModuleHelp(context, BaselineModuleId.here),
+                    TileModeIndicator(mode: mode),
+                    TileHelpButton(
+                      moduleId: BaselineModuleId.here,
+                      compact: mode.isCompact,
                     ),
                   ],
                 ),
 
-                const SizedBox(height: 4),
+                const SizedBox(height: TileSpacing.small),
 
                 // ── Button / affirmation ──
                 Expanded(
@@ -186,8 +162,8 @@ class _HereModuleTileState extends State<HereModuleTile>
                     switchInCurve: Curves.easeOutCubic,
                     switchOutCurve: Curves.easeInCubic,
                     child: _activePhrase != null
-                        ? _buildAffirmation(theme, scheme, isCompact)
-                        : _buildButton(theme, scheme, label, isCompact),
+                        ? _buildAffirmation(theme, scheme, mode.isCompact)
+                        : _buildButton(theme, scheme, label, mode.isCompact),
                   ),
                 ),
               ],
@@ -210,7 +186,7 @@ class _HereModuleTileState extends State<HereModuleTile>
           foregroundColor: scheme.onPrimaryContainer,
           elevation: 0,
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(isCompact ? 12 : 16),
+            borderRadius: BorderRadius.circular(isCompact ? TileBorderRadius.chip + 4 : TileBorderRadius.tile - 4),
           ),
         ),
         child: Text(
@@ -218,7 +194,7 @@ class _HereModuleTileState extends State<HereModuleTile>
           style: theme.textTheme.titleMedium?.copyWith(
             fontWeight: FontWeight.w600,
             color: scheme.onPrimaryContainer,
-            fontSize: isCompact ? 14 : null,
+            fontSize: isCompact ? TileFontSizes.compactHeader + 1 : null,
           ),
         ),
       ),
@@ -238,7 +214,7 @@ class _HereModuleTileState extends State<HereModuleTile>
             fontWeight: FontWeight.w500,
             color: scheme.onSurfaceVariant,
             fontStyle: FontStyle.italic,
-            fontSize: isCompact ? 14 : null,
+            fontSize: isCompact ? TileFontSizes.compactHeader + 1 : null,
           ),
         ),
       ),

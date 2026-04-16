@@ -11,6 +11,7 @@ import '../modules/movement_module.dart';
 import '../modules/sleep_module.dart';
 import '../state/app_state.dart';
 import '../utils/adaptive_layout.dart';
+import '../utils/layout_constants.dart';
 
 class ModuleTile extends StatelessWidget {
   final String moduleId;
@@ -45,10 +46,8 @@ class ModuleTile extends StatelessWidget {
         final label = BaselineModuleId.localizedLabel(l10n, moduleId);
         final appState = Provider.of<AppState>(context);
 
-        final availableWidth =
-            constraints.maxWidth - 24; // 12 padding each side
-        final availableHeight =
-            constraints.maxHeight - 24; // 12 padding each side
+        final availableWidth = TileAvailableSpace.width(constraints.maxWidth);
+        final availableHeight = TileAvailableSpace.height(constraints.maxHeight);
 
         final mode = resolveStandardTileMode(
           availableWidth: availableWidth,
@@ -63,24 +62,13 @@ class ModuleTile extends StatelessWidget {
           ),
         );
 
-        final isMicro = mode == AdaptiveTileMode.micro;
-        final isCompact = mode == AdaptiveTileMode.compact;
-
-        return Card(
-          margin: const EdgeInsets.all(12),
-          elevation: 0,
-          clipBehavior: Clip.antiAlias,
-          color: scheme.surface,
-          surfaceTintColor: Colors.transparent,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(20),
-          ),
+        return TileCard(
+          isCompact: mode.isCompact,
           child: InkWell(
-            onTap: () => _openModule(context),
-            borderRadius: BorderRadius.circular(20),
-            child: Padding(
-              padding: const EdgeInsets.fromLTRB(10, 10, 10, 8),
-              child: isMicro
+          onTap: () => _openModule(context),
+          child: Padding(
+            padding: const EdgeInsets.fromLTRB(10, 10, 10, 8),
+            child: mode.isMicro
                       ? _buildMicroLayout(
                           context,
                           scheme,
@@ -93,7 +81,7 @@ class ModuleTile extends StatelessWidget {
                           scheme,
                           l10n,
                           label,
-                          isCompact,
+                          mode.isCompact,
                           appState,
                           mode,
                           availableWidth,
@@ -116,7 +104,7 @@ class ModuleTile extends StatelessWidget {
     // Dynamic icon sizing: min 16, max 24, scales with available space
     final iconSize = availableHeight < 32
         ? (availableHeight * 0.6).clamp(16.0, 24.0)
-        : 24.0;
+        : TileIconSizes.normal + 4;
 
     // Check if we can fit text at all (need at least ~14px for labelSmall)
     final canShowText = availableHeight >= 32;
@@ -139,7 +127,7 @@ class ModuleTile extends StatelessWidget {
               style: Theme.of(context).textTheme.labelSmall?.copyWith(
                 fontWeight: FontWeight.w600,
                 color: scheme.onSurface,
-                fontSize: 10,
+                fontSize: TileFontSizes.small,
               ),
             ),
           ),
@@ -161,7 +149,7 @@ class ModuleTile extends StatelessWidget {
             style: Theme.of(context).textTheme.labelSmall?.copyWith(
               fontWeight: FontWeight.w600,
               color: scheme.onSurface,
-              fontSize: 10,
+              fontSize: TileFontSizes.small,
             ),
           ),
         ],
@@ -192,9 +180,9 @@ class ModuleTile extends StatelessWidget {
             Icon(
               iconFor(moduleId),
               color: scheme.primary,
-              size: isCompact ? 18 : 20,
+              size: isCompact ? TileIconSizes.compact : TileIconSizes.normal,
             ),
-            const SizedBox(width: 6),
+            const SizedBox(width: TileSpacing.medium),
             Expanded(
               child: Text(
                 label,
@@ -203,30 +191,17 @@ class ModuleTile extends StatelessWidget {
                 style: Theme.of(context).textTheme.titleSmall?.copyWith(
                   fontWeight: FontWeight.w600,
                   color: scheme.onSurface,
-                  fontSize: isCompact ? 13 : null,
+                  fontSize: isCompact ? TileFontSizes.compactHeader : null,
                 ),
               ),
             ),
             if (showIndicator)
               buildLayoutModeIndicator(context, mode, enabled: true),
-            IconButton(
-              icon: Icon(
-                Icons.help_outline,
-                size: isCompact ? 18 : 20,
-                color: scheme.outline,
-              ),
-              tooltip: l10n.dialogWhyThisHelps,
-              padding: EdgeInsets.zero,
-              constraints: BoxConstraints(
-                minWidth: isCompact ? 28 : 32,
-                minHeight: isCompact ? 28 : 32,
-              ),
-              onPressed: () => showModuleHelp(context, moduleId),
-            ),
+            TileHelpButton(moduleId: moduleId, compact: isCompact),
           ],
         ),
         if (!isCompact) ...[
-          const SizedBox(height: 8),
+          const SizedBox(height: TileSpacing.normal),
           Text(
             l10n.tapToOpen,
             textAlign: TextAlign.center,
@@ -234,7 +209,7 @@ class ModuleTile extends StatelessWidget {
             overflow: TextOverflow.ellipsis,
             style: Theme.of(context).textTheme.bodySmall?.copyWith(
               color: scheme.onSurfaceVariant,
-              fontSize: 10,
+              fontSize: TileFontSizes.small,
             ),
           ),
         ],

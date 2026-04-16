@@ -3,12 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../l10n/app_localizations.dart';
-import '../modules/module_help.dart';
 import '../modules/module_ids.dart';
 import '../modules/mental_state_module.dart';
 import '../modules/mental_state_constants.dart';
 import '../state/app_state.dart';
 import '../utils/adaptive_layout.dart';
+import '../utils/layout_constants.dart';
 import 'module_tile.dart';
 
 // ==================== Enums & Extensions ====================
@@ -88,8 +88,8 @@ class MentalStateModuleTile extends StatelessWidget {
   }
 
   AdaptiveTileMode _resolveTileMode(BoxConstraints constraints) {
-    const horizontalPadding = 32.0;
-    const verticalMargin = 40.0;
+    const horizontalPadding = TilePadding.normal * 2;
+    const verticalMargin = TileSpacing.large + TileSpacing.normal + TileSpacing.small;
     return resolveStandardTileMode(
       availableWidth: constraints.maxWidth - horizontalPadding,
       availableHeight: constraints.maxHeight - verticalMargin,
@@ -119,28 +119,18 @@ class _MentalStateTileContent extends StatelessWidget {
         final mentalStateMode = MentalStateMode.fromString(
           appState.settings.mentalStateMode,
         );
-        final isCompact = mode == AdaptiveTileMode.compact;
-
-        return Card(
-          margin: EdgeInsets.all(isCompact ? 6 : 12),
-          elevation: 0,
-          clipBehavior: Clip.antiAlias,
-          color: Theme.of(context).colorScheme.surface,
-          surfaceTintColor: Colors.transparent,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(20),
-          ),
+        return TileCard(
+          isCompact: mode.isCompact,
           child: Padding(
-            padding: EdgeInsets.all(isCompact ? 6 : 12),
+            padding: EdgeInsets.all(TilePadding.forMode(mode)),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 _TileHeader(
                   mode: mentalStateMode,
                   tileMode: mode,
-                  isCompact: isCompact,
                 ),
-                SizedBox(height: isCompact ? 4 : 8),
+                SizedBox(height: mode.isCompact ? TileSpacing.small : TileSpacing.normal),
                 Expanded(
                   child: Center(
                     child: _ModeContentSwitcher(
@@ -163,12 +153,9 @@ class _MentalStateTileContent extends StatelessWidget {
 class _TileHeader extends StatelessWidget {
   final MentalStateMode mode;
   final AdaptiveTileMode tileMode;
-  final bool isCompact;
-
   const _TileHeader({
     required this.mode,
     required this.tileMode,
-    required this.isCompact,
   });
 
   @override
@@ -176,26 +163,26 @@ class _TileHeader extends StatelessWidget {
     final l10n = AppLocalizations.of(context)!;
     final theme = Theme.of(context);
     final scheme = theme.colorScheme;
-    final iconSize = isCompact ? 18.0 : 20.0;
+    final iconSize = TileIconSizes.forMode(tileMode);
 
     return Row(
       children: [
         Icon(mode.icon, color: scheme.primary, size: iconSize),
-        const SizedBox(width: 6),
+        const SizedBox(width: TileSpacing.medium),
         Expanded(
           child: Text(
             mode.title(l10n),
             style: theme.textTheme.titleSmall?.copyWith(
               fontWeight: FontWeight.w600,
               color: scheme.onSurface,
-              fontSize: isCompact ? 13 : null,
+              fontSize: tileMode.isCompact ? TileFontSizes.compactHeader : null,
             ),
             overflow: TextOverflow.ellipsis,
             maxLines: 1,
           ),
         ),
         _DeveloperModeIndicator(tileMode: tileMode),
-        _HelpButton(moduleId: BaselineModuleId.mentalState, isCompact: isCompact),
+        _HelpButton(moduleId: BaselineModuleId.mentalState, isCompact: tileMode.isCompact),
       ],
     );
   }
@@ -208,13 +195,7 @@ class _DeveloperModeIndicator extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Selector<AppState, bool>(
-      selector: (_, appState) => appState.settings.developerModeEnabled,
-      builder: (context, developerModeEnabled, child) {
-        if (!developerModeEnabled) return const SizedBox.shrink();
-        return buildLayoutModeIndicator(context, tileMode, enabled: true);
-      },
-    );
+    return TileModeIndicator(mode: tileMode);
   }
 }
 
@@ -226,18 +207,7 @@ class _HelpButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final l10n = AppLocalizations.of(context)!;
-    return IconButton(
-      icon: Icon(
-        Icons.help_outline,
-        size: isCompact ? 18 : 20,
-        color: Theme.of(context).colorScheme.outline,
-      ),
-      tooltip: l10n.dialogWhyThisHelps,
-      padding: EdgeInsets.zero,
-      constraints: const BoxConstraints(minWidth: 36, minHeight: 36),
-      onPressed: () => showModuleHelp(context, moduleId),
-    );
+    return TileHelpButton(moduleId: moduleId, compact: isCompact);
   }
 }
 
@@ -348,7 +318,7 @@ class _AdaptiveEmojiButton extends StatelessWidget {
                 );
               },
               child: Padding(
-                padding: EdgeInsets.all(12),
+                padding: const EdgeInsets.all(TilePadding.normal),
                 child: Text(
                   emoji,
                   style: TextStyle(fontSize: 24), // Natural size
@@ -402,7 +372,7 @@ class _ExpandedMoodSelector extends StatelessWidget {
         // Medium mode always shows all 5 moods.
         // Expanded mode shows all 5 if they fit, otherwise falls back to 3.
         const minButtonWidth = 40.0;
-        const spacing = 8.0;
+        const spacing = TileSpacing.normal;
         final fitsAll5 = isMedium || constraints.maxWidth >= 5 * minButtonWidth + 4 * spacing;
         final moods = fitsAll5
             ? const [
@@ -428,7 +398,7 @@ class _ExpandedMoodSelector extends StatelessWidget {
                 textAlign: TextAlign.center,
                 style: Theme.of(context).textTheme.bodyMedium,
               ),
-              const SizedBox(height: 8),
+              const SizedBox(height: TileSpacing.normal),
             ],
             Expanded(
               child: Row(

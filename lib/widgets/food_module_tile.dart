@@ -7,6 +7,7 @@ import '../modules/module_ids.dart';
 import '../state/app_state.dart';
 import '../l10n/app_localizations.dart';
 import '../utils/adaptive_layout.dart';
+import '../utils/layout_constants.dart';
 import 'module_tile.dart';
 
 class FoodModuleTile extends StatelessWidget {
@@ -22,8 +23,8 @@ class FoodModuleTile extends StatelessWidget {
 
         return LayoutBuilder(
           builder: (context, constraints) {
-            final availableWidth = constraints.maxWidth - 24;
-            final availableHeight = constraints.maxHeight - 24;
+            final availableWidth = TileAvailableSpace.width(constraints.maxWidth);
+            final availableHeight = TileAvailableSpace.height(constraints.maxHeight);
 
             final mode = resolveStandardTileMode(
               availableWidth: availableWidth,
@@ -52,22 +53,10 @@ class FoodModuleTile extends StatelessWidget {
               availableHeight: availableHeight,
             );
 
-            return Card(
-              margin: const EdgeInsets.all(12),
-              elevation: 0,
-              clipBehavior: Clip.antiAlias,
-              color: scheme.surface,
-              surfaceTintColor: Colors.transparent,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(20),
-              ),
-              child: isExtended
-                  ? content
-                  : InkWell(
-                      onTap: () => showFoodModule(context),
-                      borderRadius: BorderRadius.circular(20),
-                      child: content,
-                    ),
+            return TileCard(
+              isCompact: !isExtended,
+              onTap: isExtended ? null : () => showFoodModule(context),
+              child: content,
             );
           },
         );
@@ -103,7 +92,7 @@ class _FoodModuleContent extends StatelessWidget {
     final hideHeader = availableHeight < 140;
 
     return Padding(
-      padding: EdgeInsets.all(hideHeader ? 8 : 12),
+      padding: EdgeInsets.all(hideHeader ? TilePadding.small : TilePadding.forMode(mode)),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
@@ -115,7 +104,7 @@ class _FoodModuleContent extends StatelessWidget {
               availableWidth: availableWidth,
               availableHeight: availableHeight,
             ),
-            const SizedBox(height: 12),
+            const SizedBox(height: TileSpacing.large),
           ],
           Expanded(
             child: _CategoryList(
@@ -157,14 +146,19 @@ class _Header extends StatelessWidget {
 
     return Row(
       children: [
-        Icon(Icons.restaurant, color: scheme.primary, size: 20),
-        const SizedBox(width: 6),
+        Icon(
+          Icons.restaurant,
+          color: scheme.primary,
+          size: TileIconSizes.forMode(mode),
+        ),
+        const SizedBox(width: TileSpacing.medium),
         Expanded(
           child: Text(
             l10n.foodModuleLabel,
             style: Theme.of(context).textTheme.titleSmall?.copyWith(
                   fontWeight: FontWeight.w600,
                   color: scheme.onSurface,
+                  fontSize: mode.isCompact ? TileFontSizes.compactHeader : null,
                 ),
             overflow: TextOverflow.ellipsis,
             maxLines: 1,
@@ -177,22 +171,8 @@ class _Header extends StatelessWidget {
                 color: scheme.primary,
               ),
         ),
-        buildLayoutModeIndicator(
-          context,
-          mode,
-          enabled: appState.settings.developerModeEnabled,
-        ),
-        IconButton(
-          icon: Icon(
-            Icons.help_outline,
-            size: mode == AdaptiveTileMode.compact ? 18 : 20,
-            color: scheme.outline,
-          ),
-          tooltip: l10n.dialogWhyThisWorks,
-          padding: EdgeInsets.zero,
-          constraints: const BoxConstraints(minWidth: 36, minHeight: 36),
-          onPressed: () => showFoodSourcesHelp(context),
-        ),
+        TileModeIndicator(mode: mode),
+        TileHelpButton(moduleId: BaselineModuleId.food, compact: mode.isCompact),
       ],
     );
   }
@@ -318,7 +298,7 @@ class _CategoryRow extends StatelessWidget {
         crossAxisAlignment: mode == AdaptiveTileMode.expanded ? CrossAxisAlignment.start : CrossAxisAlignment.center,
         children: [
           Icon(category.icon, size: iconSize, color: scheme.primary),
-          const SizedBox(width: 6),
+          const SizedBox(width: TileSpacing.medium),
           if (!hideLabels) ...[
             Expanded(
               flex: 3,
@@ -369,7 +349,7 @@ class _CategoryRow extends StatelessWidget {
               ),
             ),
           ),
-          const SizedBox(width: 2),
+          const SizedBox(width: TileSpacing.tiny),
           SizedBox(
             width: buttonSize,
             height: buttonSize,
