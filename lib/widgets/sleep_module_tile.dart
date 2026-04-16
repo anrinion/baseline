@@ -462,6 +462,8 @@ class _CompactSleepSummaryView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final useHorizontalLayout = tileWidth > tileHeight;
+
     return Card(
       margin: const EdgeInsets.all(TileMargins.compact),
       elevation: 0,
@@ -471,7 +473,7 @@ class _CompactSleepSummaryView extends StatelessWidget {
       shape: tileShape(),
       child: InkWell(
         onTap: () => showSleepModule(context),
-        borderRadius: BorderRadius.circular(20),
+        borderRadius: BorderRadius.circular(TileBorderRadius.tile),
         child: Padding(
           padding: const EdgeInsets.all(TilePadding.compact),
           child: Column(
@@ -486,6 +488,7 @@ class _CompactSleepSummaryView extends StatelessWidget {
                     mode: AdaptiveTileMode.compact,
                     localBedTime: localBedTime,
                     localWakeTime: localWakeTime,
+                    useHorizontalLayout: useHorizontalLayout,
                   ),
                 ),
               ),
@@ -543,11 +546,13 @@ class _SleepSummaryDisplay extends StatelessWidget {
   final AdaptiveTileMode mode;
   final double? localBedTime;
   final double? localWakeTime;
+  final bool useHorizontalLayout;
 
   const _SleepSummaryDisplay({
     required this.mode,
     this.localBedTime,
     this.localWakeTime,
+    this.useHorizontalLayout = false,
   });
 
   @override
@@ -566,6 +571,7 @@ class _SleepSummaryDisplay extends StatelessWidget {
             duration: duration,
             bedTime: bedTime,
             wakeTime: wakeTime,
+            useHorizontalLayout: useHorizontalLayout,
           );
         }
         return _MediumSleepSummary(
@@ -582,8 +588,39 @@ class _CompactSleepSummary extends StatelessWidget {
   final Duration duration;
   final int bedTime;
   final int wakeTime;
+  final bool useHorizontalLayout;
 
   const _CompactSleepSummary({
+    required this.duration,
+    required this.bedTime,
+    required this.wakeTime,
+    this.useHorizontalLayout = false,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    if (useHorizontalLayout) {
+      return _HorizontalCompactLayout(
+        duration: duration,
+        bedTime: bedTime,
+        wakeTime: wakeTime,
+      );
+    } else {
+      return _VerticalCompactLayout(
+        duration: duration,
+        bedTime: bedTime,
+        wakeTime: wakeTime,
+      );
+    }
+  }
+}
+
+class _VerticalCompactLayout extends StatelessWidget {
+  final Duration duration;
+  final int bedTime;
+  final int wakeTime;
+
+  const _VerticalCompactLayout({
     required this.duration,
     required this.bedTime,
     required this.wakeTime,
@@ -606,11 +643,11 @@ class _CompactSleepSummary extends StatelessWidget {
           ),
           overflow: TextOverflow.ellipsis,
         ),
-        const SizedBox(height: 4),
+        const SizedBox(height: TileSpacing.small),
         Wrap(
           alignment: WrapAlignment.center,
-          spacing: 8,
-          runSpacing: 2,
+          spacing: TileSpacing.normal,
+          runSpacing: TileSpacing.tiny,
           children: [
             Row(
               mainAxisSize: MainAxisSize.min,
@@ -620,12 +657,12 @@ class _CompactSleepSummary extends StatelessWidget {
                   size: TileIconSizes.small - 2,
                   color: scheme.outline,
                 ),
-                const SizedBox(width: 2),
+                const SizedBox(width: TileSpacing.tiny),
                 Text(
                   bedTime.toTimeString(),
                   style: theme.textTheme.bodySmall?.copyWith(
                     color: scheme.onSurfaceVariant,
-                    fontSize: 11,
+                    fontSize: TileFontSizes.labelSmall,
                   ),
                 ),
               ],
@@ -638,17 +675,107 @@ class _CompactSleepSummary extends StatelessWidget {
                   size: TileIconSizes.small - 2,
                   color: scheme.outline,
                 ),
-                const SizedBox(width: 2),
+                const SizedBox(width: TileSpacing.tiny),
                 Text(
                   wakeTime.toTimeString(),
                   style: theme.textTheme.bodySmall?.copyWith(
                     color: scheme.onSurfaceVariant,
-                    fontSize: 11,
+                    fontSize: TileFontSizes.labelSmall,
                   ),
                 ),
               ],
             ),
           ],
+        ),
+      ],
+    );
+  }
+}
+
+class _HorizontalCompactLayout extends StatelessWidget {
+  final Duration duration;
+  final int bedTime;
+  final int wakeTime;
+
+  const _HorizontalCompactLayout({
+    required this.duration,
+    required this.bedTime,
+    required this.wakeTime,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final scheme = theme.colorScheme;
+
+    return Row(
+      children: [
+        // Bed time (left) - lower flex, can shrink
+        Expanded(
+          flex: 1,
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Icon(
+                Icons.bedtime_outlined,
+                size: TileIconSizes.small,
+                color: scheme.outline,
+              ),
+              const SizedBox(width: TileSpacing.small),
+              Flexible(
+                child: Text(
+                  bedTime.toTimeString(),
+                  style: theme.textTheme.bodySmall?.copyWith(
+                    color: scheme.onSurfaceVariant,
+                    fontSize: TileFontSizes.labelSmall,
+                  ),
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ),
+            ],
+          ),
+        ),
+        // Duration (center) - higher flex, prioritized
+        Expanded(
+          flex: 2,
+          child: Center(
+            child: Text(
+              duration.format(),
+              style: theme.textTheme.titleMedium?.copyWith(
+                fontWeight: FontWeight.w700,
+                color: scheme.primary,
+                fontSize: TileIconSizes.normal + 4,
+              ),
+              overflow: TextOverflow.ellipsis,
+            ),
+          ),
+        ),
+        // Wake time (right) - lower flex, can shrink
+        Expanded(
+          flex: 1,
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              Flexible(
+                child: Text(
+                  wakeTime.toTimeString(),
+                  style: theme.textTheme.bodySmall?.copyWith(
+                    color: scheme.onSurfaceVariant,
+                    fontSize: TileFontSizes.labelSmall,
+                  ),
+                  overflow: TextOverflow.ellipsis,
+                  textAlign: TextAlign.end,
+                ),
+              ),
+              const SizedBox(width: TileSpacing.small),
+              Icon(
+                Icons.wb_sunny_outlined,
+                size: TileIconSizes.small,
+                color: scheme.outline,
+              ),
+            ],
+          ),
         ),
       ],
     );
