@@ -48,7 +48,10 @@ class _GroundingModuleTileState extends State<GroundingModuleTile>
         final label = appState.settings.hereButtonText;
 
         final availableWidth = constraints.maxWidth.isFinite
-            ? TileAvailableSpace.width(constraints.maxWidth, padding: TilePadding.small + TileSpacing.normal)
+            ? TileAvailableSpace.width(
+                constraints.maxWidth,
+                padding: TilePadding.small + TileSpacing.normal,
+              )
             : 300.0;
         final availableHeight = constraints.maxHeight.isFinite
             ? constraints.maxHeight - 56
@@ -73,59 +76,58 @@ class _GroundingModuleTileState extends State<GroundingModuleTile>
 
         return TileCard(
           isCompact: mode.isCompact,
-          child: Padding(
-            padding: EdgeInsets.all(TilePadding.forMode(mode)),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                // ── Header row (icon + title + help) ──
-                Row(
-                  children: [
-                    Icon(
-                      Icons.center_focus_strong_outlined,
-                      color: scheme.primary,
-                      size: TileIconSizes.forMode(mode),
-                    ),
-                    const SizedBox(width: TileSpacing.medium),
-                    Expanded(
-                      child: Text(
-                        l10n.grounding,
-                        style: theme.textTheme.titleSmall?.copyWith(
-                          fontWeight: FontWeight.w600,
-                          color: scheme.onSurface,
-                          fontSize: mode.isCompact ? TileFontSizes.compactHeader : null,
-                        ),
-                        overflow: TextOverflow.ellipsis,
-                        maxLines: 1,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              // ── Header row (icon + title + help) ──
+              Row(
+                children: [
+                  Icon(
+                    Icons.center_focus_strong_outlined,
+                    color: scheme.primary,
+                    size: TileIconSizes.forMode(mode),
+                  ),
+                  const SizedBox(width: TileSpacing.medium),
+                  Expanded(
+                    child: Text(
+                      l10n.grounding,
+                      style: theme.textTheme.titleSmall?.copyWith(
+                        fontWeight: FontWeight.w600,
+                        color: scheme.onSurface,
+                        fontSize: mode.isCompact
+                            ? TileFontSizes.compactHeader
+                            : null,
                       ),
+                      overflow: TextOverflow.ellipsis,
+                      maxLines: 1,
                     ),
-                    TileModeIndicator(mode: mode),
-                    TileHelpButton(
-                      moduleId: BaselineModuleId.here,
-                      compact: mode.isCompact,
-                    ),
-                  ],
-                ),
+                  ),
+                  TileModeIndicator(mode: mode),
+                  TileHelpButton(
+                    moduleId: BaselineModuleId.here,
+                    compact: mode.isCompact,
+                  ),
+                ],
+              ),
 
-                const SizedBox(height: TileSpacing.small),
+              const SizedBox(height: TileSpacing.small),
 
-                // ── Button / affirmation ──
-                Expanded(
-                  child: _controller != null
-                      ? GroundingContent(
-                          controller: _controller!,
-                          label: label,
-                          onPressed: () => _onPressed(context),
-                          minButtonHeight: mode.isCompact ? 44 : 52,
-                          borderRadius: mode.isCompact
-                              ? TileBorderRadius.chip + 4
-                              : TileBorderRadius.tile - 4,
-                          buttonStyle: GroundingButtonStyle.tile,
-                        )
-                      : const SizedBox.shrink(),
-                ),
-              ],
-            ),
+              // ── Button / affirmation ──
+              Expanded(
+                child: _controller != null
+                    ? GroundingContent(
+                        controller: _controller!,
+                        label: label,
+                        onPressed: () => _onPressed(context),
+                        minButtonHeight: mode.isCompact ? 44 : 52,
+                        borderRadius: mode.isCompact
+                            ? TileBorderRadius.chip + 4
+                            : TileBorderRadius.tile - 4,
+                        buttonStyle: GroundingButtonStyle.tile,
+                      )
+                    : const SizedBox.shrink(),
+              ),
+            ],
           ),
         );
       },
