@@ -22,14 +22,25 @@ class MovementOptionsEditor extends StatefulWidget {
   State<MovementOptionsEditor> createState() => _MovementOptionsEditorState();
 }
 
+/// Stores data for a pending deletion with its original index.
+/// Each deletion gets its own instance, allowing multiple snackbars
+/// to independently undo their respective deletions.
+class _PendingDeletion {
+  final MovementOption option;
+  final int originalIndex;
+
+  _PendingDeletion({required this.option, required this.originalIndex});
+}
+
 class _MovementOptionsEditorState extends State<MovementOptionsEditor> {
   late List<MovementOption> _options;
   final List<TextEditingController> _controllers = [];
   final List<FocusNode> _focusNodes = [];
   late List<bool> _userOverrodeIcon;
-  MovementOption? _lastDeleted;
-  int? _lastDeletedIndex;
   bool _isAddingNewItem = false;
+
+  // Queue of pending deletions, each with its own snackbar
+  final List<_PendingDeletion> _pendingDeletions = [];
 
   @override
   void initState() {
@@ -39,6 +50,8 @@ class _MovementOptionsEditorState extends State<MovementOptionsEditor> {
 
   @override
   void dispose() {
+    // Clear any showing snackbars before disposing
+    ScaffoldMessenger.maybeOf(context)?.clearSnackBars();
     for (final controller in _controllers) {
       controller.dispose();
     }
@@ -112,10 +125,10 @@ class _MovementOptionsEditorState extends State<MovementOptionsEditor> {
   }
 
   void _deleteOption(int index) {
-    setState(() {
-      _lastDeleted = _options[index];
-      _lastDeletedIndex = index;
+    final deleted = _options[index];
+    final deletedIndex = index;
 
+    setState(() {
       _options.removeAt(index);
       _controllers[index].dispose();
       _controllers.removeAt(index);
@@ -124,38 +137,54 @@ class _MovementOptionsEditorState extends State<MovementOptionsEditor> {
       _userOverrodeIcon.removeAt(index);
     });
     _saveOptions();
-    _showUndoSnackbar();
+
+    // Create a pending deletion entry and show its snackbar
+    final pending = _PendingDeletion(
+      option: deleted,
+      originalIndex: deletedIndex,
+    );
+    _pendingDeletions.add(pending);
+    _showUndoSnackbar(pending);
   }
 
-  void _showUndoSnackbar() {
+  void _showUndoSnackbar(_PendingDeletion pending) {
     final l10n = widget.l10n;
 
-    ScaffoldMessenger.of(context).showSnackBar(
+    final messenger = ScaffoldMessenger.of(context);
+    messenger.showSnackBar(
       SnackBar(
         content: Text(l10n.movementItemDeleted),
-        duration: const Duration(seconds: 4),
+        behavior: SnackBarBehavior.floating,
+        dismissDirection: DismissDirection.horizontal,
         action: SnackBarAction(
-          label: l10n.dialogCancel, // Use "Cancel" as "Undo"
+          label: l10n.dialogCancel,
           onPressed: () {
-            if (_lastDeleted != null && _lastDeletedIndex != null) {
-              setState(() {
-                final index = _lastDeletedIndex!;
-                _options.insert(index, _lastDeleted!);
-                _controllers.insert(
-                  index,
-                  TextEditingController(text: _lastDeleted!.text),
-                );
-                _focusNodes.insert(index, FocusNode());
-                _userOverrodeIcon.insert(index, false);
-                _lastDeleted = null;
-                _lastDeletedIndex = null;
-              });
-              _saveOptions();
-            }
+            _undoDeletion(pending);
           },
         ),
       ),
     );
+  }
+
+  void _undoDeletion(_PendingDeletion pending) {
+    if (!_pendingDeletions.contains(pending)) return;
+
+    setState(() {
+      _pendingDeletions.remove(pending);
+
+      // Calculate the current index: if any prior deletions were undone,
+      // the original index shifts. We insert at min(originalIndex, current length)
+      // to handle cases where subsequent deletions changed the list size.
+      final index = pending.originalIndex.clamp(0, _options.length);
+      _options.insert(index, pending.option);
+      _controllers.insert(
+        index,
+        TextEditingController(text: pending.option.text),
+      );
+      _focusNodes.insert(index, FocusNode());
+      _userOverrodeIcon.insert(index, false);
+    });
+    _saveOptions();
   }
 
   void _addNewItem() {
