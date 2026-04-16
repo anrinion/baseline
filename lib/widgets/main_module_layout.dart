@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import '../modules/module_ids.dart';
 import '../state/app_state.dart';
 import 'food_module_tile.dart';
-import 'here_module_tile.dart';
+import 'grounding_module_tile.dart';
 import 'mental_state_tile.dart';
 import 'meds_module_tile.dart';
 import 'module_tile.dart';
@@ -62,7 +62,7 @@ class MainModuleLayout extends StatelessWidget {
             ? _tile(context, BaselineModuleId.food)
             : null;
         final here = appState.settings.isModuleEnabled(BaselineModuleId.here)
-            ? const HereModuleTile()
+            ? const GroundingModuleTile()
             : null;
 
         if (orientation == Orientation.landscape) {

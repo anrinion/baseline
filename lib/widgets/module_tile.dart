@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 
 import '../l10n/app_localizations.dart';
 import '../modules/food_module.dart';
+import '../modules/grounding_module.dart';
 import '../modules/mental_state_module.dart';
 import '../modules/meds_module.dart';
 import '../modules/module_help.dart';
@@ -238,6 +239,10 @@ class ModuleTile extends StatelessWidget {
     }
     if (moduleId == BaselineModuleId.food) {
       showFoodModule(context);
+      return;
+    }
+    if (moduleId == BaselineModuleId.here) {
+      showGroundingModule(context);
       return;
     }
 
