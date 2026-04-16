@@ -290,9 +290,12 @@ class GroundingButton extends StatelessWidget {
             borderRadius: BorderRadius.circular(borderRadius),
           ),
         ),
-        child: Text(
-          label,
-          style: _buttonTextStyle(theme, scheme),
+        child: FittedBox(
+          fit: BoxFit.contain,
+          child: Text(
+            label,
+            style: _buttonTextStyle(theme, scheme),
+          ),
         ),
       ),
     );
@@ -334,10 +337,13 @@ class GroundingAffirmation extends StatelessWidget {
       opacity: fadeAnimation,
       child: Align(
         alignment: Alignment.center,
-        child: Text(
-          phrase,
-          textAlign: TextAlign.center,
-          style: _affirmationTextStyle(theme, scheme),
+        child: FittedBox(
+          fit: BoxFit.contain,
+          child: Text(
+            phrase,
+            textAlign: TextAlign.center,
+            style: _affirmationTextStyle(theme, scheme),
+          ),
         ),
       ),
     );

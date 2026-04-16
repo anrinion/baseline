@@ -47,27 +47,10 @@ class _GroundingModuleTileState extends State<GroundingModuleTile>
         final appState = Provider.of<AppState>(context);
         final label = appState.settings.hereButtonText;
 
-        final availableWidth = constraints.maxWidth.isFinite
-            ? TileAvailableSpace.width(
-                constraints.maxWidth,
-                padding: TilePadding.small + TileSpacing.normal,
-              )
-            : 300.0;
-        final availableHeight = constraints.maxHeight.isFinite
-            ? constraints.maxHeight - 56
-            : 100.0;
-
         final mode = resolveStandardTileMode(
-          availableWidth: availableWidth,
-          availableHeight: availableHeight,
-          thresholds: const AdaptiveTileThresholds(
-            microHeight: 60,
-            microWidth: 100,
-            compactHeight: 60,
-            compactWidth: 100,
-            expandedHeight: 100,
-            expandedWidth: 100,
-          ),
+          availableWidth: constraints.maxWidth,
+          availableHeight: constraints.maxHeight - TileSpacing.medium * 4,
+          thresholds: standardModuleTileThresholds,
         );
 
         if (mode == AdaptiveTileMode.micro) {
@@ -119,7 +102,7 @@ class _GroundingModuleTileState extends State<GroundingModuleTile>
                         controller: _controller!,
                         label: label,
                         onPressed: () => _onPressed(context),
-                        minButtonHeight: mode.isCompact ? 44 : 52,
+                        minButtonHeight: mode == AdaptiveTileMode.expanded ? 52 : 44,
                         borderRadius: mode.isCompact
                             ? TileBorderRadius.chip + 4
                             : TileBorderRadius.tile - 4,
