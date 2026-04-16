@@ -292,75 +292,79 @@ class _MovementEditorDialog extends StatelessWidget {
                   ),
                 ),
                 Divider(height: 1, color: scheme.outlineVariant),
-                Padding(
-                  padding: const EdgeInsets.all(24),
-                  child: AnimatedSwitcher(
-                    duration: const Duration(milliseconds: 300),
-                    switchInCurve: Curves.easeOutCubic,
-                    switchOutCurve: Curves.easeInCubic,
-                    child: hasMoved
-                        ? Column(
-                            key: const ValueKey('completed'),
-                            children: [
-                              const Icon(Icons.celebration,
-                                  size: 48, color: Color(0xFF059669)),
-                              const SizedBox(height: 12),
-                              Text(
-                                l10n.movementCompleted,
-                                style: theme.textTheme.bodyMedium?.copyWith(
-                                    fontSize: 16,
-                                ),
-                                textAlign: TextAlign.center,
-                              ),
-                              const SizedBox(height: 20),
-                              OutlinedButton(
-                                onPressed: () => resetMovementExercise(appState),
-                                style: OutlinedButton.styleFrom(
-                                  foregroundColor: scheme.onSurfaceVariant,
-                                  side: BorderSide(color: scheme.outlineVariant),
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(40),
+                Flexible(
+                  child: SingleChildScrollView(
+                    child: Padding(
+                      padding: const EdgeInsets.all(24),
+                      child: AnimatedSwitcher(
+                        duration: const Duration(milliseconds: 300),
+                        switchInCurve: Curves.easeOutCubic,
+                        switchOutCurve: Curves.easeInCubic,
+                        child: hasMoved
+                            ? Column(
+                                key: const ValueKey('completed'),
+                                children: [
+                                  const Icon(Icons.celebration,
+                                      size: 48, color: Color(0xFF059669)),
+                                  const SizedBox(height: 12),
+                                  Text(
+                                    l10n.movementCompleted,
+                                    style: theme.textTheme.bodyMedium?.copyWith(
+                                        fontSize: 16,
+                                    ),
+                                    textAlign: TextAlign.center,
                                   ),
-                                ),
-                                child: Text(l10n.dialogReset),
-                              ),
-                            ],
-                          )
-                        : Column(
-                            key: const ValueKey('choices'),
-                            children: [
-                              Text(
-                                l10n.movementChoose,
-                                style: theme.textTheme.bodyMedium?.copyWith(
-                                  fontSize: 16,
-                                  color: scheme.onSurface,
-                                ),
-                                textAlign: TextAlign.center,
-                              ),
-                              const SizedBox(height: 20),
-                              ...options.map((option) => Padding(
-                                    padding: const EdgeInsets.only(bottom: 12),
-                                    child: SizedBox(
-                                      width: double.infinity,
-                                      child: ElevatedButton.icon(
-                                        onPressed: () =>
-                                            completeMovementExercise(appState),
-                                        icon: Icon(getMovementIconByName(option.iconName), size: 20),
-                                        label: Text(option.text),
-                                        style: ElevatedButton.styleFrom(
-                                          padding: const EdgeInsets.symmetric(
-                                              vertical: 12),
-                                          backgroundColor:
-                                              scheme.primaryContainer,
-                                          foregroundColor:
-                                              scheme.onPrimaryContainer,
-                                          elevation: 0,
-                                        ),
+                                  const SizedBox(height: 20),
+                                  OutlinedButton(
+                                    onPressed: () => resetMovementExercise(appState),
+                                    style: OutlinedButton.styleFrom(
+                                      foregroundColor: scheme.onSurfaceVariant,
+                                      side: BorderSide(color: scheme.outlineVariant),
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(40),
                                       ),
                                     ),
-                                  )),
-                            ],
-                          ),
+                                    child: Text(l10n.dialogReset),
+                                  ),
+                                ],
+                              )
+                            : Column(
+                                key: const ValueKey('choices'),
+                                children: [
+                                  Text(
+                                    l10n.movementChoose,
+                                    style: theme.textTheme.bodyMedium?.copyWith(
+                                      fontSize: 16,
+                                      color: scheme.onSurface,
+                                    ),
+                                    textAlign: TextAlign.center,
+                                  ),
+                                  const SizedBox(height: 20),
+                                  ...options.map((option) => Padding(
+                                        padding: const EdgeInsets.only(bottom: 12),
+                                        child: SizedBox(
+                                          width: double.infinity,
+                                          child: ElevatedButton.icon(
+                                            onPressed: () =>
+                                                completeMovementExercise(appState),
+                                            icon: Icon(getMovementIconByName(option.iconName), size: 20),
+                                            label: Text(option.text),
+                                            style: ElevatedButton.styleFrom(
+                                              padding: const EdgeInsets.symmetric(
+                                                  vertical: 12),
+                                              backgroundColor:
+                                                  scheme.primaryContainer,
+                                              foregroundColor:
+                                                  scheme.onPrimaryContainer,
+                                              elevation: 0,
+                                            ),
+                                          ),
+                                        ),
+                                      )),
+                                ],
+                              ),
+                      ),
+                    ),
                   ),
                 ),
                 Align(

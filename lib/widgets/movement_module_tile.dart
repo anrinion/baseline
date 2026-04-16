@@ -9,7 +9,6 @@ import '../utils/adaptive_layout.dart';
 import '../utils/layout_constants.dart';
 import 'module_tile.dart';
 
-
 class MovementModuleTile extends StatelessWidget {
   const MovementModuleTile({super.key});
 
@@ -27,23 +26,11 @@ class MovementModuleTile extends StatelessWidget {
 
         final available = calculateModuleTileAvailableSpace(constraints);
 
-        AdaptiveTileMode mode;
-
-        if (hasMoved) {
-          // Standard check for "completed" state space since it's quite fixed.
-          mode = resolveStandardTileMode(
-            availableWidth: available.width,
-            availableHeight: available.height,
-            thresholds: standardModuleTileThresholds,
-          );
-        } else {
-          // Use unified standard thresholds for consistency with other modules
-          mode = resolveStandardTileMode(
-            availableWidth: available.width,
-            availableHeight: available.height,
-            thresholds: standardModuleTileThresholds,
-          );
-        }
+        final mode = resolveStandardTileMode(
+          availableWidth: available.width,
+          availableHeight: available.height,
+          thresholds: standardModuleTileThresholds,
+        );
 
         if (mode == AdaptiveTileMode.micro) {
           return const ModuleTile(moduleId: BaselineModuleId.movement);
@@ -54,45 +41,51 @@ class MovementModuleTile extends StatelessWidget {
           child: Padding(
             padding: EdgeInsets.all(TilePadding.forMode(mode)),
             child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                // Header remains unchanged
+                Row(
                   children: [
-                    Row(
-                      children: [
-                        Icon(
-                          Icons.directions_walk,
-                          color: scheme.primary,
-                          size: TileIconSizes.forMode(mode),
-                        ),
-                        const SizedBox(width: TileSpacing.medium),
-                        Expanded(
-                          child: Text(
-                            BaselineModuleId.localizedLabel(l10n, BaselineModuleId.movement),
-                            style: theme.textTheme.titleSmall?.copyWith(
-                              fontWeight: FontWeight.w600,
-                              color: scheme.onSurface,
-                              fontSize: mode.isCompact ? TileFontSizes.compactHeader : null,
-                            ),
-                            overflow: TextOverflow.ellipsis,
-                            maxLines: 1,
-                          ),
-                        ),
-                        TileModeIndicator(mode: mode),
-                        TileHelpButton(
-                          moduleId: BaselineModuleId.movement,
-                          compact: mode.isCompact,
-                        ),
-                      ],
+                    Icon(
+                      Icons.directions_walk,
+                      color: scheme.primary,
+                      size: TileIconSizes.forMode(mode),
                     ),
-                    const SizedBox(height: TileSpacing.small),
+                    const SizedBox(width: TileSpacing.medium),
                     Expanded(
-                      child: Center(
-                        child: hasMoved
-                            ? _buildCompletedState(context, appState, mode, l10n)
-                            : _buildChoicesState(context, appState, options, mode),
+                      child: Text(
+                        BaselineModuleId.localizedLabel(
+                          l10n,
+                          BaselineModuleId.movement,
+                        ),
+                        style: theme.textTheme.titleSmall?.copyWith(
+                          fontWeight: FontWeight.w600,
+                          color: scheme.onSurface,
+                          fontSize: mode.isCompact
+                              ? TileFontSizes.compactHeader
+                              : null,
+                        ),
+                        overflow: TextOverflow.ellipsis,
+                        maxLines: 1,
                       ),
+                    ),
+                    TileModeIndicator(mode: mode),
+                    TileHelpButton(
+                      moduleId: BaselineModuleId.movement,
+                      compact: mode.isCompact,
                     ),
                   ],
                 ),
+                const SizedBox(height: TileSpacing.small),
+                Expanded(
+                  child: Center(
+                    child: hasMoved
+                        ? _buildCompletedState(context, appState, mode, l10n)
+                        : _buildChoicesState(context, appState, options, mode),
+                  ),
+                ),
+              ],
+            ),
           ),
         );
       },
@@ -175,17 +168,18 @@ class MovementModuleTile extends StatelessWidget {
     List<MovementOption> options,
     AdaptiveTileMode mode,
   ) {
-    final theme = Theme.of(context);
-    final scheme = theme.colorScheme;
-    final l10n = AppLocalizations.of(context)!;
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final theme = Theme.of(context);
+        final scheme = theme.colorScheme;
+        final l10n = AppLocalizations.of(context)!;
 
-    final limit = mode == AdaptiveTileMode.expanded ? 5 : 3;
-    final visibleOptions = options.take(limit).toList();
-    final hiddenCount = options.length - visibleOptions.length;
+        if (mode == AdaptiveTileMode.compact || constraints.maxHeight < 80) {
+          // Compact: icon buttons with optional overflow chip
+          final limit = 3;
+          final visibleOptions = options.take(limit).toList();
+          final hiddenCount = options.length - visibleOptions.length;
 
-    if (mode == AdaptiveTileMode.compact) {
-      return LayoutBuilder(
-        builder: (context, constraints) {
           final buttonHeight = constraints.maxHeight.clamp(32.0, 56.0);
           return Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -207,58 +201,123 @@ class MovementModuleTile extends StatelessWidget {
                     onTap: () => showMovementModule(context),
                     maxHeight: buttonHeight,
                     backgroundColor: scheme.surfaceContainerHighest,
-                    child: Text('+$hiddenCount', style: theme.textTheme.labelMedium),
+                    child: Text(
+                      '+$hiddenCount',
+                      style: theme.textTheme.labelMedium,
+                    ),
                   ),
                 ),
             ],
           );
-        },
-      );
-    }
+        }
 
-    return Column(
-      mainAxisSize: MainAxisSize.max,
-      mainAxisAlignment: MainAxisAlignment.center,
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: [
-        if (mode == AdaptiveTileMode.expanded) ...[
-          Text(
-            l10n.movementChoose,
-            style: theme.textTheme.bodyMedium?.copyWith(
-              color: scheme.onSurface,
-            ),
-            textAlign: TextAlign.center,
-          ),
-          const SizedBox(height: 8),
-        ],
-        Wrap(
-          spacing: 8,
-          runSpacing: 8,
-          alignment: WrapAlignment.center,
+        // Medium or Expanded: show buttons with text, adapt to available width
+        // Determine how many options to show based on width
+        final availableWidth = constraints.maxWidth;
+        int limit;
+        if (mode == AdaptiveTileMode.expanded) {
+          limit = availableWidth > 350 ? 5 : (availableWidth > 250 ? 4 : 3);
+        } else {
+          limit = availableWidth > 250 ? 3 : 2;
+        }
+
+        final visibleOptions = options.take(limit).toList();
+        final hiddenCount = options.length - visibleOptions.length;
+
+        return Column(
+          mainAxisSize: MainAxisSize.min,
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            ...visibleOptions.map((option) {
-              final iconForOpt = getMovementIconByName(option.iconName);
-              return ElevatedButton.icon(
-                onPressed: () => completeMovementExercise(appState),
-                icon: Icon(iconForOpt, size: 18),
-                label: Text(option.text),
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: scheme.primaryContainer,
-                  foregroundColor: scheme.onPrimaryContainer,
-                  elevation: 0,
+            if (mode == AdaptiveTileMode.expanded) ...[
+              Text(
+                l10n.movementChoose,
+                style: theme.textTheme.bodyMedium?.copyWith(
+                  color: scheme.onSurface,
+                  fontSize: TileFontSizes.labelSmall,
                 ),
-              );
-            }),
-            if (hiddenCount > 0)
-              ActionChip(
-                label: Text('+$hiddenCount'),
-                onPressed: () => showMovementModule(context),
-                backgroundColor: scheme.surfaceContainerHighest,
-                side: BorderSide.none,
+                textAlign: TextAlign.center,
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
               ),
+              const SizedBox(height: TileSpacing.small),
+            ],
+            Wrap(
+              spacing: TileSpacing.normal,
+              runSpacing: TileSpacing.small,
+              alignment: WrapAlignment.center,
+              runAlignment: WrapAlignment.center,
+              children: [
+                ...visibleOptions.map((option) {
+                  return _ChoiceButton(
+                    option: option,
+                    onPressed: () => completeMovementExercise(appState),
+                  );
+                }),
+                if (hiddenCount > 0)
+                  ActionChip(
+                    label: Text(
+                      '+$hiddenCount',
+                      style: theme.textTheme.labelSmall?.copyWith(
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                    onPressed: () => showMovementModule(context),
+                    backgroundColor: scheme.surfaceContainerHighest,
+                    side: BorderSide.none,
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: TilePadding.small,
+                      vertical: 2,
+                    ),
+                    visualDensity: VisualDensity.compact,
+                  ),
+              ],
+            ),
           ],
+        );
+      },
+    );
+  }
+}
+
+/// A button that displays an icon + label, with text overflow handling.
+class _ChoiceButton extends StatelessWidget {
+  final MovementOption option;
+  final VoidCallback onPressed;
+
+  const _ChoiceButton({required this.option, required this.onPressed});
+
+  @override
+  Widget build(BuildContext context) {
+    final scheme = Theme.of(context).colorScheme;
+    final icon = getMovementIconByName(option.iconName);
+
+    return ConstrainedBox(
+      constraints: const BoxConstraints(maxWidth: 160),
+      child: ElevatedButton.icon(
+        onPressed: onPressed,
+        icon: Icon(icon, size: TileIconSizes.small),
+        label: Text(
+          option.text,
+          maxLines: 1,
+          overflow: TextOverflow.ellipsis,
+          style: const TextStyle(fontSize: TileFontSizes.labelSmall),
         ),
-      ],
+        style: ElevatedButton.styleFrom(
+          backgroundColor: scheme.primaryContainer,
+          foregroundColor: scheme.onPrimaryContainer,
+          elevation: 0,
+          padding: const EdgeInsets.symmetric(
+            horizontal: TilePadding.small,
+            vertical: TilePadding.compact,
+          ),
+          minimumSize: const Size(0, 36),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(TileBorderRadius.chip),
+          ),
+          visualDensity: VisualDensity.compact,
+        ),
+      ),
     );
   }
 }
