@@ -30,7 +30,7 @@ class _InitialScreenState extends State<InitialScreen> {
     // Initialize with current settings for better UX
     final appState = Provider.of<AppState>(context, listen: false);
     final localizationService = Provider.of<LocalizationService>(context, listen: false);
-    
+
     selectedLanguage = localizationService.currentLanguageCode;
     selectedThemeMode = appState.settings.themeMode;
     selectedManualAppearance = appState.settings.usesDarkManualTheme ? 'dark' : 'light';
@@ -38,6 +38,44 @@ class _InitialScreenState extends State<InitialScreen> {
     selectedDarkTheme = appState.settings.darkThemeKey;
     selectedLightStartMinutes = appState.settings.scheduleLightStartMinutes;
     selectedDarkStartMinutes = appState.settings.scheduleDarkStartMinutes;
+  }
+
+  /// Apply selected theme settings to AppState immediately so user sees the change
+  void _applyThemeSettings() {
+    if (selectedThemeMode == null || selectedLightTheme == null || selectedDarkTheme == null) return;
+    if (selectedThemeMode == Settings.themeModeManual && selectedManualAppearance == null) return;
+
+    final appState = Provider.of<AppState>(context, listen: false);
+    final currentTheme = appState.settings.theme;
+    final currentThemeMode = appState.settings.themeMode;
+    final currentLightTheme = appState.settings.lightThemeKey;
+    final currentDarkTheme = appState.settings.darkThemeKey;
+
+    // Determine the new theme key based on manual appearance selection
+    final newTheme = selectedManualAppearance == 'dark' ? selectedDarkTheme! : selectedLightTheme!;
+
+    // Only update if something changed (avoid unnecessary rebuilds)
+    if (currentTheme != newTheme ||
+        currentThemeMode != selectedThemeMode ||
+        currentLightTheme != selectedLightTheme ||
+        currentDarkTheme != selectedDarkTheme) {
+      appState.updateSettings((settings) {
+        settings.lightThemeKey = selectedLightTheme!;
+        settings.darkThemeKey = selectedDarkTheme!;
+        settings.themeMode = selectedThemeMode!;
+        settings.theme = newTheme;
+      });
+    }
+  }
+
+  /// Apply selected language to LocalizationService immediately so user sees the change
+  Future<void> _applyLanguageSetting() async {
+    if (selectedLanguage == null) return;
+
+    final localizationService = Provider.of<LocalizationService>(context, listen: false);
+    if (localizationService.currentLanguageCode != selectedLanguage) {
+      await localizationService.setLanguage(selectedLanguage!);
+    }
   }
 
   bool get canContinue =>
@@ -85,7 +123,10 @@ class _InitialScreenState extends State<InitialScreen> {
     return SizedBox(
       width: double.infinity,
       child: ElevatedButton(
-        onPressed: () => setState(() => selectedLanguage = languageCode),
+        onPressed: () {
+          setState(() => selectedLanguage = languageCode);
+          _applyLanguageSetting();
+        },
         style: ElevatedButton.styleFrom(
           backgroundColor: isSelected ? Theme.of(context).colorScheme.primary : null,
           foregroundColor: isSelected ? Theme.of(context).colorScheme.onPrimary : null,
@@ -331,6 +372,7 @@ class _InitialScreenState extends State<InitialScreen> {
                 setState(() {
                   selectedThemeMode = value;
                 });
+                _applyThemeSettings();
               },
               child: Column(
                 children: [
@@ -360,6 +402,7 @@ class _InitialScreenState extends State<InitialScreen> {
                   setState(() {
                     selectedManualAppearance = value;
                   });
+                  _applyThemeSettings();
                 },
                 child: Column(
                   children: [
@@ -390,7 +433,10 @@ class _InitialScreenState extends State<InitialScreen> {
                     displayName: l10n.themeLight1,
                     previewTheme: BaselineThemes.light1(),
                     isSelected: selectedLightTheme == 'light1',
-                    onTap: () => setState(() => selectedLightTheme = 'light1'),
+                    onTap: () {
+                  setState(() => selectedLightTheme = 'light1');
+                  _applyThemeSettings();
+                },
                   ),
                 ),
                 const SizedBox(width: 12),
@@ -399,7 +445,10 @@ class _InitialScreenState extends State<InitialScreen> {
                     displayName: l10n.themeLight2,
                     previewTheme: BaselineThemes.light2(),
                     isSelected: selectedLightTheme == 'light2',
-                    onTap: () => setState(() => selectedLightTheme = 'light2'),
+                    onTap: () {
+                  setState(() => selectedLightTheme = 'light2');
+                  _applyThemeSettings();
+                },
                   ),
                 ),
               ],
@@ -419,7 +468,10 @@ class _InitialScreenState extends State<InitialScreen> {
                     displayName: l10n.themeDark1,
                     previewTheme: BaselineThemes.dark1(),
                     isSelected: selectedDarkTheme == 'dark1',
-                    onTap: () => setState(() => selectedDarkTheme = 'dark1'),
+                    onTap: () {
+                  setState(() => selectedDarkTheme = 'dark1');
+                  _applyThemeSettings();
+                },
                   ),
                 ),
                 const SizedBox(width: 12),
@@ -428,7 +480,10 @@ class _InitialScreenState extends State<InitialScreen> {
                     displayName: l10n.themeDark2,
                     previewTheme: BaselineThemes.dark2(),
                     isSelected: selectedDarkTheme == 'dark2',
-                    onTap: () => setState(() => selectedDarkTheme = 'dark2'),
+                    onTap: () {
+                  setState(() => selectedDarkTheme = 'dark2');
+                  _applyThemeSettings();
+                },
                   ),
                 ),
               ],
