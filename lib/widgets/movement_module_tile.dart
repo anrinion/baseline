@@ -25,85 +25,24 @@ class MovementModuleTile extends StatelessWidget {
         final hasMoved = appState.todayState.moved;
         final options = getMovementOptions(appState, l10n);
 
-        final availableWidth = TileAvailableSpace.width(constraints.maxWidth);
-        final availableHeight = constraints.maxHeight - 48; // rough header/margins
+        final available = calculateModuleTileAvailableSpace(constraints);
 
-        AdaptiveTileMode mode = AdaptiveTileMode.medium;
-        final buttonTextStyle =
-            theme.textTheme.labelLarge ??
-            const TextStyle(fontSize: 14, fontWeight: FontWeight.w500);
+        AdaptiveTileMode mode;
 
         if (hasMoved) {
           // Standard check for "completed" state space since it's quite fixed.
           mode = resolveStandardTileMode(
-            availableWidth: availableWidth,
-            availableHeight: availableHeight,
-            thresholds: const AdaptiveTileThresholds(
-              microHeight: 40,
-              microWidth: 100,
-              compactHeight: 100,
-              compactWidth: 220,
-              expandedHeight: 140,
-              expandedWidth: 400,
-            ),
+            availableWidth: available.width,
+            availableHeight: available.height,
+            thresholds: standardModuleTileThresholds,
           );
         } else {
-          final List<double> textItemWidths = options.map((opt) {
-            // roughly padding (16*2) + icon (18) + gap (8) = 58
-            return 58.0 + AdaptiveSizing.measureTextWidth(context, opt.text, buttonTextStyle);
-          }).toList();
-
-          final expandedTextH = AdaptiveSizing.measureTextHeight(
-            context,
-            l10n.movementChoose,
-            theme.textTheme.bodyMedium,
-            availableWidth,
+          // Use unified standard thresholds for consistency with other modules
+          mode = resolveStandardTileMode(
+            availableWidth: available.width,
+            availableHeight: available.height,
+            thresholds: standardModuleTileThresholds,
           );
-
-          // Fixed overhead
-          const layoutOverhead = 40.0;
-
-          // Wrap requires constraints
-          final requiredExpandedHeight =
-              layoutOverhead +
-              expandedTextH +
-              12 +
-              8 +
-              AdaptiveSizing.calculateWrapHeight(textItemWidths, availableWidth, 40, 8, 8);
-          final requiredMediumHeight = layoutOverhead + AdaptiveSizing.calculateWrapHeight(
-            textItemWidths,
-            availableWidth,
-            50,
-            8,
-            8,
-          );
-          final requiredCompactHeight = layoutOverhead + AdaptiveSizing.calculateWrapHeight(
-            List.filled(options.length, 48.0),
-            availableWidth,
-            24,
-            8,
-            8,
-          );
-
-          bool anyItemTooWide = textItemWidths.any((w) => w > availableWidth);
-
-          if (!anyItemTooWide &&
-              availableHeight >= requiredExpandedHeight &&
-              availableWidth >= 350) {
-            mode = AdaptiveTileMode.expanded;
-          } else if (!anyItemTooWide &&
-              availableHeight >= requiredMediumHeight &&
-              availableWidth >= 200) {
-            // Medium mode (Textual buttons, no extra expanded heading) fits nicely
-            mode = AdaptiveTileMode.medium;
-          } else if (availableHeight >= requiredCompactHeight &&
-              availableWidth >= 48) {
-            // Only icons
-            mode = AdaptiveTileMode.compact;
-          } else {
-            // Absolute emergency fallback
-            mode = AdaptiveTileMode.micro;
-          }
         }
 
         if (mode == AdaptiveTileMode.micro) {

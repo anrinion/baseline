@@ -63,11 +63,11 @@ class ModuleTile extends StatelessWidget {
         );
 
         return TileCard(
-          isCompact: mode.isCompact,
+          isCompact: mode.isCompact || mode.isMicro,
           child: InkWell(
           onTap: () => _openModule(context),
           child: Padding(
-            padding: const EdgeInsets.fromLTRB(10, 10, 10, 8),
+            padding: EdgeInsets.all(TilePadding.forMode(mode.isMicro ? AdaptiveTileMode.compact : mode)),
             child: mode.isMicro
                       ? _buildMicroLayout(
                           context,

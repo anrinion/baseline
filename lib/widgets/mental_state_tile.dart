@@ -88,19 +88,11 @@ class MentalStateModuleTile extends StatelessWidget {
   }
 
   AdaptiveTileMode _resolveTileMode(BoxConstraints constraints) {
-    const horizontalPadding = TilePadding.normal * 2;
-    const verticalMargin = TileSpacing.large + TileSpacing.normal + TileSpacing.small;
+    final available = calculateModuleTileAvailableSpace(constraints);
     return resolveStandardTileMode(
-      availableWidth: constraints.maxWidth - horizontalPadding,
-      availableHeight: constraints.maxHeight - verticalMargin,
-      thresholds: const AdaptiveTileThresholds(
-        microHeight: 55,
-        microWidth: 100,
-        compactHeight: 80,
-        compactWidth: 220,
-        expandedHeight: 140,
-        expandedWidth: 400,
-      ),
+      availableWidth: available.width,
+      availableHeight: available.height,
+      thresholds: standardModuleTileThresholds,
     );
   }
 }

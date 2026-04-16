@@ -13,7 +13,7 @@ import 'adaptive_layout.dart';
 /// Card margins for module tiles
 abstract final class TileMargins {
   static const double normal = 12;
-  static const double compact = 6;
+  static const double compact = 8;
 
   static double forMode(AdaptiveTileMode mode) =>
       mode == AdaptiveTileMode.compact ? compact : normal;
@@ -36,6 +36,28 @@ abstract final class TileSpacing {
   static const double medium = 6;
   static const double normal = 8;
   static const double large = 12;
+}
+
+/// Standard thresholds for the 4 main modules (meds, sleep, mental, movement)
+/// to ensure consistent mode transitions across all tiles.
+const standardModuleTileThresholds = AdaptiveTileThresholds(
+  microHeight: 60,
+  microWidth: 100,
+  compactHeight: 100,
+  compactWidth: 200,
+  expandedHeight: 140,
+  expandedWidth: 350,
+);
+
+/// Calculates available space for the 4 main modules using unified margins.
+/// Use this in sleep, mental, meds, and movement modules for consistent behavior.
+({double width, double height}) calculateModuleTileAvailableSpace(BoxConstraints constraints) {
+  const horizontalPadding = TilePadding.normal * 2; // 24px total left+right
+  const verticalMargin = TileMargins.normal * 2 + TileSpacing.normal; // ~32px
+  return (
+    width: constraints.maxWidth - horizontalPadding,
+    height: constraints.maxHeight - verticalMargin,
+  );
 }
 
 /// Available space calculation helpers

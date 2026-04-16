@@ -27,20 +27,12 @@ class MedsModuleTile extends StatelessWidget {
             .where((m) => isMedTakenToday(appState, m))
             .length;
 
-        final availableWidth = TileAvailableSpace.width(constraints.maxWidth, padding: TilePadding.small);
-        final availableHeight = TileAvailableSpace.height(constraints.maxHeight, padding: 20);
+        final available = calculateModuleTileAvailableSpace(constraints);
 
         final mode = resolveStandardTileMode(
-          availableWidth: availableWidth,
-          availableHeight: availableHeight,
-          thresholds: const AdaptiveTileThresholds(
-            microHeight: 55,
-            microWidth: 100,
-            compactHeight: 100,
-            compactWidth: 120,
-            expandedHeight: 140,
-            expandedWidth: 360,
-          ),
+          availableWidth: available.width,
+          availableHeight: available.height,
+          thresholds: standardModuleTileThresholds,
         );
 
         if (mode == AdaptiveTileMode.micro) {

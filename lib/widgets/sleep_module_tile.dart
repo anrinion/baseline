@@ -71,19 +71,11 @@ class _SleepModuleTileState extends State<SleepModuleTile> {
   }
 
   AdaptiveTileMode _resolveTileMode(BoxConstraints constraints) {
-    const horizontalPadding = TilePadding.normal * 2;
-    const verticalMargin = TileSpacing.large * 2;
+    final available = calculateModuleTileAvailableSpace(constraints);
     return resolveStandardTileMode(
-      availableWidth: constraints.maxWidth - horizontalPadding,
-      availableHeight: constraints.maxHeight - verticalMargin,
-      thresholds: const AdaptiveTileThresholds(
-        microHeight: 100,
-        microWidth: 100,
-        compactHeight: 170,
-        compactWidth: 200,
-        expandedHeight: 250,
-        expandedWidth: 250,
-      ),
+      availableWidth: available.width,
+      availableHeight: available.height,
+      thresholds: standardModuleTileThresholds,
     );
   }
 }
@@ -164,16 +156,15 @@ class _SlidersSleepView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final isExpanded = mode == AdaptiveTileMode.expanded;
     return Card(
-      margin: const EdgeInsets.all(TileMargins.normal),
+      margin: EdgeInsets.all(TileMargins.forMode(mode)),
       elevation: 0,
       clipBehavior: Clip.antiAlias,
       color: Theme.of(context).colorScheme.surface,
       surfaceTintColor: Colors.transparent,
       shape: tileShape(),
       child: Padding(
-        padding: EdgeInsets.all(isExpanded ? TilePadding.normal : TilePadding.compact),
+        padding: EdgeInsets.all(TilePadding.forMode(mode)),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
@@ -421,7 +412,7 @@ class _CompactSleepSummaryView extends StatelessWidget {
         onTap: () => showSleepModule(context),
         borderRadius: BorderRadius.circular(20),
         child: Padding(
-          padding: const EdgeInsets.all(TilePadding.small),
+          padding: const EdgeInsets.all(TilePadding.compact),
           child: Column(
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.stretch,
