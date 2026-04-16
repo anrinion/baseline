@@ -503,6 +503,7 @@ class _InitialScreenState extends State<InitialScreen> {
                 subtitle: Text(
                   MaterialLocalizations.of(context).formatTimeOfDay(
                     _timeOfDayFromMinutes(selectedLightStartMinutes),
+                    alwaysUse24HourFormat: MediaQuery.of(context).alwaysUse24HourFormat,
                   ),
                 ),
                 trailing: const Icon(Icons.schedule),
@@ -522,6 +523,7 @@ class _InitialScreenState extends State<InitialScreen> {
                 subtitle: Text(
                   MaterialLocalizations.of(context).formatTimeOfDay(
                     _timeOfDayFromMinutes(selectedDarkStartMinutes),
+                    alwaysUse24HourFormat: MediaQuery.of(context).alwaysUse24HourFormat,
                   ),
                 ),
                 trailing: const Icon(Icons.schedule),

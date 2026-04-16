@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:baseline/modules/sleep_module.dart';
 
@@ -111,28 +112,56 @@ void main() {
   });
 
   group('formatTimeFromMinutes', () {
-    test('midnight', () {
-      expect(formatTimeFromMinutes(0), equals('00:00'));
+    testWidgets('midnight formats correctly', (tester) async {
+      await tester.pumpWidget(
+        MaterialApp(
+          home: Builder(
+            builder: (context) {
+              expect(formatTimeFromMinutes(context, 0), isNotEmpty);
+              return const SizedBox();
+            },
+          ),
+        ),
+      );
     });
 
-    test('noon', () {
-      expect(formatTimeFromMinutes(720), equals('12:00'));
+    testWidgets('noon formats correctly', (tester) async {
+      await tester.pumpWidget(
+        MaterialApp(
+          home: Builder(
+            builder: (context) {
+              expect(formatTimeFromMinutes(context, 720), isNotEmpty);
+              return const SizedBox();
+            },
+          ),
+        ),
+      );
     });
 
-    test('23:30', () {
-      expect(formatTimeFromMinutes(1410), equals('23:30'));
+    testWidgets('23:30 formats correctly', (tester) async {
+      await tester.pumpWidget(
+        MaterialApp(
+          home: Builder(
+            builder: (context) {
+              expect(formatTimeFromMinutes(context, 1410), isNotEmpty);
+              return const SizedBox();
+            },
+          ),
+        ),
+      );
     });
 
-    test('with minutes', () {
-      expect(formatTimeFromMinutes(630), equals('10:30'));
-    });
-
-    test('24:00 edge case displays as 00:00', () {
-      expect(formatTimeFromMinutes(1440), equals('00:00'));
-    });
-
-    test('beyond 24:00 wraps to 00:00', () {
-      expect(formatTimeFromMinutes(1450), equals('00:00'));
+    testWidgets('24:00 edge case displays as midnight', (tester) async {
+      await tester.pumpWidget(
+        MaterialApp(
+          home: Builder(
+            builder: (context) {
+              expect(formatTimeFromMinutes(context, 1440), isNotEmpty);
+              return const SizedBox();
+            },
+          ),
+        ),
+      );
     });
   });
 

@@ -152,6 +152,7 @@ class ThemeSettingsSection extends StatelessWidget {
             subtitle: Text(
               MaterialLocalizations.of(context).formatTimeOfDay(
                 _timeOfDayFromMinutes(settings.scheduleLightStartMinutes),
+                alwaysUse24HourFormat: MediaQuery.of(context).alwaysUse24HourFormat,
               ),
             ),
             trailing: const Icon(Icons.schedule),
@@ -171,6 +172,7 @@ class ThemeSettingsSection extends StatelessWidget {
             subtitle: Text(
               MaterialLocalizations.of(context).formatTimeOfDay(
                 _timeOfDayFromMinutes(settings.scheduleDarkStartMinutes),
+                alwaysUse24HourFormat: MediaQuery.of(context).alwaysUse24HourFormat,
               ),
             ),
             trailing: const Icon(Icons.schedule),

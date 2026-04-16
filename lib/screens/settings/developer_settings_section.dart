@@ -59,6 +59,15 @@ class DeveloperSettingsSection extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 12),
+          ListTile(
+            contentPadding: EdgeInsets.zero,
+            title: const Text('Time Format'),
+            subtitle: Text(
+              MediaQuery.of(context).alwaysUse24HourFormat ? '24-hour' : '12-hour',
+              style: Theme.of(context).textTheme.bodySmall,
+            ),
+          ),
+          const SizedBox(height: 12),
           OutlinedButton(
             onPressed: () async {
               final result = await MedsNotificationsService.instance.scheduleTestNotificationWithDelay();

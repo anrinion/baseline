@@ -14,13 +14,21 @@ import 'module_tile.dart';
 // ==================== Extensions ====================
 
 extension SleepTimeFormatting on int {
-  String toTimeString() {
-    final hours = this ~/ 60;
-    final minutes = this % 60;
-    return '${hours.toString().padLeft(2, '0')}:${minutes.toString().padLeft(2, '0')}';
+  TimeOfDay toTimeOfDay() {
+    return TimeOfDay(hour: this ~/ 60, minute: this % 60);
   }
 
   Duration toDuration() => Duration(minutes: this);
+}
+
+extension TimeFormatting on BuildContext {
+  String formatMinutes(int minutes) {
+    final timeOfDay = TimeOfDay(hour: minutes ~/ 60, minute: minutes % 60);
+    return MaterialLocalizations.of(this).formatTimeOfDay(
+      timeOfDay,
+      alwaysUse24HourFormat: MediaQuery.of(this).alwaysUse24HourFormat,
+    );
+  }
 }
 
 extension SleepDurationFormatting on Duration {
@@ -659,7 +667,7 @@ class _VerticalCompactLayout extends StatelessWidget {
                 ),
                 const SizedBox(width: TileSpacing.tiny),
                 Text(
-                  bedTime.toTimeString(),
+                  context.formatMinutes(bedTime),
                   style: theme.textTheme.bodySmall?.copyWith(
                     color: scheme.onSurfaceVariant,
                     fontSize: TileFontSizes.labelSmall,
@@ -677,7 +685,7 @@ class _VerticalCompactLayout extends StatelessWidget {
                 ),
                 const SizedBox(width: TileSpacing.tiny),
                 Text(
-                  wakeTime.toTimeString(),
+                  context.formatMinutes(wakeTime),
                   style: theme.textTheme.bodySmall?.copyWith(
                     color: scheme.onSurfaceVariant,
                     fontSize: TileFontSizes.labelSmall,
@@ -724,7 +732,7 @@ class _HorizontalCompactLayout extends StatelessWidget {
               const SizedBox(width: TileSpacing.small),
               Flexible(
                 child: Text(
-                  bedTime.toTimeString(),
+                  context.formatMinutes(bedTime),
                   style: theme.textTheme.bodySmall?.copyWith(
                     color: scheme.onSurfaceVariant,
                     fontSize: TileFontSizes.labelSmall,
@@ -759,7 +767,7 @@ class _HorizontalCompactLayout extends StatelessWidget {
             children: [
               Flexible(
                 child: Text(
-                  wakeTime.toTimeString(),
+                  context.formatMinutes(wakeTime),
                   style: theme.textTheme.bodySmall?.copyWith(
                     color: scheme.onSurfaceVariant,
                     fontSize: TileFontSizes.labelSmall,
@@ -824,7 +832,7 @@ class _MediumSleepSummary extends StatelessWidget {
                 ),
                 const SizedBox(width: 4),
                 Text(
-                  bedTime.toTimeString(),
+                  context.formatMinutes(bedTime),
                   style: theme.textTheme.bodyMedium?.copyWith(
                     color: scheme.onSurfaceVariant,
                   ),
@@ -841,7 +849,7 @@ class _MediumSleepSummary extends StatelessWidget {
                 ),
                 const SizedBox(width: 4),
                 Text(
-                  wakeTime.toTimeString(),
+                  context.formatMinutes(wakeTime),
                   style: theme.textTheme.bodyMedium?.copyWith(
                     color: scheme.onSurfaceVariant,
                   ),
@@ -927,7 +935,7 @@ class _SleepSlider extends StatelessWidget {
                 ),
                 const SizedBox(width: 8),
                 Text(
-                  displayMinutes.toTimeString(),
+                  context.formatMinutes(displayMinutes),
                   style: theme.textTheme.bodyMedium?.copyWith(
                     fontWeight: FontWeight.w700,
                     color: scheme.primary,
@@ -1085,7 +1093,7 @@ class _RangeSleepSliderState extends State<_RangeSleepSlider> {
                       Flexible(
                         flex: 2, // time resists shrinking
                         child: Text(
-                          bed.toTimeString(),
+                          context.formatMinutes(bed),
                           style: theme.textTheme.bodyMedium?.copyWith(
                             fontWeight: FontWeight.w700,
                             color: scheme.primary,
@@ -1106,7 +1114,7 @@ class _RangeSleepSliderState extends State<_RangeSleepSlider> {
                       Flexible(
                         flex: 2, // time resists shrinking
                         child: Text(
-                          wake.toTimeString(),
+                          context.formatMinutes(wake),
                           style: theme.textTheme.bodyMedium?.copyWith(
                             fontWeight: FontWeight.w700,
                             color: scheme.primary,
@@ -1186,8 +1194,8 @@ class _RangeSleepSliderState extends State<_RangeSleepSlider> {
                           max: 1440 * 2,
                           divisions: 96,
                           labels: RangeLabels(
-                            (_currentRange.start % 1440).round().toTimeString(),
-                            (_currentRange.end % 1440).round().toTimeString(),
+                            context.formatMinutes((_currentRange.start % 1440).round()),
+                            context.formatMinutes((_currentRange.end % 1440).round()),
                           ),
                           onChanged: _isDragging
                               ? _handleDragUpdate

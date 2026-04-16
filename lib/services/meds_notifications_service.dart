@@ -579,8 +579,6 @@ class MedsNotificationsService {
 
   void _handleSnooze(String medName) {
     final snoozeUntil = clock.now().add(const Duration(minutes: 10));
-    final timeStr =
-        '${snoozeUntil.hour.toString().padLeft(2, '0')}:${snoozeUntil.minute.toString().padLeft(2, '0')}';
 
     // Track snooze
     _snoozedMeds[medName] = snoozeUntil;
@@ -591,8 +589,8 @@ class MedsNotificationsService {
     // Notify app
     _onSnoozeMed?.call(medName, snoozeUntil);
 
-    // Emit feedback for UI
-    _actionFeedbackController.add('Alarm snoozed until $timeStr');
+    // Emit feedback for UI (time will be formatted by UI layer with proper locale)
+    _actionFeedbackController.add('SNOOZE:$medName:${snoozeUntil.millisecondsSinceEpoch}');
   }
 
   Future<void> _scheduleSnoozeNotification(
@@ -687,14 +685,31 @@ class MedsNotificationsService {
   /// Call this from any widget to show SnackBar feedback when notification actions are pressed
   void listenForActionFeedback(BuildContext context) {
     actionFeedbackStream.listen((message) {
-      if (context.mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(message),
-            duration: const Duration(seconds: 3),
-          ),
-        );
+      if (!context.mounted) return;
+
+      // Parse SNOOZE messages and format time with proper 12/24h setting
+      String displayMessage = message;
+      if (message.startsWith('SNOOZE:')) {
+        final parts = message.split(':');
+        if (parts.length >= 3) {
+          final timestampMs = int.tryParse(parts[2]);
+          if (timestampMs != null) {
+            final snoozeUntil = DateTime.fromMillisecondsSinceEpoch(timestampMs);
+            final timeStr = MaterialLocalizations.of(context).formatTimeOfDay(
+              TimeOfDay(hour: snoozeUntil.hour, minute: snoozeUntil.minute),
+              alwaysUse24HourFormat: MediaQuery.of(context).alwaysUse24HourFormat,
+            );
+            displayMessage = 'Alarm snoozed until $timeStr';
+          }
+        }
       }
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(displayMessage),
+          duration: const Duration(seconds: 3),
+        ),
+      );
     });
   }
 }

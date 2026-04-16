@@ -257,8 +257,10 @@ class _MedItemTile extends StatelessWidget {
 
     Widget? subtitle;
     if (isSnoozed) {
-      final timeStr =
-          '${snoozeTime.hour.toString().padLeft(2, '0')}:${snoozeTime.minute.toString().padLeft(2, '0')}';
+      final timeStr = MaterialLocalizations.of(context).formatTimeOfDay(
+        TimeOfDay(hour: snoozeTime.hour, minute: snoozeTime.minute),
+        alwaysUse24HourFormat: MediaQuery.of(context).alwaysUse24HourFormat,
+      );
       subtitle = Text(
         'Snoozed until $timeStr',
         style: theme.textTheme.bodySmall?.copyWith(

@@ -14,13 +14,18 @@ void showSleepModule(BuildContext context) {
   );
 }
 
-/// Converts minutes from midnight to HH:MM string.
-String formatTimeFromMinutes(int minutes) {
+/// Converts minutes from midnight to localized time string respecting 12/24h setting.
+String formatTimeFromMinutes(BuildContext context, int minutes) {
   // Handle 1440 (24:00 / end of day) as 00:00
   final normalizedMinutes = minutes >= 1440 ? 0 : minutes;
-  final h = (normalizedMinutes ~/ 60).toString().padLeft(2, '0');
-  final m = (normalizedMinutes % 60).toString().padLeft(2, '0');
-  return '$h:$m';
+  final timeOfDay = TimeOfDay(
+    hour: normalizedMinutes ~/ 60,
+    minute: normalizedMinutes % 60,
+  );
+  return MaterialLocalizations.of(context).formatTimeOfDay(
+    timeOfDay,
+    alwaysUse24HourFormat: MediaQuery.of(context).alwaysUse24HourFormat,
+  );
 }
 
 /// Rounds minutes to nearest 30-minute chunk for display.
@@ -400,7 +405,7 @@ class _SleepDialogState extends State<_SleepDialog> {
             ),
             const Spacer(),
             Text(
-              formatTimeFromMinutes(roundTo30Minutes(minutes)),
+              formatTimeFromMinutes(context, roundTo30Minutes(minutes)),
               style: theme.textTheme.titleMedium?.copyWith(
                 fontWeight: FontWeight.w700,
                 color: scheme.primary,
@@ -423,19 +428,19 @@ class _SleepDialogState extends State<_SleepDialog> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                '00:00',
+                formatTimeFromMinutes(context, 0),
                 style: theme.textTheme.bodySmall?.copyWith(
                   color: scheme.outline,
                 ),
               ),
               Text(
-                '12:00',
+                formatTimeFromMinutes(context, 12 * 60),
                 style: theme.textTheme.bodySmall?.copyWith(
                   color: scheme.outline,
                 ),
               ),
               Text(
-                '23:59',
+                formatTimeFromMinutes(context, 23 * 60 + 59),
                 style: theme.textTheme.bodySmall?.copyWith(
                   color: scheme.outline,
                 ),
