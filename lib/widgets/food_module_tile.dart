@@ -276,11 +276,34 @@ class _CategoryRow extends StatelessWidget {
   final AppState appState;
   final AppLocalizations l10n;
 
+  // Helper to build a stepper button that matches the existing add button style.
+  Widget _buildDeltaButton({
+    required IconData icon,
+    required bool enabled,
+    required VoidCallback onPressed,
+    required double size,
+    required double iconSize,
+    required ColorScheme scheme,
+  }) {
+    return SizedBox(
+      width: size,
+      height: size,
+      child: IconButton(
+        icon: Icon(icon, size: iconSize),
+        padding: EdgeInsets.zero,
+        constraints: const BoxConstraints(),
+        color: enabled ? scheme.primary : scheme.outline,
+        onPressed: enabled ? onPressed : null,
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final scheme = Theme.of(context).colorScheme;
     final currentCount = category.countFrom(appState.todayState);
     final maxPortions = category.maxPortions;
+    final bool isMinReached = currentCount <= 0;
     final bool isMaxReached = currentCount >= maxPortions;
 
     // Sizing based on compactness.
@@ -295,7 +318,7 @@ class _CategoryRow extends StatelessWidget {
     return Padding(
       padding: EdgeInsets.symmetric(vertical: useUltraCompact ? 0.0 : (useCompact ? 2.0 : 4.0)),
       child: Row(
-        crossAxisAlignment: mode == AdaptiveTileMode.expanded ? CrossAxisAlignment.start : CrossAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Icon(category.icon, size: iconSize, color: scheme.primary),
           const SizedBox(width: TileSpacing.medium),
@@ -339,6 +362,16 @@ class _CategoryRow extends StatelessWidget {
             ),
             const SizedBox(width: 6),
           ],
+          // Decrement button (minus) left of battery
+          _buildDeltaButton(
+            icon: Icons.remove_circle,
+            enabled: !isMinReached,
+            onPressed: () => applyFoodDelta(appState, category, -1),
+            size: buttonSize,
+            iconSize: buttonIconSize,
+            scheme: scheme,
+          ),
+          const SizedBox(width: TileSpacing.tiny),
           Expanded(
             flex: 4,
             child: SizedBox(
@@ -350,16 +383,14 @@ class _CategoryRow extends StatelessWidget {
             ),
           ),
           const SizedBox(width: TileSpacing.tiny),
-          SizedBox(
-            width: buttonSize,
-            height: buttonSize,
-            child: IconButton(
-              icon: Icon(Icons.add_circle, size: buttonIconSize),
-              padding: EdgeInsets.zero,
-              constraints: const BoxConstraints(),
-              color: isMaxReached ? scheme.outline : scheme.primary,
-              onPressed: isMaxReached ? null : () => applyFoodDelta(appState, category, 1),
-            ),
+          // Increment button (add) right of battery
+          _buildDeltaButton(
+            icon: Icons.add_circle,
+            enabled: !isMaxReached,
+            onPressed: () => applyFoodDelta(appState, category, 1),
+            size: buttonSize,
+            iconSize: buttonIconSize,
+            scheme: scheme,
           ),
         ],
       ),
