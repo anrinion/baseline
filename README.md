@@ -7,7 +7,16 @@
 
 ## About
 
+🇷🇺 version is [below](#about_ru).
+
 **The Baseline** is a minimal, gentle self-care app companion designed for people who struggle to maintain basic level of functioning (hence the name). It aims to help with these foundations, without pressure, motivation attempts or guilt promotion.
+
+### Install
+
+Note: this is alpha version, not ready for general use.
+
+1. Install <img src="https://raw.githubusercontent.com/ImranR98/Obtainium/main/assets/graphics/icon_small.png" alt="Obtainium icon" width="18" height="18" /> [Obtainium](https://github.com/ImranR98/Obtainium) from F-Droid or GitHub.
+2. "Add App" and enter this repository URL: `https://github.com/anrinion/baseline`
 
 ### Preview
 
@@ -20,7 +29,7 @@ Compact mode:
 
 ### Features
 
-The app consists of "modules" that can be enabled or disabled as needed.
+The app consists of modules that can be enabled or disabled as needed.
 
 The most important modules are:
 
@@ -42,13 +51,37 @@ Additional modules:
 - **No advertising** — The app does not have any advertisements and will never have.
 - **No paywalls reducing functionality** — Available functionality will remain available and won't be removed/paywalled with the next release.
 
-## Install
+## Russian version: База <a id='about_ru'></a>
 
-**Everything is under construction, and there are no tested "release" versions yet.**
+**База** - минималистичное приложение для заботы о себе, разработанное для людей, которые испытывают трудности с поддержанием базового уровня функционирования (отсюда и название).
 
-If you want to take your chances, there are .apk files in releases *(tip: use [Obtainium](https://github.com/ImranR98/Obtainium))*.
+### Установка
 
-## Milestones & Features Checklist
+Это альфа-версия приложения, не предназначенная для широкого использования.
+
+1. Установите <img src="https://raw.githubusercontent.com/ImranR98/Obtainium/main/assets/graphics/icon_small.png" alt="Obtainium icon" width="18" height="18" /> [Obtainium](https://github.com/ImranR98/Obtainium) из F-Droid или GitHub.
+2. "Add App", и введите этот репозиторий в качестве URL: `https://github.com/anrinion/baseline`
+
+### Функции приложения
+
+Приложение состоит из модулей, которые можно включать и выключать по необходимости:
+
+- Питание
+- Движение
+- Сон
+- Психологическое здоровье
+- Медикаменты ⚠️ **ВАЖНО: не используйте это для жизненно критичных медикаментов, это никогда не будет достаточно надёжно в связи с оптимизациями мобильных ОС.** ⚠️ 
+- Осознанность
+
+### Приватность
+
+- **База** не имеет выхода в Интернет - никакой аналитики, синхронизации, рекламы.
+- **База** не хранит ваши ежедневные данные в истории - только настройки, расписание медикаментов и свои метаданные.
+- **База** не получает доступ к данным от других приложений, включая Google Fit/Apple Health.
+
+## Development
+
+### Milestones & Features Checklist
 
 - [x] Initial demo: food + movement 
 - [x] Product design
@@ -76,7 +109,7 @@ If you want to take your chances, there are .apk files in releases *(tip: use [O
 - [ ] Additional CBT tools or prompts
 - [ ] More modules (?)
 
-## Anti-plans
+### Anti-plans
 
 There will be:
 - No backend / cloud sync
@@ -94,10 +127,6 @@ If you want any of those, try (not sponsored, they are just good):
 - **Daylio** – mood & history  
 - **HabitKit** – streaks & analytics  
 - **Yazio** – calorie counting
-
-## Development
-
-Built with Flutter, use accordingly:
 
 ### Run
 
