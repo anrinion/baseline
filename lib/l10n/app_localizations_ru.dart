@@ -419,11 +419,11 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get movementHelp =>
-      '<p>Любое движение намного лучше, чем ничего.</p><p><i>Подробная информация будет добавлена позже.</i></p>';
+      '<p>Baseline предлагает две опции по умолчанию – <b>\"Прогулка\"</b> и <b>\"Тренировка\"</b>, но вы можете добавить любое другое занятие.</p><p><i>Подробная информация с исследовательскими ссылками будет добавлена позже.</i></p>';
 
   @override
   String get movementReferences =>
-      '<h3 style=\'margin-top:24px;margin-bottom:12px\'>Источники</h3><p><i>Источники будут добавлены позже.</i></p>';
+      '<h3 style=\'margin-top:24px;margin-bottom:12px\'>Источники</h3><p id=\'ref-1\' style=\'margin-bottom:12px\'><b>[1]</b> Xu, C., Jia, J., Zhao, B., Yuan, M., Luo, N., Zhang, F., &amp; Wang, H. (2024). Objectively measured daily steps and health outcomes: an umbrella review. <i>BMJ Open</i>, 14(10), e086254. <a href=\'https://doi.org/10.1136/bmjopen-2024-086254\'>https://doi.org/10.1136/bmjopen-2024-086254</a></p><p id=\'ref-2\'><b>[2]</b> McLeod, J. C., Currier, B. S., Lowisz, C. V., &amp; Phillips, S. M. (2024). The influence of resistance exercise training prescription variables on skeletal muscle mass, strength, and physical function in healthy adults: An umbrella review. <i>Journal of Sport and Health Science</i>, 13(1), 47–60. <a href=\'https://doi.org/10.1016/j.jshs.2023.10.005\'>https://doi.org/10.1016/j.jshs.2023.10.005</a></p>';
 
   @override
   String get groundingHelp =>

@@ -417,11 +417,11 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get movementHelp =>
-      '<p>Any movement counts toward care and activation. No intensity or duration — a small nudge beats \"all or nothing.\"</p><p><i>Detailed information with research references will be added soon.</i></p>';
+      '<p>Baseline suggests two default movement options – <b>\"Go for a walk\"</b> and <b>\"Do a workout\"</b> – but you can add any activity you prefer.</p><h3 style=\'margin-top:20px;margin-bottom:12px\'>Walking (daily steps)</h3><p>Higher daily steps are associated with <b>lower risk of all-cause mortality and cardiovascular events</b>. Adding <b>500–1000 steps per day</b> to your current baseline is linked to reduced risk – for example, going from 3000 to 4000 steps <a href=\'#ref-1\'>[1]</a>.</p><h3 style=\'margin-top:20px;margin-bottom:12px\'>Workouts – resistance (strength) training</h3><p>Resistance training <b>consistently increases skeletal muscle mass, strength, and physical function</b> <a href=\'#ref-2\'>[2]</a>.</p><h3 style=\'margin-top:20px;margin-bottom:12px\'>User‑defined activities</h3><p>You can add your own movement types. <b>Any movement counts</b> toward care and activation. No intensity or duration is required – a small nudge beats \"all or nothing.\"</p>';
 
   @override
   String get movementReferences =>
-      '<h3 style=\'margin-top:24px;margin-bottom:12px\'>References</h3><p><i>References will be added when research is complete.</i></p>';
+      '<h3 style=\'margin-top:24px;margin-bottom:12px\'>References</h3><p id=\'ref-1\' style=\'margin-bottom:12px\'><b>[1]</b> Xu, C., Jia, J., Zhao, B., Yuan, M., Luo, N., Zhang, F., &amp; Wang, H. (2024). Objectively measured daily steps and health outcomes: an umbrella review. <i>BMJ Open</i>, 14(10), e086254. <a href=\'https://doi.org/10.1136/bmjopen-2024-086254\'>https://doi.org/10.1136/bmjopen-2024-086254</a></p><p id=\'ref-2\'><b>[2]</b> McLeod, J. C., Currier, B. S., Lowisz, C. V., &amp; Phillips, S. M. (2024). The influence of resistance exercise training prescription variables on skeletal muscle mass, strength, and physical function in healthy adults: An umbrella review. <i>Journal of Sport and Health Science</i>, 13(1), 47–60. <a href=\'https://doi.org/10.1016/j.jshs.2023.10.005\'>https://doi.org/10.1016/j.jshs.2023.10.005</a></p>';
 
   @override
   String get groundingHelp =>
