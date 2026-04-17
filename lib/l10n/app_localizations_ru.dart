@@ -411,11 +411,11 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get medsHelp =>
-      '<p>Отмечай лекарства только на сегодня. Без оценок и истории, просто спокойный чек-лист.</p><p><i>Подробная информация будет добавлена позже.</i></p>';
+      '<p>Принимайте лекарства. Чек-лист помогает.</p><p><i>Подробная информация с исследовательскими ссылками будет добавлена позже.</i></p>';
 
   @override
   String get medsReferences =>
-      '<h3 style=\'margin-top:24px;margin-bottom:12px\'>Источники</h3><p><i>Источники будут добавлены позже.</i></p>';
+      '<h3 style=\'margin-top:24px;margin-bottom:12px\'>Источники</h3><p id=\'ref-1\'><b>[1]</b> Peng, Y., Wang, H., Fang, Q., Xie, L., Shu, L., Sun, W., &amp; Liu, Q. (2020). Effectiveness of Mobile Applications on Medication Adherence in Adults with Chronic Diseases: A Systematic Review and Meta-Analysis. <i>Journal of Managed Care &amp; Specialty Pharmacy</i>, 26(4), 550–560. <a href=\'https://doi.org/10.18553/jmcp.2020.26.4.550\'>https://doi.org/10.18553/jmcp.2020.26.4.550</a></p>';
 
   @override
   String get movementHelp =>

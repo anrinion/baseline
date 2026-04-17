@@ -409,11 +409,11 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get medsHelp =>
-      '<p>Track medications for today only. No scores, no history, just a gentle checklist you can reset anytime.</p><p><i>Detailed information with research references will be added soon.</i></p>';
+      '<p><b>Take your meds. A checklist helps.</b></p><p>A systematic review found that mobile apps (which often include simple checklists and reminders) significantly improve medication adherence in adults with chronic diseases. The evidence quality is low, but the effect is consistent <a href=\'#ref-1\'>[1]</a>.</p>';
 
   @override
   String get medsReferences =>
-      '<h3 style=\'margin-top:24px;margin-bottom:12px\'>References</h3><p><i>References will be added when research is complete.</i></p>';
+      '<h3 style=\'margin-top:24px;margin-bottom:12px\'>References</h3><p id=\'ref-1\'><b>[1]</b> Peng, Y., Wang, H., Fang, Q., Xie, L., Shu, L., Sun, W., &amp; Liu, Q. (2020). Effectiveness of Mobile Applications on Medication Adherence in Adults with Chronic Diseases: A Systematic Review and Meta-Analysis. <i>Journal of Managed Care &amp; Specialty Pharmacy</i>, 26(4), 550–560. <a href=\'https://doi.org/10.18553/jmcp.2020.26.4.550\'>https://doi.org/10.18553/jmcp.2020.26.4.550</a></p>';
 
   @override
   String get movementHelp =>
