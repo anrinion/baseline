@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:provider/provider.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../state/app_state.dart';
 import '../l10n/app_localizations.dart';
@@ -51,44 +52,51 @@ void showFoodSourcesHelp(BuildContext context) {
           child: SingleChildScrollView(
             key: const ValueKey('foodHelpScroll'),
             controller: scrollController,
-            child: Html(
-              data:
-                  '${l10n.foodSourcesContent}<h3 style="margin-top:24px;margin-bottom:12px;font-size:16px">References</h3>${l10n.foodSourcesReferences}',
-              style: {
-                "body": Style(
-                  color: scheme.onSurfaceVariant,
-                  fontSize: FontSize(14),
-                  lineHeight: LineHeight(1.5),
-                ),
-                "p": Style(
-                  margin: Margins.only(bottom: 12),
-                ),
-                "a": Style(
-                  color: scheme.primary,
-                  textDecoration: TextDecoration.none,
-                  fontWeight: FontWeight.w500,
-                ),
-                "h3": Style(
-                  color: scheme.onSurface,
-                  fontWeight: FontWeight.w600,
-                ),
-              },
-              onLinkTap: (url, renderContext, attributes) {
-                if (url?.startsWith('#ref-') ?? false) {
-                  final anchorContext = AnchorKey.forId(
-                    const ValueKey('foodHelpScroll'),
-                    url!.substring(1),
-                  )?.currentContext;
-                  if (anchorContext != null) {
-                    Scrollable.ensureVisible(
-                      anchorContext,
-                      duration: const Duration(milliseconds: 300),
-                      curve: Curves.easeOut,
-                      alignment: 0.1,
-                    );
+            child: SelectionArea(
+              child: Html(
+                data:
+                    '${l10n.foodSourcesContent}<h3 style="margin-top:24px;margin-bottom:12px;font-size:16px">References</h3>${l10n.foodSourcesReferences}',
+                style: {
+                  "body": Style(
+                    color: scheme.onSurfaceVariant,
+                    fontSize: FontSize(14),
+                    lineHeight: LineHeight(1.5),
+                  ),
+                  "p": Style(
+                    margin: Margins.only(bottom: 12),
+                  ),
+                  "a": Style(
+                    color: scheme.primary,
+                    textDecoration: TextDecoration.none,
+                    fontWeight: FontWeight.w500,
+                  ),
+                  "h3": Style(
+                    color: scheme.onSurface,
+                    fontWeight: FontWeight.w600,
+                  ),
+                },
+                onLinkTap: (url, renderContext, attributes) async {
+                  if (url?.startsWith('#ref-') ?? false) {
+                    final anchorContext = AnchorKey.forId(
+                      const ValueKey('foodHelpScroll'),
+                      url!.substring(1),
+                    )?.currentContext;
+                    if (anchorContext != null) {
+                      Scrollable.ensureVisible(
+                        anchorContext,
+                        duration: const Duration(milliseconds: 300),
+                        curve: Curves.easeOut,
+                        alignment: 0.1,
+                      );
+                    }
+                  } else if (url != null && (url.startsWith('http://') || url.startsWith('https://'))) {
+                    final uri = Uri.tryParse(url);
+                    if (uri != null && await canLaunchUrl(uri)) {
+                      await launchUrl(uri, mode: LaunchMode.externalApplication);
+                    }
                   }
-                }
-              },
+                },
+              ),
             ),
           ),
         ),

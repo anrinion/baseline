@@ -21,6 +21,7 @@ dependencies:
   flutter_timezone: ^4.1.0
   clock: ^1.1.0
   flutter_html: ^3.0.0-beta.2
+  url_launcher: ^6.3.1
 dev_dependencies:
   flutter_launcher_icons: ^0.14.4
   flutter_test:

@@ -489,9 +489,13 @@
   "@mentalStateHelp": {
     "description": "Help text for mental state module"
   },
-  "sleepHelp": "Сон влияет на настроение, энергию и саморегуляцию (PLACEHOLDER, 2030).",
+  "sleepHelp": "<p>Baseline не отслеживает стадии сна и не предлагает анализ — он просто просит вас замечать, когда вы спите и сколько. Внимательное отношение к продолжительности собственного сна — это первый шаг к лучшему отдыху.</p><p><i>Подробная информация о сне будет добавлена позже.</i></p>",
   "@sleepHelp": {
-    "description": "Help text for sleep module"
+    "description": "Help text for sleep module (HTML with numbered citations) - Russian translation pending"
+  },
+  "sleepHelpReferences": "<h3 style='margin-top:24px;margin-bottom:12px'>Источники</h3><p id='ref-1' style='margin-bottom:12px'><b>[1]</b> Watson, N. F., Badr, M. S., Belenky, G., Bliwise, D. L., Buxton, O. M., Buysse, D., Dinges, D. F., Gangwisch, J., Grandner, M. A., Kushida, C., Malhotra, R. K., Martin, J. L., Patel, S. R., Quan, S. F., &amp; Tasali, E. (2015). Recommended Amount of Sleep for a Healthy Adult: A Joint Consensus Statement of the American Academy of Sleep Medicine and Sleep Research Society. <i>Sleep</i>, 38(6), 843–844. <a href='https://doi.org/10.5665/sleep.4716'>https://doi.org/10.5665/sleep.4716</a></p><p id='ref-2' style='margin-bottom:12px'><b>[2]</b> Scott, A. J., Webb, T. L., Martyn-St James, M., Rowse, G., &amp; Weich, S. (2021). Improving sleep quality leads to better mental health: A meta-analysis of randomised controlled trials. <i>Sleep Medicine Reviews</i>, 60, 101556. <a href='https://doi.org/10.1016/j.smrv.2021.101556'>https://doi.org/10.1016/j.smrv.2021.101556</a></p><p id='ref-3'><b>[3]</b> Shah, A. S., Pant, M. R., Bommasamudram, T., Nayak, K. R., Roberts, S. S. H., Gallagher, C., Vaishali, K., Edwards, B. J., Tod, D., Davis, F., &amp; Pullinger, S. A. (2025). Effects of Sleep Deprivation on Physical and Mental Health Outcomes: An Umbrella Review. <i>American Journal of Lifestyle Medicine</i>, Advance online publication. <a href='https://doi.org/10.1177/15598276251346752'>https://doi.org/10.1177/15598276251346752</a></p>",
+  "@sleepHelpReferences": {
+    "description": "Full references for sleep help citations (HTML) - Intentionally kept in English/original form"
   },
   "medsHelp": "Отмечай лекарства только на сегодня. Без оценок и истории, просто спокойный чек-лист.",
   "@medsHelp": {
