@@ -836,23 +836,41 @@ abstract class AppLocalizations {
   /// **'<h3 style=\'margin-top:24px;margin-bottom:12px\'>References</h3><p id=\'ref-1\' style=\'margin-bottom:12px\'><b>[1]</b> Watson, N. F., Badr, M. S., Belenky, G., Bliwise, D. L., Buxton, O. M., Buysse, D., Dinges, D. F., Gangwisch, J., Grandner, M. A., Kushida, C., Malhotra, R. K., Martin, J. L., Patel, S. R., Quan, S. F., &amp; Tasali, E. (2015). Recommended Amount of Sleep for a Healthy Adult: A Joint Consensus Statement of the American Academy of Sleep Medicine and Sleep Research Society. <i>Sleep</i>, 38(6), 843–844. <a href=\'https://doi.org/10.5665/sleep.4716\'>https://doi.org/10.5665/sleep.4716</a></p><p id=\'ref-2\' style=\'margin-bottom:12px\'><b>[2]</b> Scott, A. J., Webb, T. L., Martyn-St James, M., Rowse, G., &amp; Weich, S. (2021). Improving sleep quality leads to better mental health: A meta-analysis of randomised controlled trials. <i>Sleep Medicine Reviews</i>, 60, 101556. <a href=\'https://doi.org/10.1016/j.smrv.2021.101556\'>https://doi.org/10.1016/j.smrv.2021.101556</a></p><p id=\'ref-3\'><b>[3]</b> Shah, A. S., Pant, M. R., Bommasamudram, T., Nayak, K. R., Roberts, S. S. H., Gallagher, C., Vaishali, K., Edwards, B. J., Tod, D., Davis, F., &amp; Pullinger, S. A. (2025). Effects of Sleep Deprivation on Physical and Mental Health Outcomes: An Umbrella Review. <i>American Journal of Lifestyle Medicine</i>, Advance online publication. <a href=\'https://doi.org/10.1177/15598276251346752\'>https://doi.org/10.1177/15598276251346752</a></p>'**
   String get sleepHelpReferences;
 
-  /// Help text for meds module
+  /// Help text for meds module (HTML with numbered citations)
   ///
   /// In en, this message translates to:
-  /// **'Track medications for today only. No scores, no history, just a gentle checklist you can reset anytime.'**
+  /// **'<p>Track medications for today only. No scores, no history, just a gentle checklist you can reset anytime.</p><p><i>Detailed information with research references will be added soon.</i></p>'**
   String get medsHelp;
 
-  /// Help text for movement module
+  /// Full references for meds citations (HTML)
   ///
   /// In en, this message translates to:
-  /// **'Any movement counts toward care and activation (PLACEHOLDER, 2030). No intensity or duration — a small nudge beats \"all or nothing.\"'**
+  /// **'<h3 style=\'margin-top:24px;margin-bottom:12px\'>References</h3><p><i>References will be added when research is complete.</i></p>'**
+  String get medsReferences;
+
+  /// Help text for movement module (HTML with numbered citations)
+  ///
+  /// In en, this message translates to:
+  /// **'<p>Any movement counts toward care and activation. No intensity or duration — a small nudge beats \"all or nothing.\"</p><p><i>Detailed information with research references will be added soon.</i></p>'**
   String get movementHelp;
 
-  /// Help text for grounding/here module
+  /// Full references for movement citations (HTML)
   ///
   /// In en, this message translates to:
-  /// **'A single tap to anchor yourself in the present. This helps to reduce stress (PLACEHOLDER, 2030). Similar to Gestalt\'s \"here and now\"'**
+  /// **'<h3 style=\'margin-top:24px;margin-bottom:12px\'>References</h3><p><i>References will be added when research is complete.</i></p>'**
+  String get movementReferences;
+
+  /// Help text for grounding/here module (HTML with numbered citations)
+  ///
+  /// In en, this message translates to:
+  /// **'<p>A single tap to anchor yourself in the present. This helps to reduce stress. Similar to Gestalt\'s \"here and now\" approach.</p><p><i>Detailed information with research references will be added soon.</i></p>'**
   String get groundingHelp;
+
+  /// Full references for grounding citations (HTML)
+  ///
+  /// In en, this message translates to:
+  /// **'<h3 style=\'margin-top:24px;margin-bottom:12px\'>References</h3><p><i>References will be added when research is complete.</i></p>'**
+  String get groundingReferences;
 
   /// Hint text for the here module button customization field
   ///

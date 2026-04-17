@@ -409,15 +409,27 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get medsHelp =>
-      'Track medications for today only. No scores, no history, just a gentle checklist you can reset anytime.';
+      '<p>Track medications for today only. No scores, no history, just a gentle checklist you can reset anytime.</p><p><i>Detailed information with research references will be added soon.</i></p>';
+
+  @override
+  String get medsReferences =>
+      '<h3 style=\'margin-top:24px;margin-bottom:12px\'>References</h3><p><i>References will be added when research is complete.</i></p>';
 
   @override
   String get movementHelp =>
-      'Any movement counts toward care and activation (PLACEHOLDER, 2030). No intensity or duration — a small nudge beats \"all or nothing.\"';
+      '<p>Any movement counts toward care and activation. No intensity or duration — a small nudge beats \"all or nothing.\"</p><p><i>Detailed information with research references will be added soon.</i></p>';
+
+  @override
+  String get movementReferences =>
+      '<h3 style=\'margin-top:24px;margin-bottom:12px\'>References</h3><p><i>References will be added when research is complete.</i></p>';
 
   @override
   String get groundingHelp =>
-      'A single tap to anchor yourself in the present. This helps to reduce stress (PLACEHOLDER, 2030). Similar to Gestalt\'s \"here and now\"';
+      '<p>A single tap to anchor yourself in the present. This helps to reduce stress. Similar to Gestalt\'s \"here and now\" approach.</p><p><i>Detailed information with research references will be added soon.</i></p>';
+
+  @override
+  String get groundingReferences =>
+      '<h3 style=\'margin-top:24px;margin-bottom:12px\'>References</h3><p><i>References will be added when research is complete.</i></p>';
 
   @override
   String get hereButtonHint => 'I\'m here. I\'m alive.';

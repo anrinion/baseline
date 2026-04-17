@@ -501,17 +501,29 @@
   "@sleepHelpReferences": {
     "description": "Full references for sleep help citations (HTML) - Intentionally kept in English/original form"
   },
-  "medsHelp": "Отмечай лекарства только на сегодня. Без оценок и истории, просто спокойный чек-лист.",
+  "medsHelp": "<p>Отмечай лекарства только на сегодня. Без оценок и истории, просто спокойный чек-лист.</p><p><i>Подробная информация будет добавлена позже.</i></p>",
   "@medsHelp": {
-    "description": "Help text for meds module"
+    "description": "Help text for meds module (HTML with numbered citations) - Russian translation pending"
   },
-  "movementHelp": "Любое движение намного лучше, чем ничего (PLACEHOLDER, 2030).",
+  "medsReferences": "<h3 style='margin-top:24px;margin-bottom:12px'>Источники</h3><p><i>Источники будут добавлены позже.</i></p>",
+  "@medsReferences": {
+    "description": "Full references for meds citations (HTML) - Intentionally kept in English/original form"
+  },
+  "movementHelp": "<p>Любое движение намного лучше, чем ничего.</p><p><i>Подробная информация будет добавлена позже.</i></p>",
   "@movementHelp": {
-    "description": "Help text for movement module"
+    "description": "Help text for movement module (HTML with numbered citations) - Russian translation pending"
   },
-  "groundingHelp": "Просто кнопка, чтобы показаться своё присутствие. Обращение внимания на текущий момент помогает снизить стресс (PLACEHOLDER, 2030). Что-то вроде \"здесь и сейчас\" из гештальта (PLACEHOLDER, 2030).",
+  "movementReferences": "<h3 style='margin-top:24px;margin-bottom:12px'>Источники</h3><p><i>Источники будут добавлены позже.</i></p>",
+  "@movementReferences": {
+    "description": "Full references for movement citations (HTML) - Intentionally kept in English/original form"
+  },
+  "groundingHelp": "<p>Просто кнопка, чтобы показать своё присутствие. Обращение внимания на текущий момент помогает снизить стресс. Что-то вроде \"здесь и сейчас\" из гештальта.</p><p><i>Подробная информация будет добавлена позже.</i></p>",
   "@groundingHelp": {
-    "description": "Help text for grounding/here module"
+    "description": "Help text for grounding/here module (HTML with numbered citations) - Russian translation pending"
+  },
+  "groundingReferences": "<h3 style='margin-top:24px;margin-bottom:12px'>Источники</h3><p><i>Источники будут добавлены позже.</i></p>",
+  "@groundingReferences": {
+    "description": "Full references for grounding citations (HTML) - Intentionally kept in English/original form"
   },
   "hereButtonHint": "Я здесь. Я живой(ая).",
   "@hereButtonHint": {

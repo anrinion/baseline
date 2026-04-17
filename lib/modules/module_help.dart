@@ -20,6 +20,18 @@ void showModuleHelp(BuildContext context, String moduleId) {
     showMentalStateHelp(context);
     return;
   }
+  if (moduleId == BaselineModuleId.meds) {
+    showMedsHelp(context);
+    return;
+  }
+  if (moduleId == BaselineModuleId.movement) {
+    showMovementHelp(context);
+    return;
+  }
+  if (moduleId == BaselineModuleId.here) {
+    showGroundingHelp(context);
+    return;
+  }
 
   final scheme = Theme.of(context).colorScheme;
   final l10n = AppLocalizations.of(context)!;
@@ -150,6 +162,39 @@ void showMentalStateHelp(BuildContext context) {
   );
 }
 
+/// Shows HTML-formatted meds help with clickable citations.
+void showMedsHelp(BuildContext context) {
+  final l10n = AppLocalizations.of(context)!;
+  _showHtmlHelpDialog(
+    context: context,
+    moduleId: BaselineModuleId.meds,
+    htmlContent: '${l10n.medsHelp}${l10n.medsReferences}',
+    scrollKey: 'medsHelpScroll',
+  );
+}
+
+/// Shows HTML-formatted movement help with clickable citations.
+void showMovementHelp(BuildContext context) {
+  final l10n = AppLocalizations.of(context)!;
+  _showHtmlHelpDialog(
+    context: context,
+    moduleId: BaselineModuleId.movement,
+    htmlContent: '${l10n.movementHelp}${l10n.movementReferences}',
+    scrollKey: 'movementHelpScroll',
+  );
+}
+
+/// Shows HTML-formatted grounding help with clickable citations.
+void showGroundingHelp(BuildContext context) {
+  final l10n = AppLocalizations.of(context)!;
+  _showHtmlHelpDialog(
+    context: context,
+    moduleId: BaselineModuleId.here,
+    htmlContent: '${l10n.groundingHelp}${l10n.groundingReferences}',
+    scrollKey: 'groundingHelpScroll',
+  );
+}
+
 String? _bodyFor(String moduleId, AppLocalizations l10n) {
   switch (moduleId) {
     case BaselineModuleId.mentalState:
@@ -157,11 +202,11 @@ String? _bodyFor(String moduleId, AppLocalizations l10n) {
     case BaselineModuleId.sleep:
       return null; // Uses showSleepHelp with HTML
     case BaselineModuleId.meds:
-      return l10n.medsHelp;
+      return null; // Uses showMedsHelp with HTML
     case BaselineModuleId.movement:
-      return l10n.movementHelp;
+      return null; // Uses showMovementHelp with HTML
     case BaselineModuleId.here:
-      return l10n.groundingHelp;
+      return null; // Uses showGroundingHelp with HTML
     case BaselineModuleId.food:
       return null; // Uses showFoodSourcesHelp with HTML
     default:

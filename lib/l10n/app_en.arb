@@ -505,17 +505,29 @@
   "@sleepHelpReferences": {
     "description": "Full references for sleep help citations (HTML)"
   },
-  "medsHelp": "Track medications for today only. No scores, no history, just a gentle checklist you can reset anytime.",
+  "medsHelp": "<p>Track medications for today only. No scores, no history, just a gentle checklist you can reset anytime.</p><p><i>Detailed information with research references will be added soon.</i></p>",
   "@medsHelp": {
-    "description": "Help text for meds module"
+    "description": "Help text for meds module (HTML with numbered citations)"
   },
-  "movementHelp": "Any movement counts toward care and activation (PLACEHOLDER, 2030). No intensity or duration — a small nudge beats \"all or nothing.\"",
+  "medsReferences": "<h3 style='margin-top:24px;margin-bottom:12px'>References</h3><p><i>References will be added when research is complete.</i></p>",
+  "@medsReferences": {
+    "description": "Full references for meds citations (HTML)"
+  },
+  "movementHelp": "<p>Any movement counts toward care and activation. No intensity or duration — a small nudge beats \"all or nothing.\"</p><p><i>Detailed information with research references will be added soon.</i></p>",
   "@movementHelp": {
-    "description": "Help text for movement module"
+    "description": "Help text for movement module (HTML with numbered citations)"
   },
-  "groundingHelp": "A single tap to anchor yourself in the present. This helps to reduce stress (PLACEHOLDER, 2030). Similar to Gestalt's \"here and now\"",
+  "movementReferences": "<h3 style='margin-top:24px;margin-bottom:12px'>References</h3><p><i>References will be added when research is complete.</i></p>",
+  "@movementReferences": {
+    "description": "Full references for movement citations (HTML)"
+  },
+  "groundingHelp": "<p>A single tap to anchor yourself in the present. This helps to reduce stress. Similar to Gestalt's \"here and now\" approach.</p><p><i>Detailed information with research references will be added soon.</i></p>",
   "@groundingHelp": {
-    "description": "Help text for grounding/here module"
+    "description": "Help text for grounding/here module (HTML with numbered citations)"
+  },
+  "groundingReferences": "<h3 style='margin-top:24px;margin-bottom:12px'>References</h3><p><i>References will be added when research is complete.</i></p>",
+  "@groundingReferences": {
+    "description": "Full references for grounding citations (HTML)"
   },
   "hereButtonHint": "I'm here. I'm alive.",
   "@hereButtonHint": {
