@@ -812,11 +812,17 @@ abstract class AppLocalizations {
   /// **'1 portion (chocolate, dessert)'**
   String get foodTreatSubtitle;
 
-  /// Help text for mental state module
+  /// Help text for mental state module (HTML with numbered citations)
   ///
   /// In en, this message translates to:
-  /// **'This area is for right now only: naming how you feel, a tiny bit of gratitude or grounding, and gentle \"thought lens\" prompts inspired by cognitive approaches (PLACEHOLDER, 2030). It is not a substitute for care from a qualified professional when you need it.'**
+  /// **'<p>The evidence for these techniques is not definitive — different approaches work for different people. Baseline offers three distinct modes so you can try them and see what fits.</p><h3 style=\'margin-top:20px;margin-bottom:12px\'>Current mood</h3><p>A simple check of your current mood.</p><p>A systematic review and meta‑analysis of randomised controlled trials found that <b>journaling interventions (including simple expressive writing) led to a 5% greater reduction in mental health symptom scores</b> compared to control groups, with more pronounced effects for <b>anxiety (9%)</b> and <b>PTSD (6%)</b>. However, the authors note high statistical heterogeneity and methodological flaws across studies, limiting definitive conclusions about the effect size <a href=\'#ref-1\'>[1]</a>.</p><h3 style=\'margin-top:20px;margin-bottom:12px\'>Daily positives</h3><p>A reflection on positive moments.</p><p>One preliminary 12‑week randomised controlled trial of online Positive Affect Journaling (PAJ) in general medical patients with elevated anxiety found that <b>PAJ was associated with decreased mental distress, increased well‑being, fewer depressive symptoms, reduced anxiety</b> after one month, and greater resilience after the first and second months, compared to usual care. As a single trial with moderate adherence, these results require replication <a href=\'#ref-2\'>[2]</a>.</p><h3 style=\'margin-top:20px;margin-bottom:12px\'>Cognitive distortions</h3><p>This mode is purely educational. It is based on established cognitive‑behavioural therapy concepts of identifying cognitive distortions as a first step toward restructuring.</p>'**
   String get mentalStateHelp;
+
+  /// Full references for mental state citations (HTML)
+  ///
+  /// In en, this message translates to:
+  /// **'<h3 style=\'margin-top:24px;margin-bottom:12px\'>References</h3><p id=\'ref-1\' style=\'margin-bottom:12px\'><b>[1]</b> Sohal, M., Singh, P., Dhillon, B. S., &amp; Gill, H. S. (2022). Efficacy of journaling in the management of mental illness: a systematic review and meta‑analysis. <i>Family Medicine and Community Health</i>, 10(1), e001154. <a href=\'https://doi.org/10.1136/fmch-2021-001154\'>https://doi.org/10.1136/fmch-2021-001154</a></p><p id=\'ref-2\'><b>[2]</b> Smyth, J. M., Johnson, J. A., Auer, B. J., Lehman, E., Talamo, G., &amp; Sciamanna, C. N. (2018). Online Positive Affect Journaling in the Improvement of Mental Distress and Well‑Being in General Medical Patients With Elevated Anxiety Symptoms: A Preliminary Randomized Controlled Trial. <i>JMIR Mental Health</i>, 5(4), e11290. <a href=\'https://doi.org/10.2196/11290\'>https://doi.org/10.2196/11290</a></p>'**
+  String get mentalStateReferences;
 
   /// Help text for sleep module (HTML with numbered citations)
   ///

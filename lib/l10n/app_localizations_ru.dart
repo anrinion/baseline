@@ -395,7 +395,11 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get mentalStateHelp =>
-      'Это место только для сейчас: назови своё чувство, немного благодарности или якоря, и мягкие подсказки \"фильтра мышления\" вдохновлённые когнитивными подходами (PLACEHOLDER, 2030).';
+      '<p>Baseline предлагает три различных режима для работы с ментальным состоянием. Попробуйте их и выберите то, что подходит именно вам.</p><p><i>Подробная информация будет добавлена позже.</i></p>';
+
+  @override
+  String get mentalStateReferences =>
+      '<h3 style=\'margin-top:24px;margin-bottom:12px\'>Источники</h3><p id=\'ref-1\' style=\'margin-bottom:12px\'><b>[1]</b> Sohal, M., Singh, P., Dhillon, B. S., &amp; Gill, H. S. (2022). Efficacy of journaling in the management of mental illness: a systematic review and meta‑analysis. <i>Family Medicine and Community Health</i>, 10(1), e001154. <a href=\'https://doi.org/10.1136/fmch-2021-001154\'>https://doi.org/10.1136/fmch-2021-001154</a></p><p id=\'ref-2\'><b>[2]</b> Smyth, J. M., Johnson, J. A., Auer, B. J., Lehman, E., Talamo, G., &amp; Sciamanna, C. N. (2018). Online Positive Affect Journaling in the Improvement of Mental Distress and Well‑Being in General Medical Patients With Elevated Anxiety Symptoms: A Preliminary Randomized Controlled Trial. <i>JMIR Mental Health</i>, 5(4), e11290. <a href=\'https://doi.org/10.2196/11290\'>https://doi.org/10.2196/11290</a></p>';
 
   @override
   String get sleepHelp =>

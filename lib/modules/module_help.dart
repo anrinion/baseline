@@ -6,7 +6,7 @@ import '../l10n/app_localizations.dart';
 import 'food_module.dart';
 import 'module_ids.dart';
 
-/// Per-module “why this helps” copy (replaces a global Sources tile).
+/// Per-module "why this helps" copy (replaces a global Sources tile).
 void showModuleHelp(BuildContext context, String moduleId) {
   if (moduleId == BaselineModuleId.food) {
     showFoodSourcesHelp(context);
@@ -14,6 +14,10 @@ void showModuleHelp(BuildContext context, String moduleId) {
   }
   if (moduleId == BaselineModuleId.sleep) {
     showSleepHelp(context);
+    return;
+  }
+  if (moduleId == BaselineModuleId.mentalState) {
+    showMentalStateHelp(context);
     return;
   }
 
@@ -42,26 +46,32 @@ void showModuleHelp(BuildContext context, String moduleId) {
   );
 }
 
-/// Shows HTML-formatted sleep help with clickable citations.
-void showSleepHelp(BuildContext context) {
+/// Shows HTML-formatted help dialog with clickable citations and external links.
+void _showHtmlHelpDialog({
+  required BuildContext context,
+  required String moduleId,
+  required String htmlContent,
+  required String scrollKey,
+}) {
   final scheme = Theme.of(context).colorScheme;
   final l10n = AppLocalizations.of(context)!;
   final scrollController = ScrollController();
+  final scrollValueKey = ValueKey(scrollKey);
 
   showDialog<void>(
     context: context,
     builder: (ctx) => AlertDialog(
-      title: Text(BaselineModuleId.localizedLabel(l10n, BaselineModuleId.sleep)),
+      title: Text(BaselineModuleId.localizedLabel(l10n, moduleId)),
       content: SizedBox(
         width: double.maxFinite,
         child: Scrollbar(
           controller: scrollController,
           child: SingleChildScrollView(
-            key: const ValueKey('sleepHelpScroll'),
+            key: scrollValueKey,
             controller: scrollController,
             child: SelectionArea(
               child: Html(
-                data: '${l10n.sleepHelp}${l10n.sleepHelpReferences}',
+                data: htmlContent,
                 style: {
                   "body": Style(
                     color: scheme.onSurfaceVariant,
@@ -84,7 +94,7 @@ void showSleepHelp(BuildContext context) {
                 onLinkTap: (url, renderContext, attributes) async {
                   if (url?.startsWith('#ref-') ?? false) {
                     final anchorContext = AnchorKey.forId(
-                      const ValueKey('sleepHelpScroll'),
+                      scrollValueKey,
                       url!.substring(1),
                     )?.currentContext;
                     if (anchorContext != null) {
@@ -95,7 +105,8 @@ void showSleepHelp(BuildContext context) {
                         alignment: 0.1,
                       );
                     }
-                  } else if (url != null && (url.startsWith('http://') || url.startsWith('https://'))) {
+                  } else if (url != null &&
+                      (url.startsWith('http://') || url.startsWith('https://'))) {
                     final uri = Uri.tryParse(url);
                     if (uri != null && await canLaunchUrl(uri)) {
                       await launchUrl(uri, mode: LaunchMode.externalApplication);
@@ -117,10 +128,32 @@ void showSleepHelp(BuildContext context) {
   );
 }
 
+/// Shows HTML-formatted sleep help with clickable citations.
+void showSleepHelp(BuildContext context) {
+  final l10n = AppLocalizations.of(context)!;
+  _showHtmlHelpDialog(
+    context: context,
+    moduleId: BaselineModuleId.sleep,
+    htmlContent: '${l10n.sleepHelp}${l10n.sleepHelpReferences}',
+    scrollKey: 'sleepHelpScroll',
+  );
+}
+
+/// Shows HTML-formatted mental state help with clickable citations.
+void showMentalStateHelp(BuildContext context) {
+  final l10n = AppLocalizations.of(context)!;
+  _showHtmlHelpDialog(
+    context: context,
+    moduleId: BaselineModuleId.mentalState,
+    htmlContent: '${l10n.mentalStateHelp}${l10n.mentalStateReferences}',
+    scrollKey: 'mentalStateHelpScroll',
+  );
+}
+
 String? _bodyFor(String moduleId, AppLocalizations l10n) {
   switch (moduleId) {
     case BaselineModuleId.mentalState:
-      return l10n.mentalStateHelp;
+      return null; // Uses showMentalStateHelp with HTML
     case BaselineModuleId.sleep:
       return null; // Uses showSleepHelp with HTML
     case BaselineModuleId.meds:
