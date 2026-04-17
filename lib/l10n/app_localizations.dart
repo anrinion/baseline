@@ -314,11 +314,17 @@ abstract class AppLocalizations {
   /// **'Why this works'**
   String get foodSourcesTitle;
 
-  /// Detailed explanation of why the food categories work
+  /// Detailed explanation of why the food categories work (HTML with numbered citations)
   ///
   /// In en, this message translates to:
-  /// **'• Protein: supports satiety and steady energy (PLACEHOLDER, 2030).\n• Greens: fiber, vitamins, and plant variety (PLACEHOLDER, 2030).\n• Beans and chickpeas: fiber and plant protein (PLACEHOLDER, 2030).\n• Fillers: complex carbs for accessible energy (PLACEHOLDER, 2030).\n• Treat: a small enjoyable bite can support behavioral activation (PLACEHOLDER, 2030).\n\nApproaches that emphasize flexibility and self-care over strict rules may help avoid guilt (PLACEHOLDER, 2030).'**
+  /// **'<p><b>Protein</b> from plant sources and animal sources other than red meat is associated with lower risk of all‑cause and cardiovascular disease mortality <a href=\'#ref-1\'>[1]</a><a href=\'#ref-2\'>[2]</a>.</p><p><b>Greens</b> (fruits &amp; vegetables): each additional 200g/day is associated with ~8–16% lower risk of cardiovascular disease, cancer, and all‑cause mortality. Benefits increase up to ~800g/day (about 5 portions), after which risk reduction plateaus <a href=\'#ref-3\'>[3]</a>. Additionally, higher vegetable intake is linked to slower cognitive decline and lower dementia risk <a href=\'#ref-4\'>[4]</a>.</p><p><b>Beans and chickpeas</b> (legumes): rich in fiber and plant protein. Current evidence (low certainty) suggests they may reduce risk of cardiovascular disease and hypertension <a href=\'#ref-5\'>[5]</a>.</p><p><b>Fillers</b> (carbohydrates): moderate intake (50–55% of energy) is associated with lowest mortality risk. Very low (&lt;40%) or very high (&gt;70%) carbohydrate intake increases mortality – especially when carbs are replaced with animal fat/protein <a href=\'#ref-6\'>[6]</a>. Whole grains are a preferable source <a href=\'#ref-7\'>[7]</a>.</p><p>A small piece of <b>chocolate</b> can improve mood and reduce negative feelings, possibly due to its orosensory pleasure or bioactive compounds like flavanols and methylxanthine <a href=\'#ref-8\'>[8]</a>.</p><p style=\'margin-top:16px\'><i>Flexible eating patterns</i> (intuitive and mindful eating) are associated with lower depressive symptoms, less disordered eating, better body image, and greater self‑compassion – without strict rules or guilt <a href=\'#ref-9\'>[9]</a>.</p>'**
   String get foodSourcesContent;
+
+  /// Full references for food sources citations (HTML)
+  ///
+  /// In en, this message translates to:
+  /// **'<p id=\'ref-1\' style=\'margin-bottom:8px\'><b>[1]</b> Naghshi S, et al. Dietary intake of total, animal, and plant proteins and risk of all cause, cardiovascular, and cancer mortality: systematic review and dose-response meta-analysis. BMJ. 2020;370:m2412.</p><p id=\'ref-2\' style=\'margin-bottom:8px\'><b>[2]</b> Kitada M, et al. The impact of dietary protein intake on longevity and metabolic health. EBioMedicine. 2019;43:632-640.</p><p id=\'ref-3\' style=\'margin-bottom:8px\'><b>[3]</b> Aune D, et al. Fruit and vegetable intake and the risk of cardiovascular disease, total cancer and all-cause mortality. Int J Epidemiol. 2017;46(3):1029-1056.</p><p id=\'ref-4\' style=\'margin-bottom:8px\'><b>[4]</b> Loef M, Walach H. Fruit, vegetables and prevention of cognitive decline or dementia: a systematic review of cohort studies. J Nutr Health Aging. 2012;16(7):626-630.</p><p id=\'ref-5\' style=\'margin-bottom:8px\'><b>[5]</b> Viguiliouk E, et al. Associations between dietary pulses alone or with other legumes and cardiometabolic disease outcomes: an umbrella review and updated systematic review and meta-analysis. Adv Nutr. 2019;10(Suppl 4):S308-S319.</p><p id=\'ref-6\' style=\'margin-bottom:8px\'><b>[6]</b> Seidelmann SB, et al. Dietary carbohydrate intake and mortality: a prospective cohort study and meta-analysis. Lancet Public Health. 2018;3(9):e419-e428.</p><p id=\'ref-7\' style=\'margin-bottom:8px\'><b>[7]</b> World Health Organization. Carbohydrate intake for adults and children: WHO guideline summary. Geneva: WHO; 2023.</p><p id=\'ref-8\' style=\'margin-bottom:8px\'><b>[8]</b> Scholey A, Owen L. Effects of chocolate on cognitive function and mood: a systematic review. Nutr Rev. 2013;71(10):665-681.</p><p id=\'ref-9\'><b>[9]</b> Eaton M, et al. Intuitive eating and mindful eating: associations with mental health and eating behaviours. Appetite. 2024;192:107070.</p>'**
+  String get foodSourcesReferences;
 
   /// Label for the Movement module
   ///
@@ -773,25 +779,25 @@ abstract class AppLocalizations {
   /// Food category portion guide: Protein
   ///
   /// In en, this message translates to:
-  /// **'1–2 portions'**
+  /// **'1-2 portions'**
   String get foodProteinSubtitle;
 
   /// Food category portion guide: Greens
   ///
   /// In en, this message translates to:
-  /// **'3–5 portions (fruits & veggies)'**
+  /// **'3-5 portions (fruits & veggies)'**
   String get foodGreensSubtitle;
 
   /// Food category portion guide: Beans
   ///
   /// In en, this message translates to:
-  /// **'1–2 portions'**
+  /// **'1-2 portions'**
   String get foodBeansSubtitle;
 
   /// Food category portion guide: Fillers
   ///
   /// In en, this message translates to:
-  /// **'1–3 portions (rice, pasta, bread)'**
+  /// **'1-3 portions (rice, pasta, bread)'**
   String get foodFillersSubtitle;
 
   /// Food category portion guide: Treat

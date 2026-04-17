@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_html/flutter_html.dart';
 import 'package:provider/provider.dart';
 
 import '../state/app_state.dart';
@@ -35,14 +36,61 @@ void resetAllFood(AppState app) {
 
 /// Sources / rationale for the Food module (also used from the grid tile “?”).
 void showFoodSourcesHelp(BuildContext context) {
-  final scheme = Theme.of(context).colorScheme;  final l10n = AppLocalizations.of(context)!;  showDialog<void>(
+  final scheme = Theme.of(context).colorScheme;
+  final l10n = AppLocalizations.of(context)!;
+  final scrollController = ScrollController();
+
+  showDialog<void>(
     context: context,
     builder: (ctx) => AlertDialog(
       title: Text(l10n.foodSourcesTitle),
-      content: SingleChildScrollView(
-        child: Text(
-          l10n.foodSourcesContent,
-          style: TextStyle(color: scheme.onSurfaceVariant, height: 1.45),
+      content: SizedBox(
+        width: double.maxFinite,
+        child: Scrollbar(
+          controller: scrollController,
+          child: SingleChildScrollView(
+            key: const ValueKey('foodHelpScroll'),
+            controller: scrollController,
+            child: Html(
+              data:
+                  '${l10n.foodSourcesContent}<h3 style="margin-top:24px;margin-bottom:12px;font-size:16px">References</h3>${l10n.foodSourcesReferences}',
+              style: {
+                "body": Style(
+                  color: scheme.onSurfaceVariant,
+                  fontSize: FontSize(14),
+                  lineHeight: LineHeight(1.5),
+                ),
+                "p": Style(
+                  margin: Margins.only(bottom: 12),
+                ),
+                "a": Style(
+                  color: scheme.primary,
+                  textDecoration: TextDecoration.none,
+                  fontWeight: FontWeight.w500,
+                ),
+                "h3": Style(
+                  color: scheme.onSurface,
+                  fontWeight: FontWeight.w600,
+                ),
+              },
+              onLinkTap: (url, renderContext, attributes) {
+                if (url?.startsWith('#ref-') ?? false) {
+                  final anchorContext = AnchorKey.forId(
+                    const ValueKey('foodHelpScroll'),
+                    url!.substring(1),
+                  )?.currentContext;
+                  if (anchorContext != null) {
+                    Scrollable.ensureVisible(
+                      anchorContext,
+                      duration: const Duration(milliseconds: 300),
+                      curve: Curves.easeOut,
+                      alignment: 0.1,
+                    );
+                  }
+                }
+              },
+            ),
+          ),
         ),
       ),
       actions: [
