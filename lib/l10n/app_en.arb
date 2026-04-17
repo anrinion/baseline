@@ -521,11 +521,11 @@
   "@movementReferences": {
     "description": "Full references for movement citations (HTML)"
   },
-  "groundingHelp": "<p>A single tap to anchor yourself in the present. This helps to reduce stress. Similar to Gestalt's \"here and now\" approach.</p><p><i>Detailed information with research references will be added soon.</i></p>",
+  "groundingHelp": "<p>Grounding is a single tap. It shows a simple present‑moment phrase – \"You're here\", \"One step at a time\", or similar. The button reappears after a short time; you can press it as many times a day as you want.</p><h3 style='margin-top:20px;margin-bottom:12px'>Why might this help?</h3><p>Two lines of research offer indirect support.</p><p><b>Hypothesis 1 – Disrupting idle negative thinking</b></p><p>Many people find being alone with their thoughts so unpleasant that they prefer to administer electric shocks to themselves rather than sit quietly for 6–15 minutes <a href='#ref-1'>[1]</a>. A minimal, low‑effort action – like tapping a button – may <b>break the state of passive rumination or boredom</b>, providing a simple anchor.</p><p><b>Hypothesis 2 – Cueing present‑moment awareness</b></p><p>Mindfulness‑ and acceptance‑based interventions have a small, significant effect on improving affect intolerance/sensitivity (i.e., <b>ability to tolerate emotional states</b>) from pre‑ to post‑intervention, with effects maintained up to 6 months <a href='#ref-2'>[2]</a>. A single self‑initiated cue to the present moment may briefly reduce worry or rumination.</p>",
   "@groundingHelp": {
     "description": "Help text for grounding/here module (HTML with numbered citations)"
   },
-  "groundingReferences": "<h3 style='margin-top:24px;margin-bottom:12px'>References</h3><p><i>References will be added when research is complete.</i></p>",
+  "groundingReferences": "<h3 style='margin-top:24px;margin-bottom:12px'>References</h3><p id='ref-1' style='margin-bottom:12px'><b>[1]</b> Wilson, T. D., Reinhard, D. A., Westgate, E. C., Gilbert, D. T., Ellerbeck, N., Hahn, C., Brown, C. L., &amp; Shaked, A. (2014). Just think: The challenges of the disengaged mind. <i>Science</i>, 345(6192), 75–77. <a href='https://doi.org/10.1126/science.1250830'>https://doi.org/10.1126/science.1250830</a></p><p id='ref-2'><b>[2]</b> Kraemer, K. M., Luberto, C. M., Hall, D. L., Ngo, L. H., &amp; Yeh, G. Y. (2021). A systematic review and meta‑analysis of mindfulness‑ and acceptance‑based interventions for affect intolerance/sensitivity. <i>Behaviour Research and Therapy</i>, 135, 103751. <a href='https://doi.org/10.1016/j.brat.2020.103746'>https://doi.org/10.1016/j.brat.2020.103746</a></p>",
   "@groundingReferences": {
     "description": "Full references for grounding citations (HTML)"
   },

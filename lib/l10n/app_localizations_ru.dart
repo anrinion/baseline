@@ -427,11 +427,11 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get groundingHelp =>
-      '<p>Просто кнопка, чтобы показать своё присутствие. Обращение внимания на текущий момент помогает снизить стресс. Что-то вроде \"здесь и сейчас\" из гештальта.</p><p><i>Подробная информация будет добавлена позже.</i></p>';
+      '<p>Кнопка приземления — простое нажатие для возврата в настоящий момент. Вы можете нажимать её столько раз, сколько захотите.</p><p><i>Подробная информация с исследовательскими ссылками будет добавлена позже.</i></p>';
 
   @override
   String get groundingReferences =>
-      '<h3 style=\'margin-top:24px;margin-bottom:12px\'>Источники</h3><p><i>Источники будут добавлены позже.</i></p>';
+      '<h3 style=\'margin-top:24px;margin-bottom:12px\'>Источники</h3><p id=\'ref-1\' style=\'margin-bottom:12px\'><b>[1]</b> Wilson, T. D., Reinhard, D. A., Westgate, E. C., Gilbert, D. T., Ellerbeck, N., Hahn, C., Brown, C. L., &amp; Shaked, A. (2014). Just think: The challenges of the disengaged mind. <i>Science</i>, 345(6192), 75–77. <a href=\'https://doi.org/10.1126/science.1250830\'>https://doi.org/10.1126/science.1250830</a></p><p id=\'ref-2\'><b>[2]</b> Kraemer, K. M., Luberto, C. M., Hall, D. L., Ngo, L. H., &amp; Yeh, G. Y. (2021). A systematic review and meta‑analysis of mindfulness‑ and acceptance‑based interventions for affect intolerance/sensitivity. <i>Behaviour Research and Therapy</i>, 135, 103751. <a href=\'https://doi.org/10.1016/j.brat.2020.103746\'>https://doi.org/10.1016/j.brat.2020.103746</a></p>';
 
   @override
   String get hereButtonHint => 'Я здесь. Я живой(ая).';
