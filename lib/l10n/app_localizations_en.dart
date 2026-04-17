@@ -232,13 +232,17 @@ class AppLocalizationsEn extends AppLocalizations {
   String get mentalStateModuleLabel => 'Mental state';
 
   @override
-  String get mentalStateRightNow => 'Right now';
+  String get mentalStateRightNow => 'Current mood';
 
   @override
-  String get mentalStateGoodThing => 'One small good thing';
+  String get mentalStateGoodThing => 'Daily positives';
 
   @override
-  String get mentalStateThoughtLens => 'Thought lens';
+  String get mentalStateThoughtLens => 'Cognitive distortions';
+
+  @override
+  String get mentalStateSettingDescription =>
+      'Choose what to track in the Mental state module';
 
   @override
   String get dialogGotIt => 'Got it';
@@ -496,21 +500,6 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get initialScreenContinue => 'Continue';
-
-  @override
-  String get cbtModeLabel => 'Mode';
-
-  @override
-  String get cbtModeRightNow => 'Right now';
-
-  @override
-  String get cbtModeGoodThings => 'Good things';
-
-  @override
-  String get cbtModeThoughtLens => 'Thought lens';
-
-  @override
-  String get cbtModeSettingDescription => 'Choose which CBT submodule to use';
 
   @override
   String get cbtRightNowQuestion => 'How are you feeling right now?';

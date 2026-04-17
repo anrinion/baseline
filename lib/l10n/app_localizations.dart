@@ -518,23 +518,29 @@ abstract class AppLocalizations {
   /// **'Mental state'**
   String get mentalStateModuleLabel;
 
-  /// Mental state section: current feeling
+  /// Mental state section: current mood
   ///
   /// In en, this message translates to:
-  /// **'Right now'**
+  /// **'Current mood'**
   String get mentalStateRightNow;
 
-  /// Mental state section: one good thing
+  /// Mental state section: daily positives
   ///
   /// In en, this message translates to:
-  /// **'One small good thing'**
+  /// **'Daily positives'**
   String get mentalStateGoodThing;
 
-  /// Mental state section: cognitive distortion tool
+  /// Mental state section: cognitive distortions
   ///
   /// In en, this message translates to:
-  /// **'Thought lens'**
+  /// **'Cognitive distortions'**
   String get mentalStateThoughtLens;
+
+  /// Description for mental state tracking settings
+  ///
+  /// In en, this message translates to:
+  /// **'Choose what to track in the Mental state module'**
+  String get mentalStateSettingDescription;
 
   /// Dialog action button
   ///
@@ -1009,36 +1015,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Continue'**
   String get initialScreenContinue;
-
-  /// Label for CBT mode selection
-  ///
-  /// In en, this message translates to:
-  /// **'Mode'**
-  String get cbtModeLabel;
-
-  /// CBT mode: Right now
-  ///
-  /// In en, this message translates to:
-  /// **'Right now'**
-  String get cbtModeRightNow;
-
-  /// CBT mode: Good things
-  ///
-  /// In en, this message translates to:
-  /// **'Good things'**
-  String get cbtModeGoodThings;
-
-  /// CBT mode: Thought lens
-  ///
-  /// In en, this message translates to:
-  /// **'Thought lens'**
-  String get cbtModeThoughtLens;
-
-  /// Description for CBT mode setting in settings screen
-  ///
-  /// In en, this message translates to:
-  /// **'Choose which CBT submodule to use'**
-  String get cbtModeSettingDescription;
 
   /// Question for right now mood selection
   ///

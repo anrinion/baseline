@@ -293,17 +293,21 @@
   "@mentalStateModuleLabel": {
     "description": "Label for the Mental state module"
   },
-  "mentalStateRightNow": "Right now",
+  "mentalStateRightNow": "Current mood",
   "@mentalStateRightNow": {
-    "description": "Mental state section: current feeling"
+    "description": "Mental state section: current mood"
   },
-  "mentalStateGoodThing": "One small good thing",
+  "mentalStateGoodThing": "Daily positives",
   "@mentalStateGoodThing": {
-    "description": "Mental state section: one good thing"
+    "description": "Mental state section: daily positives"
   },
-  "mentalStateThoughtLens": "Thought lens",
+  "mentalStateThoughtLens": "Cognitive distortions",
   "@mentalStateThoughtLens": {
-    "description": "Mental state section: cognitive distortion tool"
+    "description": "Mental state section: cognitive distortions"
+  },
+  "mentalStateSettingDescription": "Choose what to track in the Mental state module",
+  "@mentalStateSettingDescription": {
+    "description": "Description for mental state tracking settings"
   },
   "dialogGotIt": "Got it",
   "@dialogGotIt": {
@@ -620,26 +624,6 @@
   "initialScreenContinue": "Continue",
   "@initialScreenContinue": {
     "description": "Button to continue to main app"
-  },
-  "cbtModeLabel": "Mode",
-  "@cbtModeLabel": {
-    "description": "Label for CBT mode selection"
-  },
-  "cbtModeRightNow": "Right now",
-  "@cbtModeRightNow": {
-    "description": "CBT mode: Right now"
-  },
-  "cbtModeGoodThings": "Good things",
-  "@cbtModeGoodThings": {
-    "description": "CBT mode: Good things"
-  },
-  "cbtModeThoughtLens": "Thought lens",
-  "@cbtModeThoughtLens": {
-    "description": "CBT mode: Thought lens"
-  },
-  "cbtModeSettingDescription": "Choose which CBT submodule to use",
-  "@cbtModeSettingDescription": {
-    "description": "Description for CBT mode setting in settings screen"
   },
   "cbtRightNowQuestion": "How are you feeling right now?",
   "@cbtRightNowQuestion": {

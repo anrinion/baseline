@@ -243,6 +243,10 @@ class AppLocalizationsRu extends AppLocalizations {
   String get mentalStateThoughtLens => 'Фильтр когнитивных искажений';
 
   @override
+  String get mentalStateSettingDescription =>
+      'Choose what to track in the Mental state module';
+
+  @override
   String get dialogGotIt => 'Хорошо';
 
   @override
@@ -498,22 +502,6 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get initialScreenContinue => 'Продолжить';
-
-  @override
-  String get cbtModeLabel => 'Режим';
-
-  @override
-  String get cbtModeRightNow => 'Прямо сейчас';
-
-  @override
-  String get cbtModeGoodThings => 'Хорошие вещи';
-
-  @override
-  String get cbtModeThoughtLens => 'Мыслительная линза';
-
-  @override
-  String get cbtModeSettingDescription =>
-      'Выберите, какой подмодуль КПТ использовать';
 
   @override
   String get cbtRightNowQuestion => 'Как вы себя чувствуете прямо сейчас?';

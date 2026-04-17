@@ -41,11 +41,11 @@ extension MentalStateModeExtension on MentalStateMode {
   String title(AppLocalizations l10n) {
     switch (this) {
       case MentalStateMode.rightNow:
-        return l10n.cbtModeRightNow;
+        return l10n.mentalStateRightNow;
       case MentalStateMode.goodThings:
-        return l10n.cbtModeGoodThings;
+        return l10n.mentalStateGoodThing;
       case MentalStateMode.thoughtLens:
-        return l10n.cbtModeThoughtLens;
+        return l10n.mentalStateThoughtLens;
     }
   }
 }
@@ -578,7 +578,7 @@ class _GoodThingsEmptyView extends StatelessWidget {
         ElevatedButton.icon(
           onPressed: () => showMentalStateModule(context),
           icon: const Icon(Icons.edit_note, size: 18),
-          label: Text(l10n.cbtModeGoodThings),
+          label: Text(l10n.mentalStateGoodThing),
           style: ElevatedButton.styleFrom(
             backgroundColor: scheme.primaryContainer,
             foregroundColor: scheme.onPrimaryContainer,
@@ -622,7 +622,7 @@ class _CompactGoodThingsCompleted extends StatelessWidget {
         const Icon(Icons.check_circle, size: 24, color: Color(0xFF059669)),
         const SizedBox(width: 8),
         Text(
-          '${goodThings.length} ${l10n.cbtModeGoodThings.toLowerCase()}',
+          '${goodThings.length} ${l10n.mentalStateGoodThing.toLowerCase()}',
           style: Theme.of(context).textTheme.bodyMedium?.copyWith(
             color: const Color(0xFF059669),
             fontWeight: FontWeight.w600,
@@ -751,7 +751,7 @@ class _ExpandedThoughtLensContent extends StatelessWidget {
           ElevatedButton.icon(
             onPressed: () => showMentalStateModule(context),
             icon: const Icon(Icons.psychology, size: 18),
-            label: Text(l10n.cbtModeThoughtLens),
+            label: Text(l10n.mentalStateThoughtLens),
             style: ElevatedButton.styleFrom(
               backgroundColor: scheme.primaryContainer,
               foregroundColor: scheme.onPrimaryContainer,

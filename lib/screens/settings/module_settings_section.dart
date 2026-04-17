@@ -153,7 +153,7 @@ class ModuleSettingsSection extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      l10n.cbtModeSettingDescription,
+                      l10n.mentalStateSettingDescription,
                       style: Theme.of(context).textTheme.bodySmall?.copyWith(
                         color: Theme.of(context).colorScheme.onSurfaceVariant,
                       ),
@@ -171,15 +171,15 @@ class ModuleSettingsSection extends StatelessWidget {
                       child: Column(
                         children: [
                           RadioListTile<String>(
-                            title: Text(l10n.cbtModeRightNow),
+                            title: Text(l10n.mentalStateRightNow),
                             value: 'rightNow',
                           ),
                           RadioListTile<String>(
-                            title: Text(l10n.cbtModeGoodThings),
+                            title: Text(l10n.mentalStateGoodThing),
                             value: 'goodThings',
                           ),
                           RadioListTile<String>(
-                            title: Text(l10n.cbtModeThoughtLens),
+                            title: Text(l10n.mentalStateThoughtLens),
                             value: 'thoughtLens',
                           ),
                         ],
