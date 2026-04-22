@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:baseline/modules/sleep_module.dart';
+import 'package:baseline/l10n/app_localizations.dart';
 
 void main() {
   group('calculateSleepDuration', () {
@@ -166,20 +168,88 @@ void main() {
   });
 
   group('formatDuration', () {
-    test('exact hours', () {
-      expect(formatDuration(const Duration(hours: 8)), equals('8h 0m'));
+    testWidgets('exact hours', (tester) async {
+      late String result;
+      await tester.pumpWidget(
+        MaterialApp(
+          localizationsDelegates: const [
+            AppLocalizations.delegate,
+            GlobalMaterialLocalizations.delegate,
+            GlobalWidgetsLocalizations.delegate,
+          ],
+          supportedLocales: const [Locale('en')],
+          home: Builder(
+            builder: (context) {
+              result = formatDuration(context, const Duration(hours: 8));
+              return const SizedBox();
+            },
+          ),
+        ),
+      );
+      expect(result, equals('8h 0m'));
     });
 
-    test('hours and minutes', () {
-      expect(formatDuration(const Duration(hours: 7, minutes: 30)), equals('7h 30m'));
+    testWidgets('hours and minutes', (tester) async {
+      late String result;
+      await tester.pumpWidget(
+        MaterialApp(
+          localizationsDelegates: const [
+            AppLocalizations.delegate,
+            GlobalMaterialLocalizations.delegate,
+            GlobalWidgetsLocalizations.delegate,
+          ],
+          supportedLocales: const [Locale('en')],
+          home: Builder(
+            builder: (context) {
+              result = formatDuration(context, const Duration(hours: 7, minutes: 30));
+              return const SizedBox();
+            },
+          ),
+        ),
+      );
+      expect(result, equals('7h 30m'));
     });
 
-    test('less than one hour', () {
-      expect(formatDuration(const Duration(minutes: 45)), equals('45m'));
+    testWidgets('less than one hour', (tester) async {
+      late String result;
+      await tester.pumpWidget(
+        MaterialApp(
+          localizationsDelegates: const [
+            AppLocalizations.delegate,
+            GlobalMaterialLocalizations.delegate,
+            GlobalWidgetsLocalizations.delegate,
+          ],
+          supportedLocales: const [Locale('en')],
+          home: Builder(
+            builder: (context) {
+              result = formatDuration(context, const Duration(minutes: 45));
+              return const SizedBox();
+            },
+          ),
+        ),
+      );
+      expect(result, equals('45m'));
     });
 
-    test('zero', () {
-      expect(formatDuration(Duration.zero), equals('0m'));
+    testWidgets('zero', (tester) async {
+      late String result;
+      await tester.pumpWidget(
+        MaterialApp(
+          localizationsDelegates: const [
+            AppLocalizations.delegate,
+            GlobalMaterialLocalizations.delegate,
+            GlobalWidgetsLocalizations.delegate,
+          ],
+          supportedLocales: const [Locale('en')],
+          home: Builder(
+            builder: (context) {
+              result = formatDuration(context, Duration.zero);
+              return const SizedBox();
+            },
+          ),
+        ),
+      );
+      expect(result, equals('0m'));
     });
   });
 }

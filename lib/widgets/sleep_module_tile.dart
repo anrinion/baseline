@@ -32,13 +32,14 @@ extension TimeFormatting on BuildContext {
 }
 
 extension SleepDurationFormatting on Duration {
-  String format() {
+  String format(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     final hours = inHours;
     final minutes = inMinutes.remainder(60);
     if (hours > 0) {
-      return '$hours h ${minutes}m';
+      return '$hours${l10n.sleepHoursAbbreviation} ${minutes}${l10n.sleepMinutesAbbreviation}';
     }
-    return '${minutes}m';
+    return '$minutes${l10n.sleepMinutesAbbreviation}';
   }
 
   bool get isHealthy => inHours >= 7 && inHours <= 9;
@@ -338,7 +339,7 @@ class _SleepDurationChip extends StatelessWidget {
         borderRadius: BorderRadius.circular(TileBorderRadius.chip),
       ),
       child: Text(
-        duration.format(),
+        duration.format(context),
         style:
             (compact
                     ? Theme.of(context).textTheme.bodySmall
@@ -643,7 +644,7 @@ class _VerticalCompactLayout extends StatelessWidget {
       mainAxisSize: MainAxisSize.min,
       children: [
         Text(
-          duration.format(),
+          duration.format(context),
           style: theme.textTheme.titleMedium?.copyWith(
             fontWeight: FontWeight.w700,
             color: scheme.primary,
@@ -748,7 +749,7 @@ class _HorizontalCompactLayout extends StatelessWidget {
           flex: 3,
           child: Center(
             child: Text(
-              duration.format(),
+              duration.format(context),
               style: theme.textTheme.titleMedium?.copyWith(
                 fontWeight: FontWeight.w700,
                 color: scheme.primary,
@@ -811,7 +812,7 @@ class _MediumSleepSummary extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         Text(
-          duration.format(),
+          duration.format(context),
           style: theme.textTheme.titleLarge?.copyWith(
             fontWeight: FontWeight.w700,
             color: scheme.primary,
@@ -967,15 +968,15 @@ class _SleepSlider extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    '00:00',
+                    context.formatMinutes(0),
                     style: _sliderLabelStyle(theme, superCompact || compact),
                   ),
                   Text(
-                    '12:00',
+                    context.formatMinutes(12 * 60),
                     style: _sliderLabelStyle(theme, superCompact || compact),
                   ),
                   Text(
-                    '23:59',
+                    context.formatMinutes(23 * 60 + 59),
                     style: _sliderLabelStyle(theme, superCompact || compact),
                   ),
                 ],

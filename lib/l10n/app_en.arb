@@ -52,7 +52,7 @@
   "@themeModeManual": {
     "description": "Theme behavior option: manual"
   },
-  "themeModeManualDescription": "You pick light or dark yourself.",
+  "themeModeManualDescription": "You pick light or dark yourself",
   "@themeModeManualDescription": {
     "description": "Description for manual theme behavior"
   },
@@ -60,7 +60,7 @@
   "@themeModeDevice": {
     "description": "Theme behavior option: follow device"
   },
-  "themeModeDeviceDescription": "Baseline follows your phone's light and dark setting.",
+  "themeModeDeviceDescription": "Baseline follows your phone's settings",
   "@themeModeDeviceDescription": {
     "description": "Description for device theme behavior"
   },
@@ -72,7 +72,7 @@
   "@themeModeScheduleDescription": {
     "description": "Description for scheduled theme behavior"
   },
-  "themeManualChoiceLabel": "When you choose here:",
+  "themeManualChoiceLabel": "Your selection:",
   "@themeManualChoiceLabel": {
     "description": "Label for manual light/dark choice"
   },
@@ -140,7 +140,7 @@
   "@foodTreatLabel": {
     "description": "Food category: Small enjoyable treat"
   },
-  "foodSourcesTitle": "Why this works",
+  "foodSourcesTitle": "Principles behind this module",
   "@foodSourcesTitle": {
     "description": "Title for food module sources/help"
   },
@@ -160,29 +160,9 @@
   "@movementDefaultOptions": {
     "description": "Default movement options"
   },
-  "movementAnyCountsHint": "any movement counts",
-  "@movementAnyCountsHint": {
-    "description": "Hint text for movement module"
-  },
   "sleepModuleLabel": "Sleep",
   "@sleepModuleLabel": {
     "description": "Label for the Sleep module"
-  },
-  "sleepGoingToSleep": "I'm going to sleep",
-  "@sleepGoingToSleep": {
-    "description": "Action: going to sleep"
-  },
-  "sleepAwake": "I'm awake",
-  "@sleepAwake": {
-    "description": "Action: woke up"
-  },
-  "sleepDurationSoFar": "so far",
-  "@sleepDurationSoFar": {
-    "description": "Label indicating sleep duration is ongoing"
-  },
-  "sleepCompleted": "Sleep recorded",
-  "@sleepCompleted": {
-    "description": "Message when sleep session is complete"
   },
   "sleepStartLabel": "Start",
   "@sleepStartLabel": {
@@ -208,7 +188,15 @@
   "@sleepDurationLabel": {
     "description": "Label for calculated sleep duration"
   },
-  "medsModuleLabel": "Meds",
+  "sleepHoursAbbreviation": "h",
+  "@sleepHoursAbbreviation": {
+    "description": "Abbreviation for hours in sleep duration display"
+  },
+  "sleepMinutesAbbreviation": "m",
+  "@sleepMinutesAbbreviation": {
+    "description": "Abbreviation for minutes in sleep duration display"
+  },
+  "medsModuleLabel": "Medications",
   "@medsModuleLabel": {
     "description": "Label for the Meds module"
   },
@@ -236,7 +224,7 @@
   "@medsDefaultList": {
     "description": "Default medication list. Keep empty for a clean first state."
   },
-  "medsEmptyState": "No medications listed yet. Add the ones you want to track today.",
+  "medsEmptyState": "No medications listed yet. Add the ones you want to track.",
   "@medsEmptyState": {
     "description": "Empty state text for meds module"
   },
@@ -269,7 +257,7 @@
   "@medsReminderToggleLabel": {
     "description": "Toggle label for enabling daily meds reminder notifications"
   },
-  "medsReminderToggleHelp": "If enabled, Baseline sends one local reminder per day.",
+  "medsReminderToggleHelp": "If enabled, Baseline sends you reminders.",
   "@medsReminderToggleHelp": {
     "description": "Help text for meds reminder toggle"
   },
@@ -305,11 +293,11 @@
   "@mentalStateThoughtLens": {
     "description": "Mental state section: cognitive distortions"
   },
-  "mentalStateSettingDescription": "Choose what to track in the Mental state module",
+  "mentalStateSettingDescription": "Choose what to use in the Mental state module",
   "@mentalStateSettingDescription": {
     "description": "Description for mental state tracking settings"
   },
-  "dialogGotIt": "Got it",
+  "dialogGotIt": "Ok",
   "@dialogGotIt": {
     "description": "Dialog action button"
   },
@@ -333,15 +321,15 @@
   "@dialogReset": {
     "description": "Dialog reset button"
   },
-  "dialogWhyThisWorks": "Why this works",
+  "dialogWhyThisWorks": "Principles behind this module",
   "@dialogWhyThisWorks": {
     "description": "Tooltip to show help/sources"
   },
-  "dialogWhyThisHelps": "Why this helps",
+  "dialogWhyThisHelps": "Principles behind this module",
   "@dialogWhyThisHelps": {
     "description": "Tooltip to show module help"
   },
-  "nourishment": "Nourishment",
+  "nourishment": "Nutrition",
   "@nourishment": {
     "description": "Title for the food module dialog"
   },
@@ -417,7 +405,7 @@
   "@developerModeLabel": {
     "description": "Label for developer mode toggle"
   },
-  "developerModeHelp": "Shows tools for testing and full local resets.",
+  "developerModeHelp": "Shows developer tools. Shouldn't be needed.",
   "@developerModeHelp": {
     "description": "Help text for developer mode toggle"
   },
@@ -465,29 +453,33 @@
   "@developerNotificationsStatusError": {
     "description": "Developer status for notifications when an unexpected error occurs"
   },
-  "appPrivacyText": "Baseline is a private self-care app:\\nNo history, no sync, no data collection.\\n",
+  "appPrivacyText": "Baseline is a private self-care app:\nNo history, no sync, no data collection.\n",
   "@appPrivacyText": {
     "description": "Privacy statement in settings"
   },
-  "foodProteinSubtitle": "1-2 portions",
+  "foodProteinSubtitle": "chicken, eggs, fish",
   "@foodProteinSubtitle": {
-    "description": "Food category portion guide: Protein"
+    "description": "Food category examples: Protein"
   },
-  "foodGreensSubtitle": "3-5 portions (fruits & veggies)",
+
+  "foodGreensSubtitle": "apples, cabbage, cucumbers",
   "@foodGreensSubtitle": {
-    "description": "Food category portion guide: Greens"
+    "description": "Food category examples: Greens"
   },
-  "foodBeansSubtitle": "1-2 portions",
+
+  "foodBeansSubtitle": "lentils, beans, chickpeas",
   "@foodBeansSubtitle": {
-    "description": "Food category portion guide: Beans"
+    "description": "Food category examples: Beans"
   },
-  "foodFillersSubtitle": "1-3 portions (rice, pasta, bread)",
+
+  "foodFillersSubtitle": "potatoes, oats, rice",
   "@foodFillersSubtitle": {
-    "description": "Food category portion guide: Fillers"
+    "description": "Food category examples: Fillers"
   },
-  "foodTreatSubtitle": "1 portion (chocolate, dessert)",
+
+  "foodTreatSubtitle": "chocolate, berries",
   "@foodTreatSubtitle": {
-    "description": "Food category portion guide: Treat"
+    "description": "Food category examples: Treat"
   },
   "mentalStateHelp": "<p>The evidence for these techniques is not definitive — different approaches work for different people. Baseline offers three distinct modes so you can try them and see what fits.</p><h3 style='margin-top:20px;margin-bottom:12px'>Current mood</h3><p>A simple check of your current mood.</p><p>A systematic review and meta-analysis of randomised controlled trials found that <b>journaling interventions (including simple expressive writing) led to a 5% greater reduction in mental health symptom scores</b> compared to control groups, with more pronounced effects for <b>anxiety (9%)</b> and <b>PTSD (6%)</b>. However, the authors note high statistical heterogeneity and methodological flaws across studies, limiting definitive conclusions about the effect size <a href='#ref-1'>[1]</a>.</p><h3 style='margin-top:20px;margin-bottom:12px'>Daily positives</h3><p>A reflection on positive moments.</p><p>One preliminary 12-week randomised controlled trial of online Positive Affect Journaling (PAJ) in general medical patients with elevated anxiety found that <b>PAJ was associated with decreased mental distress, increased well-being, fewer depressive symptoms, reduced anxiety</b> after one month, and greater resilience after the first and second months, compared to usual care. As a single trial with moderate adherence, these results require replication <a href='#ref-2'>[2]</a>.</p><h3 style='margin-top:20px;margin-bottom:12px'>Cognitive distortions</h3><p>This mode is purely educational. It is based on established cognitive-behavioural therapy concepts of identifying cognitive distortions as a first step toward restructuring.</p>",
   "@mentalStateHelp": {
@@ -532,6 +524,10 @@
   "hereButtonHint": "I'm here. I'm alive.",
   "@hereButtonHint": {
     "description": "Hint text for the here module button customization field"
+  },
+  "groundingButtonDefault": "I'm here. I'm alive.",
+  "@groundingButtonDefault": {
+    "description": "Default text for the grounding button when settings field is empty"
   },
   "movementChoicesLabel": "Movement choices",
   "@movementChoicesLabel": {
@@ -625,7 +621,7 @@
   "@initialScreenTitle": {
     "description": "Title of the initial setup screen"
   },
-  "initialScreenMessage": "No tracking. No pressure. Just today.",
+  "initialScreenMessage": "No pressure. Take your time.",
   "@initialScreenMessage": {
     "description": "Welcome message on initial screen"
   },
@@ -645,11 +641,11 @@
   "@cbtRightNowQuestion": {
     "description": "Question for right now mood selection"
   },
-  "cbtMoodVerySad": "Very sad",
+  "cbtMoodVerySad": "Awful",
   "@cbtMoodVerySad": {
     "description": "Mood option: Very sad"
   },
-  "cbtMoodSad": "Sad",
+  "cbtMoodSad": "Bad",
   "@cbtMoodSad": {
     "description": "Mood option: Sad"
   },
@@ -661,7 +657,7 @@
   "@cbtMoodGood": {
     "description": "Mood option: Good"
   },
-  "cbtMoodVeryGood": "Very good",
+  "cbtMoodVeryGood": "Amazing",
   "@cbtMoodVeryGood": {
     "description": "Mood option: Very good"
   },
@@ -681,7 +677,7 @@
   "@cbtGoodThingsHint": {
     "description": "Hint text for good things exercise"
   },
-  "cbtThoughtLensTitle": "Thought lens",
+  "cbtThoughtLensTitle": "Cognitive distortions",
   "@cbtThoughtLensTitle": {
     "description": "Title for thought lens section"
   },
@@ -697,7 +693,7 @@
   "@cbtThoughtLensNext": {
     "description": "Button to show next thought lens"
   },
-  "cbtThoughtLensDaily": "Today's thought distortion",
+  "cbtThoughtLensDaily": "Today's cognitive distortion",
   "@cbtThoughtLensDaily": {
     "description": "Label indicating today's random thought distortion"
   }
