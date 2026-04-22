@@ -30,7 +30,8 @@ jobs:
         id: version
         run: |
           MAJOR_MINOR="${{ vars.MAJOR_MINOR || '0.0' }}"
-          PATCH="${{ github.run_number }}"
+          PATCH_BASE="${{ vars.PATCH_BASE || '0' }}"
+          PATCH=$(( ${{ github.run_number }} - PATCH_BASE ))
           
           if [[ "${{ github.event_name }}" == "push" || "${{ inputs.release_type }}" == "dev" ]]; then
             SUFFIX="-dev"
@@ -39,13 +40,16 @@ jobs:
           fi
           
           # Pubspec version uses Flutter format: versionName+versionCode
-          PUBSPEC_VERSION="${MAJOR_MINOR}.${PATCH}+${PATCH}"
+          BUILD_NUMBER="${{ github.run_number }}"
+          PUBSPEC_VERSION="${MAJOR_MINOR}.${PATCH}+${BUILD_NUMBER}"
           # Release tag includes -dev suffix if applicable
           RELEASE_TAG="${MAJOR_MINOR}.${PATCH}${SUFFIX}"
           
           echo "pubspec_version=$PUBSPEC_VERSION" >> $GITHUB_OUTPUT
           echo "release_tag=$RELEASE_TAG" >> $GITHUB_OUTPUT
           echo "version=$RELEASE_TAG" >> $GITHUB_OUTPUT
+          echo "MAJOR_MINOR: $MAJOR_MINOR"
+          echo "PATCH: $PATCH"
           echo "Pubspec version: $PUBSPEC_VERSION"
           echo "Release tag: $RELEASE_TAG"
 

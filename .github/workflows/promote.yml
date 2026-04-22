@@ -12,6 +12,9 @@ jobs:
     permissions:
       contents: write
     steps:
+      - name: Clone repository
+        uses: actions/checkout@v6
+
       - name: Validate version format
         run: |
           VERSION="${{ inputs.dev_version }}"
@@ -21,6 +24,18 @@ jobs:
           fi
           echo "Promoting version: $VERSION"
 
+      - name: Get dev release commit SHA
+        id: get_commit
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          DEV_TAG="v${{ inputs.dev_version }}"
+          echo "Fetching release for tag: $DEV_TAG"
+          RELEASE_DATA=$(gh api repos/${{ github.repository }}/releases/tags/$DEV_TAG)
+          TARGET_SHA=$(echo "$RELEASE_DATA" | jq -r '.target_commitish')
+          echo "dev_commit=$TARGET_SHA" >> $GITHUB_OUTPUT
+          echo "Dev release commit SHA: $TARGET_SHA"
+
       - name: Compute production version
         id: version
         run: |
@@ -28,6 +43,11 @@ jobs:
           PROD_VERSION="${DEV_VERSION%-dev}"
           echo "prod_version=$PROD_VERSION" >> $GITHUB_OUTPUT
           echo "Production version: $PROD_VERSION"
+
+      - name: Checkout dev release commit
+        run: |
+          git checkout ${{ steps.get_commit.outputs.dev_commit }}
+          echo "Checked out commit: ${{ steps.get_commit.outputs.dev_commit }}"
 
       - name: Download dev release artifacts
         uses: robinraju/release-downloader@v1
@@ -41,4 +61,5 @@ jobs:
         with:
           tag_name: v${{ steps.version.outputs.prod_version }}
           name: Release ${{ steps.version.outputs.prod_version }}
+          target_commitish: ${{ steps.get_commit.outputs.dev_commit }}
           files: artifacts/*
