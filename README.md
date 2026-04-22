@@ -1,9 +1,8 @@
 # The Baseline
 
-<div align="left" style="display: flex; align-items: center; gap: 16px;">
-  <img width="48" height="48" alt="App icon" src="https://github.com/user-attachments/assets/c7a550f7-979d-4823-ab4e-afa483745af9">
-  <p style="margin: 0;"><strong>Gentle self-care for depression, disability, chronic illness, or burnout.</strong></p>
-</div>
+| Icon | Description |
+|:---:|:---|
+| <img width="48" height="48" alt="App icon" src="https://github.com/user-attachments/assets/c7a550f7-979d-4823-ab4e-afa483745af9"> | **Gentle self-care for depression, disability, chronic illness, or burnout.** |
 
 ## About
 
@@ -15,17 +14,19 @@
 
 Note: this is alpha version, not ready for general use.
 
-1. Install Obtainium from F-Droid or GitHub: <a href="https://github.com/ImranR98/Obtainium"><img src="https://raw.githubusercontent.com/ImranR98/Obtainium/main/assets/graphics/icon_small.png" alt="Obtainium icon" width="18" height="18">Obtainium</a>
+1. Install Obtainium from F-Droid or GitHub: [Obtainium](https://github.com/ImranR98/Obtainium)
 2. "Add App" and enter this repository URL: `https://github.com/anrinion/baseline`
 
 ### Preview
 
-<img width="306" height="748" alt="main" src="https://github.com/user-attachments/assets/836fa056-9f41-47bd-85c7-491f7a33cfb2" /><img width="306" height="748" alt="sleep" src="https://github.com/user-attachments/assets/0b69740a-35a4-4cf5-960c-9c49cf10970a" />
-<img width="306" height="748" alt="meds" src="https://github.com/user-attachments/assets/75713817-8146-466e-b72e-e447899ffac3" /><img width="306" height="748" alt="settings" src="https://github.com/user-attachments/assets/b1adc0f5-224c-465b-9ba5-49ff6daf150c" />  
+| Main screen | Sleep | Meds | Settings |
+|:---:|:---:|:---:|:---:|
+| <img width="200" alt="main" src="https://github.com/user-attachments/assets/836fa056-9f41-47bd-85c7-491f7a33cfb2" /> | <img width="200" alt="sleep" src="https://github.com/user-attachments/assets/0b69740a-35a4-4cf5-960c-9c49cf10970a" /> | <img width="200" alt="meds" src="https://github.com/user-attachments/assets/75713817-8146-466e-b72e-e447899ffac3" /> | <img width="200" alt="settings" src="https://github.com/user-attachments/assets/b1adc0f5-224c-465b-9ba5-49ff6daf150c" /> |
 
-Compact mode:
 
-<img width="306" height="250" alt="main_compact" src="https://github.com/user-attachments/assets/d5f600c1-51da-46bd-9862-5ba37b22a5f8" /> 
+| Compact mode |
+|:---:|
+| <img width="200" alt="main_compact" src="https://github.com/user-attachments/assets/d5f600c1-51da-46bd-9862-5ba37b22a5f8" /> | 
 
 ### Features
 
@@ -95,9 +96,9 @@ Additional modules:
 - [x] CBT module
 - [x] Meds module
 - [x] Sleep module
-- [ ] Sources: explanations + references for all modules  
+- [x] Sources: explanations + references for all modules  
 - [x] Testing (unit, e2e, dogfooding)
-- [ ] Final design polish
+- [x] Final design polish
 - [ ] Fixing bugs
 - [ ] Android release
 
