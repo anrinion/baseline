@@ -208,6 +208,14 @@
   "@sleepDurationLabel": {
     "description": "Label for calculated sleep duration"
   },
+  "sleepHoursAbbreviation": "ч",
+  "@sleepHoursAbbreviation": {
+    "description": "Abbreviation for hours in sleep duration display"
+  },
+  "sleepMinutesAbbreviation": "м",
+  "@sleepMinutesAbbreviation": {
+    "description": "Abbreviation for minutes in sleep duration display"
+  },
   "medsModuleLabel": "Лекарства",
   "@medsModuleLabel": {
     "description": "Label for the Meds module"
@@ -304,6 +312,10 @@
   "mentalStateThoughtLens": "Фильтр когнитивных искажений",
   "@mentalStateThoughtLens": {
     "description": "Mental state section: cognitive distortion tool"
+  },
+  "mentalStateSettingDescription": "Выбери, что отслеживать в модуле психического состояния",
+  "@mentalStateSettingDescription": {
+    "description": "Description for mental state tracking settings"
   },
   "dialogGotIt": "Хорошо",
   "@dialogGotIt": {
@@ -528,6 +540,10 @@
   "hereButtonHint": "Я здесь. Я живой(ая).",
   "@hereButtonHint": {
     "description": "Hint text for the here module button customization field"
+  },
+  "groundingButtonDefault": "Я здесь. Я живой(ая).",
+  "@groundingButtonDefault": {
+    "description": "Default text for the grounding button when settings field is empty"
   },
   "movementChoicesLabel": "Выбор движений",
   "@movementChoicesLabel": {

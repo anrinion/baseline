@@ -26,8 +26,9 @@ class Settings extends HiveObject {
   String theme = 'light1';
 
   /// Label for the [BaselineModuleId.here] anchor (same persisted field as before migration).
+  /// Empty string means "use the localized default".
   @HiveField(2)
-  String hereButtonText = 'I\'m here. I\'m alive.';
+  String hereButtonText = '';
 
   /// Subset of [BaselineModuleId.all]; persisted. Missing on legacy data → all on.
   @HiveField(3)

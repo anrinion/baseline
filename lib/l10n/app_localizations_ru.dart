@@ -171,6 +171,12 @@ class AppLocalizationsRu extends AppLocalizations {
   String get sleepDurationLabel => 'Длительность сна';
 
   @override
+  String get sleepHoursAbbreviation => 'ч';
+
+  @override
+  String get sleepMinutesAbbreviation => 'м';
+
+  @override
   String get medsModuleLabel => 'Лекарства';
 
   @override
@@ -244,7 +250,7 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get mentalStateSettingDescription =>
-      'Choose what to track in the Mental state module';
+      'Выбери, что отслеживать в модуле психического состояния';
 
   @override
   String get dialogGotIt => 'Хорошо';
@@ -435,6 +441,9 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get hereButtonHint => 'Я здесь. Я живой(ая).';
+
+  @override
+  String get groundingButtonDefault => 'Я здесь. Я живой(ая).';
 
   @override
   String get movementChoicesLabel => 'Выбор движений';

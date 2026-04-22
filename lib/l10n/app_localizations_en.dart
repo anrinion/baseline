@@ -170,6 +170,12 @@ class AppLocalizationsEn extends AppLocalizations {
   String get sleepDurationLabel => 'Sleep duration';
 
   @override
+  String get sleepHoursAbbreviation => 'h';
+
+  @override
+  String get sleepMinutesAbbreviation => 'm';
+
+  @override
   String get medsModuleLabel => 'Meds';
 
   @override
@@ -433,6 +439,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get hereButtonHint => 'I\'m here. I\'m alive.';
+
+  @override
+  String get groundingButtonDefault => 'I\'m here. I\'m alive.';
 
   @override
   String get movementChoicesLabel => 'Movement choices';

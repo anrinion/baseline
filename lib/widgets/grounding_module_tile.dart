@@ -45,7 +45,9 @@ class _GroundingModuleTileState extends State<GroundingModuleTile>
         final scheme = theme.colorScheme;
         final l10n = AppLocalizations.of(context)!;
         final appState = Provider.of<AppState>(context);
-        final label = appState.settings.hereButtonText;
+        final label = appState.settings.hereButtonText.isNotEmpty
+            ? appState.settings.hereButtonText
+            : l10n.groundingButtonDefault;
 
         final mode = resolveStandardTileMode(
           availableWidth: constraints.maxWidth,

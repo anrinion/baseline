@@ -208,6 +208,14 @@
   "@sleepDurationLabel": {
     "description": "Label for calculated sleep duration"
   },
+  "sleepHoursAbbreviation": "h",
+  "@sleepHoursAbbreviation": {
+    "description": "Abbreviation for hours in sleep duration display"
+  },
+  "sleepMinutesAbbreviation": "m",
+  "@sleepMinutesAbbreviation": {
+    "description": "Abbreviation for minutes in sleep duration display"
+  },
   "medsModuleLabel": "Meds",
   "@medsModuleLabel": {
     "description": "Label for the Meds module"
@@ -532,6 +540,10 @@
   "hereButtonHint": "I'm here. I'm alive.",
   "@hereButtonHint": {
     "description": "Hint text for the here module button customization field"
+  },
+  "groundingButtonDefault": "I'm here. I'm alive.",
+  "@groundingButtonDefault": {
+    "description": "Default text for the grounding button when settings field is empty"
   },
   "movementChoicesLabel": "Movement choices",
   "@movementChoicesLabel": {

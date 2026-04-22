@@ -410,6 +410,18 @@ abstract class AppLocalizations {
   /// **'Sleep duration'**
   String get sleepDurationLabel;
 
+  /// Abbreviation for hours in sleep duration display
+  ///
+  /// In en, this message translates to:
+  /// **'h'**
+  String get sleepHoursAbbreviation;
+
+  /// Abbreviation for minutes in sleep duration display
+  ///
+  /// In en, this message translates to:
+  /// **'m'**
+  String get sleepMinutesAbbreviation;
+
   /// Label for the Meds module
   ///
   /// In en, this message translates to:
@@ -877,6 +889,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'I\'m here. I\'m alive.'**
   String get hereButtonHint;
+
+  /// Default text for the grounding button when settings field is empty
+  ///
+  /// In en, this message translates to:
+  /// **'I\'m here. I\'m alive.'**
+  String get groundingButtonDefault;
 
   /// Label for movement choices field
   ///

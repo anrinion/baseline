@@ -70,14 +70,15 @@ List<int> calculateSleepWindow(
   return [sleepStart, sleepEnd];
 }
 
-/// Formats duration as "Xh Ym" (e.g., "7h 30m").
-String formatDuration(Duration duration) {
+/// Formats duration as localized "Xh Ym" (e.g., "7h 30m").
+String formatDuration(BuildContext context, Duration duration) {
+  final l10n = AppLocalizations.of(context)!;
   final hours = duration.inHours;
   final minutes = duration.inMinutes.remainder(60);
   if (hours > 0) {
-    return '${hours}h ${minutes}m';
+    return '$hours${l10n.sleepHoursAbbreviation} ${minutes}${l10n.sleepMinutesAbbreviation}';
   }
-  return '${minutes}m';
+  return '$minutes${l10n.sleepMinutesAbbreviation}';
 }
 
 /// Checks if the sleep duration is considered healthy (7-9 hours).
@@ -342,7 +343,7 @@ class _SleepDialogState extends State<_SleepDialog> {
                               ),
                               const SizedBox(height: 4),
                               Text(
-                                formatDuration(duration),
+                                formatDuration(context, duration),
                                 style: theme.textTheme.headlineSmall?.copyWith(
                                   fontWeight: FontWeight.w700,
                                   color: isHealthySleep(duration)
