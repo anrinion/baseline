@@ -49,14 +49,14 @@ class AppLocalizationsEn extends AppLocalizations {
   String get themeModeManual => 'Choose here';
 
   @override
-  String get themeModeManualDescription => 'You pick light or dark yourself.';
+  String get themeModeManualDescription => 'You pick light or dark yourself';
 
   @override
   String get themeModeDevice => 'As device';
 
   @override
   String get themeModeDeviceDescription =>
-      'Baseline follows your phone\'s light and dark setting.';
+      'Baseline follows your phone\'s settings';
 
   @override
   String get themeModeSchedule => 'On schedule';
@@ -66,7 +66,7 @@ class AppLocalizationsEn extends AppLocalizations {
       'Baseline switches at the times you choose.';
 
   @override
-  String get themeManualChoiceLabel => 'When you choose here:';
+  String get themeManualChoiceLabel => 'Your selection:';
 
   @override
   String get themeUseLight => 'Use light theme';
@@ -117,7 +117,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get foodTreatLabel => 'Treat';
 
   @override
-  String get foodSourcesTitle => 'Why this works';
+  String get foodSourcesTitle => 'Principles behind this module';
 
   @override
   String get foodSourcesContent =>
@@ -134,22 +134,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get movementDefaultOptions => 'Go for a walk\nA workout';
 
   @override
-  String get movementAnyCountsHint => 'any movement counts';
-
-  @override
   String get sleepModuleLabel => 'Sleep';
-
-  @override
-  String get sleepGoingToSleep => 'I\'m going to sleep';
-
-  @override
-  String get sleepAwake => 'I\'m awake';
-
-  @override
-  String get sleepDurationSoFar => 'so far';
-
-  @override
-  String get sleepCompleted => 'Sleep recorded';
 
   @override
   String get sleepStartLabel => 'Start';
@@ -170,7 +155,13 @@ class AppLocalizationsEn extends AppLocalizations {
   String get sleepDurationLabel => 'Sleep duration';
 
   @override
-  String get medsModuleLabel => 'Meds';
+  String get sleepHoursAbbreviation => 'h';
+
+  @override
+  String get sleepMinutesAbbreviation => 'm';
+
+  @override
+  String get medsModuleLabel => 'Medications';
 
   @override
   String get medsAddButtonLabel => 'Add medication';
@@ -192,7 +183,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get medsEmptyState =>
-      'No medications listed yet. Add the ones you want to track today.';
+      'No medications listed yet. Add the ones you want to track.';
 
   @override
   String get medsEmptyCompact => 'No meds yet';
@@ -212,7 +203,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get medsReminderToggleHelp =>
-      'If enabled, Baseline sends one local reminder per day.';
+      'If enabled, Baseline sends you reminders.';
 
   @override
   String get medsReminderTimeLabel => 'Reminder time';
@@ -242,10 +233,10 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get mentalStateSettingDescription =>
-      'Choose what to track in the Mental state module';
+      'Choose what to use in the Mental state module';
 
   @override
-  String get dialogGotIt => 'Got it';
+  String get dialogGotIt => 'Ok';
 
   @override
   String get dialogCancel => 'Cancel';
@@ -263,13 +254,13 @@ class AppLocalizationsEn extends AppLocalizations {
   String get dialogReset => 'Reset';
 
   @override
-  String get dialogWhyThisWorks => 'Why this works';
+  String get dialogWhyThisWorks => 'Principles behind this module';
 
   @override
-  String get dialogWhyThisHelps => 'Why this helps';
+  String get dialogWhyThisHelps => 'Principles behind this module';
 
   @override
-  String get nourishment => 'Nourishment';
+  String get nourishment => 'Nutrition';
 
   @override
   String get resetAll => 'Reset all';
@@ -328,7 +319,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get developerModeHelp =>
-      'Shows tools for testing and full local resets.';
+      'Shows developer tools. Shouldn\'t be needed.';
 
   @override
   String get developerResetAllDataLabel => 'Complete state reset';
@@ -374,22 +365,22 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get appPrivacyText =>
-      'Baseline is a private self-care app:\\nNo history, no sync, no data collection.\\n';
+      'Baseline is a private self-care app:\nNo history, no sync, no data collection.\n';
 
   @override
-  String get foodProteinSubtitle => '1-2 portions';
+  String get foodProteinSubtitle => 'chicken, eggs, fish';
 
   @override
-  String get foodGreensSubtitle => '3-5 portions (fruits & veggies)';
+  String get foodGreensSubtitle => 'apples, cabbage, cucumbers';
 
   @override
-  String get foodBeansSubtitle => '1-2 portions';
+  String get foodBeansSubtitle => 'lentils, beans, chickpeas';
 
   @override
-  String get foodFillersSubtitle => '1-3 portions (rice, pasta, bread)';
+  String get foodFillersSubtitle => 'potatoes, oats, rice';
 
   @override
-  String get foodTreatSubtitle => '1 portion (chocolate, dessert)';
+  String get foodTreatSubtitle => 'chocolate, berries';
 
   @override
   String get mentalStateHelp =>
@@ -433,6 +424,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get hereButtonHint => 'I\'m here. I\'m alive.';
+
+  @override
+  String get groundingButtonDefault => 'I\'m here. I\'m alive.';
 
   @override
   String get movementChoicesLabel => 'Movement choices';
@@ -506,7 +500,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get initialScreenTitle => 'Welcome to Baseline';
 
   @override
-  String get initialScreenMessage => 'No tracking. No pressure. Just today.';
+  String get initialScreenMessage => 'No pressure. Take your time.';
 
   @override
   String get initialScreenLanguageTitle => 'Choose your language';
@@ -521,10 +515,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String get cbtRightNowQuestion => 'How are you feeling right now?';
 
   @override
-  String get cbtMoodVerySad => 'Very sad';
+  String get cbtMoodVerySad => 'Awful';
 
   @override
-  String get cbtMoodSad => 'Sad';
+  String get cbtMoodSad => 'Bad';
 
   @override
   String get cbtMoodNeutral => 'Neutral';
@@ -533,7 +527,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get cbtMoodGood => 'Good';
 
   @override
-  String get cbtMoodVeryGood => 'Very good';
+  String get cbtMoodVeryGood => 'Amazing';
 
   @override
   String get cbtMoodRecorded => 'Mood recorded';
@@ -549,7 +543,7 @@ class AppLocalizationsEn extends AppLocalizations {
       'Small things count. A good coffee, a kind word, sunshine...';
 
   @override
-  String get cbtThoughtLensTitle => 'Thought lens';
+  String get cbtThoughtLensTitle => 'Cognitive distortions';
 
   @override
   String get cbtThoughtLensExample => 'Example:';
@@ -561,5 +555,5 @@ class AppLocalizationsEn extends AppLocalizations {
   String get cbtThoughtLensNext => 'Next';
 
   @override
-  String get cbtThoughtLensDaily => 'Today\'s thought distortion';
+  String get cbtThoughtLensDaily => 'Today\'s cognitive distortion';
 }

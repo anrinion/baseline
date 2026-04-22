@@ -125,7 +125,9 @@ class _GroundingDialogState extends State<_GroundingDialog>
 
     return Consumer<AppState>(
       builder: (context, appState, _) {
-        final label = appState.settings.hereButtonText;
+        final label = appState.settings.hereButtonText.isNotEmpty
+            ? appState.settings.hereButtonText
+            : l10n.groundingButtonDefault;
 
         return Dialog(
           insetPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 24),
