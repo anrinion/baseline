@@ -9,7 +9,7 @@ class AppLocalizationsRu extends AppLocalizations {
   AppLocalizationsRu([String locale = 'ru']) : super(locale);
 
   @override
-  String get appTitle => 'Baseline';
+  String get appTitle => 'База';
 
   @override
   String get settingsButtonLabel => 'Настройки';
@@ -30,7 +30,7 @@ class AppLocalizationsRu extends AppLocalizations {
   String get themeLabel => 'Тема';
 
   @override
-  String get themeLight1 => 'Светлая (нейтральная)';
+  String get themeLight1 => 'Светлая';
 
   @override
   String get themeLight2 => 'Светлая (тёплая)';
@@ -43,37 +43,35 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get themeBehaviorHelp =>
-      'Выбери, как Baseline переключается между светлой и тёмной темой.';
+      'Выбери, как База переключается между светлой и тёмной темой:';
 
   @override
-  String get themeModeManual => 'Выбирать вручную';
+  String get themeModeManual => 'Ручное переключение';
 
   @override
-  String get themeModeManualDescription =>
-      'Светлую или тёмную тему выбираешь ты.';
+  String get themeModeManualDescription => 'База использует выбранную тему';
 
   @override
   String get themeModeDevice => 'Как на устройстве';
 
   @override
-  String get themeModeDeviceDescription =>
-      'Baseline следует настройке светлой и тёмной темы на телефоне.';
+  String get themeModeDeviceDescription => 'База следует настройкам телефона';
 
   @override
   String get themeModeSchedule => 'По расписанию';
 
   @override
   String get themeModeScheduleDescription =>
-      'Baseline переключается в выбранное тобой время.';
+      'База переключает тему по расписанию';
 
   @override
-  String get themeManualChoiceLabel => 'Если выбирать вручную:';
+  String get themeManualChoiceLabel => 'Ручной выбор:';
 
   @override
-  String get themeUseLight => 'Использовать светлую';
+  String get themeUseLight => 'Использовать светлую тему';
 
   @override
-  String get themeUseDark => 'Использовать тёмную';
+  String get themeUseDark => 'Использовать тёмную тему';
 
   @override
   String get themeLightSectionLabel => 'Светлая тема';
@@ -82,19 +80,19 @@ class AppLocalizationsRu extends AppLocalizations {
   String get themeDarkSectionLabel => 'Тёмная тема';
 
   @override
-  String get themeScheduleLabel => 'Расписание';
+  String get themeScheduleLabel => 'Расписание темы';
 
   @override
-  String get themeScheduleLightStarts => 'Светлая с';
+  String get themeScheduleLightStarts => 'Время включения светлой темы';
 
   @override
-  String get themeScheduleDarkStarts => 'Тёмная с';
+  String get themeScheduleDarkStarts => 'Время включения тёмной темы';
 
   @override
   String get modulesLabel => 'Модули';
 
   @override
-  String get hereModuleLabel => 'Большая зелённая кнопка';
+  String get hereModuleLabel => 'Большая зелёная кнопка';
 
   @override
   String get hereModuleCustomizeLabel => 'Изменить текст кнопки';
@@ -118,7 +116,7 @@ class AppLocalizationsRu extends AppLocalizations {
   String get foodTreatLabel => 'Что-то вкусное';
 
   @override
-  String get foodSourcesTitle => 'Почему это работает';
+  String get foodSourcesTitle => 'Принципы работы модуля';
 
   @override
   String get foodSourcesContent =>
@@ -135,37 +133,37 @@ class AppLocalizationsRu extends AppLocalizations {
   String get movementDefaultOptions => 'Выйти погулять\nТренировка';
 
   @override
-  String get movementAnyCountsHint => 'любое движение считается';
+  String get movementAnyCountsHint => 'any movement counts';
 
   @override
   String get sleepModuleLabel => 'Сон';
 
   @override
-  String get sleepGoingToSleep => 'Я иду спать';
+  String get sleepGoingToSleep => 'I\'m going to sleep';
 
   @override
-  String get sleepAwake => 'Я встаю';
+  String get sleepAwake => 'I\'m awake';
 
   @override
-  String get sleepDurationSoFar => 'пока что';
+  String get sleepDurationSoFar => 'so far';
 
   @override
-  String get sleepCompleted => 'Сон записан';
+  String get sleepCompleted => 'Sleep recorded';
 
   @override
-  String get sleepStartLabel => 'Начало';
+  String get sleepStartLabel => 'Start';
 
   @override
-  String get sleepEndLabel => 'Конец';
+  String get sleepEndLabel => 'End';
 
   @override
-  String get sleepPrompt => 'Запишите свой сон:';
+  String get sleepPrompt => 'Track your sleep session:';
 
   @override
   String get sleepBedTimeLabel => 'Отбой';
 
   @override
-  String get sleepWakeTimeLabel => 'Подъем';
+  String get sleepWakeTimeLabel => 'Подъём';
 
   @override
   String get sleepDurationLabel => 'Длительность сна';
@@ -199,14 +197,14 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get medsEmptyState =>
-      'Список лекарств пока пуст. Добавь то, что хочешь отмечать сегодня.';
+      'Список лекарств пока пуст. Нажми, чтобы добавить.';
 
   @override
   String get medsEmptyCompact => 'Пока нет лекарств';
 
   @override
   String medsTodayProgress(int taken, int total) {
-    return 'Отмечено на сегодня: $taken из $total';
+    return 'Лекарств принято сегодня: $taken из $total';
   }
 
   @override
@@ -219,10 +217,10 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get medsReminderToggleHelp =>
-      'Если включено, Baseline присылает одно локальное напоминание в день.';
+      'If enabled, Baseline sends one local reminder per day.';
 
   @override
-  String get medsReminderTimeLabel => 'Время напоминания';
+  String get medsReminderTimeLabel => 'Reminder time';
 
   @override
   String get medsReminderPermissionDenied =>
@@ -237,20 +235,20 @@ class AppLocalizationsRu extends AppLocalizations {
       'Выключить напоминание для этого лекарства';
 
   @override
-  String get mentalStateModuleLabel => 'Психическое состояние';
+  String get mentalStateModuleLabel => 'Психологическое здоровье';
 
   @override
-  String get mentalStateRightNow => 'Прямо сейчас';
+  String get mentalStateRightNow => 'Текущее состояние';
 
   @override
-  String get mentalStateGoodThing => 'Что-то хорошее';
+  String get mentalStateGoodThing => 'Журнал позитива';
 
   @override
-  String get mentalStateThoughtLens => 'Фильтр когнитивных искажений';
+  String get mentalStateThoughtLens => 'Изучение когнитивных искажений';
 
   @override
   String get mentalStateSettingDescription =>
-      'Выбери, что отслеживать в модуле психического состояния';
+      'Выбери инструмент психологического здоровья:';
 
   @override
   String get dialogGotIt => 'Хорошо';
@@ -271,10 +269,10 @@ class AppLocalizationsRu extends AppLocalizations {
   String get dialogReset => 'Очистить';
 
   @override
-  String get dialogWhyThisWorks => 'Почему это работает';
+  String get dialogWhyThisWorks => 'Принципы работы модуля';
 
   @override
-  String get dialogWhyThisHelps => 'Почему это помогает';
+  String get dialogWhyThisHelps => 'Принципы работы модуля';
 
   @override
   String get nourishment => 'Питание';
@@ -304,16 +302,16 @@ class AppLocalizationsRu extends AppLocalizations {
   String get movementTitle => 'Движение';
 
   @override
-  String get movementCompleted => 'Ты завершил(а) активность сегодня. Хорошо.';
+  String get movementCompleted => 'Ты что-то сделал сегодня. Это хорошо.';
 
   @override
-  String get movementChoose => 'Выбери одну лёгкую активность на сегодня:';
+  String get movementChoose => 'Выбери какую-нибудь активность на сегодня:';
 
   @override
   String get movementGreatJob => 'Хорошо.';
 
   @override
-  String get tapToOpen => 'Нажми чтобы открыть';
+  String get tapToOpen => 'Нажми, чтобы открыть';
 
   @override
   String get placeholderModuleText => 'Это тестовый модуль.';
@@ -326,28 +324,27 @@ class AppLocalizationsRu extends AppLocalizations {
       'Включи или выключи модули. Дополнительные настройки появятся под каждым.';
 
   @override
-  String get resetToday => 'Сбросить прогресс';
+  String get resetToday => 'Сбросить сегодняшние данные';
 
   @override
-  String get todayReset => 'Прогресс сброшен';
+  String get todayReset => 'Данные сброшены';
 
   @override
   String get developerModeLabel => 'Режим разработчика';
 
   @override
   String get developerModeHelp =>
-      'Показывает инструменты для тестов и полного локального сброса.';
+      'Дополнительные настройки, которые по идее не должны быть нужны обычным пользователям.';
 
   @override
-  String get developerResetAllDataLabel => 'Полный сброс состояния';
+  String get developerResetAllDataLabel => 'Сбросить ВСЁ';
 
   @override
   String get developerResetAllDataHelp =>
-      'Это очистит состояние на сегодня, настройки приложения и вернёт тебя на начальный экран.';
+      'Это удалит все данные и все настройки, и вернёт тебя на начальный экран.';
 
   @override
-  String get developerNotificationsServiceLabel =>
-      'Сервис уведомлений о лекарствах';
+  String get developerNotificationsServiceLabel => 'Сервис уведомлений';
 
   @override
   String get developerNotificationsStatusNotInitialized =>
@@ -382,26 +379,26 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get appPrivacyText =>
-      'Baseline — приватное приложение для заботы о себе:\\nМы не собираем и не храним данные.';
+      'База — приватное приложение для заботы о себе:\nМы не собираем и не храним данные.\n';
 
   @override
-  String get foodProteinSubtitle => '1–2 порции';
+  String get foodProteinSubtitle => 'курица, яйца, рыба';
 
   @override
-  String get foodGreensSubtitle => '3–5 порций (фрукты и овощи)';
+  String get foodGreensSubtitle => 'яблоки, капуста, огурцы';
 
   @override
-  String get foodBeansSubtitle => '1–2 порции';
+  String get foodBeansSubtitle => 'чечевица, фасоль, нут';
 
   @override
-  String get foodFillersSubtitle => '1–3 порции (рис, паста, хлеб)';
+  String get foodFillersSubtitle => 'картошка, овсянка, рис';
 
   @override
-  String get foodTreatSubtitle => '1 порция (шоколад, десерт)';
+  String get foodTreatSubtitle => 'шоколад, ягоды';
 
   @override
   String get mentalStateHelp =>
-      '<p>Данные об эффективности этих методов не являются окончательными — разным людям подходят разные подходы. Baseline предлагает три различных режима, чтобы вы могли попробовать их и понять, что подходит именно вам.</p><h3 style=\'margin-top:20px;margin-bottom:12px\'>Текущее настроение</h3><p>Простая проверка вашего текущего настроения.</p><p>Систематический обзор и метаанализ рандомизированных контролируемых испытаний показали, что ведение дневника (включая простое экспрессивное письмо) привело к снижению показателей симптомов психических расстройств на 5% больше по сравнению с контрольными группами, с более выраженным эффектом при тревожности (9%) и ПТСР (6%). Однако авторы отмечают высокую статистическую гетерогенность и методологические недостатки в исследованиях, что ограничивает возможность сделать окончательные выводы о размере эффекта <a href=\'#ref-1\'>[1]</a>.</p><h3 style=\'margin-top:20px;margin-bottom:12px\'>Позитивные моменты дня</h3><p>Размышление о позитивных моментах.</p><p>Одно предварительное 12-недельное рандомизированное контролируемое исследование онлайн-ведения дневника позитивных эмоций (PAJ) среди пациентов общей медицинской практики с повышенной тревожностью показало, что PAJ ассоциировалось со снижением психического дистресса, улучшением самочувствия, уменьшением депрессивных симптомов, снижением тревожности через один месяц, и большей жизнестойкостью после первого и второго месяцев по сравнению с обычным уходом. Поскольку это единственное исследование с умеренной приверженностью участников, эти результаты требуют повторной проверки <a href=\'#ref-2\'>[2]</a>.</p><h3 style=\'margin-top:20px;margin-bottom:12px\'>Когнитивные искажения</h3><p>Этот режим носит исключительно образовательный характер. Он основан на устоявшихся концепциях когнитивно-поведенческой терапии, согласно которым выявление когнитивных искажений является первым шагом к их реструктуризации.</p>';
+      '<p>Данные об эффективности этих методов не являются окончательными — разным людям подходят разные подходы. База предлагает три различных режима, чтобы вы могли попробовать их и понять, что подходит именно вам.</p><h3 style=\'margin-top:20px;margin-bottom:12px\'>Текущее настроение</h3><p>Простая проверка вашего текущего настроения.</p><p>Систематический обзор и метаанализ рандомизированных контролируемых испытаний показали, что ведение дневника (включая простое экспрессивное письмо) привело к снижению показателей симптомов психических расстройств на 5% больше по сравнению с контрольными группами, с более выраженным эффектом при тревожности (9%) и ПТСР (6%). Однако авторы отмечают высокую статистическую гетерогенность и методологические недостатки в исследованиях, что ограничивает возможность сделать окончательные выводы о размере эффекта <a href=\'#ref-1\'>[1]</a>.</p><h3 style=\'margin-top:20px;margin-bottom:12px\'>Позитивные моменты дня</h3><p>Размышление о позитивных моментах.</p><p>Одно предварительное 12-недельное рандомизированное контролируемое исследование онлайн-ведения дневника позитивных эмоций (PAJ) среди пациентов общей медицинской практики с повышенной тревожностью показало, что PAJ ассоциировалось со снижением психического дистресса, улучшением самочувствия, уменьшением депрессивных симптомов, снижением тревожности через один месяц, и большей жизнестойкостью после первого и второго месяцев по сравнению с обычным уходом. Поскольку это единственное исследование с умеренной приверженностью участников, эти результаты требуют повторной проверки <a href=\'#ref-2\'>[2]</a>.</p><h3 style=\'margin-top:20px;margin-bottom:12px\'>Когнитивные искажения</h3><p>Этот режим носит исключительно образовательный характер. Он основан на устоявшихся концепциях когнитивно-поведенческой терапии, согласно которым выявление когнитивных искажений является первым шагом к их реструктуризации.</p>';
 
   @override
   String get mentalStateReferences =>
@@ -409,7 +406,7 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get sleepHelp =>
-      '<p>Baseline не отслеживает стадии сна и не предлагает анализ — он просто просит вас отмечать, когда вы спите и как долго. Бережное внимание к продолжительности собственного сна — это первый шаг к лучшему отдыху.</p><h3 style=\'margin-top:20px;margin-bottom:12px\'>Основные рекомендации по сну для взрослых (18–60 лет)</h3><p>Для оптимального физического и психического здоровья взрослым следует спать 7 и более часов за ночь на регулярной основе <a href=\'#ref-1\'>[1]</a>. Данные ясно показывают, что привычка спать менее 7 часов — это не просто вопрос чувства усталости, она связана с ощутимыми негативными изменениями в сердечно-сосудистой, метаболической и эмоциональной функциях.</p><h3 style=\'margin-top:20px;margin-bottom:12px\'>Ключевые последствия для здоровья, связанные с недостатком сна</h3><p>Риск сердечно-сосудистых заболеваний и смертности</p><p>Масштабные популяционные данные указывают на сильную и устойчивую связь между коротким сном и повышенными рисками для здоровья. По сравнению с теми, кто спит 7–9 часов, люди с недостаточным сном подвергаются на 6–15% более высокому риску смерти от любой причины, при этом самый высокий риск наблюдается у тех, кто спит менее 5 часов <a href=\'#ref-3\'>[3]</a>. Специфические сердечно-сосудистые последствия включают увеличение вероятности развития гипертонии на 20–61% и повышение риска ишемической болезни сердца на 11% за каждый час сна, потерянный ниже рекомендованного порога <a href=\'#ref-3\'>[3]</a>.</p><h3 style=\'margin-top:20px;margin-bottom:12px\'>Метаболическое здоровье и регуляция веса</h3><p><p>Недостаток сна нарушает баланс гормонов, регулирующих голод (лептина и грелина), что приводит к увеличенному потреблению калорий и снижению расхода энергии. Данные показывают, что мало спящие люди примерно на 45–55% чаще страдают ожирением и имеют на 9% повышенный риск развития диабета 2 типа по сравнению с теми, у кого продолжительность сна достаточна <a href=\'#ref-3\'>[3]</a>.</p><h3 style=\'margin-top:20px;margin-bottom:12px\'>Психическое здоровье и эмоциональная регуляция</h3><p><p>Сон причинно-следственно связан с психическим благополучием. Вмешательства, успешно улучшающие качество сна, приводят к умеренному или значительному снижению симптомов депрессии и тревожности <a href=\'#ref-2\'>[2]</a>. Более того, даже острая потеря сна оказывает значительное и достоверное влияние на повышение тревожности, ухудшая способность мозга регулировать эмоциональные реакции и приводя к повышенной раздражительности и чувствительности к стрессу <a href=\'#ref-3\'>[3]</a>.</p><h3 style=\'margin-top:20px;margin-bottom:12px\'>Примечание о сне более 9 часов</h3><p>Сон более 9 часов за ночь может быть уместным и восстанавливающим для молодых людей, лиц, восстанавливающихся после значительного дефицита сна, или тех, кто справляется с определенными заболеваниями. Однако для общей здоровой взрослой популяции связь между сном более 9 часов и риском для здоровья не до конца изучена и может отражать скрытые проблемы со здоровьем, а не быть прямой причиной вреда <a href=\'#ref-1\'>[1]</a>. Тем, кто обеспокоен чрезмерной продолжительностью сна, рекомендуется проконсультироваться с врачом.</p>';
+      '<p>База не отслеживает стадии сна и не предлагает анализ — он просто просит вас отмечать, когда вы спите и как долго. Бережное внимание к продолжительности собственного сна — это первый шаг к лучшему отдыху.</p><h3 style=\'margin-top:20px;margin-bottom:12px\'>Основные рекомендации по сну для взрослых (18–60 лет)</h3><p>Для оптимального физического и психического здоровья взрослым следует спать 7 и более часов за ночь на регулярной основе <a href=\'#ref-1\'>[1]</a>. Данные ясно показывают, что привычка спать менее 7 часов — это не просто вопрос чувства усталости, она связана с ощутимыми негативными изменениями в сердечно-сосудистой, метаболической и эмоциональной функциях.</p><h3 style=\'margin-top:20px;margin-bottom:12px\'>Ключевые последствия для здоровья, связанные с недостатком сна</h3><p>Риск сердечно-сосудистых заболеваний и смертности</p><p>Масштабные популяционные данные указывают на сильную и устойчивую связь между коротким сном и повышенными рисками для здоровья. По сравнению с теми, кто спит 7–9 часов, люди с недостаточным сном подвергаются на 6–15% более высокому риску смерти от любой причины, при этом самый высокий риск наблюдается у тех, кто спит менее 5 часов <a href=\'#ref-3\'>[3]</a>. Специфические сердечно-сосудистые последствия включают увеличение вероятности развития гипертонии на 20–61% и повышение риска ишемической болезни сердца на 11% за каждый час сна, потерянный ниже рекомендованного порога <a href=\'#ref-3\'>[3]</a>.</p><h3 style=\'margin-top:20px;margin-bottom:12px\'>Метаболическое здоровье и регуляция веса</h3><p><p>Недостаток сна нарушает баланс гормонов, регулирующих голод (лептина и грелина), что приводит к увеличенному потреблению калорий и снижению расхода энергии. Данные показывают, что мало спящие люди примерно на 45–55% чаще страдают ожирением и имеют на 9% повышенный риск развития диабета 2 типа по сравнению с теми, у кого продолжительность сна достаточна <a href=\'#ref-3\'>[3]</a>.</p><h3 style=\'margin-top:20px;margin-bottom:12px\'>Психическое здоровье и эмоциональная регуляция</h3><p><p>Сон причинно-следственно связан с психическим благополучием. Вмешательства, успешно улучшающие качество сна, приводят к умеренному или значительному снижению симптомов депрессии и тревожности <a href=\'#ref-2\'>[2]</a>. Более того, даже острая потеря сна оказывает значительное и достоверное влияние на повышение тревожности, ухудшая способность мозга регулировать эмоциональные реакции и приводя к повышенной раздражительности и чувствительности к стрессу <a href=\'#ref-3\'>[3]</a>.</p><h3 style=\'margin-top:20px;margin-bottom:12px\'>Примечание о сне более 9 часов</h3><p>Сон более 9 часов за ночь может быть уместным и восстанавливающим для молодых людей, лиц, восстанавливающихся после значительного дефицита сна, или тех, кто справляется с определенными заболеваниями. Однако для общей здоровой взрослой популяции связь между сном более 9 часов и риском для здоровья не до конца изучена и может отражать скрытые проблемы со здоровьем, а не быть прямой причиной вреда <a href=\'#ref-1\'>[1]</a>. Тем, кто обеспокоен чрезмерной продолжительностью сна, рекомендуется проконсультироваться с врачом.</p>';
 
   @override
   String get sleepHelpReferences =>
@@ -425,7 +422,7 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get movementHelp =>
-      '<p>Baseline предлагает два стандартных варианта движения — \"Сходить на прогулку\" и \"Сделать тренировку\" — но вы можете добавить любую активность по своему желанию.</p><h3 style=\'margin-top:20px;margin-bottom:12px\'>Ходьба (ежедневные шаги)</h3><p>Большее количество ежедневных шагов связано с более низким риском смертности от всех причин и сердечно-сосудистых заболеваний. Добавление 500–1000 шагов в день к вашему текущему базовому уровню связано со снижением риска — например, увеличение с 3000 до 4000 шагов <a href=\'#ref-1\'>[1]</a>.</p><h3 style=\'margin-top:20px;margin-bottom:12px\'>Тренировки — силовые тренировки (с отягощениями)</h3><p>Силовые тренировки стабильно увеличивают массу скелетных мышц, силу и физические функции <a href=\'#ref-2\'>[2]</a>.</p><h3 style=\'margin-top:20px;margin-bottom:12px\'>Пользовательские активности</h3><p>Вы можете добавлять свои собственные виды движения. Любое движение идет в зачет заботы о себе и активности. Не требуется никакой интенсивности или продолжительности — небольшой толчок лучше, чем принцип \"все или ничего\".</p>';
+      '<p>База предлагает два стандартных варианта движения — \"Сходить на прогулку\" и \"Сделать тренировку\" — но вы можете добавить любую активность по своему желанию.</p><h3 style=\'margin-top:20px;margin-bottom:12px\'>Ходьба (ежедневные шаги)</h3><p>Большее количество ежедневных шагов связано с более низким риском смертности от всех причин и сердечно-сосудистых заболеваний. Добавление 500–1000 шагов в день к вашему текущему базовому уровню связано со снижением риска — например, увеличение с 3000 до 4000 шагов <a href=\'#ref-1\'>[1]</a>.</p><h3 style=\'margin-top:20px;margin-bottom:12px\'>Тренировки — силовые тренировки (с отягощениями)</h3><p>Силовые тренировки стабильно увеличивают массу скелетных мышц, силу и физические функции <a href=\'#ref-2\'>[2]</a>.</p><h3 style=\'margin-top:20px;margin-bottom:12px\'>Пользовательские активности</h3><p>Вы можете добавлять свои собственные виды движения. Любое движение идет в зачет заботы о себе и активности. Не требуется никакой интенсивности или продолжительности — небольшой толчок лучше, чем принцип \"все или ничего\".</p>';
 
   @override
   String get movementReferences =>
@@ -440,13 +437,13 @@ class AppLocalizationsRu extends AppLocalizations {
       '<h3 style=\'margin-top:24px;margin-bottom:12px\'>Источники</h3><p id=\'ref-1\' style=\'margin-bottom:12px\'><b>[1]</b> Wilson, T. D., Reinhard, D. A., Westgate, E. C., Gilbert, D. T., Ellerbeck, N., Hahn, C., Brown, C. L., &amp; Shaked, A. (2014). Just think: The challenges of the disengaged mind. <i>Science</i>, 345(6192), 75–77. <a href=\'https://doi.org/10.1126/science.1250830\'>https://doi.org/10.1126/science.1250830</a></p><p id=\'ref-2\'><b>[2]</b> Kraemer, K. M., Luberto, C. M., Hall, D. L., Ngo, L. H., &amp; Yeh, G. Y. (2021). A systematic review and meta-analysis of mindfulness- and acceptance-based interventions for affect intolerance/sensitivity. <i>Behaviour Research and Therapy</i>, 135, 103751. <a href=\'https://doi.org/10.1016/j.brat.2020.103746\'>https://doi.org/10.1016/j.brat.2020.103746</a></p>';
 
   @override
-  String get hereButtonHint => 'Я здесь. Я живой(ая).';
+  String get hereButtonHint => 'Я здесь. Я живой.';
 
   @override
-  String get groundingButtonDefault => 'Я здесь. Я живой(ая).';
+  String get groundingButtonDefault => 'Я здесь. Я живой.';
 
   @override
-  String get movementChoicesLabel => 'Выбор движений';
+  String get movementChoicesLabel => 'Выбор активностей';
 
   @override
   String get movementItemDeleted => 'Пункт удалён';
@@ -514,16 +511,17 @@ class AppLocalizationsRu extends AppLocalizations {
   }
 
   @override
-  String get initialScreenTitle => 'Добро пожаловать в Baseline';
+  String get initialScreenTitle => 'Добро пожаловать на Базу';
 
   @override
-  String get initialScreenMessage => 'Никакого давления. Только то, что нужно.';
+  String get initialScreenMessage =>
+      'Поддерживаем базовую жизнедеятельность без всего лишнего.';
 
   @override
-  String get initialScreenLanguageTitle => 'Выберите язык';
+  String get initialScreenLanguageTitle => 'Выбери язык';
 
   @override
-  String get initialScreenThemeTitle => 'Выберите тему';
+  String get initialScreenThemeTitle => 'Выбери тему';
 
   @override
   String get initialScreenContinue => 'Продолжить';
@@ -532,10 +530,10 @@ class AppLocalizationsRu extends AppLocalizations {
   String get cbtRightNowQuestion => 'Как вы себя чувствуете прямо сейчас?';
 
   @override
-  String get cbtMoodVerySad => 'Очень грустно';
+  String get cbtMoodVerySad => 'Отвратительно';
 
   @override
-  String get cbtMoodSad => 'Грустно';
+  String get cbtMoodSad => 'Не очень';
 
   @override
   String get cbtMoodNeutral => 'Нейтрально';
@@ -544,10 +542,10 @@ class AppLocalizationsRu extends AppLocalizations {
   String get cbtMoodGood => 'Хорошо';
 
   @override
-  String get cbtMoodVeryGood => 'Очень хорошо';
+  String get cbtMoodVeryGood => 'Замечательно';
 
   @override
-  String get cbtMoodRecorded => 'Настроение записано';
+  String get cbtMoodRecorded => 'Настроение записано!';
 
   @override
   String get cbtGoodThingsQuestion => 'Что хорошего произошло сегодня?';
@@ -560,7 +558,7 @@ class AppLocalizationsRu extends AppLocalizations {
       'Мелочи имеют значение. Хороший кофе, доброе слово, солнце...';
 
   @override
-  String get cbtThoughtLensTitle => 'Мыслительная линза';
+  String get cbtThoughtLensTitle => 'Когнитивные искажения';
 
   @override
   String get cbtThoughtLensExample => 'Пример:';
