@@ -1,0 +1,1 @@
+Initial release with basic self-care modules: food, movement, sleep, mental state (CBT tools), medications reminders, and grounding. Fully offline, no tracking, no history storage.

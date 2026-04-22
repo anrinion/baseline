@@ -1,0 +1,17 @@
+The Baseline is a minimal, gentle self-care app companion designed for people who struggle to maintain basic level of functioning. It aims to help with these foundations, without pressure, motivation attempts or guilt promotion.
+
+The app consists of modules that can be enabled or disabled as needed:
+
+- Food — make sure you eat at least something every day
+- Movement — moving around is really beneficial
+- Sleep — if you don't wear any tracking device, you may want to check that you sleep enough
+- Mental state — tools inspired by Cognitive Behavioral Therapy (CBT) principles
+- Medications — Medication reminders with optional notifications (DO NOT USE for critical medications where delay is life-threatening)
+- Grounding — a big green button that you can press
+
+Privacy and policies:
+- No tracking — No analytics, cloud sync, or data collection. The app does not use network connection, ever
+- No health data access — The app does not connect to Google Fit/Apple Health or any other health data source
+- No history — The app does not store your history. The state resets each day
+- No advertising
+- No paywalls reducing functionality
