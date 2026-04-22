@@ -133,22 +133,7 @@ class AppLocalizationsRu extends AppLocalizations {
   String get movementDefaultOptions => 'Выйти погулять\nТренировка';
 
   @override
-  String get movementAnyCountsHint => 'any movement counts';
-
-  @override
   String get sleepModuleLabel => 'Сон';
-
-  @override
-  String get sleepGoingToSleep => 'I\'m going to sleep';
-
-  @override
-  String get sleepAwake => 'I\'m awake';
-
-  @override
-  String get sleepDurationSoFar => 'so far';
-
-  @override
-  String get sleepCompleted => 'Sleep recorded';
 
   @override
   String get sleepStartLabel => 'Start';
@@ -217,7 +202,7 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get medsReminderToggleHelp =>
-      'If enabled, Baseline sends one local reminder per day.';
+      'If enabled, Baseline sends you reminders.';
 
   @override
   String get medsReminderTimeLabel => 'Reminder time';

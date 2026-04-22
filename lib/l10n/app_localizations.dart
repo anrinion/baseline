@@ -179,7 +179,7 @@ abstract class AppLocalizations {
   /// Description for manual theme behavior
   ///
   /// In en, this message translates to:
-  /// **'You pick light or dark yourself.'**
+  /// **'You pick light or dark yourself'**
   String get themeModeManualDescription;
 
   /// Theme behavior option: follow device
@@ -191,7 +191,7 @@ abstract class AppLocalizations {
   /// Description for device theme behavior
   ///
   /// In en, this message translates to:
-  /// **'Baseline follows your phone\'s light and dark setting.'**
+  /// **'Baseline follows your phone\'s settings'**
   String get themeModeDeviceDescription;
 
   /// Theme behavior option: scheduled
@@ -209,7 +209,7 @@ abstract class AppLocalizations {
   /// Label for manual light/dark choice
   ///
   /// In en, this message translates to:
-  /// **'When you choose here:'**
+  /// **'Your selection:'**
   String get themeManualChoiceLabel;
 
   /// Manual theme option: use light theme
@@ -311,7 +311,7 @@ abstract class AppLocalizations {
   /// Title for food module sources/help
   ///
   /// In en, this message translates to:
-  /// **'Why this works'**
+  /// **'Principles behind this module'**
   String get foodSourcesTitle;
 
   /// Detailed explanation of why the food categories work (HTML with numbered citations)
@@ -338,41 +338,11 @@ abstract class AppLocalizations {
   /// **'Go for a walk\nA workout'**
   String get movementDefaultOptions;
 
-  /// Hint text for movement module
-  ///
-  /// In en, this message translates to:
-  /// **'any movement counts'**
-  String get movementAnyCountsHint;
-
   /// Label for the Sleep module
   ///
   /// In en, this message translates to:
   /// **'Sleep'**
   String get sleepModuleLabel;
-
-  /// Action: going to sleep
-  ///
-  /// In en, this message translates to:
-  /// **'I\'m going to sleep'**
-  String get sleepGoingToSleep;
-
-  /// Action: woke up
-  ///
-  /// In en, this message translates to:
-  /// **'I\'m awake'**
-  String get sleepAwake;
-
-  /// Label indicating sleep duration is ongoing
-  ///
-  /// In en, this message translates to:
-  /// **'so far'**
-  String get sleepDurationSoFar;
-
-  /// Message when sleep session is complete
-  ///
-  /// In en, this message translates to:
-  /// **'Sleep recorded'**
-  String get sleepCompleted;
 
   /// Label for sleep start time
   ///
@@ -425,7 +395,7 @@ abstract class AppLocalizations {
   /// Label for the Meds module
   ///
   /// In en, this message translates to:
-  /// **'Meds'**
+  /// **'Medications'**
   String get medsModuleLabel;
 
   /// Button to add a medication
@@ -467,7 +437,7 @@ abstract class AppLocalizations {
   /// Empty state text for meds module
   ///
   /// In en, this message translates to:
-  /// **'No medications listed yet. Add the ones you want to track today.'**
+  /// **'No medications listed yet. Add the ones you want to track.'**
   String get medsEmptyState;
 
   /// Compact empty state text for meds module tile
@@ -497,7 +467,7 @@ abstract class AppLocalizations {
   /// Help text for meds reminder toggle
   ///
   /// In en, this message translates to:
-  /// **'If enabled, Baseline sends one local reminder per day.'**
+  /// **'If enabled, Baseline sends you reminders.'**
   String get medsReminderToggleHelp;
 
   /// Label for meds reminder time picker
@@ -551,13 +521,13 @@ abstract class AppLocalizations {
   /// Description for mental state tracking settings
   ///
   /// In en, this message translates to:
-  /// **'Choose what to track in the Mental state module'**
+  /// **'Choose what to use in the Mental state module'**
   String get mentalStateSettingDescription;
 
   /// Dialog action button
   ///
   /// In en, this message translates to:
-  /// **'Got it'**
+  /// **'Ok'**
   String get dialogGotIt;
 
   /// Dialog action button
@@ -593,19 +563,19 @@ abstract class AppLocalizations {
   /// Tooltip to show help/sources
   ///
   /// In en, this message translates to:
-  /// **'Why this works'**
+  /// **'Principles behind this module'**
   String get dialogWhyThisWorks;
 
   /// Tooltip to show module help
   ///
   /// In en, this message translates to:
-  /// **'Why this helps'**
+  /// **'Principles behind this module'**
   String get dialogWhyThisHelps;
 
   /// Title for the food module dialog
   ///
   /// In en, this message translates to:
-  /// **'Nourishment'**
+  /// **'Nutrition'**
   String get nourishment;
 
   /// Button to reset all food categories
@@ -719,7 +689,7 @@ abstract class AppLocalizations {
   /// Help text for developer mode toggle
   ///
   /// In en, this message translates to:
-  /// **'Shows tools for testing and full local resets.'**
+  /// **'Shows developer tools. Shouldn\'t be needed.'**
   String get developerModeHelp;
 
   /// Button label for developer full reset
@@ -791,37 +761,37 @@ abstract class AppLocalizations {
   /// Privacy statement in settings
   ///
   /// In en, this message translates to:
-  /// **'Baseline is a private self-care app:\\nNo history, no sync, no data collection.\\n'**
+  /// **'Baseline is a private self-care app:\nNo history, no sync, no data collection.\n'**
   String get appPrivacyText;
 
-  /// Food category portion guide: Protein
+  /// Food category examples: Protein
   ///
   /// In en, this message translates to:
-  /// **'1-2 portions'**
+  /// **'chicken, eggs, fish'**
   String get foodProteinSubtitle;
 
-  /// Food category portion guide: Greens
+  /// Food category examples: Greens
   ///
   /// In en, this message translates to:
-  /// **'3-5 portions (fruits & veggies)'**
+  /// **'apples, cabbage, cucumbers'**
   String get foodGreensSubtitle;
 
-  /// Food category portion guide: Beans
+  /// Food category examples: Beans
   ///
   /// In en, this message translates to:
-  /// **'1-2 portions'**
+  /// **'lentils, beans, chickpeas'**
   String get foodBeansSubtitle;
 
-  /// Food category portion guide: Fillers
+  /// Food category examples: Fillers
   ///
   /// In en, this message translates to:
-  /// **'1-3 portions (rice, pasta, bread)'**
+  /// **'potatoes, oats, rice'**
   String get foodFillersSubtitle;
 
-  /// Food category portion guide: Treat
+  /// Food category examples: Treat
   ///
   /// In en, this message translates to:
-  /// **'1 portion (chocolate, dessert)'**
+  /// **'chocolate, berries'**
   String get foodTreatSubtitle;
 
   /// Help text for mental state module (HTML with numbered citations)
@@ -1037,7 +1007,7 @@ abstract class AppLocalizations {
   /// Welcome message on initial screen
   ///
   /// In en, this message translates to:
-  /// **'No tracking. No pressure. Just today.'**
+  /// **'No pressure. Take your time.'**
   String get initialScreenMessage;
 
   /// Title for language selection section
@@ -1067,13 +1037,13 @@ abstract class AppLocalizations {
   /// Mood option: Very sad
   ///
   /// In en, this message translates to:
-  /// **'Very sad'**
+  /// **'Awful'**
   String get cbtMoodVerySad;
 
   /// Mood option: Sad
   ///
   /// In en, this message translates to:
-  /// **'Sad'**
+  /// **'Bad'**
   String get cbtMoodSad;
 
   /// Mood option: Neutral
@@ -1091,7 +1061,7 @@ abstract class AppLocalizations {
   /// Mood option: Very good
   ///
   /// In en, this message translates to:
-  /// **'Very good'**
+  /// **'Amazing'**
   String get cbtMoodVeryGood;
 
   /// Message when mood is recorded
@@ -1121,7 +1091,7 @@ abstract class AppLocalizations {
   /// Title for thought lens section
   ///
   /// In en, this message translates to:
-  /// **'Thought lens'**
+  /// **'Cognitive distortions'**
   String get cbtThoughtLensTitle;
 
   /// Label for thought lens example
@@ -1145,7 +1115,7 @@ abstract class AppLocalizations {
   /// Label indicating today's random thought distortion
   ///
   /// In en, this message translates to:
-  /// **'Today\'s thought distortion'**
+  /// **'Today\'s cognitive distortion'**
   String get cbtThoughtLensDaily;
 }
 
