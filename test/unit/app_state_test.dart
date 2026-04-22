@@ -302,7 +302,8 @@ void main() {
     test('hereButtonText can be customized', () async {
       final settings = Settings();
       
-      expect(settings.hereButtonText, equals('I\'m here. I\'m alive.'));
+      // Default is empty (uses localized default in UI)
+      expect(settings.hereButtonText, equals(''));
 
       settings.hereButtonText = 'I am present';
       expect(settings.hereButtonText, equals('I am present'));
