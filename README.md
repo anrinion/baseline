@@ -12,8 +12,6 @@
 
 ### Install
 
-Note: this is alpha version, not ready for general use.
-
 1. Install Obtainium from F-Droid or GitHub: [Obtainium](https://github.com/ImranR98/Obtainium)
 2. "Add App" and enter this repository URL: `https://github.com/anrinion/baseline`
 
@@ -57,8 +55,6 @@ Additional modules:
 **База** - минималистичное приложение для заботы о себе, разработанное для людей, которые испытывают трудности с поддержанием базового уровня функционирования (отсюда и название).
 
 ### Установка
-
-Это альфа-версия приложения, не предназначенная для широкого использования.
 
 1. Установите Obtainium из F-Droid или GitHub: <a href="https://github.com/ImranR98/Obtainium"><img src="https://raw.githubusercontent.com/ImranR98/Obtainium/main/assets/graphics/icon_small.png" alt="Obtainium icon" width="18" height="18">Obtainium</a>
 2. "Add App", и введите этот репозиторий в качестве URL: `https://github.com/anrinion/baseline`
