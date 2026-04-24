@@ -1,6 +1,5 @@
 -keep class io.flutter.** { *; }
 -dontwarn com.google.android.play.core.**
--keep class com.google.android.play.core.** { *; }
 
 # Flutter Local Notifications ProGuard rules
 # Required to prevent "Missing type parameter" crash when using zonedSchedule

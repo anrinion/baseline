@@ -6,6 +6,12 @@ plugins {
     id("dev.flutter.flutter-gradle-plugin")
 }
 
+// Exclude Play Core
+configurations.all {
+    exclude(group = "com.google.android.play", module = "core")
+}
+
+
 // Load keystore properties if file exists (CI will create it)
 val keystoreProperties = Properties()
 val keystorePropertiesFile = rootProject.file("key.properties")
