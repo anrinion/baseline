@@ -1,0 +1,1 @@
+Added Flutter submodule for F-Droid build
