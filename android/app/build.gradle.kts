@@ -79,6 +79,20 @@ android {
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
         }
     }
+
+    val abiCodes = mapOf("armeabi-v7a" to 1, "arm64-v8a" to 2, "x86_64" to 3)
+    applicationVariants.configureEach {
+        val variant = this
+        outputs.forEach { output ->
+            val abiFilter = output.filters.find { it.filterType == "ABI" }
+            val abiName = abiFilter?.identifier
+            val abiVersionCode = abiCodes[abiName]
+            if (abiVersionCode != null) {
+                (output as com.android.build.gradle.internal.api.ApkVariantOutputImpl).versionCodeOverride =
+                    variant.versionCode * 10 + abiVersionCode
+            }
+        }
+    }
 }
 
 flutter {
