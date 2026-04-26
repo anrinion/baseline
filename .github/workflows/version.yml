@@ -54,6 +54,13 @@ jobs:
           git push
           echo "COMMIT_SHA=$(git rev-parse HEAD)" >> $GITHUB_ENV
 
+      - name: Trigger Flutter build workflow
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh workflow run flutter.yml --ref main
+          echo "Flutter workflow triggered for commit $COMMIT_SHA"
+
       - name: Wait for Flutter workflow to succeed
         env:
           GH_TOKEN: ${{ github.token }}
