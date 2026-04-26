@@ -1,7 +1,7 @@
 name: baseline
 description: "Simple self-care app."
 publish_to: 'none'
-version: 1.0.8+8
+version: 1.0.9+9
 environment:
   sdk: ^3.11.4
 dependencies:
