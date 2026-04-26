@@ -17,6 +17,8 @@ jobs:
     steps:
       - name: Clone repository
         uses: actions/checkout@v6
+        with:
+          submodules: 'true'
 
       - name: Read version from pubspec.yaml
         id: version
@@ -36,10 +38,11 @@ jobs:
           echo "Version: $VERSION_NAME ($VERSION_CODE)"
           echo "Release tag: $RELEASE_TAG"
 
-      - name: Set up Flutter
-        uses: subosito/flutter-action@v2
-        with:
-          channel: stable
+      - name: Set up Flutter from submodule
+        run: |
+          echo "$GITHUB_WORKSPACE/.flutter/bin" >> $GITHUB_PATH
+          echo "PUB_CACHE=$GITHUB_WORKSPACE/.pub-cache" >> $GITHUB_ENV
+          .flutter/bin/flutter config --no-analytics
 
       - name: Flutter init
         run: |
