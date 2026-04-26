@@ -2,7 +2,7 @@ on:
   workflow_dispatch:
     inputs:
       dev_version:
-        description: 'Dev version to promote (e.g., 0.0.42-dev)'
+        description: 'Dev version to promote (e.g., v0.0.42-dev+123)'
         required: true
         type: string
 
@@ -18,8 +18,8 @@ jobs:
       - name: Validate version format
         run: |
           VERSION="${{ inputs.dev_version }}"
-          if [[ ! "$VERSION" =~ -dev$ ]]; then
-            echo "Error: Version must end with '-dev'"
+          if [[ ! "$VERSION" =~ ^v[0-9]+\.[0-9]+\.[0-9]+-dev\+[0-9]+$ ]]; then
+            echo "Error: Version must match pattern vX.Y.Z-dev+NNN"
             exit 1
           fi
           echo "Promoting version: $VERSION"
@@ -29,7 +29,7 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          DEV_TAG="v${{ inputs.dev_version }}"
+          DEV_TAG="${{ inputs.dev_version }}"
           echo "Fetching release for tag: $DEV_TAG"
           RELEASE_DATA=$(gh api repos/${{ github.repository }}/releases/tags/$DEV_TAG)
           TARGET_SHA=$(echo "$RELEASE_DATA" | jq -r '.target_commitish')
@@ -39,20 +39,17 @@ jobs:
       - name: Compute production version
         id: version
         run: |
-          DEV_VERSION="${{ inputs.dev_version }}"
-          PROD_VERSION="${DEV_VERSION%-dev}"
+          DEV_TAG="${{ inputs.dev_version }}"   # e.g. v0.0.42-dev+123
+          # strip leading "v" and everything after "-dev"
+          PROD_VERSION="${DEV_TAG#v}"           # 0.0.42-dev+123
+          PROD_VERSION="${PROD_VERSION%-dev*}"  # 0.0.42
           echo "prod_version=$PROD_VERSION" >> $GITHUB_OUTPUT
           echo "Production version: $PROD_VERSION"
-
-      - name: Checkout dev release commit
-        run: |
-          git checkout ${{ steps.get_commit.outputs.dev_commit }}
-          echo "Checked out commit: ${{ steps.get_commit.outputs.dev_commit }}"
 
       - name: Download dev release artifacts
         uses: robinraju/release-downloader@v1
         with:
-          tag: v${{ inputs.dev_version }}
+          tag: ${{ inputs.dev_version }}
           fileName: "*"
           out-file-path: "artifacts"
 

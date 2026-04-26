@@ -1,68 +1,45 @@
 on:
   workflow_dispatch:
-    inputs:
-      release_type:
-        description: 'Build type'
-        required: true
-        default: 'dev'
-        type: choice
-        options:
-          - dev
-          - production
   push:
     branches:
-    - main
+      - main
   pull_request:
     branches:
-    - main
+      - main
 
 jobs:
   build:
     runs-on: ubuntu-latest
     outputs:
-      version: ${{ steps.version.outputs.version }}
       release_tag: ${{ steps.version.outputs.release_tag }}
+      version_name: ${{ steps.version.outputs.version_name }}
+      version_code: ${{ steps.version.outputs.version_code }}
     steps:
       - name: Clone repository
         uses: actions/checkout@v6
 
-      - name: Compute version
+      - name: Read version from pubspec.yaml
         id: version
         run: |
-          MAJOR_MINOR="${{ vars.MAJOR_MINOR || '0.0' }}"
-          PATCH_BASE="${{ vars.PATCH_BASE || '0' }}"
-          PATCH=$(( ${{ github.run_number }} - PATCH_BASE ))
-          
-          if [[ "${{ github.event_name }}" == "push" || "${{ inputs.release_type }}" == "dev" ]]; then
-            SUFFIX="-dev"
-          else
-            SUFFIX=""
-          fi
-          
-          # Pubspec version uses Flutter format: versionName+versionCode
-          BUILD_NUMBER="${{ github.run_number }}"
-          PUBSPEC_VERSION="${MAJOR_MINOR}.${PATCH}+${BUILD_NUMBER}"
-          # Release tag includes -dev suffix if applicable
-          RELEASE_TAG="${MAJOR_MINOR}.${PATCH}${SUFFIX}"
-          
-          echo "pubspec_version=$PUBSPEC_VERSION" >> $GITHUB_OUTPUT
-          echo "release_tag=$RELEASE_TAG" >> $GITHUB_OUTPUT
-          echo "version=$RELEASE_TAG" >> $GITHUB_OUTPUT
-          echo "MAJOR_MINOR: $MAJOR_MINOR"
-          echo "PATCH: $PATCH"
-          echo "Pubspec version: $PUBSPEC_VERSION"
-          echo "Release tag: $RELEASE_TAG"
+          VERSION_LINE=$(grep '^version:' pubspec.yaml | head -1)
+          VERSION_STRING=$(echo "$VERSION_LINE" | awk '{print $2}')
+          VERSION_NAME="${VERSION_STRING%%+*}"
+          VERSION_CODE="${VERSION_STRING##*+}"
 
-      - name: Update version in pubspec.yaml
-        run: |
-          sed -i "s/^version: .*/version: ${{ steps.version.outputs.pubspec_version }}/" pubspec.yaml
-          cat pubspec.yaml | grep "^version:"
+          # dev builds always get a unique suffix
+          SUFFIX="-dev+${{ github.run_number }}"
+          RELEASE_TAG="${VERSION_NAME}${SUFFIX}"
+
+          echo "version_name=$VERSION_NAME" >> $GITHUB_OUTPUT
+          echo "version_code=$VERSION_CODE" >> $GITHUB_OUTPUT
+          echo "release_tag=$RELEASE_TAG" >> $GITHUB_OUTPUT
+          echo "Version: $VERSION_NAME ($VERSION_CODE)"
+          echo "Release tag: $RELEASE_TAG"
 
       - name: Set up Flutter
         uses: subosito/flutter-action@v2
         with:
           channel: stable
-        id: flutter-action
 
       - name: Flutter init
         run: |
@@ -90,7 +67,8 @@ jobs:
 
       - name: Android build
         run: |
-          flutter build apk
+          flutter build apk                     # universal APK
+          flutter build apk --split-per-abi     # per-ABI APKs
           flutter build appbundle
 
       - name: Upload APK/AAB artifacts
@@ -98,7 +76,7 @@ jobs:
         with:
           name: android-build
           path: |
-            build/app/outputs/flutter-apk/app-release.apk
+            build/app/outputs/flutter-apk/
             build/app/outputs/bundle/release/app-release.aab
 
   release:
@@ -113,14 +91,11 @@ jobs:
         with:
           name: android-build
 
-      - name: List files
-        run: find . -name "*.apk" -o -name "*.aab"
-
       - name: Create Release
         uses: softprops/action-gh-release@v2
         with:
           tag_name: v${{ needs.build.outputs.release_tag }}
           name: Release ${{ needs.build.outputs.release_tag }}
           files: |
-            flutter-apk/app-release.apk
+            flutter-apk/*.apk
             bundle/release/app-release.aab
