@@ -58,10 +58,6 @@ android {
         includeInBundle = false
     }
 
-    buildFeatures {
-        baselineProfile = false
-    }
-
     buildTypes {
         getByName("debug") {
             // Use stable key for debug builds when available; otherwise fall back to default debug key
