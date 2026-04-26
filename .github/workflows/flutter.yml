@@ -38,6 +38,11 @@ jobs:
           echo "Version: $VERSION_NAME ($VERSION_CODE)"
           echo "Release tag: $RELEASE_TAG"
 
+      - name: Fetch Flutter tags for version detection
+        run: |
+          cd .flutter
+          git fetch --tags origin
+
       - name: Set up Flutter from submodule
         run: |
           echo "$GITHUB_WORKSPACE/.flutter/bin" >> $GITHUB_PATH
