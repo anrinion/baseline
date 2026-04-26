@@ -32,10 +32,11 @@ jobs:
 
       - name: Update fastlane changelogs
         run: |
-          BASE_CODE="${${{ inputs.new_version }}##*+}"
-          ARMEABI=$((BASE_CODE * 10 + 1))
-          ARM64=$((BASE_CODE * 10 + 2))
-          X86_64=$((BASE_CODE * 10 + 3))
+          VERSION="${{ inputs.new_version }}"          # e.g. "1.0.8+8"
+          BASE_CODE="${VERSION##*+}"                   # "8"
+          ARMEABI=$((BASE_CODE * 10 + 1))              # 81
+          ARM64=$((BASE_CODE * 10 + 2))                # 82
+          X86_64=$((BASE_CODE * 10 + 3))               # 83
 
           DIR="fastlane/metadata/android/en-US/changelogs"
           echo "${{ inputs.changelog }}" > "${DIR}/${ARMEABI}.txt"
