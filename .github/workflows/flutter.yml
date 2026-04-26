@@ -79,6 +79,17 @@ jobs:
             echo "No signing secrets available. Using default debug keystore."
           fi
 
+      - name: Patch dartjni to disable build ID
+        run: |
+          JNI_CMAKE=$(find $PUB_CACHE/hosted/pub.dev -path "*/jni-*/src/CMakeLists.txt" | head -n 1)
+          if [ -n "$JNI_CMAKE" ] && [ -f "$JNI_CMAKE" ]; then
+            sed -i '2i add_link_options("LINKER:--build-id=none")' "$JNI_CMAKE"
+            echo "Patched CMakeLists.txt in $JNI_CMAKE"
+          else
+            echo "Error: jni CMakeLists.txt not found in expected location."
+            exit 1
+          fi
+
       - name: Android build
         run: |
           flutter build apk                     # universal APK
