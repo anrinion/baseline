@@ -1,4 +1,3 @@
-!! invalid
 on:
   workflow_dispatch:
     inputs:
