@@ -1,0 +1,113 @@
+on:
+  workflow_dispatch:
+    inputs:
+      new_version:
+        description: 'New version in format X.Y.Z+CODE (e.g., 1.2.3+45)'
+        required: true
+      changelog:
+        description: 'Changelog text for this release'
+        required: true
+
+jobs:
+  prepare-and-promote:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      actions: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Validate new version
+        run: |
+          if [[ ! "${{ inputs.new_version }}" =~ ^[0-9]+\.[0-9]+\.[0-9]+\+[0-9]+$ ]]; then
+            echo "Invalid version format. Expected X.Y.Z+CODE"
+            exit 1
+          fi
+
+      - name: Update pubspec.yaml
+        run: |
+          sed -i "s/^version: .*/version: ${{ inputs.new_version }}/" pubspec.yaml
+          grep "^version:" pubspec.yaml
+
+      - name: Update fastlane changelogs
+        run: |
+          VERSION="${{ inputs.new_version }}"          # e.g. "1.0.8+8"
+          BASE_CODE="${VERSION##*+}"                   # "8"
+          ARMEABI=$((BASE_CODE * 10 + 1))              # 81
+          ARM64=$((BASE_CODE * 10 + 2))                # 82
+          X86_64=$((BASE_CODE * 10 + 3))               # 83
+
+          DIR="fastlane/metadata/android/en-US/changelogs"
+          echo "${{ inputs.changelog }}" > "${DIR}/${ARMEABI}.txt"
+          echo "${{ inputs.changelog }}" > "${DIR}/${ARM64}.txt"
+          echo "${{ inputs.changelog }}" > "${DIR}/${X86_64}.txt"
+
+          echo "Changelogs written: ${ARMEABI}, ${ARM64}, ${X86_64}"
+
+      - name: Commit and push
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add pubspec.yaml fastlane/metadata/android/en-US/changelogs/
+          git commit -m "Release ${{ inputs.new_version }}" || echo "Nothing to commit"
+          git push
+          echo "COMMIT_SHA=$(git rev-parse HEAD)" >> $GITHUB_ENV
+
+      - name: Wait for Flutter workflow to succeed
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          BRANCH="${{ github.ref_name }}"
+          echo "Waiting for Flutter workflow triggered by push to $BRANCH (commit $COMMIT_SHA)..."
+          TIMEOUT=600
+          INTERVAL=15
+          ELAPSED=0
+          while true; do
+            RUN=$(gh run list --workflow=flutter.yml --branch "$BRANCH" --json headSha,status,conclusion,databaseId \
+                  --jq "[.[] | select(.headSha==\"$COMMIT_SHA\")][0]")
+            if [ -n "$RUN" ]; then
+              STATUS=$(echo "$RUN" | jq -r '.status')
+              CONCLUSION=$(echo "$RUN" | jq -r '.conclusion')
+              if [ "$STATUS" == "completed" ]; then
+                if [ "$CONCLUSION" == "success" ]; then
+                  RUN_ID=$(echo "$RUN" | jq -r '.databaseId')
+                  echo "Workflow run $RUN_ID succeeded."
+                  break
+                else
+                  echo "Workflow run did not succeed (conclusion=$CONCLUSION). Aborting."
+                  exit 1
+                fi
+              fi
+            fi
+            if [ $ELAPSED -ge $TIMEOUT ]; then
+              echo "Timeout waiting for workflow to complete."
+              exit 1
+            fi
+            sleep $INTERVAL
+            ELAPSED=$((ELAPSED + INTERVAL))
+          done
+
+      - name: Find created dev release tag
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          VERSION_NAME="${{ inputs.new_version }}"
+          VERSION_NAME="${VERSION_NAME%+*}"
+          PREFIX="v${VERSION_NAME}-dev+"
+          echo "Looking for release with tag starting with '$PREFIX'..."
+          DEV_TAG=$(gh release list --limit 100 --json tagName \
+            --jq "[.[] | select(.tagName | startswith(\"$PREFIX\"))] | .[0].tagName")
+          if [ -z "$DEV_TAG" ]; then
+            echo "Could not find dev release tag."
+            exit 1
+          fi
+          echo "Found dev tag: $DEV_TAG"
+          echo "DEV_TAG=$DEV_TAG" >> $GITHUB_ENV
+
+      - name: Trigger promotion workflow
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh workflow run promote.yml -f dev_version="$DEV_TAG"
+          echo "Promotion workflow triggered for $DEV_TAG"
