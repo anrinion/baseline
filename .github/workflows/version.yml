@@ -58,12 +58,13 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          echo "Waiting for Flutter workflow triggered by push to main (commit $COMMIT_SHA)..."
+          BRANCH="${{ github.ref_name }}"
+          echo "Waiting for Flutter workflow triggered by push to $BRANCH (commit $COMMIT_SHA)..."
           TIMEOUT=600
           INTERVAL=15
           ELAPSED=0
           while true; do
-            RUN=$(gh run list --workflow=flutter.yml --branch main --json headSha,status,conclusion,databaseId \
+            RUN=$(gh run list --workflow=flutter.yml --branch "$BRANCH" --json headSha,status,conclusion,databaseId \
                   --jq "[.[] | select(.headSha==\"$COMMIT_SHA\")][0]")
             if [ -n "$RUN" ]; then
               STATUS=$(echo "$RUN" | jq -r '.status')
@@ -94,9 +95,9 @@ jobs:
           VERSION_NAME="${{ inputs.new_version }}"
           VERSION_NAME="${VERSION_NAME%+*}"
           PREFIX="v${VERSION_NAME}-dev+"
-          echo "Looking for release with tag starting with '$PREFIX' and commit $COMMIT_SHA..."
-          DEV_TAG=$(gh release list --limit 100 --json tagName,targetCommitish \
-            --jq "[.[] | select(.targetCommitish==\"$COMMIT_SHA\" and (.tagName | startswith(\"$PREFIX\")))] | .[0].tagName")
+          echo "Looking for release with tag starting with '$PREFIX'..."
+          DEV_TAG=$(gh release list --limit 100 --json tagName \
+            --jq "[.[] | select(.tagName | startswith(\"$PREFIX\"))] | .[0].tagName")
           if [ -z "$DEV_TAG" ]; then
             echo "Could not find dev release tag."
             exit 1
