@@ -20,6 +20,12 @@ jobs:
         with:
           submodules: 'true'
 
+      - name: Set up JDK 21
+        uses: actions/setup-java@v4
+        with:
+          java-version: '21'
+          distribution: 'temurin'
+
       - name: Read version from pubspec.yaml
         id: version
         run: |
