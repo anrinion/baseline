@@ -4,6 +4,12 @@
 |:---:|:---|
 | <img width="48" height="48" alt="App icon" src="https://github.com/user-attachments/assets/c7a550f7-979d-4823-ab4e-afa483745af9"> | **Gentle self-care for depression, disability, chronic illness, or burnout.** |
 
+[![GitHub license](https://img.shields.io/github/license/anrinion/baseline)](https://github.com/anrinion/baseline/blob/main/LICENSE)
+[![GitHub stars](https://img.shields.io/github/stars/anrinion/baseline)](https://github.com/anrinion/baseline/stargazers)
+[![GitHub release](https://img.shields.io/github/v/release/anrinion/baseline)](https://github.com/anrinion/baseline/releases)
+
+[<img src="https://f-droid.org/badge/get-it-on.png" alt="Get it on F-Droid" width="200">](https://f-droid.org/packages/io.github.anrinion.baseline)
+
 ## About
 
 🇷🇺 version is [below](#about_ru).
@@ -12,8 +18,15 @@
 
 ### Install
 
-1. Install Obtainium from F-Droid or GitHub: [Obtainium](https://github.com/ImranR98/Obtainium)
+**Option 1: F-Droid** (recommended for automatic updates)
+- Install via [F-Droid](https://f-droid.org/packages/io.github.anrinion.baseline)
+
+**Option 2: Obtainium**
+1. Install [Obtainium](https://github.com/ImranR98/Obtainium)
 2. "Add App" and enter this repository URL: `https://github.com/anrinion/baseline`
+
+**Option 3: Manual APK**
+- Download the latest APK from [GitHub Releases](https://github.com/anrinion/baseline/releases)
 
 ### Preview
 
@@ -56,8 +69,15 @@ Additional modules:
 
 ### Установка
 
-1. Установите Obtainium из F-Droid или GitHub: <a href="https://github.com/ImranR98/Obtainium"><img src="https://raw.githubusercontent.com/ImranR98/Obtainium/main/assets/graphics/icon_small.png" alt="Obtainium icon" width="18" height="18">Obtainium</a>
+**Вариант 1: F-Droid** (рекомендуется для автоматических обновлений)
+- Установите через [F-Droid](https://f-droid.org/packages/io.github.anrinion.baseline)
+
+**Вариант 2: Obtainium**
+1. Установите <a href="https://github.com/ImranR98/Obtainium"><img src="https://raw.githubusercontent.com/ImranR98/Obtainium/main/assets/graphics/icon_small.png" alt="Obtainium icon" width="18" height="18">Obtainium</a>
 2. "Add App", и введите этот репозиторий в качестве URL: `https://github.com/anrinion/baseline`
+
+**Вариант 3: APK вручную**
+- Скачайте последний APK из [GitHub Releases](https://github.com/anrinion/baseline/releases)
 
 ### Функции приложения
 
@@ -95,8 +115,8 @@ Additional modules:
 - [x] Sources: explanations + references for all modules  
 - [x] Testing (unit, e2e, dogfooding)
 - [x] Final design polish
-- [ ] Fixing bugs
-- [ ] Android release
+- [x] Fixing bugs
+- [x] Android release
 
 ### v2 Ideas
 - [ ] iOS release
