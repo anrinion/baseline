@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:url_launcher/url_launcher.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 
 import '../state/app_state.dart';
@@ -52,10 +51,38 @@ class _SettingsScreenState extends State<SettingsScreen> {
   }
 
   Future<void> _launchBugReport() async {
-    final Uri url = Uri.parse('https://github.com/anrinion/baseline/issues');
-    if (await canLaunchUrl(url)) {
-      await launchUrl(url, mode: LaunchMode.externalApplication);
-    }
+    final String githubUrl = 'https://github.com/anrinion/baseline/issues';
+    final l10n = AppLocalizations.of(context)!;
+    
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text(l10n.reportBugButtonLabel),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const Text('Report bugs or provide feedback at:'),
+              const SizedBox(height: 8),
+              SelectableText(
+                githubUrl,
+                style: const TextStyle(
+                  fontSize: 14,
+                  fontFamily: 'monospace',
+                ),
+              ),
+            ],
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(),
+              child: Text(l10n.dialogGotIt),
+            ),
+          ],
+        );
+      },
+    );
   }
 
   final List<String> languages = ['en', 'ru'];
