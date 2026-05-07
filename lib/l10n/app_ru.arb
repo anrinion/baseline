@@ -437,6 +437,14 @@
   "@appPrivacyText": {
     "description": "Privacy statement in settings"
   },
+  "reportBugButtonLabel": "Сообщить об ошибке или дать обратную связь",
+  "@reportBugButtonLabel": {
+    "description": "Button label for reporting bugs or giving feedback"
+  },
+  "versionInfoLabel": "Версия",
+  "@versionInfoLabel": {
+    "description": "Label for version information"
+  },
   "foodProteinSubtitle": "курица, яйца, рыба",
   "@foodProteinSubtitle": {
     "description": "Food category examples: Protein"

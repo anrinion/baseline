@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:url_launcher/url_launcher.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 
 import '../state/app_state.dart';
 import '../l10n/localization_service.dart';
@@ -19,6 +21,13 @@ class SettingsScreen extends StatefulWidget {
 class _SettingsScreenState extends State<SettingsScreen> {
   TextEditingController? _hereButtonController;
   TextEditingController? _medsListController;
+  String _appVersion = '';
+
+  @override
+  void initState() {
+    super.initState();
+    _getAppVersion();
+  }
 
   @override
   void dispose() {
@@ -33,6 +42,20 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
   void _setMedsController(TextEditingController controller) {
     _medsListController = controller;
+  }
+
+  Future<void> _getAppVersion() async {
+    final packageInfo = await PackageInfo.fromPlatform();
+    setState(() {
+      _appVersion = '${packageInfo.version}+${packageInfo.buildNumber}';
+    });
+  }
+
+  Future<void> _launchBugReport() async {
+    final Uri url = Uri.parse('https://github.com/anrinion/baseline/issues');
+    if (await canLaunchUrl(url)) {
+      await launchUrl(url, mode: LaunchMode.externalApplication);
+    }
   }
 
   final List<String> languages = ['en', 'ru'];
@@ -116,6 +139,28 @@ class _SettingsScreenState extends State<SettingsScreen> {
             appState: appState,
             settings: settings,
             l10n: l10n,
+          ),
+
+          const SizedBox(height: 24),
+
+          // App Info Section
+          Text(
+            l10n.versionInfoLabel,
+            style: Theme.of(context).textTheme.titleMedium,
+          ),
+          const SizedBox(height: 8),
+          Text(
+            _appVersion,
+            style: Theme.of(context).textTheme.bodyMedium,
+          ),
+
+          const SizedBox(height: 24),
+
+          // Bug Report Button
+          ElevatedButton.icon(
+            onPressed: _launchBugReport,
+            icon: const Icon(Icons.bug_report_outlined),
+            label: Text(l10n.reportBugButtonLabel),
           ),
 
           const SizedBox(height: 24),

@@ -457,6 +457,14 @@
   "@appPrivacyText": {
     "description": "Privacy statement in settings"
   },
+  "reportBugButtonLabel": "Report a bug or provide feedback",
+  "@reportBugButtonLabel": {
+    "description": "Button label for reporting bugs or giving feedback"
+  },
+  "versionInfoLabel": "Version",
+  "@versionInfoLabel": {
+    "description": "Label for version information"
+  },
   "foodProteinSubtitle": "chicken, eggs, fish",
   "@foodProteinSubtitle": {
     "description": "Food category examples: Protein"

@@ -368,6 +368,12 @@ class AppLocalizationsEn extends AppLocalizations {
       'Baseline is a private self-care app:\nNo history, no sync, no data collection.\n';
 
   @override
+  String get reportBugButtonLabel => 'Report a bug or provide feedback';
+
+  @override
+  String get versionInfoLabel => 'Version';
+
+  @override
   String get foodProteinSubtitle => 'chicken, eggs, fish';
 
   @override

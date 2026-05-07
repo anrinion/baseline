@@ -764,6 +764,18 @@ abstract class AppLocalizations {
   /// **'Baseline is a private self-care app:\nNo history, no sync, no data collection.\n'**
   String get appPrivacyText;
 
+  /// Button label for reporting bugs or giving feedback
+  ///
+  /// In en, this message translates to:
+  /// **'Report a bug or provide feedback'**
+  String get reportBugButtonLabel;
+
+  /// Label for version information
+  ///
+  /// In en, this message translates to:
+  /// **'Version'**
+  String get versionInfoLabel;
+
   /// Food category examples: Protein
   ///
   /// In en, this message translates to:

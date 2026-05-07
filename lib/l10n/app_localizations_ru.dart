@@ -367,6 +367,13 @@ class AppLocalizationsRu extends AppLocalizations {
       'База — приватное приложение для заботы о себе:\nМы не собираем и не храним данные.\n';
 
   @override
+  String get reportBugButtonLabel =>
+      'Сообщить об ошибке или дать обратную связь';
+
+  @override
+  String get versionInfoLabel => 'Версия';
+
+  @override
   String get foodProteinSubtitle => 'курица, яйца, рыба';
 
   @override
