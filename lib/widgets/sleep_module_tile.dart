@@ -23,7 +23,8 @@ extension SleepTimeFormatting on int {
 
 extension TimeFormatting on BuildContext {
   String formatMinutes(int minutes) {
-    final timeOfDay = TimeOfDay(hour: minutes ~/ 60, minute: minutes % 60);
+    final normalizedMinutes = minutes % 1440;
+    final timeOfDay = TimeOfDay(hour: normalizedMinutes ~/ 60, minute: normalizedMinutes % 60);
     return MaterialLocalizations.of(this).formatTimeOfDay(
       timeOfDay,
       alwaysUse24HourFormat: MediaQuery.of(this).alwaysUse24HourFormat,
