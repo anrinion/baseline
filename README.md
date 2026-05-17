@@ -10,6 +10,9 @@
 
 [<img src="https://f-droid.org/badge/get-it-on.png" alt="Get it on F-Droid" width="200">](https://f-droid.org/packages/io.github.anrinion.baseline)
 
+> [!IMPORTANT]
+> Your (yes, your 🫵!) feedback is needed to make Baseline better. What functionality is missing? How can we improve your experience? Any feedback, positive or negative, is appreciated - please just create a new issue.
+
 ## About
 
 🇷🇺 version is [below](#about_ru).
