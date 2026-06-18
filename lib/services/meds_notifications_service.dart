@@ -119,8 +119,11 @@ Future<void> medsNotificationBackgroundHandler(
   final details = _notifDetails();
 
   if (actionId == 'snooze') {
+    // Snooze alarm fires in 10 minutes under a separate ID so the daily
+    // recurring alarm (cancelled above to dismiss the showing notification)
+    // can be restored and continue firing on future days.
     await plugin.zonedSchedule(
-      id,
+      _notifId('${medName}_snooze'),
       title,
       body,
       now.add(const Duration(minutes: 10)),
@@ -128,6 +131,27 @@ Future<void> medsNotificationBackgroundHandler(
       androidScheduleMode: AndroidScheduleMode.alarmClock,
       uiLocalNotificationDateInterpretation:
           UILocalNotificationDateInterpretation.wallClockTime,
+      payload: payload,
+    );
+    // Restore the daily recurring alarm that cancel(id) wiped.
+    final nextDay = tz.TZDateTime(
+      tz.local,
+      now.year,
+      now.month,
+      now.day + 1,
+      reminderMinutes ~/ 60,
+      reminderMinutes % 60,
+    );
+    await plugin.zonedSchedule(
+      id,
+      title,
+      body,
+      nextDay,
+      details,
+      androidScheduleMode: AndroidScheduleMode.alarmClock,
+      uiLocalNotificationDateInterpretation:
+          UILocalNotificationDateInterpretation.wallClockTime,
+      matchDateTimeComponents: DateTimeComponents.time,
       payload: payload,
     );
   } else if (actionId == 'mark_taken') {

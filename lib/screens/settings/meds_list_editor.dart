@@ -48,6 +48,7 @@ class _MedsListEditorState extends State<MedsListEditor> {
   @override
   void dispose() {
     _scaffoldMessenger?.clearSnackBars();
+    _saveMeds();
     for (final c in _controllers) {
       c.dispose();
     }
