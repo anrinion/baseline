@@ -204,9 +204,9 @@
   "@medsEditListHint": {
     "description": "Hint for medication list editor text field"
   },
-  "medsListSettingsLabel": "Список лекарств (по одному на строку)",
+  "medsListSettingsLabel": "Ваши лекарства",
   "@medsListSettingsLabel": {
-    "description": "Settings label for meds list input"
+    "description": "Section label for the meds list editor in settings"
   },
   "medsDefaultList": "",
   "@medsDefaultList": {
@@ -215,6 +215,10 @@
   "medsEmptyState": "Список лекарств пока пуст. Нажми, чтобы добавить.",
   "@medsEmptyState": {
     "description": "Empty state text for meds module"
+  },
+  "medsNotificationsDisabledNote": "Напоминания отключены. Включи их в настройках.",
+  "@medsNotificationsDisabledNote": {
+    "description": "Banner shown in meds dialog when global notifications toggle is off"
   },
   "medsEmptyCompact": "Пока нет лекарств",
   "@medsEmptyCompact": {
@@ -256,6 +260,14 @@
   "medsReminderDisableTooltip": "Выключить напоминание для этого лекарства",
   "@medsReminderDisableTooltip": {
     "description": "Tooltip for disabling reminder on a medication row"
+  },
+  "medsItemDeleted": "Лекарство удалено",
+  "@medsItemDeleted": {
+    "description": "Snackbar text when a medication is removed from the list"
+  },
+  "medsItemHint": "напр., Аспирин",
+  "@medsItemHint": {
+    "description": "Placeholder text for each medication name field in the list editor"
   },
   "mentalStateModuleLabel": "Психологическое здоровье",
   "@mentalStateModuleLabel": {

@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 
+import '../../modules/meds_module.dart';
 import '../../modules/module_ids.dart';
 import '../../state/app_state.dart';
 import '../../state/settings.dart';
 import '../../l10n/app_localizations.dart';
+import 'meds_list_editor.dart';
 import 'movement_options_editor.dart';
 
 /// Module settings section with toggle cards for each module.
@@ -13,9 +15,7 @@ class ModuleSettingsSection extends StatelessWidget {
   final Settings settings;
   final AppLocalizations l10n;
   final TextEditingController? hereButtonController;
-  final TextEditingController? medsListController;
   final ValueChanged<TextEditingController> onHereControllerCreated;
-  final ValueChanged<TextEditingController> onMedsControllerCreated;
 
   const ModuleSettingsSection({
     super.key,
@@ -23,9 +23,7 @@ class ModuleSettingsSection extends StatelessWidget {
     required this.settings,
     required this.l10n,
     this.hereButtonController,
-    this.medsListController,
     required this.onHereControllerCreated,
-    required this.onMedsControllerCreated,
   });
 
   TextEditingController _getHereCtrl(String currentText) {
@@ -35,15 +33,6 @@ class ModuleSettingsSection extends StatelessWidget {
       return controller;
     }
     return hereButtonController!;
-  }
-
-  TextEditingController _getMedsCtrl(String currentText) {
-    if (medsListController == null) {
-      final controller = TextEditingController(text: currentText);
-      onMedsControllerCreated(controller);
-      return controller;
-    }
-    return medsListController!;
   }
 
   @override
@@ -125,25 +114,23 @@ class ModuleSettingsSection extends StatelessWidget {
             if (enabled && id == BaselineModuleId.meds)
               Padding(
                 padding: const EdgeInsets.fromLTRB(16, 0, 16, 8),
-                child: TextField(
-                  controller: _getMedsCtrl(
-                    settings.getModuleSetting(
-                      BaselineModuleId.meds,
-                      'list',
-                      l10n.medsDefaultList,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    SwitchListTile(
+                      contentPadding: EdgeInsets.zero,
+                      title: Text(l10n.medsReminderToggleLabel),
+                      subtitle: Text(
+                        l10n.medsReminderToggleHelp,
+                        style: Theme.of(context).textTheme.bodySmall,
+                      ),
+                      value: getMedsNotificationsEnabled(settings),
+                      onChanged: (on) =>
+                          setMedsNotificationsEnabled(appState, on),
                     ),
-                  ),
-                  maxLines: 5,
-                  decoration: InputDecoration(
-                    labelText: l10n.medsListSettingsLabel,
-                    border: const OutlineInputBorder(),
-                    hintText: l10n.medsEditListHint,
-                  ),
-                  onChanged: (value) {
-                    appState.updateSettings((s) {
-                      s.setModuleSetting(BaselineModuleId.meds, 'list', value);
-                    });
-                  },
+                    const SizedBox(height: 8),
+                    MedsListEditor(appState: appState, l10n: l10n),
+                  ],
                 ),
               ),
             if (enabled && id == BaselineModuleId.mentalState)

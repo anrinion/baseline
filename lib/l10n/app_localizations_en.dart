@@ -176,7 +176,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get medsEditListHint => 'One medication per line';
 
   @override
-  String get medsListSettingsLabel => 'Medication list (one per line)';
+  String get medsListSettingsLabel => 'Your medications';
 
   @override
   String get medsDefaultList => '';
@@ -184,6 +184,10 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get medsEmptyState =>
       'No medications listed yet. Add the ones you want to track.';
+
+  @override
+  String get medsNotificationsDisabledNote =>
+      'Reminders are disabled. Enable them in Settings.';
 
   @override
   String get medsEmptyCompact => 'No meds yet';
@@ -218,6 +222,12 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get medsReminderDisableTooltip =>
       'Disable reminder for this medication';
+
+  @override
+  String get medsItemDeleted => 'Medication removed';
+
+  @override
+  String get medsItemHint => 'e.g. Aspirin';
 
   @override
   String get mentalStateModuleLabel => 'Mental state';

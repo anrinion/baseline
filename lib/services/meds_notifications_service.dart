@@ -341,6 +341,11 @@ class MedsNotificationsService {
     try {
       await _cancelAllMedsNotifications();
 
+      if (!getMedsNotificationsEnabled(settings)) {
+        _setStatus('disabled');
+        return;
+      }
+
       final reminders = medsReminderMinutesByMedFromSettings(settings);
       if (reminders.isEmpty) {
         _setStatus('disabled');
