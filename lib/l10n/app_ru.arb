@@ -164,6 +164,18 @@
   "@sleepModuleLabel": {
     "description": "Label for the Sleep module"
   },
+  "sleepStartLabel": "Начало",
+  "@sleepStartLabel": {
+    "description": "Label for sleep start time"
+  },
+  "sleepEndLabel": "Конец",
+  "@sleepEndLabel": {
+    "description": "Label for sleep end time"
+  },
+  "sleepPrompt": "Запиши время сна:",
+  "@sleepPrompt": {
+    "description": "Prompt for starting sleep tracking"
+  },
   "sleepBedTimeLabel": "Отбой",
   "@sleepBedTimeLabel": {
     "description": "Label for bedtime slider"
@@ -248,6 +260,14 @@
   "medsReminderToggleLabel": "Ежедневное напоминание",
   "@medsReminderToggleLabel": {
     "description": "Toggle label for enabling daily meds reminder notifications"
+  },
+  "medsReminderToggleHelp": "Если включено, База будет напоминать тебе.",
+  "@medsReminderToggleHelp": {
+    "description": "Help text for meds reminder toggle"
+  },
+  "medsReminderTimeLabel": "Время напоминания",
+  "@medsReminderTimeLabel": {
+    "description": "Label for meds reminder time picker"
   },
   "medsReminderPermissionDenied": "Уведомления отключены. Разреши их, чтобы включить напоминания.",
   "@medsReminderPermissionDenied": {
@@ -711,5 +731,13 @@
   "cbtThoughtLensDaily": "Когнитивное искажение дня",
   "@cbtThoughtLensDaily": {
     "description": "Label indicating today's random thought distortion"
+  },
+  "medsNotificationTitle": "Лекарство: {medName}",
+  "@medsNotificationTitle": {
+    "description": "Title for a medication reminder notification"
+  },
+  "medsNotificationBody": "Пора принять это лекарство.",
+  "@medsNotificationBody": {
+    "description": "Body for a medication reminder notification"
   }
 }

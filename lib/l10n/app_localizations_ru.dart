@@ -136,13 +136,13 @@ class AppLocalizationsRu extends AppLocalizations {
   String get sleepModuleLabel => 'Сон';
 
   @override
-  String get sleepStartLabel => 'Start';
+  String get sleepStartLabel => 'Начало';
 
   @override
-  String get sleepEndLabel => 'End';
+  String get sleepEndLabel => 'Конец';
 
   @override
-  String get sleepPrompt => 'Track your sleep session:';
+  String get sleepPrompt => 'Запиши время сна:';
 
   @override
   String get sleepBedTimeLabel => 'Отбой';
@@ -206,10 +206,10 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get medsReminderToggleHelp =>
-      'If enabled, Baseline sends you reminders.';
+      'Если включено, База будет напоминать тебе.';
 
   @override
-  String get medsReminderTimeLabel => 'Reminder time';
+  String get medsReminderTimeLabel => 'Время напоминания';
 
   @override
   String get medsReminderPermissionDenied =>
@@ -573,4 +573,12 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get cbtThoughtLensDaily => 'Когнитивное искажение дня';
+
+  @override
+  String medsNotificationTitle(String medName) {
+    return 'Лекарство: $medName';
+  }
+
+  @override
+  String get medsNotificationBody => 'Пора принять это лекарство.';
 }

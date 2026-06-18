@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:convert';
 
 import 'package:clock/clock.dart';
 import 'package:flutter/material.dart';
@@ -62,6 +63,8 @@ class AppState extends ChangeNotifier with WidgetsBindingObserver {
       todayState = TodayState();
       settings = Settings();
     }
+
+    await _applyBackgroundPending();
 
     _applyDayBoundary();
     _scheduleThemeTimer();
@@ -290,10 +293,38 @@ class AppState extends ChangeNotifier with WidgetsBindingObserver {
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
     if (state == AppLifecycleState.resumed) {
-      // Day may have changed while the app was suspended.
-      _applyDayBoundary();
-      // Also resync notifications.
-      unawaited(_syncNotifications());
+      unawaited(_onResumed());
+    }
+  }
+
+  Future<void> _onResumed() async {
+    // Apply any actions handled by the background notification isolate.
+    await _applyBackgroundPending();
+    // Day may have changed while suspended.
+    _applyDayBoundary();
+    unawaited(_syncNotifications());
+  }
+
+  Future<void> _applyBackgroundPending() async {
+    try {
+      final box = await Hive.openBox<String>('bgPending');
+      final raw = box.get('markTaken');
+      if (raw != null && raw.isNotEmpty) {
+        await box.delete('markTaken');
+        final meds = List<String>.from(jsonDecode(raw));
+        for (final med in meds) {
+          if (med.isNotEmpty) todayState.medsChecked[med] = true;
+        }
+        if (meds.isNotEmpty) {
+          todayState.medsTaken = todayState.medsChecked.values.any((v) => v);
+          _saveTodayState();
+          notifyListeners();
+        }
+      }
+      // Close so the next open reads fresh from disk (skip for in-memory test boxes).
+      if (box.path != null) await box.close();
+    } catch (e) {
+      debugPrint('Failed to apply background pending: $e');
     }
   }
 

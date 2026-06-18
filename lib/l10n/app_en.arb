@@ -716,5 +716,18 @@
   "cbtThoughtLensDaily": "Today's cognitive distortion",
   "@cbtThoughtLensDaily": {
     "description": "Label indicating today's random thought distortion"
+  },
+  "medsNotificationTitle": "Medication: {medName}",
+  "@medsNotificationTitle": {
+    "description": "Title for a medication reminder notification",
+    "placeholders": {
+      "medName": {
+        "type": "String"
+      }
+    }
+  },
+  "medsNotificationBody": "It's time to take this medication.",
+  "@medsNotificationBody": {
+    "description": "Body for a medication reminder notification"
   }
 }

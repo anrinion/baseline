@@ -1147,6 +1147,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Today\'s cognitive distortion'**
   String get cbtThoughtLensDaily;
+
+  /// Title for a medication reminder notification
+  ///
+  /// In en, this message translates to:
+  /// **'Medication: {medName}'**
+  String medsNotificationTitle(String medName);
+
+  /// Body for a medication reminder notification
+  ///
+  /// In en, this message translates to:
+  /// **'It\'s time to take this medication.'**
+  String get medsNotificationBody;
 }
 
 class _AppLocalizationsDelegate

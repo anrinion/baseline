@@ -572,4 +572,12 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get cbtThoughtLensDaily => 'Today\'s cognitive distortion';
+
+  @override
+  String medsNotificationTitle(String medName) {
+    return 'Medication: $medName';
+  }
+
+  @override
+  String get medsNotificationBody => 'It\'s time to take this medication.';
 }
