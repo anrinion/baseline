@@ -580,4 +580,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get medsNotificationBody => 'It\'s time to take this medication.';
+
+  @override
+  String medsSnoozedUntil(String time) {
+    return 'Snoozed until $time';
+  }
 }

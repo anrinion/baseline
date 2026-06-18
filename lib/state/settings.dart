@@ -18,6 +18,7 @@ class Settings extends HiveObject {
   static const String _scheduleLightStartKey = 'theme.scheduleLightStartMinutes';
   static const String _scheduleDarkStartKey = 'theme.scheduleDarkStartMinutes';
   static const String _developerModeKey = 'app.developerMode';
+  static const String _medsSnoozeIntervalKey = 'meds.snoozeIntervalMinutes';
 
   @HiveField(0)
   String language = 'en'; // default English
@@ -96,6 +97,16 @@ class Settings extends HiveObject {
 
   set developerModeEnabled(bool value) {
     _setAppSetting(_developerModeKey, value.toString());
+  }
+
+  int get medsSnoozeIntervalMinutes {
+    final raw = _moduleSettingsMap()[_medsSnoozeIntervalKey];
+    final parsed = raw == null ? null : int.tryParse(raw);
+    return (parsed != null && parsed >= 1) ? parsed : 10;
+  }
+
+  set medsSnoozeIntervalMinutes(int value) {
+    _setAppSetting(_medsSnoozeIntervalKey, value.clamp(1, 60).toString());
   }
 
   void setManualTheme(String themeKey) {

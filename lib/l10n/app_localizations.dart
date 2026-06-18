@@ -1159,6 +1159,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'It\'s time to take this medication.'**
   String get medsNotificationBody;
+
+  /// Label shown under a medication name when its reminder is snoozed
+  ///
+  /// In en, this message translates to:
+  /// **'Snoozed until {time}'**
+  String medsSnoozedUntil(String time);
 }
 
 class _AppLocalizationsDelegate

@@ -739,5 +739,6 @@
   "medsNotificationBody": "Пора принять это лекарство.",
   "@medsNotificationBody": {
     "description": "Body for a medication reminder notification"
-  }
+  },
+  "medsSnoozedUntil": "Отложено до {time}"
 }

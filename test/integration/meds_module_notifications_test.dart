@@ -180,9 +180,11 @@ void main() {
         );
         expect(mockAdapter.isScheduled(medId), isTrue);
 
-        // Simulate snooze
-        service.snoozedMedsForTest[medName] = clock.now().add(const Duration(minutes: 10));
-        expect(service.isMedSnoozed(medName), isTrue);
+        // Simulate snooze via TodayState (canonical source)
+        final snoozeUntil = clock.now().add(const Duration(minutes: 10));
+        appState.todayState.medsSnoozeEpochs[medName] =
+            snoozeUntil.millisecondsSinceEpoch;
+        expect(appState.todayState.medsSnoozeEpochs.containsKey(medName), isTrue);
 
         // Mark as taken
         setMedTakenToday(appState, medName, true);
@@ -191,7 +193,8 @@ void main() {
         await Future.delayed(Duration.zero);
 
         // Verify snooze cleared and alarm cancelled
-        expect(service.isMedSnoozed(medName), isFalse, reason: 'Snooze should be cleared');
+        expect(appState.todayState.medsSnoozeEpochs.containsKey(medName), isFalse,
+            reason: 'Snooze should be cleared');
         expect(mockAdapter.cancelledIds.contains(medId), isTrue, reason: 'Alarm should be cancelled');
       });
     });
@@ -265,9 +268,10 @@ void main() {
           isMedTaken: (m) => isMedTakenToday(appState, m),
         );
 
-        // Snooze
-        service.snoozedMedsForTest[medName] = clock.now().add(const Duration(minutes: 10));
-        expect(service.isMedSnoozed(medName), isTrue);
+        // Snooze — persist via TodayState (the canonical source for snooze state)
+        final snoozeUntil = clock.now().add(const Duration(minutes: 10));
+        appState.todayState.medsSnoozeEpochs[medName] =
+            snoozeUntil.millisecondsSinceEpoch;
 
         // Reschedule alarm for later time
         final now = clock.now();
@@ -278,10 +282,17 @@ void main() {
         await service.syncFromSettings(
           appState.settings,
           isMedTaken: (m) => isMedTakenToday(appState, m),
+          getMedSnoozeTime: (m) {
+            final epoch = appState.todayState.medsSnoozeEpochs[m];
+            return epoch == null
+                ? null
+                : DateTime.fromMillisecondsSinceEpoch(epoch);
+          },
         );
 
         // Snooze should still be active
-        expect(service.isMedSnoozed(medName), isTrue, reason: 'Snooze should be preserved after reschedule');
+        expect(appState.todayState.medsSnoozeEpochs.containsKey(medName), isTrue,
+            reason: 'Snooze should be preserved after reschedule');
 
         // Mark as taken
         setMedTakenToday(appState, medName, true);
@@ -290,8 +301,52 @@ void main() {
         await Future.delayed(Duration.zero);
 
         // Both snooze and alarm should be cleared
-        expect(service.isMedSnoozed(medName), isFalse, reason: 'Snooze should be cleared');
+        expect(appState.todayState.medsSnoozeEpochs.containsKey(medName), isFalse,
+            reason: 'Snooze should be cleared');
         expect(mockAdapter.cancelledIds.contains(medId), isTrue, reason: 'Alarm should be cancelled');
+      });
+    });
+
+    test('7. Snooze schedules both one-shot snooze alarm and daily recurring', () async {
+      final fixedTime = DateTime(2024, 6, 15, 8, 5); // 8:05 AM, just after reminder fired
+      await withClock(Clock.fixed(fixedTime), () async {
+        final medName = 'Zinc';
+        final medId = service.notificationIdForMed(medName);
+        final snoozeId = service.snoozeNotificationIdForMed(medName);
+
+        setMedsList(appState, [medName]);
+        setMedsReminderMinutesForMedOnSettings(appState.settings, medName, 480); // 8:00 AM
+
+        // Sync with active snooze state (simulates user snoozed the 8:00 AM notification)
+        final snoozeUntil = clock.now().add(const Duration(minutes: 10)); // 8:15 AM
+        appState.todayState.medsSnoozeEpochs[medName] = snoozeUntil.millisecondsSinceEpoch;
+
+        await service.syncFromSettings(
+          appState.settings,
+          isMedTaken: (m) => isMedTakenToday(appState, m),
+          getMedSnoozeTime: (m) {
+            final epoch = appState.todayState.medsSnoozeEpochs[m];
+            return epoch == null ? null : DateTime.fromMillisecondsSinceEpoch(epoch);
+          },
+        );
+
+        // One-shot snooze alarm at snoozeUntil
+        expect(mockAdapter.isScheduled(snoozeId), isTrue,
+            reason: 'Snooze one-shot alarm should be scheduled');
+        final snoozeTime = mockAdapter.getScheduledTime(snoozeId);
+        expect(snoozeTime, isNotNull);
+        expect(snoozeTime!.minute, equals(15),
+            reason: 'Snooze should fire at 8:15 AM');
+
+        // Daily recurring must ALSO be scheduled so tomorrow's reminder survives
+        // if the user dismisses the snooze without opening the app (P1 fix).
+        expect(mockAdapter.isScheduled(medId), isTrue,
+            reason: 'Daily recurring should be scheduled alongside snooze');
+        final dailyTime = mockAdapter.getScheduledTime(medId);
+        expect(dailyTime, isNotNull);
+        expect(dailyTime!.day, equals(16),
+            reason: 'Daily recurring should be scheduled for tomorrow');
+        expect(dailyTime.hour, equals(8), reason: 'Daily at 8:00 AM');
       });
     });
   });

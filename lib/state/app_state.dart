@@ -74,11 +74,15 @@ class AppState extends ChangeNotifier with WidgetsBindingObserver {
     MedsNotificationsService.instance.setCallbacks(
       onMarkMedTaken: (medName) {
         todayState.medsChecked[medName] = true;
+        todayState.medsSnoozeEpochs.remove(medName);
         _saveTodayState();
         notifyListeners();
       },
       onSnoozeMed: (medName, snoozeUntil) {
-        debugPrint('Snoozed $medName until $snoozeUntil');
+        todayState.medsSnoozeEpochs[medName] =
+            snoozeUntil.millisecondsSinceEpoch;
+        _saveTodayState();
+        notifyListeners();
       },
     );
 
@@ -114,6 +118,12 @@ class AppState extends ChangeNotifier with WidgetsBindingObserver {
       await MedsNotificationsService.instance.syncFromSettings(
         settings,
         isMedTaken: (medName) => meds_module.isMedTakenToday(this, medName),
+        getMedSnoozeTime: (medName) {
+          final epoch = todayState.medsSnoozeEpochs[medName];
+          return epoch == null
+              ? null
+              : DateTime.fromMillisecondsSinceEpoch(epoch);
+        },
       );
     } catch (e) {
       debugPrint('Failed to sync notifications: $e');
@@ -308,19 +318,40 @@ class AppState extends ChangeNotifier with WidgetsBindingObserver {
   Future<void> _applyBackgroundPending() async {
     try {
       final box = await Hive.openBox<String>('bgPending');
-      final raw = box.get('markTaken');
-      if (raw != null && raw.isNotEmpty) {
+      bool changed = false;
+
+      final rawTaken = box.get('markTaken');
+      if (rawTaken != null && rawTaken.isNotEmpty) {
         await box.delete('markTaken');
-        final meds = List<String>.from(jsonDecode(raw));
+        final meds = List<String>.from(jsonDecode(rawTaken));
         for (final med in meds) {
-          if (med.isNotEmpty) todayState.medsChecked[med] = true;
+          if (med.isNotEmpty) {
+            todayState.medsChecked[med] = true;
+            todayState.medsSnoozeEpochs.remove(med);
+          }
         }
         if (meds.isNotEmpty) {
           todayState.medsTaken = todayState.medsChecked.values.any((v) => v);
-          _saveTodayState();
-          notifyListeners();
+          changed = true;
         }
       }
+
+      final rawSnooze = box.get('snoozedMeds');
+      if (rawSnooze != null && rawSnooze.isNotEmpty) {
+        await box.delete('snoozedMeds');
+        final map = Map<String, dynamic>.from(jsonDecode(rawSnooze));
+        for (final entry in map.entries) {
+          final epoch = entry.value as int?;
+          if (epoch != null) todayState.medsSnoozeEpochs[entry.key] = epoch;
+        }
+        changed = true;
+      }
+
+      if (changed) {
+        _saveTodayState();
+        notifyListeners();
+      }
+
       // Close so the next open reads fresh from disk (skip for in-memory test boxes).
       if (box.path != null) await box.close();
     } catch (e) {

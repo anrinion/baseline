@@ -144,9 +144,7 @@ bool isMedTakenToday(AppState appState, String medName) {
 }
 
 void setMedTakenToday(AppState appState, String medName, bool isTaken) {
-  // Cancel notification and snooze when marking as taken
   if (isTaken) {
-    MedsNotificationsService.instance.clearSnooze(medName);
     MedsNotificationsService.instance.cancelNotificationForMed(medName);
   }
 
@@ -155,6 +153,7 @@ void setMedTakenToday(AppState appState, String medName, bool isTaken) {
     next[medName] = isTaken;
     state.medsChecked = next;
     state.medsTaken = next.values.any((v) => v);
+    if (isTaken) state.medsSnoozeEpochs.remove(medName);
   });
   HapticFeedback.selectionClick();
 }
@@ -378,8 +377,13 @@ class _MedsDialog extends StatelessWidget {
                               appState.settings,
                               med,
                             );
-                            final snoozeTime = MedsNotificationsService.instance
-                                .getSnoozeTime(med);
+                            final snoozeEpoch =
+                                appState.todayState.medsSnoozeEpochs[med];
+                            final snoozeTime = snoozeEpoch == null
+                                ? null
+                                : DateTime.fromMillisecondsSinceEpoch(
+                                    snoozeEpoch,
+                                  );
                             final isSnoozed =
                                 snoozeTime != null &&
                                 snoozeTime.isAfter(clock.now());
@@ -399,7 +403,7 @@ class _MedsDialog extends StatelessWidget {
                                     ).alwaysUse24HourFormat,
                               );
                               subtitle = Text(
-                                'Snoozed until $timeStr',
+                                l10n.medsSnoozedUntil(timeStr),
                                 style: Theme.of(context).textTheme.bodySmall
                                     ?.copyWith(
                                       color: Theme.of(

@@ -24,11 +24,7 @@ class TodayStateAdapter extends TypeAdapter<TodayState> {
       ..treatCount = fields[15] as int
       ..moved = fields[5] as bool
       ..medsTaken = fields[6] as bool
-      ..medsChecked =
-          (fields[23] as Map?)?.map(
-            (dynamic k, dynamic v) => MapEntry(k.toString(), v == true),
-          ) ??
-          {}
+      ..medsChecked = (fields[23] as Map).cast<String, bool>()
       ..sleepBedTimeMinutes = fields[21] as int
       ..sleepWakeTimeMinutes = fields[22] as int
       ..hereTapped = fields[8] as bool
@@ -38,13 +34,14 @@ class TodayStateAdapter extends TypeAdapter<TodayState> {
       ..goodThings = (fields[17] as List).cast<String>()
       ..thoughtLensIndex = fields[18] as int
       ..yesterdayThoughtLensIndex = fields[20] as int
+      ..medsSnoozeEpochs = (fields[24] as Map?)?.cast<String, int>() ?? {}
       ..lastDayKey = fields[10] as String;
   }
 
   @override
   void write(BinaryWriter writer, TodayState obj) {
     writer
-      ..writeByte(18)
+      ..writeByte(19)
       ..writeByte(11)
       ..write(obj.proteinCount)
       ..writeByte(12)
@@ -79,6 +76,8 @@ class TodayStateAdapter extends TypeAdapter<TodayState> {
       ..write(obj.thoughtLensIndex)
       ..writeByte(20)
       ..write(obj.yesterdayThoughtLensIndex)
+      ..writeByte(24)
+      ..write(obj.medsSnoozeEpochs)
       ..writeByte(10)
       ..write(obj.lastDayKey);
   }

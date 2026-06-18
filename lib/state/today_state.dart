@@ -61,6 +61,10 @@ class TodayState extends HiveObject {
   @HiveField(20)
   int yesterdayThoughtLensIndex = -1; // Previous day's distortion index for avoiding repetition
 
+  /// Snooze-until epoch millis per medication name. Resets with daily boundary.
+  @HiveField(24)
+  Map<String, int> medsSnoozeEpochs = {};
+
   /// Local calendar day as yyyy-MM-dd; used only for daily reset boundaries.
   @HiveField(10)
   String lastDayKey = '';

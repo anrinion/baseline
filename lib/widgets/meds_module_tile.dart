@@ -5,7 +5,6 @@ import 'package:provider/provider.dart';
 import '../l10n/app_localizations.dart';
 import '../modules/meds_module.dart';
 import '../modules/module_ids.dart';
-import '../services/meds_notifications_service.dart';
 import '../state/app_state.dart';
 import '../utils/adaptive_layout.dart';
 import '../utils/layout_constants.dart';
@@ -201,15 +200,15 @@ class _MedItemTile extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final isTaken = isMedTakenToday(appState, med);
-    final snoozeTime = MedsNotificationsService.instance.getSnoozeTime(med);
+    final snoozeEpoch = appState.todayState.medsSnoozeEpochs[med];
+    final snoozeTime = snoozeEpoch == null
+        ? null
+        : DateTime.fromMillisecondsSinceEpoch(snoozeEpoch);
     final isSnoozed = snoozeTime != null && snoozeTime.isAfter(clock.now());
 
     if (layout == _TileLayout.compactGrid) {
       return InkWell(
-        onTap: () {
-          setMedTakenToday(appState, med, !isTaken);
-          if (!isTaken) MedsNotificationsService.instance.clearSnooze(med);
-        },
+        onTap: () => setMedTakenToday(appState, med, !isTaken),
         borderRadius: BorderRadius.circular(16),
         child: Container(
           padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
@@ -228,12 +227,8 @@ class _MedItemTile extends StatelessWidget {
                 child: Checkbox(
                   value: isTaken,
                   visualDensity: VisualDensity.compact,
-                  onChanged: (value) {
-                    setMedTakenToday(appState, med, value == true);
-                    if (value == true) {
-                      MedsNotificationsService.instance.clearSnooze(med);
-                    }
-                  },
+                  onChanged: (value) =>
+                    setMedTakenToday(appState, med, value == true),
                 ),
               ),
               const SizedBox(width: 4),
@@ -262,7 +257,7 @@ class _MedItemTile extends StatelessWidget {
         alwaysUse24HourFormat: MediaQuery.of(context).alwaysUse24HourFormat,
       );
       subtitle = Text(
-        'Snoozed until $timeStr',
+        AppLocalizations.of(context)!.medsSnoozedUntil(timeStr),
         style: theme.textTheme.bodySmall?.copyWith(
           color: theme.colorScheme.primary,
           fontStyle: FontStyle.italic,
@@ -280,12 +275,8 @@ class _MedItemTile extends StatelessWidget {
           child: Checkbox(
             value: isTaken,
             visualDensity: VisualDensity.compact,
-            onChanged: (value) {
-              setMedTakenToday(appState, med, value == true);
-              if (value == true) {
-                MedsNotificationsService.instance.clearSnooze(med);
-              }
-            },
+            onChanged: (value) =>
+                setMedTakenToday(appState, med, value == true),
           ),
         ),
         Expanded(
@@ -317,12 +308,7 @@ class _MedItemTile extends StatelessWidget {
     );
 
     return InkWell(
-      onTap: () {
-        setMedTakenToday(appState, med, !isTaken);
-        if (!isTaken) {
-          MedsNotificationsService.instance.clearSnooze(med);
-        }
-      },
+      onTap: () => setMedTakenToday(appState, med, !isTaken),
       child: ConstrainedBox(
         constraints: const BoxConstraints(minHeight: 36, maxHeight: 48),
         child: tileContent,
