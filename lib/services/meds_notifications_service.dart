@@ -1,20 +1,197 @@
 import 'dart:async';
+import 'dart:convert';
 import 'dart:developer';
+import 'dart:ui' show Locale;
 
 import 'package:clock/clock.dart';
 import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_timezone/flutter_timezone.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:timezone/data/latest.dart' as tz;
 import 'package:timezone/timezone.dart' as tz;
 
+import '../l10n/app_localizations.dart';
 import '../modules/meds_module.dart';
 import '../state/settings.dart';
 
-// Type alias for notification response callback
 typedef NotificationResponseCallback = void Function(NotificationResponse);
+typedef BackgroundNotificationResponseCallback =
+    Future<void> Function(NotificationResponse);
+
+// Module-level constants shared with the background isolate handler
+const String _medsPayloadPrefix = 'meds::';
+const String _channelId = 'baseline_meds_reminders';
+const String _channelName = 'Medication alarms';
+const String _channelDescription =
+    'Daily alarm-like reminders for medication check-ins.';
+
+int _notifId(String medName) {
+  const base = 32000;
+  const spread = 10000;
+  var hash = 5381;
+  for (final code in medName.codeUnits) {
+    hash = ((hash << 5) + hash) + code;
+  }
+  return base + (hash.abs() % spread);
+}
+
+AppLocalizations _l10n(String lang) => lookupAppLocalizations(Locale(lang));
+
+NotificationDetails _notifDetails({bool includeActions = true}) =>
+    NotificationDetails(
+      android: AndroidNotificationDetails(
+        _channelId,
+        _channelName,
+        channelDescription: _channelDescription,
+        importance: Importance.max,
+        priority: Priority.max,
+        category: AndroidNotificationCategory.alarm,
+        fullScreenIntent: true,
+        ongoing: true,
+        autoCancel: false,
+        playSound: true,
+        enableVibration: true,
+        audioAttributesUsage: AudioAttributesUsage.alarm,
+        actions: includeActions
+            ? const <AndroidNotificationAction>[
+                AndroidNotificationAction(
+                  'snooze',
+                  'Snooze',
+                  showsUserInterface: false,
+                ),
+                AndroidNotificationAction(
+                  'mark_taken',
+                  'Mark Taken',
+                  showsUserInterface: false,
+                ),
+              ]
+            : null,
+      ),
+      iOS: const DarwinNotificationDetails(
+        presentAlert: true,
+        presentSound: true,
+        interruptionLevel: InterruptionLevel.timeSensitive,
+      ),
+    );
+
+/// Background isolate entry point: handles Snooze / Mark Taken when the app
+/// is not in the foreground. Must be a top-level function.
+@pragma('vm:entry-point')
+Future<void> medsNotificationBackgroundHandler(
+  NotificationResponse response,
+) async {
+  final actionId = response.actionId;
+  final payload = response.payload;
+  if (actionId == null || payload == null) return;
+  if (!payload.startsWith(_medsPayloadPrefix)) return;
+
+  final parts = payload.substring(_medsPayloadPrefix.length).split('::');
+  if (parts.isEmpty) return;
+  final medName = parts[0];
+  final reminderMinutes = parts.length > 1
+      ? (int.tryParse(parts[1]) ?? defaultMedsReminderMinutes)
+      : defaultMedsReminderMinutes;
+  final language = parts.length > 2 ? parts[2] : 'en';
+
+  final plugin = FlutterLocalNotificationsPlugin();
+  await plugin.initialize(
+    const InitializationSettings(
+      android: AndroidInitializationSettings('@mipmap/ic_launcher'),
+    ),
+  );
+
+  tz.initializeTimeZones();
+  String timezone = 'UTC';
+  try {
+    timezone = await FlutterTimezone.getLocalTimezone();
+  } catch (_) {}
+  tz.setLocalLocation(tz.getLocation(timezone));
+
+  final id = _notifId(medName);
+  await plugin.cancel(id);
+
+  final now = tz.TZDateTime.now(tz.local);
+  final l10n = _l10n(language);
+  final title = l10n.medsNotificationTitle(medName);
+  final body = l10n.medsNotificationBody;
+  final details = _notifDetails();
+
+  if (actionId == 'snooze') {
+    // Snooze alarm fires in 10 minutes under a separate ID so the daily
+    // recurring alarm (cancelled above to dismiss the showing notification)
+    // can be restored and continue firing on future days.
+    await plugin.zonedSchedule(
+      _notifId('${medName}_snooze'),
+      title,
+      body,
+      now.add(const Duration(minutes: 10)),
+      details,
+      androidScheduleMode: AndroidScheduleMode.alarmClock,
+      uiLocalNotificationDateInterpretation:
+          UILocalNotificationDateInterpretation.wallClockTime,
+      payload: payload,
+    );
+    // Restore the daily recurring alarm that cancel(id) wiped.
+    final nextDay = tz.TZDateTime(
+      tz.local,
+      now.year,
+      now.month,
+      now.day + 1,
+      reminderMinutes ~/ 60,
+      reminderMinutes % 60,
+    );
+    await plugin.zonedSchedule(
+      id,
+      title,
+      body,
+      nextDay,
+      details,
+      androidScheduleMode: AndroidScheduleMode.alarmClock,
+      uiLocalNotificationDateInterpretation:
+          UILocalNotificationDateInterpretation.wallClockTime,
+      matchDateTimeComponents: DateTimeComponents.time,
+      payload: payload,
+    );
+  } else if (actionId == 'mark_taken') {
+    final tomorrow = tz.TZDateTime(
+      tz.local,
+      now.year,
+      now.month,
+      now.day + 1,
+      reminderMinutes ~/ 60,
+      reminderMinutes % 60,
+    );
+    await plugin.zonedSchedule(
+      id,
+      title,
+      body,
+      tomorrow,
+      details,
+      androidScheduleMode: AndroidScheduleMode.alarmClock,
+      uiLocalNotificationDateInterpretation:
+          UILocalNotificationDateInterpretation.wallClockTime,
+      matchDateTimeComponents: DateTimeComponents.time,
+      payload: payload,
+    );
+
+    // Signal the main isolate via a separate box it opens fresh on resume.
+    // Writing directly to todayState box is unsafe — the main isolate's open
+    // box instance caches data in memory and won't see cross-isolate writes.
+    try {
+      await Hive.initFlutter();
+      final pendingBox = await Hive.openBox<String>('bgPending');
+      final existing = pendingBox.get('markTaken');
+      final meds = (existing?.isNotEmpty == true)
+          ? List<String>.from(jsonDecode(existing!))
+          : <String>[];
+      if (!meds.contains(medName)) meds.add(medName);
+      await pendingBox.put('markTaken', jsonEncode(meds));
+      await pendingBox.close();
+    } catch (_) {}
+  }
+}
 
 /// Callback for when user marks a medication as taken from notification
 typedef OnMarkMedTaken = void Function(String medName);
@@ -27,6 +204,8 @@ abstract class NotificationAdapter {
   Future<void> initialize(
     InitializationSettings settings, {
     NotificationResponseCallback? onDidReceiveNotificationResponse,
+    BackgroundNotificationResponseCallback?
+    onDidReceiveBackgroundNotificationResponse,
   });
   Future<void> createNotificationChannel(AndroidNotificationChannel channel);
   Future<bool?> requestAndroidNotificationPermission();
@@ -63,9 +242,13 @@ class FlutterNotificationAdapter implements NotificationAdapter {
   Future<void> initialize(
     InitializationSettings settings, {
     NotificationResponseCallback? onDidReceiveNotificationResponse,
+    BackgroundNotificationResponseCallback?
+    onDidReceiveBackgroundNotificationResponse,
   }) => _plugin.initialize(
     settings,
     onDidReceiveNotificationResponse: onDidReceiveNotificationResponse,
+    onDidReceiveBackgroundNotificationResponse:
+        onDidReceiveBackgroundNotificationResponse,
   );
 
   @override
@@ -138,11 +321,6 @@ class MedsNotificationsService {
 
   static final MedsNotificationsService instance = MedsNotificationsService._();
 
-  static const String _medsPayloadPrefix = 'meds::';
-  static const String _channelId = 'baseline_meds_reminders';
-  static const String _channelName = 'Medication alarms';
-  static const String _channelDescription =
-      'Daily alarm-like reminders for medication check-ins.';
 
   NotificationAdapter? _adapter;
   NotificationAdapter get _plugin => _adapter ??= FlutterNotificationAdapter(
@@ -181,12 +359,6 @@ class MedsNotificationsService {
   OnSnoozeMed? _onSnoozeMed;
 
   @visibleForTesting
-  StreamController<String> get actionFeedbackControllerForTest =>
-      _actionFeedbackController;
-
-  final _actionFeedbackController = StreamController<String>.broadcast();
-
-  @visibleForTesting
   Map<String, DateTime> get snoozedMedsForTest => _snoozedMeds;
 
   final Map<String, DateTime> _snoozedMeds = {};
@@ -211,7 +383,6 @@ class MedsNotificationsService {
 
   String get statusCode => _statusCode;
   ValueListenable<String> get statusListenable => _statusNotifier;
-  Stream<String> get actionFeedbackStream => _actionFeedbackController.stream;
 
   Map<String, DateTime> get snoozedMeds => Map.unmodifiable(_snoozedMeds);
 
@@ -269,6 +440,8 @@ class MedsNotificationsService {
       await _plugin.initialize(
         initializationSettings,
         onDidReceiveNotificationResponse: _onNotificationResponse,
+        onDidReceiveBackgroundNotificationResponse:
+            medsNotificationBackgroundHandler,
       );
 
       await _plugin.createNotificationChannel(
@@ -341,6 +514,11 @@ class MedsNotificationsService {
     try {
       await _cancelAllMedsNotifications();
 
+      if (!getMedsNotificationsEnabled(settings)) {
+        _setStatus('disabled');
+        return;
+      }
+
       final reminders = medsReminderMinutesByMedFromSettings(settings);
       if (reminders.isEmpty) {
         _setStatus('disabled');
@@ -380,13 +558,10 @@ class MedsNotificationsService {
 
         await _plugin.zonedSchedule(
           notificationIdForMed(medName),
-          _titleForLanguage(settings.language, medName),
-          _bodyForLanguage(settings.language),
+          _l10n(settings.language).medsNotificationTitle(medName),
+          _l10n(settings.language).medsNotificationBody,
           nextSchedule,
-          _buildMedNotificationDetails(
-            _titleForLanguage(settings.language, medName),
-            _bodyForLanguage(settings.language),
-          ),
+          _notifDetails(),
           androidScheduleMode: AndroidScheduleMode.alarmClock,
           uiLocalNotificationDateInterpretation:
               UILocalNotificationDateInterpretation.wallClockTime,
@@ -442,73 +617,7 @@ class MedsNotificationsService {
   }
 
   @visibleForTesting
-  int notificationIdForMed(String medName) {
-    const base = 32000;
-    const spread = 10000;
-    var hash = 5381;
-    for (final code in medName.codeUnits) {
-      hash = ((hash << 5) + hash) + code;
-    }
-    return base + (hash.abs() % spread);
-  }
-
-  String _titleForLanguage(String languageCode, String medName) {
-    if (languageCode == 'ru') {
-      return 'Лекарство: $medName';
-    }
-    return 'Medication: $medName';
-  }
-
-  String _bodyForLanguage(String languageCode) {
-    if (languageCode == 'ru') {
-      return 'Пора отметить это лекарство на сегодня.';
-    }
-    return 'Time to mark this medication for today.';
-  }
-
-  /// Builds notification details for medication reminders
-  /// Shared between real scheduling and test notifications
-  NotificationDetails _buildMedNotificationDetails(
-    String title,
-    String body, {
-    bool includeActions = true,
-  }) {
-    return NotificationDetails(
-      android: AndroidNotificationDetails(
-        _channelId,
-        _channelName,
-        channelDescription: _channelDescription,
-        importance: Importance.max,
-        priority: Priority.max,
-        category: AndroidNotificationCategory.alarm,
-        fullScreenIntent: true,
-        ongoing: true,
-        autoCancel: false,
-        playSound: true,
-        enableVibration: true,
-        audioAttributesUsage: AudioAttributesUsage.alarm,
-        actions: includeActions
-            ? const <AndroidNotificationAction>[
-                AndroidNotificationAction(
-                  'snooze',
-                  'Snooze',
-                  showsUserInterface: true,
-                ),
-                AndroidNotificationAction(
-                  'mark_taken',
-                  'Mark Taken',
-                  showsUserInterface: true,
-                ),
-              ]
-            : null,
-      ),
-      iOS: const DarwinNotificationDetails(
-        presentAlert: true,
-        presentSound: true,
-        interruptionLevel: InterruptionLevel.timeSensitive,
-      ),
-    );
-  }
+  int notificationIdForMed(String medName) => _notifId(medName);
 
   Future<String> scheduleTestNotificationWithDelay() async {
     try {
@@ -523,10 +632,7 @@ class MedsNotificationsService {
         'TEST Medication',
         'This is a test notification',
         scheduledTime,
-        _buildMedNotificationDetails(
-          'TEST Medication',
-          'This is a test notification',
-        ),
+        _notifDetails(includeActions: false),
         androidScheduleMode: AndroidScheduleMode.alarmClock,
         uiLocalNotificationDateInterpretation:
             UILocalNotificationDateInterpretation.wallClockTime,
@@ -579,41 +685,25 @@ class MedsNotificationsService {
 
   void _handleSnooze(String medName) {
     final snoozeUntil = clock.now().add(const Duration(minutes: 10));
-
-    // Track snooze
     _snoozedMeds[medName] = snoozeUntil;
-
-    // Schedule a snooze notification
     unawaited(_scheduleSnoozeNotification(medName, snoozeUntil));
-
-    // Notify app
     _onSnoozeMed?.call(medName, snoozeUntil);
-
-    // Emit feedback for UI (time will be formatted by UI layer with proper locale)
-    _actionFeedbackController.add('SNOOZE:$medName:${snoozeUntil.millisecondsSinceEpoch}');
   }
 
   Future<void> _scheduleSnoozeNotification(
     String medName,
     DateTime snoozeUntil,
   ) async {
-    final snoozeTime = tz.TZDateTime.from(snoozeUntil, tz.local);
-
     await _plugin.zonedSchedule(
       notificationIdForMed('${medName}_snooze'),
-      'Snooze: $medName',
-      'Reminder snoozed - time to take your medication',
-      snoozeTime,
-      _buildMedNotificationDetails(
-        'Snooze: $medName',
-        'Reminder snoozed - time to take your medication',
-      ),
+      _l10n(_currentLanguage).medsNotificationTitle(medName),
+      _l10n(_currentLanguage).medsNotificationBody,
+      tz.TZDateTime.from(snoozeUntil, tz.local),
+      _notifDetails(),
       androidScheduleMode: AndroidScheduleMode.alarmClock,
       uiLocalNotificationDateInterpretation:
           UILocalNotificationDateInterpretation.wallClockTime,
-      // Snooze inherits the same med reminder time - parse from original payload not available here
-      // Use a default payload that won't trigger mark_taken rescheduling properly
-      payload: '$_medsPayloadPrefix$medName::0::en',
+      payload: '$_medsPayloadPrefix$medName::${_medReminderMinutes[medName] ?? defaultMedsReminderMinutes}::$_currentLanguage',
     );
   }
 
@@ -642,13 +732,10 @@ class MedsNotificationsService {
     unawaited(
       _plugin.zonedSchedule(
         notificationIdForMed(medName),
-        _titleForLanguage(_currentLanguage, medName),
-        _bodyForLanguage(_currentLanguage),
+        _l10n(_currentLanguage).medsNotificationTitle(medName),
+        _l10n(_currentLanguage).medsNotificationBody,
         nextSchedule,
-        _buildMedNotificationDetails(
-          _titleForLanguage(_currentLanguage, medName),
-          _bodyForLanguage(_currentLanguage),
-        ),
+        _notifDetails(),
         androidScheduleMode: AndroidScheduleMode.alarmClock,
         uiLocalNotificationDateInterpretation:
             UILocalNotificationDateInterpretation.wallClockTime,
@@ -658,15 +745,7 @@ class MedsNotificationsService {
       ),
     );
 
-    // Notify app to mark as taken
     _onMarkMedTaken?.call(medName);
-
-    // Emit feedback for UI
-    _actionFeedbackController.add('$medName confirmed taken');
-  }
-
-  void dispose() {
-    _actionFeedbackController.close();
   }
 
   /// Cancel notification for a specific medication
@@ -682,34 +761,5 @@ class MedsNotificationsService {
     log('MedsNotifications: Cancelled notification for $medName');
   }
 
-  /// Call this from any widget to show SnackBar feedback when notification actions are pressed
-  void listenForActionFeedback(BuildContext context) {
-    actionFeedbackStream.listen((message) {
-      if (!context.mounted) return;
-
-      // Parse SNOOZE messages and format time with proper 12/24h setting
-      String displayMessage = message;
-      if (message.startsWith('SNOOZE:')) {
-        final parts = message.split(':');
-        if (parts.length >= 3) {
-          final timestampMs = int.tryParse(parts[2]);
-          if (timestampMs != null) {
-            final snoozeUntil = DateTime.fromMillisecondsSinceEpoch(timestampMs);
-            final timeStr = MaterialLocalizations.of(context).formatTimeOfDay(
-              TimeOfDay(hour: snoozeUntil.hour, minute: snoozeUntil.minute),
-              alwaysUse24HourFormat: MediaQuery.of(context).alwaysUse24HourFormat,
-            );
-            displayMessage = 'Alarm snoozed until $timeStr';
-          }
-        }
-      }
-
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(displayMessage),
-          duration: const Duration(seconds: 3),
-        ),
-      );
-    });
-  }
 }
+

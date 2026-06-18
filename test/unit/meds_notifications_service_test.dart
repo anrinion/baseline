@@ -53,24 +53,6 @@ void main() {
       service.clearSnooze('Vitamin D');
     });
 
-    test('action feedback stream emits messages', () async {
-      final service = MedsNotificationsService.instance;
-
-      // Collect emitted messages
-      final messages = <String>[];
-      final subscription = service.actionFeedbackStream.listen(messages.add);
-
-      // Trigger feedback via _handleSnooze simulation
-      service.actionFeedbackControllerForTest.add('Alarm snoozed until 14:35');
-
-      // Wait for async delivery
-      await Future.delayed(Duration.zero);
-
-      expect(messages, equals(['Alarm snoozed until 14:35']));
-
-      await subscription.cancel();
-    });
-
     test('callback registration works', () {
       final service = MedsNotificationsService.instance;
 

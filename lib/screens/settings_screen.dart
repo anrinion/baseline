@@ -19,7 +19,6 @@ class SettingsScreen extends StatefulWidget {
 
 class _SettingsScreenState extends State<SettingsScreen> {
   TextEditingController? _hereButtonController;
-  TextEditingController? _medsListController;
   String _appVersion = '';
 
   @override
@@ -31,16 +30,11 @@ class _SettingsScreenState extends State<SettingsScreen> {
   @override
   void dispose() {
     _hereButtonController?.dispose();
-    _medsListController?.dispose();
     super.dispose();
   }
 
   void _setHereController(TextEditingController controller) {
     _hereButtonController = controller;
-  }
-
-  void _setMedsController(TextEditingController controller) {
-    _medsListController = controller;
   }
 
   Future<void> _getAppVersion() async {
@@ -141,9 +135,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
             settings: settings,
             l10n: l10n,
             hereButtonController: _hereButtonController,
-            medsListController: _medsListController,
             onHereControllerCreated: _setHereController,
-            onMedsControllerCreated: _setMedsController,
           ),
 
           const SizedBox(height: 24),

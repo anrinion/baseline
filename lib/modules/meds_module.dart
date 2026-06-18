@@ -6,6 +6,7 @@ import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 
 import '../l10n/app_localizations.dart';
+import '../screens/settings/meds_list_editor.dart';
 import '../services/meds_notifications_service.dart';
 import '../state/app_state.dart';
 import '../state/settings.dart';
@@ -14,7 +15,27 @@ import 'module_ids.dart';
 
 const String _medsListSettingKey = 'list';
 const String _medsRemindersJsonSettingKey = 'remindersByMedJson';
+const String _medsNotificationsEnabledKey = 'notificationsEnabled';
 const int defaultMedsReminderMinutes = 9 * 60;
+
+bool getMedsNotificationsEnabled(Settings settings) {
+  return settings.getModuleSetting(
+        BaselineModuleId.meds,
+        _medsNotificationsEnabledKey,
+        'true',
+      ) !=
+      'false';
+}
+
+void setMedsNotificationsEnabled(AppState appState, bool enabled) {
+  appState.updateSettings((settings) {
+    settings.setModuleSetting(
+      BaselineModuleId.meds,
+      _medsNotificationsEnabledKey,
+      enabled.toString(),
+    );
+  });
+}
 
 Map<String, int> medsReminderMinutesByMedFromSettings(Settings settings) {
   final raw = settings.getModuleSetting(
@@ -186,6 +207,9 @@ class _MedsDialog extends StatelessWidget {
                 .where((m) => isMedTakenToday(appState, m))
                 .length;
             final isEmpty = meds.isEmpty;
+            final notificationsEnabled = getMedsNotificationsEnabled(
+              appState.settings,
+            );
 
             return Column(
               mainAxisSize: MainAxisSize.min,
@@ -266,6 +290,30 @@ class _MedsDialog extends StatelessWidget {
                 ),
                 Divider(height: 1, color: scheme.outlineVariant),
 
+                // Notifications-disabled banner
+                if (!isEmpty && !notificationsEnabled)
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(16, 8, 16, 0),
+                    child: Row(
+                      children: [
+                        Icon(
+                          Icons.notifications_off_outlined,
+                          size: 16,
+                          color: scheme.onSurfaceVariant,
+                        ),
+                        const SizedBox(width: 8),
+                        Expanded(
+                          child: Text(
+                            l10n.medsNotificationsDisabledNote,
+                            style: theme.textTheme.bodySmall?.copyWith(
+                              color: scheme.onSurfaceVariant,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+
                 // Progress row – only shown when list is NOT empty
                 if (!isEmpty)
                   Padding(
@@ -288,7 +336,6 @@ class _MedsDialog extends StatelessWidget {
                           child: Column(
                             mainAxisSize: MainAxisSize.min,
                             children: [
-                              // Centered progress text for empty state
                               Center(
                                 child: Text(
                                   l10n.medsTodayProgress(
@@ -375,6 +422,7 @@ class _MedsDialog extends StatelessWidget {
                               secondary: _MedReminderControl(
                                 medName: med,
                                 reminderMinutes: reminderMinutes,
+                                notificationsEnabled: notificationsEnabled,
                               ),
                               onChanged: (value) => setMedTakenToday(
                                 appState,
@@ -419,54 +467,56 @@ class _MedsDialog extends StatelessWidget {
     );
   }
 
-  Future<void> _openMedsListEditor(
+  void _openMedsListEditor(
     BuildContext context,
     AppState appState,
     AppLocalizations l10n,
-  ) async {
-    final initial = getMedsList(appState, l10n);
-    final controller = TextEditingController(text: initial.join('\n'));
-    final saved = await showDialog<bool>(
+  ) {
+    final scheme = Theme.of(context).colorScheme;
+    showDialog<void>(
       context: context,
-      builder: (editorContext) => AlertDialog(
-        title: Text(l10n.medsEditListTitle),
-        content: TextField(
-          controller: controller,
-          maxLines: 10,
-          decoration: InputDecoration(
-            hintText: l10n.medsEditListHint,
-            border: const OutlineInputBorder(),
+      builder: (ctx) => Dialog(
+        insetPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 24),
+        backgroundColor: scheme.surface,
+        surfaceTintColor: Colors.transparent,
+        child: ConstrainedBox(
+          constraints: const BoxConstraints(maxWidth: 420, maxHeight: 560),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              Padding(
+                padding: const EdgeInsets.fromLTRB(16, 16, 16, 8),
+                child: Text(
+                  l10n.medsEditListTitle,
+                  style: Theme.of(ctx).textTheme.titleLarge?.copyWith(
+                    fontWeight: FontWeight.w600,
+                    letterSpacing: -0.3,
+                  ),
+                ),
+              ),
+              Divider(height: 1, color: scheme.outlineVariant),
+              Flexible(
+                child: SingleChildScrollView(
+                  padding: const EdgeInsets.fromLTRB(16, 12, 16, 8),
+                  child: MedsListEditor(appState: appState, l10n: l10n),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.fromLTRB(8, 0, 8, 8),
+                child: Align(
+                  alignment: Alignment.centerRight,
+                  child: TextButton(
+                    onPressed: () => Navigator.of(ctx).pop(),
+                    child: Text(l10n.dialogClose),
+                  ),
+                ),
+              ),
+            ],
           ),
         ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.of(editorContext).pop(false),
-            child: FittedBox(
-              fit: BoxFit.scaleDown,
-              child: Text(l10n.dialogCancel),
-            ),
-          ),
-          FilledButton(
-            onPressed: () => Navigator.of(editorContext).pop(true),
-            child: FittedBox(
-              fit: BoxFit.scaleDown,
-              child: Text(l10n.dialogSave),
-            ),
-          ),
-        ],
       ),
     );
-
-    if (saved != true) return;
-
-    final meds = controller.text
-        .split('\n')
-        .map((s) => s.trim())
-        .where((s) => s.isNotEmpty)
-        .toList();
-
-    setMedsList(appState, meds);
-    syncMedsChecksWithList(appState, meds);
   }
 }
 
@@ -474,10 +524,12 @@ class _MedReminderControl extends StatelessWidget {
   const _MedReminderControl({
     required this.medName,
     required this.reminderMinutes,
+    required this.notificationsEnabled,
   });
 
   final String medName;
   final int? reminderMinutes;
+  final bool notificationsEnabled;
 
   @override
   Widget build(BuildContext context) {
@@ -495,6 +547,19 @@ class _MedReminderControl extends StatelessWidget {
             alwaysUse24HourFormat: MediaQuery.of(context).alwaysUse24HourFormat,
           )
         : null;
+
+    if (!notificationsEnabled) {
+      return Tooltip(
+        message: l10n.medsNotificationsDisabledNote,
+        child: Icon(
+          Icons.notifications_off_outlined,
+          size: 20,
+          color: Theme.of(context).colorScheme.onSurfaceVariant.withValues(
+            alpha: 0.38,
+          ),
+        ),
+      );
+    }
 
     return Row(
       mainAxisSize: MainAxisSize.min,

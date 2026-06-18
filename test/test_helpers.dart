@@ -31,6 +31,7 @@ Future<void> initTestHive() async {
   // Open boxes in-memory (no file backend)
   await Hive.openBox<TodayState>('todayState', bytes: Uint8List(0));
   await Hive.openBox<Settings>('settings', bytes: Uint8List(0));
+  await Hive.openBox<String>('bgPending', bytes: Uint8List(0));
 }
 
 /// Close all Hive boxes after tests
@@ -45,6 +46,9 @@ Future<void> reopenTestBoxes() async {
   }
   if (!Hive.isBoxOpen('settings')) {
     await Hive.openBox<Settings>('settings', bytes: Uint8List(0));
+  }
+  if (!Hive.isBoxOpen('bgPending')) {
+    await Hive.openBox<String>('bgPending', bytes: Uint8List(0));
   }
 }
 

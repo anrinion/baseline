@@ -21,6 +21,8 @@ class MockNotificationAdapter implements NotificationAdapter {
   Future<void> initialize(
     InitializationSettings settings, {
     NotificationResponseCallback? onDidReceiveNotificationResponse,
+    BackgroundNotificationResponseCallback?
+    onDidReceiveBackgroundNotificationResponse,
   }) async {}
 
   @override

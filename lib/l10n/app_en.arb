@@ -216,9 +216,9 @@
   "@medsEditListHint": {
     "description": "Hint for medication list editor text field"
   },
-  "medsListSettingsLabel": "Medication list (one per line)",
+  "medsListSettingsLabel": "Your medications",
   "@medsListSettingsLabel": {
-    "description": "Settings label for meds list input"
+    "description": "Section label for the meds list editor in settings"
   },
   "medsDefaultList": "",
   "@medsDefaultList": {
@@ -227,6 +227,10 @@
   "medsEmptyState": "No medications listed yet. Add the ones you want to track.",
   "@medsEmptyState": {
     "description": "Empty state text for meds module"
+  },
+  "medsNotificationsDisabledNote": "Reminders are disabled. Enable them in Settings.",
+  "@medsNotificationsDisabledNote": {
+    "description": "Banner shown in meds dialog when global notifications toggle is off"
   },
   "medsEmptyCompact": "No meds yet",
   "@medsEmptyCompact": {
@@ -276,6 +280,14 @@
   "medsReminderDisableTooltip": "Disable reminder for this medication",
   "@medsReminderDisableTooltip": {
     "description": "Tooltip for disabling reminder on a medication row"
+  },
+  "medsItemDeleted": "Medication removed",
+  "@medsItemDeleted": {
+    "description": "Snackbar text when a medication is removed from the list"
+  },
+  "medsItemHint": "e.g. Aspirin",
+  "@medsItemHint": {
+    "description": "Placeholder text for each medication name field in the list editor"
   },
   "mentalStateModuleLabel": "Mental state",
   "@mentalStateModuleLabel": {
@@ -704,5 +716,18 @@
   "cbtThoughtLensDaily": "Today's cognitive distortion",
   "@cbtThoughtLensDaily": {
     "description": "Label indicating today's random thought distortion"
+  },
+  "medsNotificationTitle": "Medication: {medName}",
+  "@medsNotificationTitle": {
+    "description": "Title for a medication reminder notification",
+    "placeholders": {
+      "medName": {
+        "type": "String"
+      }
+    }
+  },
+  "medsNotificationBody": "It's time to take this medication.",
+  "@medsNotificationBody": {
+    "description": "Body for a medication reminder notification"
   }
 }

@@ -136,13 +136,13 @@ class AppLocalizationsRu extends AppLocalizations {
   String get sleepModuleLabel => 'Сон';
 
   @override
-  String get sleepStartLabel => 'Start';
+  String get sleepStartLabel => 'Начало';
 
   @override
-  String get sleepEndLabel => 'End';
+  String get sleepEndLabel => 'Конец';
 
   @override
-  String get sleepPrompt => 'Track your sleep session:';
+  String get sleepPrompt => 'Запиши время сна:';
 
   @override
   String get sleepBedTimeLabel => 'Отбой';
@@ -175,7 +175,7 @@ class AppLocalizationsRu extends AppLocalizations {
   String get medsEditListHint => 'По одному лекарству на строку';
 
   @override
-  String get medsListSettingsLabel => 'Список лекарств (по одному на строку)';
+  String get medsListSettingsLabel => 'Ваши лекарства';
 
   @override
   String get medsDefaultList => '';
@@ -183,6 +183,10 @@ class AppLocalizationsRu extends AppLocalizations {
   @override
   String get medsEmptyState =>
       'Список лекарств пока пуст. Нажми, чтобы добавить.';
+
+  @override
+  String get medsNotificationsDisabledNote =>
+      'Напоминания отключены. Включи их в настройках.';
 
   @override
   String get medsEmptyCompact => 'Пока нет лекарств';
@@ -202,10 +206,10 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get medsReminderToggleHelp =>
-      'If enabled, Baseline sends you reminders.';
+      'Если включено, База будет напоминать тебе.';
 
   @override
-  String get medsReminderTimeLabel => 'Reminder time';
+  String get medsReminderTimeLabel => 'Время напоминания';
 
   @override
   String get medsReminderPermissionDenied =>
@@ -218,6 +222,12 @@ class AppLocalizationsRu extends AppLocalizations {
   @override
   String get medsReminderDisableTooltip =>
       'Выключить напоминание для этого лекарства';
+
+  @override
+  String get medsItemDeleted => 'Лекарство удалено';
+
+  @override
+  String get medsItemHint => 'напр., Аспирин';
 
   @override
   String get mentalStateModuleLabel => 'Психологическое здоровье';
@@ -563,4 +573,12 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get cbtThoughtLensDaily => 'Когнитивное искажение дня';
+
+  @override
+  String medsNotificationTitle(String medName) {
+    return 'Лекарство: $medName';
+  }
+
+  @override
+  String get medsNotificationBody => 'Пора принять это лекарство.';
 }

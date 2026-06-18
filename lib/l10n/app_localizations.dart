@@ -422,10 +422,10 @@ abstract class AppLocalizations {
   /// **'One medication per line'**
   String get medsEditListHint;
 
-  /// Settings label for meds list input
+  /// Section label for the meds list editor in settings
   ///
   /// In en, this message translates to:
-  /// **'Medication list (one per line)'**
+  /// **'Your medications'**
   String get medsListSettingsLabel;
 
   /// Default medication list. Keep empty for a clean first state.
@@ -439,6 +439,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'No medications listed yet. Add the ones you want to track.'**
   String get medsEmptyState;
+
+  /// Banner shown in meds dialog when global notifications toggle is off
+  ///
+  /// In en, this message translates to:
+  /// **'Reminders are disabled. Enable them in Settings.'**
+  String get medsNotificationsDisabledNote;
 
   /// Compact empty state text for meds module tile
   ///
@@ -493,6 +499,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Disable reminder for this medication'**
   String get medsReminderDisableTooltip;
+
+  /// Snackbar text when a medication is removed from the list
+  ///
+  /// In en, this message translates to:
+  /// **'Medication removed'**
+  String get medsItemDeleted;
+
+  /// Placeholder text for each medication name field in the list editor
+  ///
+  /// In en, this message translates to:
+  /// **'e.g. Aspirin'**
+  String get medsItemHint;
 
   /// Label for the Mental state module
   ///
@@ -1129,6 +1147,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Today\'s cognitive distortion'**
   String get cbtThoughtLensDaily;
+
+  /// Title for a medication reminder notification
+  ///
+  /// In en, this message translates to:
+  /// **'Medication: {medName}'**
+  String medsNotificationTitle(String medName);
+
+  /// Body for a medication reminder notification
+  ///
+  /// In en, this message translates to:
+  /// **'It\'s time to take this medication.'**
+  String get medsNotificationBody;
 }
 
 class _AppLocalizationsDelegate
