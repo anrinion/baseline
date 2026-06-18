@@ -581,4 +581,9 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get medsNotificationBody => 'Пора принять это лекарство.';
+
+  @override
+  String medsSnoozedUntil(String time) {
+    return 'Отложено до $time';
+  }
 }

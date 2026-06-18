@@ -729,5 +729,12 @@
   "medsNotificationBody": "It's time to take this medication.",
   "@medsNotificationBody": {
     "description": "Body for a medication reminder notification"
+  },
+  "medsSnoozedUntil": "Snoozed until {time}",
+  "@medsSnoozedUntil": {
+    "description": "Label shown under a medication name when its reminder is snoozed",
+    "placeholders": {
+      "time": { "type": "String" }
+    }
   }
 }

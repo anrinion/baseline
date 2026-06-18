@@ -68,6 +68,8 @@ class DeveloperSettingsSection extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 12),
+          _SnoozeIntervalRow(appState: appState, settings: settings),
+          const SizedBox(height: 12),
           OutlinedButton(
             onPressed: () async {
               final result = await MedsNotificationsService.instance.scheduleTestNotificationWithDelay();
@@ -147,5 +149,49 @@ class DeveloperSettingsSection extends StatelessWidget {
       default:
         return l10n.developerNotificationsStatusNotInitialized;
     }
+  }
+}
+
+class _SnoozeIntervalRow extends StatelessWidget {
+  final AppState appState;
+  final Settings settings;
+
+  const _SnoozeIntervalRow({required this.appState, required this.settings});
+
+  @override
+  Widget build(BuildContext context) {
+    final current = settings.medsSnoozeIntervalMinutes;
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          'Snooze interval: ${current}m',
+          style: Theme.of(context).textTheme.bodySmall,
+        ),
+        const SizedBox(height: 6),
+        Row(
+          children: [
+            for (final minutes in [1, 2, 5, 10])
+              Padding(
+                padding: const EdgeInsets.only(right: 8),
+                child: OutlinedButton(
+                  style: current == minutes
+                      ? OutlinedButton.styleFrom(
+                          backgroundColor:
+                              Theme.of(context).colorScheme.primaryContainer,
+                        )
+                      : null,
+                  onPressed: () {
+                    appState.updateSettings((s) {
+                      s.medsSnoozeIntervalMinutes = minutes;
+                    });
+                  },
+                  child: Text('${minutes}m'),
+                ),
+              ),
+          ],
+        ),
+      ],
+    );
   }
 }

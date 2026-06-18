@@ -37,6 +37,17 @@ int _notifId(String medName) {
   return base + (hash.abs() % spread);
 }
 
+// Separate ID range for one-shot snooze alarms; avoids collisions with daily IDs.
+int _snoozeNotifId(String medName) {
+  const base = 42000;
+  const spread = 10000;
+  var hash = 5381;
+  for (final code in medName.codeUnits) {
+    hash = ((hash << 5) + hash) + code;
+  }
+  return base + (hash.abs() % spread);
+}
+
 AppLocalizations _l10n(String lang) => lookupAppLocalizations(Locale(lang));
 
 NotificationDetails _notifDetails({bool includeActions = true}) =>
@@ -94,6 +105,7 @@ Future<void> medsNotificationBackgroundHandler(
       ? (int.tryParse(parts[1]) ?? defaultMedsReminderMinutes)
       : defaultMedsReminderMinutes;
   final language = parts.length > 2 ? parts[2] : 'en';
+  final snoozeIntervalMinutes = parts.length > 3 ? (int.tryParse(parts[3]) ?? 10) : 10;
 
   final plugin = FlutterLocalNotificationsPlugin();
   await plugin.initialize(
@@ -110,7 +122,9 @@ Future<void> medsNotificationBackgroundHandler(
   tz.setLocalLocation(tz.getLocation(timezone));
 
   final id = _notifId(medName);
+  final snoozeId = _snoozeNotifId(medName);
   await plugin.cancel(id);
+  await plugin.cancel(snoozeId);
 
   final now = tz.TZDateTime.now(tz.local);
   final l10n = _l10n(language);
@@ -119,21 +133,21 @@ Future<void> medsNotificationBackgroundHandler(
   final details = _notifDetails();
 
   if (actionId == 'snooze') {
-    // Snooze alarm fires in 10 minutes under a separate ID so the daily
-    // recurring alarm (cancelled above to dismiss the showing notification)
-    // can be restored and continue firing on future days.
+    final snoozeUntil = now.add(Duration(minutes: snoozeIntervalMinutes));
+    // One-shot snooze alarm.
     await plugin.zonedSchedule(
-      _notifId('${medName}_snooze'),
+      snoozeId,
       title,
       body,
-      now.add(const Duration(minutes: 10)),
+      snoozeUntil,
       details,
       androidScheduleMode: AndroidScheduleMode.alarmClock,
       uiLocalNotificationDateInterpretation:
           UILocalNotificationDateInterpretation.wallClockTime,
       payload: payload,
     );
-    // Restore the daily recurring alarm that cancel(id) wiped.
+    // Restore the daily recurring alarm. This ensures the user gets reminded
+    // again the next day even if they never open the app to trigger syncFromSettings.
     final nextDay = tz.TZDateTime(
       tz.local,
       now.year,
@@ -154,6 +168,19 @@ Future<void> medsNotificationBackgroundHandler(
       matchDateTimeComponents: DateTimeComponents.time,
       payload: payload,
     );
+    // Persist snooze state so syncFromSettings can reconstruct the snooze
+    // notification if the app resumes before it fires.
+    try {
+      await Hive.initFlutter();
+      final pendingBox = await Hive.openBox<String>('bgPending');
+      final existing = pendingBox.get('snoozedMeds');
+      final map = existing != null && existing.isNotEmpty
+          ? Map<String, dynamic>.from(jsonDecode(existing))
+          : <String, dynamic>{};
+      map[medName] = snoozeUntil.millisecondsSinceEpoch;
+      await pendingBox.put('snoozedMeds', jsonEncode(map));
+      await pendingBox.close();
+    } catch (_) {}
   } else if (actionId == 'mark_taken') {
     final tomorrow = tz.TZDateTime(
       tz.local,
@@ -366,6 +393,7 @@ class MedsNotificationsService {
   // Store reminder settings per med for action handlers
   final Map<String, int> _medReminderMinutes = {};
   String _currentLanguage = 'en';
+  int _currentSnoozeIntervalMinutes = 10;
 
   @visibleForTesting
   OnMarkMedTaken? get onMarkMedTakenCallback => _onMarkMedTaken;
@@ -507,6 +535,7 @@ class MedsNotificationsService {
   Future<void> syncFromSettings(
     Settings settings, {
     bool Function(String medName)? isMedTaken,
+    DateTime? Function(String medName)? getMedSnoozeTime,
   }) async {
     await ensureInitialized();
     if (!_isAvailable) return;
@@ -525,20 +554,23 @@ class MedsNotificationsService {
         return;
       }
 
-      // Store language for action handlers
+      // Store language and snooze interval for action handlers
       _currentLanguage = settings.language;
+      _currentSnoozeIntervalMinutes = settings.medsSnoozeIntervalMinutes;
+      _snoozedMeds.clear();
+
+      final now = tz.TZDateTime.from(clock.now(), tz.local);
+      final l10n = _l10n(settings.language);
+      String payload(String medName, int minutes) =>
+          '$_medsPayloadPrefix$medName::$minutes::${settings.language}::${settings.medsSnoozeIntervalMinutes}';
 
       for (final entry in reminders.entries) {
         final medName = entry.key;
         final minutes = entry.value;
-        // Store reminder minutes for action handlers
         _medReminderMinutes[medName] = minutes;
 
-        // If med already taken today, schedule for tomorrow
-        final now = tz.TZDateTime.from(clock.now(), tz.local);
+        // Compute next daily schedule (used for both snoozed and normal paths).
         final alreadyTaken = isMedTaken?.call(medName) ?? false;
-
-        // Start with today at the reminder time
         var nextSchedule = tz.TZDateTime(
           tz.local,
           now.year,
@@ -547,27 +579,41 @@ class MedsNotificationsService {
           minutes ~/ 60,
           minutes % 60,
         );
-
-        // Advance day by day until we find a time that:
-        // - is in the future, AND
-        // - if the medication is taken today, is not today's date.
         while (nextSchedule.isBefore(now) ||
             (alreadyTaken && _isSameDay(nextSchedule, now))) {
           nextSchedule = nextSchedule.add(const Duration(days: 1));
         }
 
+        final snoozeUntil = getMedSnoozeTime?.call(medName);
+        if (snoozeUntil != null && snoozeUntil.isAfter(clock.now())) {
+          // Med is snoozed — schedule one-shot at snooze time.
+          _snoozedMeds[medName] = snoozeUntil;
+          await _plugin.zonedSchedule(
+            _snoozeNotifId(medName),
+            l10n.medsNotificationTitle(medName),
+            l10n.medsNotificationBody,
+            tz.TZDateTime.from(snoozeUntil, tz.local),
+            _notifDetails(),
+            androidScheduleMode: AndroidScheduleMode.alarmClock,
+            uiLocalNotificationDateInterpretation:
+                UILocalNotificationDateInterpretation.wallClockTime,
+            payload: payload(medName, minutes),
+          );
+          // Fall through — also schedule the daily recurring so it survives
+          // if the user dismisses the snooze notification without opening the app.
+        }
+
         await _plugin.zonedSchedule(
           notificationIdForMed(medName),
-          _l10n(settings.language).medsNotificationTitle(medName),
-          _l10n(settings.language).medsNotificationBody,
+          l10n.medsNotificationTitle(medName),
+          l10n.medsNotificationBody,
           nextSchedule,
           _notifDetails(),
           androidScheduleMode: AndroidScheduleMode.alarmClock,
           uiLocalNotificationDateInterpretation:
               UILocalNotificationDateInterpretation.wallClockTime,
           matchDateTimeComponents: DateTimeComponents.time,
-          payload:
-              '$_medsPayloadPrefix$medName::$minutes::${settings.language}',
+          payload: payload(medName, minutes),
         );
       }
       _setStatus('active');
@@ -684,7 +730,7 @@ class MedsNotificationsService {
   }
 
   void _handleSnooze(String medName) {
-    final snoozeUntil = clock.now().add(const Duration(minutes: 10));
+    final snoozeUntil = clock.now().add(Duration(minutes: _currentSnoozeIntervalMinutes));
     _snoozedMeds[medName] = snoozeUntil;
     unawaited(_scheduleSnoozeNotification(medName, snoozeUntil));
     _onSnoozeMed?.call(medName, snoozeUntil);
@@ -694,22 +740,55 @@ class MedsNotificationsService {
     String medName,
     DateTime snoozeUntil,
   ) async {
+    final l10n = _l10n(_currentLanguage);
+    final reminderMinutes = _medReminderMinutes[medName] ?? defaultMedsReminderMinutes;
+    final payloadStr = '$_medsPayloadPrefix$medName::$reminderMinutes::$_currentLanguage::$_currentSnoozeIntervalMinutes';
+
+    // One-shot snooze alarm.
     await _plugin.zonedSchedule(
-      notificationIdForMed('${medName}_snooze'),
-      _l10n(_currentLanguage).medsNotificationTitle(medName),
-      _l10n(_currentLanguage).medsNotificationBody,
+      _snoozeNotifId(medName),
+      l10n.medsNotificationTitle(medName),
+      l10n.medsNotificationBody,
       tz.TZDateTime.from(snoozeUntil, tz.local),
       _notifDetails(),
       androidScheduleMode: AndroidScheduleMode.alarmClock,
       uiLocalNotificationDateInterpretation:
           UILocalNotificationDateInterpretation.wallClockTime,
-      payload: '$_medsPayloadPrefix$medName::${_medReminderMinutes[medName] ?? defaultMedsReminderMinutes}::$_currentLanguage',
+      payload: payloadStr,
+    );
+
+    // Restore daily recurring so tomorrow's reminder survives if the user
+    // dismisses the snooze without opening the app.
+    final now = tz.TZDateTime.from(clock.now(), tz.local);
+    var nextDaily = tz.TZDateTime(
+      tz.local,
+      now.year,
+      now.month,
+      now.day,
+      reminderMinutes ~/ 60,
+      reminderMinutes % 60,
+    );
+    while (nextDaily.isBefore(now)) {
+      nextDaily = nextDaily.add(const Duration(days: 1));
+    }
+    await _plugin.zonedSchedule(
+      notificationIdForMed(medName),
+      l10n.medsNotificationTitle(medName),
+      l10n.medsNotificationBody,
+      nextDaily,
+      _notifDetails(),
+      androidScheduleMode: AndroidScheduleMode.alarmClock,
+      uiLocalNotificationDateInterpretation:
+          UILocalNotificationDateInterpretation.wallClockTime,
+      matchDateTimeComponents: DateTimeComponents.time,
+      payload: payloadStr,
     );
   }
 
   void _handleMarkTaken(String medName) {
-    // Cancel this medication's current notification
+    // Cancel both the daily and any pending snooze notification.
     unawaited(_plugin.cancel(notificationIdForMed(medName)));
+    unawaited(_plugin.cancel(_snoozeNotifId(medName)));
 
     // Clear any snooze for this med
     _snoozedMeds.remove(medName);
@@ -741,12 +820,15 @@ class MedsNotificationsService {
             UILocalNotificationDateInterpretation.wallClockTime,
         matchDateTimeComponents: DateTimeComponents.time,
         payload:
-            '$_medsPayloadPrefix$medName::$reminderMinutes::$_currentLanguage',
+            '$_medsPayloadPrefix$medName::$reminderMinutes::$_currentLanguage::$_currentSnoozeIntervalMinutes',
       ),
     );
 
     _onMarkMedTaken?.call(medName);
   }
+
+  @visibleForTesting
+  int snoozeNotificationIdForMed(String medName) => _snoozeNotifId(medName);
 
   /// Cancel notification for a specific medication
   Future<void> cancelNotificationForMed(String medName) async {
@@ -755,10 +837,8 @@ class MedsNotificationsService {
       log('MedsNotifications: Cannot cancel - service not available');
       return;
     }
-    final id = notificationIdForMed(medName);
-    log('MedsNotifications: Cancelling notification id=$id for $medName');
-    await _plugin.cancel(id);
-    log('MedsNotifications: Cancelled notification for $medName');
+    await _plugin.cancel(notificationIdForMed(medName));
+    await _plugin.cancel(_snoozeNotifId(medName));
   }
 
 }
