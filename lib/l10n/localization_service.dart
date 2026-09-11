@@ -61,6 +61,9 @@ class LocalizationService extends ChangeNotifier {
     return const [
       Locale('en'), // English
       Locale('ru'), // Russian
+      Locale('de'), // German
+      Locale('fr'), // French
+      Locale('es'), // Spanish
     ];
   }
 
@@ -74,6 +77,9 @@ class LocalizationService extends ChangeNotifier {
     const names = {
       'en': 'English',
       'ru': 'Русский',
+      'de': 'Deutsch',
+      'fr': 'Français',
+      'es': 'Español',
     };
     return names[languageCode] ?? languageCode;
   }

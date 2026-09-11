@@ -79,7 +79,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
     );
   }
 
-  final List<String> languages = ['en', 'ru'];
+  final List<String> languages = ['en', 'ru', 'de', 'fr', 'es'];
 
   @override
   Widget build(BuildContext context) {
@@ -197,6 +197,12 @@ class _SettingsScreenState extends State<SettingsScreen> {
         return l10n.languageEnglish;
       case 'ru':
         return l10n.languageRussian;
+      case 'de':
+        return l10n.languageGerman;
+      case 'fr':
+        return l10n.languageFrench;
+      case 'es':
+        return l10n.languageSpanish;
       default:
         return code;
     }

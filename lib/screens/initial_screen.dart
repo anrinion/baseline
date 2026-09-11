@@ -117,11 +117,11 @@ class _InitialScreenState extends State<InitialScreen> {
     }
   }
 
-  Widget _buildLanguageButton(String languageCode, String displayName) {
+  Widget _buildLanguageButton(String languageCode, String displayName, {double width = double.infinity}) {
     final isSelected = selectedLanguage == languageCode;
 
     return SizedBox(
-      width: double.infinity,
+      width: width,
       child: ElevatedButton(
         onPressed: () {
           setState(() => selectedLanguage = languageCode);
@@ -337,15 +337,15 @@ class _InitialScreenState extends State<InitialScreen> {
             ),
             const SizedBox(height: 16),
             
-            Row(
+            Wrap(
+              spacing: 16,
+              runSpacing: 16,
               children: [
-                Expanded(
-                  child: _buildLanguageButton('en', l10n.languageEnglish),
-                ),
-                const SizedBox(width: 16),
-                Expanded(
-                  child: _buildLanguageButton('ru', l10n.languageRussian),
-                ),
+                _buildLanguageButton('en', l10n.languageEnglish, width: 140),
+                _buildLanguageButton('ru', l10n.languageRussian, width: 140),
+                _buildLanguageButton('de', l10n.languageGerman, width: 140),
+                _buildLanguageButton('fr', l10n.languageFrench, width: 140),
+                _buildLanguageButton('es', l10n.languageSpanish, width: 140),
               ],
             ),
             

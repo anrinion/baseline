@@ -109,6 +109,9 @@ Widget createTestableWidget({
       supportedLocales: const [
         Locale('en'),
         Locale('ru'),
+        Locale('de'),
+        Locale('fr'),
+        Locale('es'),
       ],
       home: child,
     ),
@@ -119,21 +122,22 @@ Widget createTestableWidget({
 Widget createTestableApp({
   required Widget home,
   AppState? appState,
+  LocalizationService? localizationService,
   Locale locale = const Locale('en'),
   ThemeData? theme,
 }) {
-  final mockLocalizationService = _createMockLocalizationService(locale);
-  
+  final effectiveLocalizationService = localizationService ?? _createMockLocalizationService(locale);
+
   // Use FakeTimerService by default for test isolation if no appState provided
   final effectiveAppState = appState ?? AppState(timerService: FakeTimerService());
-  
+
   return MultiProvider(
     providers: [
       ChangeNotifierProvider<AppState>.value(
         value: effectiveAppState,
       ),
       ChangeNotifierProvider<LocalizationService>.value(
-        value: mockLocalizationService,
+        value: effectiveLocalizationService,
       ),
     ],
     child: MaterialApp(
@@ -149,6 +153,9 @@ Widget createTestableApp({
       supportedLocales: const [
         Locale('en'),
         Locale('ru'),
+        Locale('de'),
+        Locale('fr'),
+        Locale('es'),
       ],
       home: home,
     ),

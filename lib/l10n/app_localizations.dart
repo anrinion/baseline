@@ -5,7 +5,10 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:intl/intl.dart' as intl;
 
+import 'app_localizations_de.dart';
 import 'app_localizations_en.dart';
+import 'app_localizations_es.dart';
+import 'app_localizations_fr.dart';
 import 'app_localizations_ru.dart';
 
 // ignore_for_file: type=lint
@@ -94,7 +97,10 @@ abstract class AppLocalizations {
 
   /// A list of this localizations delegate's supported locales.
   static const List<Locale> supportedLocales = <Locale>[
+    Locale('de'),
     Locale('en'),
+    Locale('es'),
+    Locale('fr'),
     Locale('ru'),
   ];
 
@@ -133,6 +139,24 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Русский'**
   String get languageRussian;
+
+  /// Language option label for German
+  ///
+  /// In en, this message translates to:
+  /// **'German'**
+  String get languageGerman;
+
+  /// Language option label for French
+  ///
+  /// In en, this message translates to:
+  /// **'French'**
+  String get languageFrench;
+
+  /// Language option label for Spanish
+  ///
+  /// In en, this message translates to:
+  /// **'Spanish'**
+  String get languageSpanish;
 
   /// Label for theme selection
   ///
@@ -1178,7 +1202,7 @@ class _AppLocalizationsDelegate
 
   @override
   bool isSupported(Locale locale) =>
-      <String>['en', 'ru'].contains(locale.languageCode);
+      <String>['de', 'en', 'es', 'fr', 'ru'].contains(locale.languageCode);
 
   @override
   bool shouldReload(_AppLocalizationsDelegate old) => false;
@@ -1187,8 +1211,14 @@ class _AppLocalizationsDelegate
 AppLocalizations lookupAppLocalizations(Locale locale) {
   // Lookup logic when only language code is specified.
   switch (locale.languageCode) {
+    case 'de':
+      return AppLocalizationsDe();
     case 'en':
       return AppLocalizationsEn();
+    case 'es':
+      return AppLocalizationsEs();
+    case 'fr':
+      return AppLocalizationsFr();
     case 'ru':
       return AppLocalizationsRu();
   }

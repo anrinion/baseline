@@ -24,6 +24,18 @@
   "@languageRussian": {
     "description": "Language option label for Russian"
   },
+  "languageGerman": "Немецкий",
+  "@languageGerman": {
+    "description": "Language option label for German"
+  },
+  "languageFrench": "Французский",
+  "@languageFrench": {
+    "description": "Language option label for French"
+  },
+  "languageSpanish": "Испанский",
+  "@languageSpanish": {
+    "description": "Language option label for Spanish"
+  },
   "themeLabel": "Тема",
   "@themeLabel": {
     "description": "Label for theme selection"

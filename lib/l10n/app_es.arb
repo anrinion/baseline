@@ -1,0 +1,750 @@
+{
+  "@@locale": "es",
+  "appTitle": "The Baseline",
+  "@appTitle": {
+    "description": "The title of the application"
+  },
+  "settingsButtonLabel": "Settings",
+  "@settingsButtonLabel": {
+    "description": "Label for the settings button"
+  },
+  "settingsScreenTitle": "Settings",
+  "@settingsScreenTitle": {
+    "description": "Title of the settings screen"
+  },
+  "languageLabel": "Language",
+  "@languageLabel": {
+    "description": "Label for language selection"
+  },
+  "languageEnglish": "Inglés",
+  "@languageEnglish": {
+    "description": "Language option label for English"
+  },
+  "languageRussian": "Ruso",
+  "@languageRussian": {
+    "description": "Language option label for Russian"
+  },
+  "languageGerman": "Alemán",
+  "@languageGerman": {
+    "description": "Language option label for German"
+  },
+  "languageFrench": "Francés",
+  "@languageFrench": {
+    "description": "Language option label for French"
+  },
+  "languageSpanish": "Español",
+  "@languageSpanish": {
+    "description": "Language option label for Spanish"
+  },
+  "themeLabel": "Theme",
+  "@themeLabel": {
+    "description": "Label for theme selection"
+  },
+  "themeLight1": "Light (neutral)",
+  "@themeLight1": {
+    "description": "Light theme option - neutral"
+  },
+  "themeLight2": "Light (warm)",
+  "@themeLight2": {
+    "description": "Light theme option - warm"
+  },
+  "themeDark1": "Dark (true black)",
+  "@themeDark1": {
+    "description": "Dark theme option - true black"
+  },
+  "themeDark2": "Dark (dark grey)",
+  "@themeDark2": {
+    "description": "Dark theme option - soft contrast"
+  },
+  "themeBehaviorHelp": "Choose how Baseline moves between light and dark.",
+  "@themeBehaviorHelp": {
+    "description": "Help text for theme behavior settings"
+  },
+  "themeModeManual": "Choose here",
+  "@themeModeManual": {
+    "description": "Theme behavior option: manual"
+  },
+  "themeModeManualDescription": "You pick light or dark yourself",
+  "@themeModeManualDescription": {
+    "description": "Description for manual theme behavior"
+  },
+  "themeModeDevice": "As device",
+  "@themeModeDevice": {
+    "description": "Theme behavior option: follow device"
+  },
+  "themeModeDeviceDescription": "Baseline follows your phone's settings",
+  "@themeModeDeviceDescription": {
+    "description": "Description for device theme behavior"
+  },
+  "themeModeSchedule": "On schedule",
+  "@themeModeSchedule": {
+    "description": "Theme behavior option: scheduled"
+  },
+  "themeModeScheduleDescription": "Baseline switches at the times you choose.",
+  "@themeModeScheduleDescription": {
+    "description": "Description for scheduled theme behavior"
+  },
+  "themeManualChoiceLabel": "Your selection:",
+  "@themeManualChoiceLabel": {
+    "description": "Label for manual light/dark choice"
+  },
+  "themeUseLight": "Use light theme",
+  "@themeUseLight": {
+    "description": "Manual theme option: use light theme"
+  },
+  "themeUseDark": "Use dark theme",
+  "@themeUseDark": {
+    "description": "Manual theme option: use dark theme"
+  },
+  "themeLightSectionLabel": "Light theme",
+  "@themeLightSectionLabel": {
+    "description": "Section label for light theme palette selection"
+  },
+  "themeDarkSectionLabel": "Dark theme",
+  "@themeDarkSectionLabel": {
+    "description": "Section label for dark theme palette selection"
+  },
+  "themeScheduleLabel": "Schedule",
+  "@themeScheduleLabel": {
+    "description": "Section label for scheduled theme settings"
+  },
+  "themeScheduleLightStarts": "Light starts",
+  "@themeScheduleLightStarts": {
+    "description": "Label for scheduled light theme start time"
+  },
+  "themeScheduleDarkStarts": "Dark starts",
+  "@themeScheduleDarkStarts": {
+    "description": "Label for scheduled dark theme start time"
+  },
+  "modulesLabel": "Modules",
+  "@modulesLabel": {
+    "description": "Label for modules settings section"
+  },
+  "hereModuleLabel": "Grounding",
+  "@hereModuleLabel": {
+    "description": "Label for the grounding module"
+  },
+  "hereModuleCustomizeLabel": "Customize button text",
+  "@hereModuleCustomizeLabel": {
+    "description": "Label for customizing the grounding button text"
+  },
+  "foodModuleLabel": "Nutrition",
+  "@foodModuleLabel": {
+    "description": "Label for the Food module"
+  },
+  "foodProteinLabel": "Protein",
+  "@foodProteinLabel": {
+    "description": "Food category: Protein"
+  },
+  "foodGreensLabel": "Greens",
+  "@foodGreensLabel": {
+    "description": "Food category: Greens"
+  },
+  "foodBeansLabel": "Beans & Chickpeas",
+  "@foodBeansLabel": {
+    "description": "Food category: Beans and Chickpeas"
+  },
+  "foodFillersLabel": "Fillers",
+  "@foodFillersLabel": {
+    "description": "Food category: Fillers / Carbs"
+  },
+  "foodTreatLabel": "Treat",
+  "@foodTreatLabel": {
+    "description": "Food category: Small enjoyable treat"
+  },
+  "foodSourcesTitle": "Principles behind this module",
+  "@foodSourcesTitle": {
+    "description": "Title for food module sources/help"
+  },
+  "foodSourcesContent": "<p><b>Protein</b> from plant sources and animal sources other than red meat is associated with lower risk of all-cause and cardiovascular disease mortality <a href='#ref-1'>[1]</a><a href='#ref-2'>[2]</a>.</p><p><b>Greens</b> (fruits &amp; vegetables): each additional 200g/day is associated with ~8-16% lower risk of cardiovascular disease, cancer, and all-cause mortality. Benefits increase up to ~800g/day (about 5 portions), after which risk reduction plateaus <a href='#ref-3'>[3]</a>. Additionally, higher vegetable intake is linked to slower cognitive decline and lower dementia risk <a href='#ref-4'>[4]</a>.</p><p><b>Beans and chickpeas</b> (legumes): rich in fiber and plant protein. Current evidence (low certainty) suggests they may reduce risk of cardiovascular disease and hypertension <a href='#ref-5'>[5]</a>.</p><p><b>Fillers</b> (carbohydrates): moderate intake (50-55% of energy) is associated with lowest mortality risk. Very low (&lt;40%) or very high (&gt;70%) carbohydrate intake increases mortality - especially when carbs are replaced with animal fat/protein <a href='#ref-6'>[6]</a>. Whole grains are a preferable source <a href='#ref-7'>[7]</a>.</p><p>A small piece of <b>chocolate</b> can improve mood and reduce negative feelings, possibly due to its orosensory pleasure or bioactive compounds like flavanols and methylxanthine <a href='#ref-8'>[8]</a>.</p><p style='margin-top:16px'><i>Flexible eating patterns</i> (intuitive and mindful eating) are associated with lower depressive symptoms, less disordered eating, better body image, and greater self-compassion - without strict rules or guilt <a href='#ref-9'>[9]</a>.</p>",
+  "@foodSourcesContent": {
+    "description": "Detailed explanation of why the food categories work (HTML with numbered citations)"
+  },
+  "foodSourcesReferences": "<p id='ref-1' style='margin-bottom:8px'><b>[1]</b> Naghshi S, et al. Dietary intake of total, animal, and plant proteins and risk of all cause, cardiovascular, and cancer mortality: systematic review and dose-response meta-analysis. BMJ. 2020;370:m2412.</p><p id='ref-2' style='margin-bottom:8px'><b>[2]</b> Kitada M, et al. The impact of dietary protein intake on longevity and metabolic health. EBioMedicine. 2019;43:632-640.</p><p id='ref-3' style='margin-bottom:8px'><b>[3]</b> Aune D, et al. Fruit and vegetable intake and the risk of cardiovascular disease, total cancer and all-cause mortality. Int J Epidemiol. 2017;46(3):1029-1056.</p><p id='ref-4' style='margin-bottom:8px'><b>[4]</b> Loef M, Walach H. Fruit, vegetables and prevention of cognitive decline or dementia: a systematic review of cohort studies. J Nutr Health Aging. 2012;16(7):626-630.</p><p id='ref-5' style='margin-bottom:8px'><b>[5]</b> Viguiliouk E, et al. Associations between dietary pulses alone or with other legumes and cardiometabolic disease outcomes: an umbrella review and updated systematic review and meta-analysis. Adv Nutr. 2019;10(Suppl 4):S308-S319.</p><p id='ref-6' style='margin-bottom:8px'><b>[6]</b> Seidelmann SB, et al. Dietary carbohydrate intake and mortality: a prospective cohort study and meta-analysis. Lancet Public Health. 2018;3(9):e419-e428.</p><p id='ref-7' style='margin-bottom:8px'><b>[7]</b> World Health Organization. Carbohydrate intake for adults and children: WHO guideline summary. Geneva: WHO; 2023.</p><p id='ref-8' style='margin-bottom:8px'><b>[8]</b> Scholey A, Owen L. Effects of chocolate on cognitive function and mood: a systematic review. Nutr Rev. 2013;71(10):665-681.</p><p id='ref-9'><b>[9]</b> Eaton M, et al. Intuitive eating and mindful eating: associations with mental health and eating behaviours. Appetite. 2024;192:107070.</p>",
+  "@foodSourcesReferences": {
+    "description": "Full references for food sources citations (HTML)"
+  },
+  "movementModuleLabel": "Movement",
+  "@movementModuleLabel": {
+    "description": "Label for the Movement module"
+  },
+  "movementDefaultOptions": "Go for a walk\nA workout",
+  "@movementDefaultOptions": {
+    "description": "Default movement options"
+  },
+  "sleepModuleLabel": "Sleep",
+  "@sleepModuleLabel": {
+    "description": "Label for the Sleep module"
+  },
+  "sleepStartLabel": "Start",
+  "@sleepStartLabel": {
+    "description": "Label for sleep start time"
+  },
+  "sleepEndLabel": "End",
+  "@sleepEndLabel": {
+    "description": "Label for sleep end time"
+  },
+  "sleepPrompt": "Track your sleep session:",
+  "@sleepPrompt": {
+    "description": "Prompt for starting sleep tracking"
+  },
+  "sleepBedTimeLabel": "Bedtime",
+  "@sleepBedTimeLabel": {
+    "description": "Label for bedtime slider"
+  },
+  "sleepWakeTimeLabel": "Wake up",
+  "@sleepWakeTimeLabel": {
+    "description": "Label for wake up time slider"
+  },
+  "sleepDurationLabel": "Sleep duration",
+  "@sleepDurationLabel": {
+    "description": "Label for calculated sleep duration"
+  },
+  "sleepHoursAbbreviation": "h",
+  "@sleepHoursAbbreviation": {
+    "description": "Abbreviation for hours in sleep duration display"
+  },
+  "sleepMinutesAbbreviation": "m",
+  "@sleepMinutesAbbreviation": {
+    "description": "Abbreviation for minutes in sleep duration display"
+  },
+  "medsModuleLabel": "Medications",
+  "@medsModuleLabel": {
+    "description": "Label for the Meds module"
+  },
+  "medsAddButtonLabel": "Add medication",
+  "@medsAddButtonLabel": {
+    "description": "Button to add a medication"
+  },
+  "medsEditListButtonLabel": "Edit list",
+  "@medsEditListButtonLabel": {
+    "description": "Button to open medication list editor"
+  },
+  "medsEditListTitle": "Medication list",
+  "@medsEditListTitle": {
+    "description": "Title for medication list editor dialog"
+  },
+  "medsEditListHint": "One medication per line",
+  "@medsEditListHint": {
+    "description": "Hint for medication list editor text field"
+  },
+  "medsListSettingsLabel": "Your medications",
+  "@medsListSettingsLabel": {
+    "description": "Section label for the meds list editor in settings"
+  },
+  "medsDefaultList": "",
+  "@medsDefaultList": {
+    "description": "Default medication list. Keep empty for a clean first state."
+  },
+  "medsEmptyState": "No medications listed yet. Add the ones you want to track.",
+  "@medsEmptyState": {
+    "description": "Empty state text for meds module"
+  },
+  "medsNotificationsDisabledNote": "Reminders are disabled. Enable them in Settings.",
+  "@medsNotificationsDisabledNote": {
+    "description": "Banner shown in meds dialog when global notifications toggle is off"
+  },
+  "medsEmptyCompact": "No meds yet",
+  "@medsEmptyCompact": {
+    "description": "Compact empty state text for meds module tile"
+  },
+  "medsTodayProgress": "{taken} of {total} marked for today",
+  "@medsTodayProgress": {
+    "description": "Progress text for meds taken today",
+    "placeholders": {
+      "taken": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "medsMoreCount": "+{count} more",
+  "@medsMoreCount": {
+    "description": "Text indicating more medications exist than shown in tile",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "medsReminderToggleLabel": "Daily reminder",
+  "@medsReminderToggleLabel": {
+    "description": "Toggle label for enabling daily meds reminder notifications"
+  },
+  "medsReminderToggleHelp": "If enabled, Baseline sends you reminders.",
+  "@medsReminderToggleHelp": {
+    "description": "Help text for meds reminder toggle"
+  },
+  "medsReminderTimeLabel": "Reminder time",
+  "@medsReminderTimeLabel": {
+    "description": "Label for meds reminder time picker"
+  },
+  "medsReminderPermissionDenied": "Notifications are off. Enable permissions to use reminders.",
+  "@medsReminderPermissionDenied": {
+    "description": "Message shown when notification permission is denied while enabling reminders"
+  },
+  "medsReminderEnableTooltip": "Enable reminder for this medication",
+  "@medsReminderEnableTooltip": {
+    "description": "Tooltip for enabling reminder on a medication row"
+  },
+  "medsReminderDisableTooltip": "Disable reminder for this medication",
+  "@medsReminderDisableTooltip": {
+    "description": "Tooltip for disabling reminder on a medication row"
+  },
+  "medsItemDeleted": "Medication removed",
+  "@medsItemDeleted": {
+    "description": "Snackbar text when a medication is removed from the list"
+  },
+  "medsItemHint": "e.g. Aspirin",
+  "@medsItemHint": {
+    "description": "Placeholder text for each medication name field in the list editor"
+  },
+  "mentalStateModuleLabel": "Mental state",
+  "@mentalStateModuleLabel": {
+    "description": "Label for the Mental state module"
+  },
+  "mentalStateRightNow": "Current mood",
+  "@mentalStateRightNow": {
+    "description": "Mental state section: current mood"
+  },
+  "mentalStateGoodThing": "Daily positives",
+  "@mentalStateGoodThing": {
+    "description": "Mental state section: daily positives"
+  },
+  "mentalStateThoughtLens": "Cognitive distortions",
+  "@mentalStateThoughtLens": {
+    "description": "Mental state section: cognitive distortions"
+  },
+  "mentalStateSettingDescription": "Choose what to use in the Mental state module",
+  "@mentalStateSettingDescription": {
+    "description": "Description for mental state tracking settings"
+  },
+  "dialogGotIt": "Ok",
+  "@dialogGotIt": {
+    "description": "Dialog action button"
+  },
+  "dialogCancel": "Cancel",
+  "@dialogCancel": {
+    "description": "Dialog action button"
+  },
+  "dialogSave": "Save",
+  "@dialogSave": {
+    "description": "Dialog action button"
+  },
+  "dialogDelete": "Delete",
+  "@dialogDelete": {
+    "description": "Dialog action button"
+  },
+  "dialogClose": "Close",
+  "@dialogClose": {
+    "description": "Dialog close button"
+  },
+  "dialogReset": "Reset",
+  "@dialogReset": {
+    "description": "Dialog reset button"
+  },
+  "dialogWhyThisWorks": "Principles behind this module",
+  "@dialogWhyThisWorks": {
+    "description": "Tooltip to show help/sources"
+  },
+  "dialogWhyThisHelps": "Principles behind this module",
+  "@dialogWhyThisHelps": {
+    "description": "Tooltip to show module help"
+  },
+  "nourishment": "Nutrition",
+  "@nourishment": {
+    "description": "Title for the food module dialog"
+  },
+  "resetAll": "Reset all",
+  "@resetAll": {
+    "description": "Button to reset all food categories"
+  },
+  "grounding": "Grounding",
+  "@grounding": {
+    "description": "Label for the grounding/here module"
+  },
+  "groundingAffirmation1": "Good. You're here.",
+  "@groundingAffirmation1": {
+    "description": "Grounding affirmation phrase"
+  },
+  "groundingAffirmation2": "Hello there!",
+  "@groundingAffirmation2": {
+    "description": "Grounding affirmation phrase"
+  },
+  "groundingAffirmation3": "One moment at a time.",
+  "@groundingAffirmation3": {
+    "description": "Grounding affirmation phrase"
+  },
+  "groundingAffirmation4": "You showed up. That matters.",
+  "@groundingAffirmation4": {
+    "description": "Grounding affirmation phrase"
+  },
+  "groundingAffirmation5": "Right here, right now.",
+  "@groundingAffirmation5": {
+    "description": "Grounding affirmation phrase"
+  },
+  "movementTitle": "Movement",
+  "@movementTitle": {
+    "description": "Title for the movement module dialog"
+  },
+  "movementCompleted": "You completed an activity today. Good.",
+  "@movementCompleted": {
+    "description": "Message shown after completing movement activity"
+  },
+  "movementChoose": "Choose one gentle activity for today:",
+  "@movementChoose": {
+    "description": "Instruction text for choosing a movement activity"
+  },
+  "movementGreatJob": "Good.",
+  "@movementGreatJob": {
+    "description": "Congratulation message for movement"
+  },
+  "tapToOpen": "Tap to open",
+  "@tapToOpen": {
+    "description": "Instruction on module tile"
+  },
+  "placeholderModuleText": "This is a placeholder module.",
+  "@placeholderModuleText": {
+    "description": "Message for placeholder modules"
+  },
+  "simulateAction": "Simulate action",
+  "@simulateAction": {
+    "description": "Button for placeholder module"
+  },
+  "modulesHelpText": "Turn modules on or off. Optional settings appear under each one.",
+  "@modulesHelpText": {
+    "description": "Help text in settings for modules section"
+  },
+  "resetToday": "Reset today",
+  "@resetToday": {
+    "description": "Button to reset today's data"
+  },
+  "todayReset": "Today reset",
+  "@todayReset": {
+    "description": "Confirmation message when today is reset"
+  },
+  "developerModeLabel": "Developer mode",
+  "@developerModeLabel": {
+    "description": "Label for developer mode toggle"
+  },
+  "developerModeHelp": "Shows developer tools. Shouldn't be needed.",
+  "@developerModeHelp": {
+    "description": "Help text for developer mode toggle"
+  },
+  "developerResetAllDataLabel": "Complete state reset",
+  "@developerResetAllDataLabel": {
+    "description": "Button label for developer full reset"
+  },
+  "developerResetAllDataHelp": "This clears today's state, app settings, and returns to the initial setup screen.",
+  "@developerResetAllDataHelp": {
+    "description": "Confirmation text for developer full reset"
+  },
+  "developerNotificationsServiceLabel": "Medication notifications service",
+  "@developerNotificationsServiceLabel": {
+    "description": "Label for notification service status shown in developer mode"
+  },
+  "developerNotificationsStatusNotInitialized": "Status: not initialized",
+  "@developerNotificationsStatusNotInitialized": {
+    "description": "Developer status for notifications when service has not initialized"
+  },
+  "developerNotificationsStatusReady": "Status: ready (no reminders scheduled)",
+  "@developerNotificationsStatusReady": {
+    "description": "Developer status for notifications when service is ready and no reminders are currently scheduled"
+  },
+  "developerNotificationsStatusActive": "Status: active (reminders scheduled)",
+  "@developerNotificationsStatusActive": {
+    "description": "Developer status for notifications when reminders are scheduled"
+  },
+  "developerNotificationsStatusDisabled": "Status: disabled (no reminders configured)",
+  "@developerNotificationsStatusDisabled": {
+    "description": "Developer status for notifications when reminders are disabled in settings"
+  },
+  "developerNotificationsStatusUnsupportedPlatform": "Status: unsupported platform",
+  "@developerNotificationsStatusUnsupportedPlatform": {
+    "description": "Developer status for notifications when current platform does not support the notifications service"
+  },
+  "developerNotificationsStatusPluginMissing": "Status: plugin unavailable",
+  "@developerNotificationsStatusPluginMissing": {
+    "description": "Developer status for notifications when local notifications plugin is unavailable"
+  },
+  "developerNotificationsStatusPermissionDenied": "Status: permission denied",
+  "@developerNotificationsStatusPermissionDenied": {
+    "description": "Developer status for notifications when notification permission is denied"
+  },
+  "developerNotificationsStatusError": "Status: error",
+  "@developerNotificationsStatusError": {
+    "description": "Developer status for notifications when an unexpected error occurs"
+  },
+  "appPrivacyText": "Baseline is a private self-care app:\nNo history, no sync, no data collection.\n",
+  "@appPrivacyText": {
+    "description": "Privacy statement in settings"
+  },
+  "reportBugButtonLabel": "Report a bug or provide feedback",
+  "@reportBugButtonLabel": {
+    "description": "Button label for reporting bugs or giving feedback"
+  },
+  "versionInfoLabel": "Version",
+  "@versionInfoLabel": {
+    "description": "Label for version information"
+  },
+  "foodProteinSubtitle": "chicken, eggs, fish",
+  "@foodProteinSubtitle": {
+    "description": "Food category examples: Protein"
+  },
+  "foodGreensSubtitle": "apples, cabbage, cucumbers",
+  "@foodGreensSubtitle": {
+    "description": "Food category examples: Greens"
+  },
+  "foodBeansSubtitle": "lentils, beans, chickpeas",
+  "@foodBeansSubtitle": {
+    "description": "Food category examples: Beans"
+  },
+  "foodFillersSubtitle": "potatoes, oats, rice",
+  "@foodFillersSubtitle": {
+    "description": "Food category examples: Fillers"
+  },
+  "foodTreatSubtitle": "chocolate, berries",
+  "@foodTreatSubtitle": {
+    "description": "Food category examples: Treat"
+  },
+  "mentalStateHelp": "<p>The evidence for these techniques is not definitive — different approaches work for different people. Baseline offers three distinct modes so you can try them and see what fits.</p><h3 style='margin-top:20px;margin-bottom:12px'>Current mood</h3><p>A simple check of your current mood.</p><p>A systematic review and meta-analysis of randomised controlled trials found that <b>journaling interventions (including simple expressive writing) led to a 5% greater reduction in mental health symptom scores</b> compared to control groups, with more pronounced effects for <b>anxiety (9%)</b> and <b>PTSD (6%)</b>. However, the authors note high statistical heterogeneity and methodological flaws across studies, limiting definitive conclusions about the effect size <a href='#ref-1'>[1]</a>.</p><h3 style='margin-top:20px;margin-bottom:12px'>Daily positives</h3><p>A reflection on positive moments.</p><p>One preliminary 12-week randomised controlled trial of online Positive Affect Journaling (PAJ) in general medical patients with elevated anxiety found that <b>PAJ was associated with decreased mental distress, increased well-being, fewer depressive symptoms, reduced anxiety</b> after one month, and greater resilience after the first and second months, compared to usual care. As a single trial with moderate adherence, these results require replication <a href='#ref-2'>[2]</a>.</p><h3 style='margin-top:20px;margin-bottom:12px'>Cognitive distortions</h3><p>This mode is purely educational. It is based on established cognitive-behavioural therapy concepts of identifying cognitive distortions as a first step toward restructuring.</p>",
+  "@mentalStateHelp": {
+    "description": "Help text for mental state module (HTML with numbered citations)"
+  },
+  "mentalStateReferences": "<h3 style='margin-top:24px;margin-bottom:12px'>References</h3><p id='ref-1' style='margin-bottom:12px'><b>[1]</b> Sohal, M., Singh, P., Dhillon, B. S., &amp; Gill, H. S. (2022). Efficacy of journaling in the management of mental illness: a systematic review and meta-analysis. <i>Family Medicine and Community Health</i>, 10(1), e001154. <a href='https://doi.org/10.1136/fmch-2021-001154'>https://doi.org/10.1136/fmch-2021-001154</a></p><p id='ref-2'><b>[2]</b> Smyth, J. M., Johnson, J. A., Auer, B. J., Lehman, E., Talamo, G., &amp; Sciamanna, C. N. (2018). Online Positive Affect Journaling in the Improvement of Mental Distress and Well-Being in General Medical Patients With Elevated Anxiety Symptoms: A Preliminary Randomized Controlled Trial. <i>JMIR Mental Health</i>, 5(4), e11290. <a href='https://doi.org/10.2196/11290'>https://doi.org/10.2196/11290</a></p>",
+  "@mentalStateReferences": {
+    "description": "Full references for mental state citations (HTML)"
+  },
+  "sleepHelp": "<p>Baseline does not track sleep stages or offer analysis - it simply asks you to notice when you sleep and for how long. Paying gentle attention to your own sleep duration is the first step toward better rest.</p><h3 style='margin-top:20px;margin-bottom:12px'>Core Sleep Recommendation for Adults (18-60 Years)</h3><p>For optimal physical and mental health, adults should obtain <b>7 or more hours of sleep per night on a regular basis</b> <a href='#ref-1'>[1]</a>. The evidence is clear that sleeping less than 7 hours on a habitual basis is not merely a matter of feeling tired—it is associated with measurable, negative changes in cardiovascular, metabolic, and emotional function.</p><h3 style='margin-top:20px;margin-bottom:12px'>Key Health Outcomes Associated with Insufficient Sleep</h3><p><b>Cardiovascular and Mortality Risk</b></p><p>Large-scale population data indicate a strong and consistent association between short sleep and increased health risks. Compared to those sleeping 7-9 hours, individuals with insufficient sleep face a 6% to 15% higher risk of death from any cause, with the highest risk observed in those sleeping fewer than 5 hours <a href='#ref-3'>[3]</a>. Specific cardiovascular impacts include a 20% to 61% increased likelihood of developing hypertension and an 11% higher risk of coronary heart disease for every hour of sleep lost below the recommended threshold <a href='#ref-3'>[3]</a>.</p><p><b>Metabolic Health and Weight Regulation</b></p><p>Sleep loss disrupts the balance of hunger-regulating hormones (leptin and ghrelin), leading to increased caloric intake and reduced energy expenditure. The data show that short sleepers are approximately 45% to 55% more likely to be obese and have a 9% elevated risk of developing type 2 diabetes compared to those with adequate sleep duration <a href='#ref-3'>[3]</a>.</p><p><b>Mental Health and Emotional Regulation</b></p><p>Sleep is causally linked to mental well-being. Interventions that successfully improve sleep quality yield <b>moderate-to-large reductions in depressive symptoms and anxiety</b> <a href='#ref-2'>[2]</a>. Furthermore, even acute sleep loss has a significant and reliable anxiety-increasing effect, impairing the brain's ability to regulate emotional responses and leading to heightened irritability and stress sensitivity <a href='#ref-3'>[3]</a>.</p><h3 style='margin-top:20px;margin-bottom:12px'>A Note on Sleeping More Than 9 Hours</h3><p>Sleeping more than 9 hours per night may be appropriate and restorative for young adults, individuals recovering from significant sleep debt, or those managing specific illnesses. However, for the general healthy adult population, the relationship between sleeping over 9 hours and health risk is not fully understood and may reflect underlying health issues rather than a direct cause of harm <a href='#ref-1'>[1]</a>. Consultation with a healthcare provider is recommended for those concerned about excessive sleep duration.</p>",
+  "@sleepHelp": {
+    "description": "Help text for sleep module (HTML with numbered citations)"
+  },
+  "sleepHelpReferences": "<h3 style='margin-top:24px;margin-bottom:12px'>References</h3><p id='ref-1' style='margin-bottom:12px'><b>[1]</b> Watson, N. F., Badr, M. S., Belenky, G., Bliwise, D. L., Buxton, O. M., Buysse, D., Dinges, D. F., Gangwisch, J., Grandner, M. A., Kushida, C., Malhotra, R. K., Martin, J. L., Patel, S. R., Quan, S. F., &amp; Tasali, E. (2015). Recommended Amount of Sleep for a Healthy Adult: A Joint Consensus Statement of the American Academy of Sleep Medicine and Sleep Research Society. <i>Sleep</i>, 38(6), 843-844. <a href='https://doi.org/10.5665/sleep.4716'>https://doi.org/10.5665/sleep.4716</a></p><p id='ref-2' style='margin-bottom:12px'><b>[2]</b> Scott, A. J., Webb, T. L., Martyn-St James, M., Rowse, G., &amp; Weich, S. (2021). Improving sleep quality leads to better mental health: A meta-analysis of randomised controlled trials. <i>Sleep Medicine Reviews</i>, 60, 101556. <a href='https://doi.org/10.1016/j.smrv.2021.101556'>https://doi.org/10.1016/j.smrv.2021.101556</a></p><p id='ref-3'><b>[3]</b> Shah, A. S., Pant, M. R., Bommasamudram, T., Nayak, K. R., Roberts, S. S. H., Gallagher, C., Vaishali, K., Edwards, B. J., Tod, D., Davis, F., &amp; Pullinger, S. A. (2025). Effects of Sleep Deprivation on Physical and Mental Health Outcomes: An Umbrella Review. <i>American Journal of Lifestyle Medicine</i>, Advance online publication. <a href='https://doi.org/10.1177/15598276251346752'>https://doi.org/10.1177/15598276251346752</a></p>",
+  "@sleepHelpReferences": {
+    "description": "Full references for sleep help citations (HTML)"
+  },
+  "medsHelp": "<p><b>Take your meds. A checklist helps.</b></p><p>A systematic review found that mobile apps (which often include simple checklists and reminders) significantly improve medication adherence in adults with chronic diseases. The evidence quality is low, but the effect is consistent <a href='#ref-1'>[1]</a>.</p>",
+  "@medsHelp": {
+    "description": "Help text for meds module (HTML with numbered citations)"
+  },
+  "medsReferences": "<h3 style='margin-top:24px;margin-bottom:12px'>References</h3><p id='ref-1'><b>[1]</b> Peng, Y., Wang, H., Fang, Q., Xie, L., Shu, L., Sun, W., &amp; Liu, Q. (2020). Effectiveness of Mobile Applications on Medication Adherence in Adults with Chronic Diseases: A Systematic Review and Meta-Analysis. <i>Journal of Managed Care &amp; Specialty Pharmacy</i>, 26(4), 550-560. <a href='https://doi.org/10.18553/jmcp.2020.26.4.550'>https://doi.org/10.18553/jmcp.2020.26.4.550</a></p>",
+  "@medsReferences": {
+    "description": "Full references for meds citations (HTML)"
+  },
+  "movementHelp": "<p>Baseline suggests two default movement options - <b>\"Go for a walk\"</b> and <b>\"Do a workout\"</b> - but you can add any activity you prefer.</p><h3 style='margin-top:20px;margin-bottom:12px'>Walking (daily steps)</h3><p>Higher daily steps are associated with <b>lower risk of all-cause mortality and cardiovascular events</b>. Adding <b>500-1000 steps per day</b> to your current baseline is linked to reduced risk - for example, going from 3000 to 4000 steps <a href='#ref-1'>[1]</a>.</p><h3 style='margin-top:20px;margin-bottom:12px'>Workouts - resistance (strength) training</h3><p>Resistance training <b>consistently increases skeletal muscle mass, strength, and physical function</b> <a href='#ref-2'>[2]</a>.</p><h3 style='margin-top:20px;margin-bottom:12px'>User-defined activities</h3><p>You can add your own movement types. <b>Any movement counts</b> toward care and activation. No intensity or duration is required - a small nudge beats \"all or nothing.\"</p>",
+  "@movementHelp": {
+    "description": "Help text for movement module (HTML with numbered citations)"
+  },
+  "movementReferences": "<h3 style='margin-top:24px;margin-bottom:12px'>References</h3><p id='ref-1' style='margin-bottom:12px'><b>[1]</b> Xu, C., Jia, J., Zhao, B., Yuan, M., Luo, N., Zhang, F., &amp; Wang, H. (2024). Objectively measured daily steps and health outcomes: an umbrella review. <i>BMJ Open</i>, 14(10), e086254. <a href='https://doi.org/10.1136/bmjopen-2024-086254'>https://doi.org/10.1136/bmjopen-2024-086254</a></p><p id='ref-2'><b>[2]</b> McLeod, J. C., Currier, B. S., Lowisz, C. V., &amp; Phillips, S. M. (2024). The influence of resistance exercise training prescription variables on skeletal muscle mass, strength, and physical function in healthy adults: An umbrella review. <i>Journal of Sport and Health Science</i>, 13(1), 47-60. <a href='https://doi.org/10.1016/j.jshs.2023.10.005'>https://doi.org/10.1016/j.jshs.2023.10.005</a></p>",
+  "@movementReferences": {
+    "description": "Full references for movement citations (HTML)"
+  },
+  "groundingHelp": "<p>Grounding is a single tap. It shows a simple present-moment phrase - \"You're here\", \"One step at a time\", or similar. The button reappears after a short time; you can press it as many times a day as you want.</p><h3 style='margin-top:20px;margin-bottom:12px'>Why might this help?</h3><p>Two lines of research offer indirect support.</p><p><b>Hypothesis 1 - Disrupting idle negative thinking</b></p><p>Many people find being alone with their thoughts so unpleasant that they prefer to administer electric shocks to themselves rather than sit quietly for 6-15 minutes <a href='#ref-1'>[1]</a>. A minimal, low-effort action - like tapping a button - may <b>break the state of passive rumination or boredom</b>, providing a simple anchor.</p><p><b>Hypothesis 2 - Cueing present-moment awareness</b></p><p>Mindfulness- and acceptance-based interventions have a small, significant effect on improving affect intolerance/sensitivity (i.e., <b>ability to tolerate emotional states</b>) from pre- to post-intervention, with effects maintained up to 6 months <a href='#ref-2'>[2]</a>. A single self-initiated cue to the present moment may briefly reduce worry or rumination.</p>",
+  "@groundingHelp": {
+    "description": "Help text for grounding/here module (HTML with numbered citations)"
+  },
+  "groundingReferences": "<h3 style='margin-top:24px;margin-bottom:12px'>References</h3><p id='ref-1' style='margin-bottom:12px'><b>[1]</b> Wilson, T. D., Reinhard, D. A., Westgate, E. C., Gilbert, D. T., Ellerbeck, N., Hahn, C., Brown, C. L., &amp; Shaked, A. (2014). Just think: The challenges of the disengaged mind. <i>Science</i>, 345(6192), 75-77. <a href='https://doi.org/10.1126/science.1250830'>https://doi.org/10.1126/science.1250830</a></p><p id='ref-2'><b>[2]</b> Kraemer, K. M., Luberto, C. M., Hall, D. L., Ngo, L. H., &amp; Yeh, G. Y. (2021). A systematic review and meta-analysis of mindfulness- and acceptance-based interventions for affect intolerance/sensitivity. <i>Behaviour Research and Therapy</i>, 135, 103751. <a href='https://doi.org/10.1016/j.brat.2020.103746'>https://doi.org/10.1016/j.brat.2020.103746</a></p>",
+  "@groundingReferences": {
+    "description": "Full references for grounding citations (HTML)"
+  },
+  "hereButtonHint": "I'm here. I'm alive.",
+  "@hereButtonHint": {
+    "description": "Hint text for the here module button customization field"
+  },
+  "groundingButtonDefault": "I'm here. I'm alive.",
+  "@groundingButtonDefault": {
+    "description": "Default text for the grounding button when settings field is empty"
+  },
+  "movementChoicesLabel": "Movement choices",
+  "@movementChoicesLabel": {
+    "description": "Label for movement choices field"
+  },
+  "movementItemDeleted": "Item deleted",
+  "@movementItemDeleted": {
+    "description": "Message shown when a movement item is deleted"
+  },
+  "movementItemHint": "e.g. Go for a walk",
+  "@movementItemHint": {
+    "description": "Hint text for movement item input field"
+  },
+  "movementAddNewItem": "New activity",
+  "@movementAddNewItem": {
+    "description": "Button label to add a new movement activity"
+  },
+  "movementDone": "Done",
+  "@movementDone": {
+    "description": "Compact movement completed label"
+  },
+  "movementMagicWalk": "walk,stroll",
+  "@movementMagicWalk": {
+    "description": "Magic keywords for walk icon (comma-separated)"
+  },
+  "movementMagicRun": "run,jog",
+  "@movementMagicRun": {
+    "description": "Magic keywords for run icon (comma-separated)"
+  },
+  "movementMagicYoga": "yoga,stretch",
+  "@movementMagicYoga": {
+    "description": "Magic keywords for yoga icon (comma-separated)"
+  },
+  "movementMagicBike": "bike,cycle",
+  "@movementMagicBike": {
+    "description": "Magic keywords for bike icon (comma-separated)"
+  },
+  "movementMagicSwim": "swim,pool",
+  "@movementMagicSwim": {
+    "description": "Magic keywords for swim icon (comma-separated)"
+  },
+  "movementMagicWorkout": "workout,gym",
+  "@movementMagicWorkout": {
+    "description": "Magic keywords for workout icon (comma-separated)"
+  },
+  "movementMagicBasketball": "basketball,ball",
+  "@movementMagicBasketball": {
+    "description": "Magic keywords for basketball icon (comma-separated)"
+  },
+  "movementMagicTennis": "tennis,racket",
+  "@movementMagicTennis": {
+    "description": "Magic keywords for tennis icon (comma-separated)"
+  },
+  "movementMagicHike": "hike,trek",
+  "@movementMagicHike": {
+    "description": "Magic keywords for hike icon (comma-separated)"
+  },
+  "movementMagicMartial": "martial,karate",
+  "@movementMagicMartial": {
+    "description": "Magic keywords for martial arts icon (comma-separated)"
+  },
+  "movementMagicDance": "dance,dancing",
+  "@movementMagicDance": {
+    "description": "Magic keywords for dance icon (comma-separated)"
+  },
+  "movementMagicRow": "row,kayak",
+  "@movementMagicRow": {
+    "description": "Magic keywords for rowing icon (comma-separated)"
+  },
+  "movementMagicSkate": "skate,skateboard",
+  "@movementMagicSkate": {
+    "description": "Magic keywords for skateboard icon (comma-separated)"
+  },
+  "movementMagicSki": "ski,snowboard",
+  "@movementMagicSki": {
+    "description": "Magic keywords for ski icon (comma-separated)"
+  },
+  "movementMagicSoccer": "soccer,football",
+  "@movementMagicSoccer": {
+    "description": "Magic keywords for soccer icon (comma-separated)"
+  },
+  "stateLabel": "State:",
+  "@stateLabel": {
+    "description": "Label prefix for current state display"
+  },
+  "simulateActionResult": "Touched {module}",
+  "@simulateActionResult": {
+    "description": "Template text for simulated action result"
+  },
+  "initialScreenTitle": "Welcome to Baseline",
+  "@initialScreenTitle": {
+    "description": "Title of the initial setup screen"
+  },
+  "initialScreenMessage": "No pressure. Take your time.",
+  "@initialScreenMessage": {
+    "description": "Welcome message on initial screen"
+  },
+  "initialScreenLanguageTitle": "Choose your language",
+  "@initialScreenLanguageTitle": {
+    "description": "Title for language selection section"
+  },
+  "initialScreenThemeTitle": "Choose your theme",
+  "@initialScreenThemeTitle": {
+    "description": "Title for theme selection section"
+  },
+  "initialScreenContinue": "Continue",
+  "@initialScreenContinue": {
+    "description": "Button to continue to main app"
+  },
+  "cbtRightNowQuestion": "How are you feeling right now?",
+  "@cbtRightNowQuestion": {
+    "description": "Question for right now mood selection"
+  },
+  "cbtMoodVerySad": "Awful",
+  "@cbtMoodVerySad": {
+    "description": "Mood option: Very sad"
+  },
+  "cbtMoodSad": "Bad",
+  "@cbtMoodSad": {
+    "description": "Mood option: Sad"
+  },
+  "cbtMoodNeutral": "Neutral",
+  "@cbtMoodNeutral": {
+    "description": "Mood option: Neutral"
+  },
+  "cbtMoodGood": "Good",
+  "@cbtMoodGood": {
+    "description": "Mood option: Good"
+  },
+  "cbtMoodVeryGood": "Amazing",
+  "@cbtMoodVeryGood": {
+    "description": "Mood option: Very good"
+  },
+  "cbtMoodRecorded": "Mood recorded",
+  "@cbtMoodRecorded": {
+    "description": "Message when mood is recorded"
+  },
+  "cbtGoodThingsQuestion": "What good things happened today?",
+  "@cbtGoodThingsQuestion": {
+    "description": "Question for good things exercise"
+  },
+  "cbtGoodThing": "Good thing",
+  "@cbtGoodThing": {
+    "description": "Label for a good thing input"
+  },
+  "cbtGoodThingsHint": "Small things count. A good coffee, a kind word, sunshine...",
+  "@cbtGoodThingsHint": {
+    "description": "Hint text for good things exercise"
+  },
+  "cbtThoughtLensTitle": "Cognitive distortions",
+  "@cbtThoughtLensTitle": {
+    "description": "Title for thought lens section"
+  },
+  "cbtThoughtLensExample": "Example:",
+  "@cbtThoughtLensExample": {
+    "description": "Label for thought lens example"
+  },
+  "cbtThoughtLensPrevious": "Previous",
+  "@cbtThoughtLensPrevious": {
+    "description": "Button to show previous thought lens"
+  },
+  "cbtThoughtLensNext": "Next",
+  "@cbtThoughtLensNext": {
+    "description": "Button to show next thought lens"
+  },
+  "cbtThoughtLensDaily": "Today's cognitive distortion",
+  "@cbtThoughtLensDaily": {
+    "description": "Label indicating today's random thought distortion"
+  },
+  "medsNotificationTitle": "Medication: {medName}",
+  "@medsNotificationTitle": {
+    "description": "Title for a medication reminder notification",
+    "placeholders": {
+      "medName": {
+        "type": "String"
+      }
+    }
+  },
+  "medsNotificationBody": "It's time to take this medication.",
+  "@medsNotificationBody": {
+    "description": "Body for a medication reminder notification"
+  },
+  "medsSnoozedUntil": "Snoozed until {time}",
+  "@medsSnoozedUntil": {
+    "description": "Label shown under a medication name when its reminder is snoozed",
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  }
+}
