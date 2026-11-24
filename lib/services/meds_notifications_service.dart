@@ -23,9 +23,6 @@ typedef BackgroundNotificationResponseCallback =
 // Module-level constants shared with the background isolate handler
 const String _medsPayloadPrefix = 'meds::';
 const String _channelId = 'baseline_meds_reminders';
-const String _channelName = 'Medication alarms';
-const String _channelDescription =
-    'Daily alarm-like reminders for medication check-ins.';
 
 int _notifId(String medName) {
   const base = 32000;
@@ -48,14 +45,22 @@ int _snoozeNotifId(String medName) {
   return base + (hash.abs() % spread);
 }
 
-AppLocalizations _l10n(String lang) => lookupAppLocalizations(Locale(lang));
+AppLocalizations _l10n(String lang) {
+  final locale = Locale(lang);
+  return lookupAppLocalizations(
+    AppLocalizations.delegate.isSupported(locale) ? locale : const Locale('en'),
+  );
+}
 
-NotificationDetails _notifDetails({bool includeActions = true}) =>
+NotificationDetails _notifDetails(
+  AppLocalizations l10n, {
+  bool includeActions = true,
+}) =>
     NotificationDetails(
       android: AndroidNotificationDetails(
         _channelId,
-        _channelName,
-        channelDescription: _channelDescription,
+        l10n.medsNotificationChannelName,
+        channelDescription: l10n.medsNotificationChannelDescription,
         importance: Importance.max,
         priority: Priority.max,
         category: AndroidNotificationCategory.alarm,
@@ -66,15 +71,15 @@ NotificationDetails _notifDetails({bool includeActions = true}) =>
         enableVibration: true,
         audioAttributesUsage: AudioAttributesUsage.alarm,
         actions: includeActions
-            ? const <AndroidNotificationAction>[
+            ? <AndroidNotificationAction>[
                 AndroidNotificationAction(
                   'snooze',
-                  'Snooze',
+                  l10n.medsNotificationSnooze,
                   showsUserInterface: false,
                 ),
                 AndroidNotificationAction(
                   'mark_taken',
-                  'Mark Taken',
+                  l10n.medsNotificationMarkTaken,
                   showsUserInterface: false,
                 ),
               ]
@@ -130,7 +135,7 @@ Future<void> medsNotificationBackgroundHandler(
   final l10n = _l10n(language);
   final title = l10n.medsNotificationTitle(medName);
   final body = l10n.medsNotificationBody;
-  final details = _notifDetails();
+  final details = _notifDetails(l10n);
 
   if (actionId == 'snooze') {
     final snoozeUntil = now.add(Duration(minutes: snoozeIntervalMinutes));
@@ -472,11 +477,12 @@ class MedsNotificationsService {
             medsNotificationBackgroundHandler,
       );
 
+      final l10n = _l10n(_currentLanguage);
       await _plugin.createNotificationChannel(
-        const AndroidNotificationChannel(
+        AndroidNotificationChannel(
           _channelId,
-          _channelName,
-          description: _channelDescription,
+          l10n.medsNotificationChannelName,
+          description: l10n.medsNotificationChannelDescription,
           importance: Importance.max,
           playSound: true,
           enableVibration: true,
@@ -537,6 +543,7 @@ class MedsNotificationsService {
     bool Function(String medName)? isMedTaken,
     DateTime? Function(String medName)? getMedSnoozeTime,
   }) async {
+    _currentLanguage = settings.language;
     await ensureInitialized();
     if (!_isAvailable) return;
 
@@ -554,8 +561,7 @@ class MedsNotificationsService {
         return;
       }
 
-      // Store language and snooze interval for action handlers
-      _currentLanguage = settings.language;
+      // Store snooze interval for action handlers
       _currentSnoozeIntervalMinutes = settings.medsSnoozeIntervalMinutes;
       _snoozedMeds.clear();
 
@@ -593,7 +599,7 @@ class MedsNotificationsService {
             l10n.medsNotificationTitle(medName),
             l10n.medsNotificationBody,
             tz.TZDateTime.from(snoozeUntil, tz.local),
-            _notifDetails(),
+            _notifDetails(l10n),
             androidScheduleMode: AndroidScheduleMode.alarmClock,
             uiLocalNotificationDateInterpretation:
                 UILocalNotificationDateInterpretation.wallClockTime,
@@ -608,7 +614,7 @@ class MedsNotificationsService {
           l10n.medsNotificationTitle(medName),
           l10n.medsNotificationBody,
           nextSchedule,
-          _notifDetails(),
+          _notifDetails(l10n),
           androidScheduleMode: AndroidScheduleMode.alarmClock,
           uiLocalNotificationDateInterpretation:
               UILocalNotificationDateInterpretation.wallClockTime,
@@ -665,20 +671,23 @@ class MedsNotificationsService {
   @visibleForTesting
   int notificationIdForMed(String medName) => _notifId(medName);
 
-  Future<String> scheduleTestNotificationWithDelay() async {
+  Future<String> scheduleTestNotificationWithDelay([
+    AppLocalizations? localizations,
+  ]) async {
+    final l10n = localizations ?? _l10n(_currentLanguage);
     try {
       await ensureInitialized();
-      if (!_isAvailable) return 'Service not available: $_statusCode';
+      if (!_isAvailable) return l10n.developerTestAlarmUnavailable(_statusCode);
 
       final now = tz.TZDateTime.from(clock.now(), tz.local);
       final scheduledTime = now.add(const Duration(seconds: 3));
 
       await _plugin.zonedSchedule(
         99999,
-        'TEST Medication',
-        'This is a test notification',
+        l10n.developerTestAlarmTitle,
+        l10n.developerTestAlarmBody,
         scheduledTime,
-        _notifDetails(includeActions: false),
+        _notifDetails(l10n, includeActions: false),
         androidScheduleMode: AndroidScheduleMode.alarmClock,
         uiLocalNotificationDateInterpretation:
             UILocalNotificationDateInterpretation.wallClockTime,
@@ -688,15 +697,18 @@ class MedsNotificationsService {
       final pending = await _plugin.pendingNotificationRequests();
       final testPending = pending.where((p) => p.id == 99999).toList();
       if (testPending.isEmpty) {
-        return 'Scheduled for $scheduledTime BUT not in pending list!';
+        return l10n.developerTestAlarmNotPending(scheduledTime.toString());
       }
-      return 'Scheduled for $scheduledTime (${testPending.length} in pending)';
+      return l10n.developerTestAlarmScheduled(
+        scheduledTime.toString(),
+        testPending.length,
+      );
     } on MissingPluginException {
-      return 'MissingPluginException';
+      return '${l10n.developerNotificationsStatusPluginMissing} (MissingPluginException)';
     } on PlatformException catch (e) {
-      return 'PlatformException: ${e.message}';
+      return '${l10n.developerNotificationsStatusError} (PlatformException: ${e.message})';
     } catch (e) {
-      return 'Error: $e';
+      return '${l10n.developerNotificationsStatusError} ($e)';
     }
   }
 
@@ -750,7 +762,7 @@ class MedsNotificationsService {
       l10n.medsNotificationTitle(medName),
       l10n.medsNotificationBody,
       tz.TZDateTime.from(snoozeUntil, tz.local),
-      _notifDetails(),
+      _notifDetails(l10n),
       androidScheduleMode: AndroidScheduleMode.alarmClock,
       uiLocalNotificationDateInterpretation:
           UILocalNotificationDateInterpretation.wallClockTime,
@@ -776,7 +788,7 @@ class MedsNotificationsService {
       l10n.medsNotificationTitle(medName),
       l10n.medsNotificationBody,
       nextDaily,
-      _notifDetails(),
+      _notifDetails(l10n),
       androidScheduleMode: AndroidScheduleMode.alarmClock,
       uiLocalNotificationDateInterpretation:
           UILocalNotificationDateInterpretation.wallClockTime,
@@ -808,13 +820,14 @@ class MedsNotificationsService {
       reminderMinutes % 60,
     );
 
+    final l10n = _l10n(_currentLanguage);
     unawaited(
       _plugin.zonedSchedule(
         notificationIdForMed(medName),
-        _l10n(_currentLanguage).medsNotificationTitle(medName),
-        _l10n(_currentLanguage).medsNotificationBody,
+        l10n.medsNotificationTitle(medName),
+        l10n.medsNotificationBody,
         nextSchedule,
-        _notifDetails(),
+        _notifDetails(l10n),
         androidScheduleMode: AndroidScheduleMode.alarmClock,
         uiLocalNotificationDateInterpretation:
             UILocalNotificationDateInterpretation.wallClockTime,

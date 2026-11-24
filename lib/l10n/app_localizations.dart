@@ -7,6 +7,7 @@ import 'package:intl/intl.dart' as intl;
 
 import 'app_localizations_en.dart';
 import 'app_localizations_ru.dart';
+import 'app_localizations_sv.dart';
 
 // ignore_for_file: type=lint
 
@@ -96,6 +97,7 @@ abstract class AppLocalizations {
   static const List<Locale> supportedLocales = <Locale>[
     Locale('en'),
     Locale('ru'),
+    Locale('sv'),
   ];
 
   /// The title of the application
@@ -133,6 +135,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Русский'**
   String get languageRussian;
+
+  /// Language option label for Swedish
+  ///
+  /// In en, this message translates to:
+  /// **'Svenska'**
+  String get languageSwedish;
 
   /// Label for theme selection
   ///
@@ -1165,6 +1173,288 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Snoozed until {time}'**
   String medsSnoozedUntil(String time);
+
+  /// Title on the All-or-Nothing Thinking cognitive distortion card.
+  ///
+  /// In en, this message translates to:
+  /// **'All-or-Nothing Thinking'**
+  String get cbtDistortionAllOrNothingTitle;
+
+  /// Description on the All-or-Nothing Thinking cognitive distortion card.
+  ///
+  /// In en, this message translates to:
+  /// **'Seeing things in absolute, black-and-white categories. If a situation falls short of perfect, you see it as a total failure.'**
+  String get cbtDistortionAllOrNothingDescription;
+
+  /// Example on the All-or-Nothing Thinking cognitive distortion card.
+  ///
+  /// In en, this message translates to:
+  /// **'I didn\'t get a perfect score, so I\'m a complete failure.'**
+  String get cbtDistortionAllOrNothingExample;
+
+  /// Title on the Overgeneralization cognitive distortion card.
+  ///
+  /// In en, this message translates to:
+  /// **'Overgeneralization'**
+  String get cbtDistortionOvergeneralizationTitle;
+
+  /// Description on the Overgeneralization cognitive distortion card.
+  ///
+  /// In en, this message translates to:
+  /// **'Coming to a general conclusion based on a single incident or a single piece of evidence.'**
+  String get cbtDistortionOvergeneralizationDescription;
+
+  /// Example on the Overgeneralization cognitive distortion card.
+  ///
+  /// In en, this message translates to:
+  /// **'I felt awkward at that party. I\'m always awkward.'**
+  String get cbtDistortionOvergeneralizationExample;
+
+  /// Title on the Mental Filter cognitive distortion card.
+  ///
+  /// In en, this message translates to:
+  /// **'Mental Filter'**
+  String get cbtDistortionMentalFilterTitle;
+
+  /// Description on the Mental Filter cognitive distortion card.
+  ///
+  /// In en, this message translates to:
+  /// **'Picking out a single negative detail and dwelling on it exclusively.'**
+  String get cbtDistortionMentalFilterDescription;
+
+  /// Example on the Mental Filter cognitive distortion card.
+  ///
+  /// In en, this message translates to:
+  /// **'I got many compliments, but I can only think about the one criticism.'**
+  String get cbtDistortionMentalFilterExample;
+
+  /// Title on the Disqualifying the Positive cognitive distortion card.
+  ///
+  /// In en, this message translates to:
+  /// **'Disqualifying the Positive'**
+  String get cbtDistortionDisqualifyingPositiveTitle;
+
+  /// Description on the Disqualifying the Positive cognitive distortion card.
+  ///
+  /// In en, this message translates to:
+  /// **'Rejecting positive experiences by insisting they \"don\'t count.\"'**
+  String get cbtDistortionDisqualifyingPositiveDescription;
+
+  /// Example on the Disqualifying the Positive cognitive distortion card.
+  ///
+  /// In en, this message translates to:
+  /// **'I only succeeded because I got lucky, not because I\'m skilled.'**
+  String get cbtDistortionDisqualifyingPositiveExample;
+
+  /// Title on the Jumping to Conclusions cognitive distortion card.
+  ///
+  /// In en, this message translates to:
+  /// **'Jumping to Conclusions'**
+  String get cbtDistortionJumpingToConclusionsTitle;
+
+  /// Description on the Jumping to Conclusions cognitive distortion card.
+  ///
+  /// In en, this message translates to:
+  /// **'Making negative interpretations even though there are no definite facts.'**
+  String get cbtDistortionJumpingToConclusionsDescription;
+
+  /// Example on the Jumping to Conclusions cognitive distortion card.
+  ///
+  /// In en, this message translates to:
+  /// **'They didn\'t text back immediately, so they must be angry with me.'**
+  String get cbtDistortionJumpingToConclusionsExample;
+
+  /// Title on the Magnification or Minimization cognitive distortion card.
+  ///
+  /// In en, this message translates to:
+  /// **'Magnification or Minimization'**
+  String get cbtDistortionMagnificationMinimizationTitle;
+
+  /// Description on the Magnification or Minimization cognitive distortion card.
+  ///
+  /// In en, this message translates to:
+  /// **'Exaggerating the importance of problems and shortcomings, or minimizing the importance of your desirable qualities.'**
+  String get cbtDistortionMagnificationMinimizationDescription;
+
+  /// Example on the Magnification or Minimization cognitive distortion card.
+  ///
+  /// In en, this message translates to:
+  /// **'Making a small mistake feels catastrophic, while achievements feel insignificant.'**
+  String get cbtDistortionMagnificationMinimizationExample;
+
+  /// Title on the Emotional Reasoning cognitive distortion card.
+  ///
+  /// In en, this message translates to:
+  /// **'Emotional Reasoning'**
+  String get cbtDistortionEmotionalReasoningTitle;
+
+  /// Description on the Emotional Reasoning cognitive distortion card.
+  ///
+  /// In en, this message translates to:
+  /// **'Assuming that your negative emotions necessarily reflect the way things really are.'**
+  String get cbtDistortionEmotionalReasoningDescription;
+
+  /// Example on the Emotional Reasoning cognitive distortion card.
+  ///
+  /// In en, this message translates to:
+  /// **'I feel anxious, so there must be danger.'**
+  String get cbtDistortionEmotionalReasoningExample;
+
+  /// Title on the Should Statements cognitive distortion card.
+  ///
+  /// In en, this message translates to:
+  /// **'Should Statements'**
+  String get cbtDistortionShouldStatementsTitle;
+
+  /// Description on the Should Statements cognitive distortion card.
+  ///
+  /// In en, this message translates to:
+  /// **'Using \"shoulds,\" \"oughts,\" and \"musts\" to motivate yourself, which often leads to guilt.'**
+  String get cbtDistortionShouldStatementsDescription;
+
+  /// Example on the Should Statements cognitive distortion card.
+  ///
+  /// In en, this message translates to:
+  /// **'I should exercise more. I should be more productive.'**
+  String get cbtDistortionShouldStatementsExample;
+
+  /// Title on the Labeling and Mislabeling cognitive distortion card.
+  ///
+  /// In en, this message translates to:
+  /// **'Labeling and Mislabeling'**
+  String get cbtDistortionLabelingTitle;
+
+  /// Description on the Labeling and Mislabeling cognitive distortion card.
+  ///
+  /// In en, this message translates to:
+  /// **'An extreme form of overgeneralization. Instead of describing your error, you attach a negative label to yourself.'**
+  String get cbtDistortionLabelingDescription;
+
+  /// Example on the Labeling and Mislabeling cognitive distortion card.
+  ///
+  /// In en, this message translates to:
+  /// **'I made a mistake, so I\'m an idiot.'**
+  String get cbtDistortionLabelingExample;
+
+  /// Title on the Personalization cognitive distortion card.
+  ///
+  /// In en, this message translates to:
+  /// **'Personalization'**
+  String get cbtDistortionPersonalizationTitle;
+
+  /// Description on the Personalization cognitive distortion card.
+  ///
+  /// In en, this message translates to:
+  /// **'Seeing yourself as the cause of some negative external event for which you were not, in fact, primarily responsible.'**
+  String get cbtDistortionPersonalizationDescription;
+
+  /// Example on the Personalization cognitive distortion card.
+  ///
+  /// In en, this message translates to:
+  /// **'My child got bad grades, so I must be a terrible parent.'**
+  String get cbtDistortionPersonalizationExample;
+
+  /// Instruction above the issue tracker address in the feedback dialog.
+  ///
+  /// In en, this message translates to:
+  /// **'Report bugs or provide feedback at:'**
+  String get reportBugDialogMessage;
+
+  /// Button to edit a completed entry.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit'**
+  String get dialogEdit;
+
+  /// Number of positive moments recorded today.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, one{{count} good thing} other{{count} good things}}'**
+  String cbtGoodThingsCount(int count);
+
+  /// Label for the time format reported by the device.
+  ///
+  /// In en, this message translates to:
+  /// **'Time Format'**
+  String get developerTimeFormatLabel;
+
+  /// Value shown when the device uses a 24-hour clock.
+  ///
+  /// In en, this message translates to:
+  /// **'24-hour'**
+  String get developerTimeFormat24Hour;
+
+  /// Value shown when the device uses a 12-hour clock.
+  ///
+  /// In en, this message translates to:
+  /// **'12-hour'**
+  String get developerTimeFormat12Hour;
+
+  /// Label showing the selected snooze interval, including its unit.
+  ///
+  /// In en, this message translates to:
+  /// **'Snooze interval: {duration}'**
+  String developerSnoozeInterval(String duration);
+
+  /// Button that schedules a test medication alarm after three seconds.
+  ///
+  /// In en, this message translates to:
+  /// **'Test Alarm (3s)'**
+  String get developerTestAlarmLabel;
+
+  /// Title of the test medication notification.
+  ///
+  /// In en, this message translates to:
+  /// **'TEST Medication'**
+  String get developerTestAlarmTitle;
+
+  /// Body of the test medication notification.
+  ///
+  /// In en, this message translates to:
+  /// **'This is a test notification'**
+  String get developerTestAlarmBody;
+
+  /// Diagnostic shown when the test alarm cannot be scheduled.
+  ///
+  /// In en, this message translates to:
+  /// **'Service not available: {status}'**
+  String developerTestAlarmUnavailable(String status);
+
+  /// Diagnostic shown when the test alarm is missing from the pending list.
+  ///
+  /// In en, this message translates to:
+  /// **'Scheduled for {time} BUT not in pending list!'**
+  String developerTestAlarmNotPending(String time);
+
+  /// Diagnostic showing the scheduled time and the number of matching pending test alarms.
+  ///
+  /// In en, this message translates to:
+  /// **'Scheduled for {time} ({count} in pending)'**
+  String developerTestAlarmScheduled(String time, int count);
+
+  /// Android notification channel name for medication alarms.
+  ///
+  /// In en, this message translates to:
+  /// **'Medication alarms'**
+  String get medsNotificationChannelName;
+
+  /// Android notification channel description for medication alarms.
+  ///
+  /// In en, this message translates to:
+  /// **'Daily alarm-like reminders for medication check-ins.'**
+  String get medsNotificationChannelDescription;
+
+  /// Android notification action that delays a medication reminder.
+  ///
+  /// In en, this message translates to:
+  /// **'Snooze'**
+  String get medsNotificationSnooze;
+
+  /// Android notification action that marks the medication as taken.
+  ///
+  /// In en, this message translates to:
+  /// **'Mark Taken'**
+  String get medsNotificationMarkTaken;
 }
 
 class _AppLocalizationsDelegate
@@ -1178,7 +1468,7 @@ class _AppLocalizationsDelegate
 
   @override
   bool isSupported(Locale locale) =>
-      <String>['en', 'ru'].contains(locale.languageCode);
+      <String>['en', 'ru', 'sv'].contains(locale.languageCode);
 
   @override
   bool shouldReload(_AppLocalizationsDelegate old) => false;
@@ -1191,6 +1481,8 @@ AppLocalizations lookupAppLocalizations(Locale locale) {
       return AppLocalizationsEn();
     case 'ru':
       return AppLocalizationsRu();
+    case 'sv':
+      return AppLocalizationsSv();
   }
 
   throw FlutterError(

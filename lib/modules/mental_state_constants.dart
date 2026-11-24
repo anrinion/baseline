@@ -2,113 +2,91 @@ import 'dart:math';
 
 import 'package:clock/clock.dart';
 
-/// Shared constants for Mental State functionality
+import '../l10n/app_localizations.dart';
+
+typedef CognitiveDistortion = ({
+  String title,
+  String description,
+  String example,
+});
+
+/// Shared constants for Mental State functionality.
 class MentalStateConstants {
   MentalStateConstants._();
 
-  /// List of cognitive distortions used in thought lens exercises
-  static const List<Map<String, String>> cognitiveDistortions = [
-    {
-      'title': 'All-or-Nothing Thinking',
-      'description': 'Seeing things in absolute, black-and-white categories. If a situation falls short of perfect, you see it as a total failure.',
-      'example': 'I didn\'t get a perfect score, so I\'m a complete failure.',
-    },
-    {
-      'title': 'Overgeneralization',
-      'description': 'Coming to a general conclusion based on a single incident or a single piece of evidence.',
-      'example': 'I felt awkward at that party. I\'m always awkward.',
-    },
-    {
-      'title': 'Mental Filter',
-      'description': 'Picking out a single negative detail and dwelling on it exclusively.',
-      'example': 'I got many compliments, but I can only think about the one criticism.',
-    },
-    {
-      'title': 'Disqualifying the Positive',
-      'description': 'Rejecting positive experiences by insisting they "don\'t count."',
-      'example': 'I only succeeded because I got lucky, not because I\'m skilled.',
-    },
-    {
-      'title': 'Jumping to Conclusions',
-      'description': 'Making negative interpretations even though there are no definite facts.',
-      'example': 'They didn\'t text back immediately, so they must be angry with me.',
-    },
-    {
-      'title': 'Magnification or Minimization',
-      'description': 'Exaggerating the importance of problems and shortcomings, or minimizing the importance of your desirable qualities.',
-      'example': 'Making a small mistake feels catastrophic, while achievements feel insignificant.',
-    },
-    {
-      'title': 'Emotional Reasoning',
-      'description': 'Assuming that your negative emotions necessarily reflect the way things really are.',
-      'example': 'I feel anxious, so there must be danger.',
-    },
-    {
-      'title': 'Should Statements',
-      'description': 'Using "shoulds," "oughts," and "musts" to motivate yourself, which often leads to guilt.',
-      'example': 'I should exercise more. I should be more productive.',
-    },
-    {
-      'title': 'Labeling and Mislabeling',
-      'description': 'An extreme form of overgeneralization. Instead of describing your error, you attach a negative label to yourself.',
-      'example': 'I made a mistake, so I\'m an idiot.',
-    },
-    {
-      'title': 'Personalization',
-      'description': 'Seeing yourself as the cause of some negative external event for which you were not, in fact, primarily responsible.',
-      'example': 'My child got bad grades, so I must be a terrible parent.',
-    },
+  // Indices are persisted in TodayState. Append new cards to the end.
+  static final _distortions = <CognitiveDistortion Function(AppLocalizations)>[
+    (l10n) => (
+      title: l10n.cbtDistortionAllOrNothingTitle,
+      description: l10n.cbtDistortionAllOrNothingDescription,
+      example: l10n.cbtDistortionAllOrNothingExample,
+    ),
+    (l10n) => (
+      title: l10n.cbtDistortionOvergeneralizationTitle,
+      description: l10n.cbtDistortionOvergeneralizationDescription,
+      example: l10n.cbtDistortionOvergeneralizationExample,
+    ),
+    (l10n) => (
+      title: l10n.cbtDistortionMentalFilterTitle,
+      description: l10n.cbtDistortionMentalFilterDescription,
+      example: l10n.cbtDistortionMentalFilterExample,
+    ),
+    (l10n) => (
+      title: l10n.cbtDistortionDisqualifyingPositiveTitle,
+      description: l10n.cbtDistortionDisqualifyingPositiveDescription,
+      example: l10n.cbtDistortionDisqualifyingPositiveExample,
+    ),
+    (l10n) => (
+      title: l10n.cbtDistortionJumpingToConclusionsTitle,
+      description: l10n.cbtDistortionJumpingToConclusionsDescription,
+      example: l10n.cbtDistortionJumpingToConclusionsExample,
+    ),
+    (l10n) => (
+      title: l10n.cbtDistortionMagnificationMinimizationTitle,
+      description: l10n.cbtDistortionMagnificationMinimizationDescription,
+      example: l10n.cbtDistortionMagnificationMinimizationExample,
+    ),
+    (l10n) => (
+      title: l10n.cbtDistortionEmotionalReasoningTitle,
+      description: l10n.cbtDistortionEmotionalReasoningDescription,
+      example: l10n.cbtDistortionEmotionalReasoningExample,
+    ),
+    (l10n) => (
+      title: l10n.cbtDistortionShouldStatementsTitle,
+      description: l10n.cbtDistortionShouldStatementsDescription,
+      example: l10n.cbtDistortionShouldStatementsExample,
+    ),
+    (l10n) => (
+      title: l10n.cbtDistortionLabelingTitle,
+      description: l10n.cbtDistortionLabelingDescription,
+      example: l10n.cbtDistortionLabelingExample,
+    ),
+    (l10n) => (
+      title: l10n.cbtDistortionPersonalizationTitle,
+      description: l10n.cbtDistortionPersonalizationDescription,
+      example: l10n.cbtDistortionPersonalizationExample,
+    ),
   ];
 
-  /// Gets a cognitive distortion by index, wrapping around if necessary
-  static Map<String, String> getDistortion(int index) {
-    if (cognitiveDistortions.isEmpty) {
-      return {
-        'title': 'Unknown',
-        'description': 'No cognitive distortions available.',
-        'example': 'N/A',
-      };
-    }
-    final safeIndex = index % cognitiveDistortions.length;
-    return cognitiveDistortions[safeIndex];
-  }
+  static int get distortionCount => _distortions.length;
 
-  /// Gets the total number of cognitive distortions
-  static int get distortionCount => cognitiveDistortions.length;
+  /// Gets a localized card by index, wrapping around if necessary.
+  static CognitiveDistortion getDistortion(int index, AppLocalizations l10n) =>
+      _distortions[index % distortionCount](l10n);
 
-  /// Gets a random cognitive distortion that's different from the previous day's
-  static Map<String, String> getRandomDistortion(int previousIndex) {
-    if (cognitiveDistortions.isEmpty) {
-      return {
-        'title': 'Unknown',
-        'description': 'No cognitive distortions available.',
-        'example': 'N/A',
-      };
-    }
-    
-    final random = Random(clock.now().millisecondsSinceEpoch);
-    int newIndex;
-    
-    do {
-      newIndex = random.nextInt(cognitiveDistortions.length);
-    } while (newIndex == previousIndex && cognitiveDistortions.length > 1);
-    
-    return cognitiveDistortions[newIndex];
-  }
+  /// Gets a random card different from the previous day's.
+  static CognitiveDistortion getRandomDistortion(
+    int previousIndex,
+    AppLocalizations l10n,
+  ) => getDistortion(getRandomDistortionIndex(previousIndex), l10n);
 
-  /// Gets the index of a random cognitive distortion that's different from the previous day's
+  /// Gets the index of a random card different from the previous day's.
   static int getRandomDistortionIndex(int previousIndex) {
-    if (cognitiveDistortions.isEmpty) {
-      return 0;
-    }
-    
     final random = Random(clock.now().millisecondsSinceEpoch);
     int newIndex;
-    
     do {
-      newIndex = random.nextInt(cognitiveDistortions.length);
-    } while (newIndex == previousIndex && cognitiveDistortions.length > 1);
-    
+      newIndex = random.nextInt(distortionCount);
+    } while (newIndex == previousIndex && distortionCount > 1);
     return newIndex;
   }
 }

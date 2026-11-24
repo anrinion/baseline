@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
 import '../state/settings.dart';
+import 'app_localizations.dart';
 
 /// Service to manage app localization and language persistence
 class LocalizationService extends ChangeNotifier {
@@ -58,10 +59,7 @@ class LocalizationService extends ChangeNotifier {
 
   /// Get the list of supported locales
   static List<Locale> getSupportedLocales() {
-    return const [
-      Locale('en'), // English
-      Locale('ru'), // Russian
-    ];
+    return AppLocalizations.supportedLocales;
   }
 
   /// Check if a language code is supported
@@ -74,6 +72,7 @@ class LocalizationService extends ChangeNotifier {
     const names = {
       'en': 'English',
       'ru': 'Русский',
+      'sv': 'Svenska',
     };
     return names[languageCode] ?? languageCode;
   }

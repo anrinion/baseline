@@ -406,7 +406,7 @@ class _ThoughtLensContent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final currentIndex = appState.todayState.thoughtLensIndex;
-    final distortion = MentalStateConstants.getDistortion(currentIndex);
+    final distortion = MentalStateConstants.getDistortion(currentIndex, l10n);
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -429,7 +429,7 @@ class _ThoughtLensContent extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                distortion['title'] ?? 'Unknown',
+                distortion.title,
                 style: Theme.of(context).textTheme.titleMedium?.copyWith(
                       fontWeight: FontWeight.w600,
                       color: Theme.of(context).colorScheme.primary,
@@ -437,7 +437,7 @@ class _ThoughtLensContent extends StatelessWidget {
               ),
               const SizedBox(height: 12),
               Text(
-                distortion['description'] ?? 'No description available.',
+                distortion.description,
                 style: Theme.of(context).textTheme.bodyMedium,
               ),
               const SizedBox(height: 12),
@@ -458,7 +458,7 @@ class _ThoughtLensContent extends StatelessWidget {
                     ),
                     const SizedBox(height: 4),
                     Text(
-                      distortion['example'] ?? 'No example available.',
+                      distortion.example,
                       style: Theme.of(context).textTheme.bodySmall?.copyWith(
                             fontStyle: FontStyle.italic,
                           ),

@@ -622,7 +622,7 @@ class _CompactGoodThingsCompleted extends StatelessWidget {
         const Icon(Icons.check_circle, size: 24, color: Color(0xFF059669)),
         const SizedBox(width: 8),
         Text(
-          '${goodThings.length} ${l10n.mentalStateGoodThing.toLowerCase()}',
+          l10n.cbtGoodThingsCount(goodThings.length),
           style: Theme.of(context).textTheme.bodyMedium?.copyWith(
             color: const Color(0xFF059669),
             fontWeight: FontWeight.w600,
@@ -632,6 +632,7 @@ class _CompactGoodThingsCompleted extends StatelessWidget {
         IconButton(
           onPressed: () => showMentalStateModule(context),
           icon: const Icon(Icons.edit, size: 16),
+          tooltip: l10n.dialogEdit,
           style: IconButton.styleFrom(
             foregroundColor: const Color(0xFF059669),
             minimumSize: const Size(32, 32),
@@ -650,6 +651,7 @@ class _ExpandedGoodThingsCompleted extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     final scheme = Theme.of(context).colorScheme;
     return Column(
       mainAxisSize: MainAxisSize.min,
@@ -660,7 +662,7 @@ class _ExpandedGoodThingsCompleted extends StatelessWidget {
             const Icon(Icons.celebration, size: 32, color: Color(0xFF059669)),
             const SizedBox(width: 12),
             Text(
-              '${goodThings.length} good things',
+              l10n.cbtGoodThingsCount(goodThings.length),
               style: Theme.of(context).textTheme.bodyMedium,
             ),
           ],
@@ -675,7 +677,7 @@ class _ExpandedGoodThingsCompleted extends StatelessWidget {
               borderRadius: BorderRadius.circular(40),
             ),
           ),
-          child: const Text('Edit'),
+          child: Text(l10n.dialogEdit),
         ),
       ],
     );
@@ -772,8 +774,8 @@ class _DistortionCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final scheme = theme.colorScheme;
-    final distortion = MentalStateConstants.getDistortion(index);
     final l10n = AppLocalizations.of(context)!;
+    final distortion = MentalStateConstants.getDistortion(index, l10n);
 
     return Container(
       padding: const EdgeInsets.all(16),
@@ -785,7 +787,7 @@ class _DistortionCard extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            distortion['title'] ?? 'Unknown',
+            distortion.title,
             style: theme.textTheme.titleMedium?.copyWith(
               fontWeight: FontWeight.w600,
               color: scheme.primary,
@@ -793,7 +795,7 @@ class _DistortionCard extends StatelessWidget {
           ),
           const SizedBox(height: 12),
           Text(
-            distortion['description'] ?? '',
+            distortion.description,
             style: theme.textTheme.bodyMedium,
           ),
           const SizedBox(height: 12),
@@ -814,7 +816,7 @@ class _DistortionCard extends StatelessWidget {
                 ),
                 const SizedBox(height: 4),
                 Text(
-                  distortion['example'] ?? '',
+                  distortion.example,
                   style: theme.textTheme.bodySmall?.copyWith(
                     fontStyle: FontStyle.italic,
                   ),

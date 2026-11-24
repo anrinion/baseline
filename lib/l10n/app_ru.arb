@@ -24,6 +24,10 @@
   "@languageRussian": {
     "description": "Language option label for Russian"
   },
+  "languageSwedish": "Svenska",
+  "@languageSwedish": {
+    "description": "Language option label for Swedish"
+  },
   "themeLabel": "Тема",
   "@themeLabel": {
     "description": "Label for theme selection"
@@ -740,5 +744,22 @@
   "@medsNotificationBody": {
     "description": "Body for a medication reminder notification"
   },
-  "medsSnoozedUntil": "Отложено до {time}"
+  "medsSnoozedUntil": "Отложено до {time}",
+  "reportBugDialogMessage": "Сообщить об ошибке или оставить отзыв можно по адресу:",
+  "dialogEdit": "Изменить",
+  "cbtGoodThingsCount": "{count, plural, one{{count} приятный момент} few{{count} приятных момента} many{{count} приятных моментов} other{{count} приятного момента}}",
+  "developerTimeFormatLabel": "Формат времени",
+  "developerTimeFormat24Hour": "24-часовой",
+  "developerTimeFormat12Hour": "12-часовой",
+  "developerSnoozeInterval": "Повторять через {duration}",
+  "developerTestAlarmLabel": "Проверить будильник (через 3 с)",
+  "developerTestAlarmTitle": "Тестовое напоминание о лекарстве",
+  "developerTestAlarmBody": "Это тестовое уведомление.",
+  "developerTestAlarmUnavailable": "Сервис недоступен ({status})",
+  "developerTestAlarmNotPending": "Тестовый будильник назначен на {time}, но его нет в списке ожидающих уведомлений.",
+  "developerTestAlarmScheduled": "Тестовый будильник назначен на {time}. В списке ожидающих: {count}.",
+  "medsNotificationChannelName": "Напоминания о лекарствах",
+  "medsNotificationChannelDescription": "Ежедневные звуковые напоминания о приёме лекарств.",
+  "medsNotificationSnooze": "Отложить",
+  "medsNotificationMarkTaken": "Отметить приём"
 }
