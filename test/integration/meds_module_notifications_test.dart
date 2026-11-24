@@ -308,7 +308,7 @@ void main() {
     });
 
     test('7. Snooze schedules both one-shot snooze alarm and daily recurring', () async {
-      final fixedTime = DateTime(2024, 6, 15, 8, 5); // 8:05 AM, just after reminder fired
+      final fixedTime = tz.TZDateTime(tz.local, 2024, 6, 15, 8, 5); // 8:05 AM, just after reminder fired
       await withClock(Clock.fixed(fixedTime), () async {
         final medName = 'Zinc';
         final medId = service.notificationIdForMed(medName);
