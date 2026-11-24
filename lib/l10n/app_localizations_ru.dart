@@ -27,6 +27,9 @@ class AppLocalizationsRu extends AppLocalizations {
   String get languageRussian => 'Русский';
 
   @override
+  String get languageSwedish => 'Svenska';
+
+  @override
   String get themeLabel => 'Тема';
 
   @override
@@ -586,4 +589,187 @@ class AppLocalizationsRu extends AppLocalizations {
   String medsSnoozedUntil(String time) {
     return 'Отложено до $time';
   }
+
+  @override
+  String get cbtDistortionAllOrNothingTitle => 'All-or-Nothing Thinking';
+
+  @override
+  String get cbtDistortionAllOrNothingDescription =>
+      'Seeing things in absolute, black-and-white categories. If a situation falls short of perfect, you see it as a total failure.';
+
+  @override
+  String get cbtDistortionAllOrNothingExample =>
+      'I didn\'t get a perfect score, so I\'m a complete failure.';
+
+  @override
+  String get cbtDistortionOvergeneralizationTitle => 'Overgeneralization';
+
+  @override
+  String get cbtDistortionOvergeneralizationDescription =>
+      'Coming to a general conclusion based on a single incident or a single piece of evidence.';
+
+  @override
+  String get cbtDistortionOvergeneralizationExample =>
+      'I felt awkward at that party. I\'m always awkward.';
+
+  @override
+  String get cbtDistortionMentalFilterTitle => 'Mental Filter';
+
+  @override
+  String get cbtDistortionMentalFilterDescription =>
+      'Picking out a single negative detail and dwelling on it exclusively.';
+
+  @override
+  String get cbtDistortionMentalFilterExample =>
+      'I got many compliments, but I can only think about the one criticism.';
+
+  @override
+  String get cbtDistortionDisqualifyingPositiveTitle =>
+      'Disqualifying the Positive';
+
+  @override
+  String get cbtDistortionDisqualifyingPositiveDescription =>
+      'Rejecting positive experiences by insisting they \"don\'t count.\"';
+
+  @override
+  String get cbtDistortionDisqualifyingPositiveExample =>
+      'I only succeeded because I got lucky, not because I\'m skilled.';
+
+  @override
+  String get cbtDistortionJumpingToConclusionsTitle => 'Jumping to Conclusions';
+
+  @override
+  String get cbtDistortionJumpingToConclusionsDescription =>
+      'Making negative interpretations even though there are no definite facts.';
+
+  @override
+  String get cbtDistortionJumpingToConclusionsExample =>
+      'They didn\'t text back immediately, so they must be angry with me.';
+
+  @override
+  String get cbtDistortionMagnificationMinimizationTitle =>
+      'Magnification or Minimization';
+
+  @override
+  String get cbtDistortionMagnificationMinimizationDescription =>
+      'Exaggerating the importance of problems and shortcomings, or minimizing the importance of your desirable qualities.';
+
+  @override
+  String get cbtDistortionMagnificationMinimizationExample =>
+      'Making a small mistake feels catastrophic, while achievements feel insignificant.';
+
+  @override
+  String get cbtDistortionEmotionalReasoningTitle => 'Emotional Reasoning';
+
+  @override
+  String get cbtDistortionEmotionalReasoningDescription =>
+      'Assuming that your negative emotions necessarily reflect the way things really are.';
+
+  @override
+  String get cbtDistortionEmotionalReasoningExample =>
+      'I feel anxious, so there must be danger.';
+
+  @override
+  String get cbtDistortionShouldStatementsTitle => 'Should Statements';
+
+  @override
+  String get cbtDistortionShouldStatementsDescription =>
+      'Using \"shoulds,\" \"oughts,\" and \"musts\" to motivate yourself, which often leads to guilt.';
+
+  @override
+  String get cbtDistortionShouldStatementsExample =>
+      'I should exercise more. I should be more productive.';
+
+  @override
+  String get cbtDistortionLabelingTitle => 'Labeling and Mislabeling';
+
+  @override
+  String get cbtDistortionLabelingDescription =>
+      'An extreme form of overgeneralization. Instead of describing your error, you attach a negative label to yourself.';
+
+  @override
+  String get cbtDistortionLabelingExample =>
+      'I made a mistake, so I\'m an idiot.';
+
+  @override
+  String get cbtDistortionPersonalizationTitle => 'Personalization';
+
+  @override
+  String get cbtDistortionPersonalizationDescription =>
+      'Seeing yourself as the cause of some negative external event for which you were not, in fact, primarily responsible.';
+
+  @override
+  String get cbtDistortionPersonalizationExample =>
+      'My child got bad grades, so I must be a terrible parent.';
+
+  @override
+  String get reportBugDialogMessage =>
+      'Сообщить об ошибке или оставить отзыв можно по адресу:';
+
+  @override
+  String get dialogEdit => 'Изменить';
+
+  @override
+  String cbtGoodThingsCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count приятного момента',
+      many: '$count приятных моментов',
+      few: '$count приятных момента',
+      one: '$count приятный момент',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get developerTimeFormatLabel => 'Формат времени';
+
+  @override
+  String get developerTimeFormat24Hour => '24-часовой';
+
+  @override
+  String get developerTimeFormat12Hour => '12-часовой';
+
+  @override
+  String developerSnoozeInterval(String duration) {
+    return 'Повторять через $duration';
+  }
+
+  @override
+  String get developerTestAlarmLabel => 'Проверить будильник (через 3 с)';
+
+  @override
+  String get developerTestAlarmTitle => 'Тестовое напоминание о лекарстве';
+
+  @override
+  String get developerTestAlarmBody => 'Это тестовое уведомление.';
+
+  @override
+  String developerTestAlarmUnavailable(String status) {
+    return 'Сервис недоступен ($status)';
+  }
+
+  @override
+  String developerTestAlarmNotPending(String time) {
+    return 'Тестовый будильник назначен на $time, но его нет в списке ожидающих уведомлений.';
+  }
+
+  @override
+  String developerTestAlarmScheduled(String time, int count) {
+    return 'Тестовый будильник назначен на $time. В списке ожидающих: $count.';
+  }
+
+  @override
+  String get medsNotificationChannelName => 'Напоминания о лекарствах';
+
+  @override
+  String get medsNotificationChannelDescription =>
+      'Ежедневные звуковые напоминания о приёме лекарств.';
+
+  @override
+  String get medsNotificationSnooze => 'Отложить';
+
+  @override
+  String get medsNotificationMarkTaken => 'Отметить приём';
 }

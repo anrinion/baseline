@@ -120,28 +120,25 @@ class _InitialScreenState extends State<InitialScreen> {
   Widget _buildLanguageButton(String languageCode, String displayName) {
     final isSelected = selectedLanguage == languageCode;
 
-    return SizedBox(
-      width: double.infinity,
-      child: ElevatedButton(
-        onPressed: () {
-          setState(() => selectedLanguage = languageCode);
-          _applyLanguageSetting();
-        },
-        style: ElevatedButton.styleFrom(
-          backgroundColor: isSelected ? Theme.of(context).colorScheme.primary : null,
-          foregroundColor: isSelected ? Theme.of(context).colorScheme.onPrimary : null,
-          padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 24),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(12),
-            side: isSelected 
-              ? BorderSide(color: Theme.of(context).colorScheme.primary)
-              : BorderSide(color: Theme.of(context).colorScheme.outline),
-          ),
+    return ElevatedButton(
+      onPressed: () {
+        setState(() => selectedLanguage = languageCode);
+        _applyLanguageSetting();
+      },
+      style: ElevatedButton.styleFrom(
+        backgroundColor: isSelected ? Theme.of(context).colorScheme.primary : null,
+        foregroundColor: isSelected ? Theme.of(context).colorScheme.onPrimary : null,
+        padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 24),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(12),
+          side: isSelected
+            ? BorderSide(color: Theme.of(context).colorScheme.primary)
+            : BorderSide(color: Theme.of(context).colorScheme.outline),
         ),
-        child: Text(
-          displayName,
-          style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w500),
-        ),
+      ),
+      child: Text(
+        displayName,
+        style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w500),
       ),
     );
   }
@@ -337,18 +334,17 @@ class _InitialScreenState extends State<InitialScreen> {
             ),
             const SizedBox(height: 16),
             
-            Row(
+            Wrap(
+              alignment: WrapAlignment.center,
+              spacing: 16,
+              runSpacing: 8,
               children: [
-                Expanded(
-                  child: _buildLanguageButton('en', l10n.languageEnglish),
-                ),
-                const SizedBox(width: 16),
-                Expanded(
-                  child: _buildLanguageButton('ru', l10n.languageRussian),
-                ),
+                _buildLanguageButton('en', l10n.languageEnglish),
+                _buildLanguageButton('ru', l10n.languageRussian),
+                _buildLanguageButton('sv', l10n.languageSwedish),
               ],
             ),
-            
+
             const SizedBox(height: 32),
             
             Text(

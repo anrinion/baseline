@@ -57,7 +57,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Text('Report bugs or provide feedback at:'),
+              Text(l10n.reportBugDialogMessage),
               const SizedBox(height: 8),
               SelectableText(
                 githubUrl,
@@ -78,8 +78,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
       },
     );
   }
-
-  final List<String> languages = ['en', 'ru'];
 
   @override
   Widget build(BuildContext context) {
@@ -102,7 +100,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
           DropdownButton<String>(
             value: localizationService.currentLanguageCode,
             isExpanded: true,
-            items: languages.map((langCode) {
+            items: LocalizationService.getSupportedLocales().map((locale) {
+              final langCode = locale.languageCode;
               return DropdownMenuItem(
                 value: langCode,
                 child: Text(_getLanguageLabel(l10n, langCode)),
@@ -197,6 +196,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
         return l10n.languageEnglish;
       case 'ru':
         return l10n.languageRussian;
+      case 'sv':
+        return l10n.languageSwedish;
       default:
         return code;
     }

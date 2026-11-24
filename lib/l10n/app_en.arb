@@ -24,6 +24,10 @@
   "@languageRussian": {
     "description": "Language option label for Russian"
   },
+  "languageSwedish": "Svenska",
+  "@languageSwedish": {
+    "description": "Language option label for Swedish"
+  },
   "themeLabel": "Theme",
   "@themeLabel": {
     "description": "Label for theme selection"
@@ -736,5 +740,221 @@
     "placeholders": {
       "time": { "type": "String" }
     }
+  },
+  "cbtDistortionAllOrNothingTitle": "All-or-Nothing Thinking",
+  "@cbtDistortionAllOrNothingTitle": {
+    "description": "Title on the All-or-Nothing Thinking cognitive distortion card."
+  },
+  "cbtDistortionAllOrNothingDescription": "Seeing things in absolute, black-and-white categories. If a situation falls short of perfect, you see it as a total failure.",
+  "@cbtDistortionAllOrNothingDescription": {
+    "description": "Description on the All-or-Nothing Thinking cognitive distortion card."
+  },
+  "cbtDistortionAllOrNothingExample": "I didn't get a perfect score, so I'm a complete failure.",
+  "@cbtDistortionAllOrNothingExample": {
+    "description": "Example on the All-or-Nothing Thinking cognitive distortion card."
+  },
+  "cbtDistortionOvergeneralizationTitle": "Overgeneralization",
+  "@cbtDistortionOvergeneralizationTitle": {
+    "description": "Title on the Overgeneralization cognitive distortion card."
+  },
+  "cbtDistortionOvergeneralizationDescription": "Coming to a general conclusion based on a single incident or a single piece of evidence.",
+  "@cbtDistortionOvergeneralizationDescription": {
+    "description": "Description on the Overgeneralization cognitive distortion card."
+  },
+  "cbtDistortionOvergeneralizationExample": "I felt awkward at that party. I'm always awkward.",
+  "@cbtDistortionOvergeneralizationExample": {
+    "description": "Example on the Overgeneralization cognitive distortion card."
+  },
+  "cbtDistortionMentalFilterTitle": "Mental Filter",
+  "@cbtDistortionMentalFilterTitle": {
+    "description": "Title on the Mental Filter cognitive distortion card."
+  },
+  "cbtDistortionMentalFilterDescription": "Picking out a single negative detail and dwelling on it exclusively.",
+  "@cbtDistortionMentalFilterDescription": {
+    "description": "Description on the Mental Filter cognitive distortion card."
+  },
+  "cbtDistortionMentalFilterExample": "I got many compliments, but I can only think about the one criticism.",
+  "@cbtDistortionMentalFilterExample": {
+    "description": "Example on the Mental Filter cognitive distortion card."
+  },
+  "cbtDistortionDisqualifyingPositiveTitle": "Disqualifying the Positive",
+  "@cbtDistortionDisqualifyingPositiveTitle": {
+    "description": "Title on the Disqualifying the Positive cognitive distortion card."
+  },
+  "cbtDistortionDisqualifyingPositiveDescription": "Rejecting positive experiences by insisting they \"don't count.\"",
+  "@cbtDistortionDisqualifyingPositiveDescription": {
+    "description": "Description on the Disqualifying the Positive cognitive distortion card."
+  },
+  "cbtDistortionDisqualifyingPositiveExample": "I only succeeded because I got lucky, not because I'm skilled.",
+  "@cbtDistortionDisqualifyingPositiveExample": {
+    "description": "Example on the Disqualifying the Positive cognitive distortion card."
+  },
+  "cbtDistortionJumpingToConclusionsTitle": "Jumping to Conclusions",
+  "@cbtDistortionJumpingToConclusionsTitle": {
+    "description": "Title on the Jumping to Conclusions cognitive distortion card."
+  },
+  "cbtDistortionJumpingToConclusionsDescription": "Making negative interpretations even though there are no definite facts.",
+  "@cbtDistortionJumpingToConclusionsDescription": {
+    "description": "Description on the Jumping to Conclusions cognitive distortion card."
+  },
+  "cbtDistortionJumpingToConclusionsExample": "They didn't text back immediately, so they must be angry with me.",
+  "@cbtDistortionJumpingToConclusionsExample": {
+    "description": "Example on the Jumping to Conclusions cognitive distortion card."
+  },
+  "cbtDistortionMagnificationMinimizationTitle": "Magnification or Minimization",
+  "@cbtDistortionMagnificationMinimizationTitle": {
+    "description": "Title on the Magnification or Minimization cognitive distortion card."
+  },
+  "cbtDistortionMagnificationMinimizationDescription": "Exaggerating the importance of problems and shortcomings, or minimizing the importance of your desirable qualities.",
+  "@cbtDistortionMagnificationMinimizationDescription": {
+    "description": "Description on the Magnification or Minimization cognitive distortion card."
+  },
+  "cbtDistortionMagnificationMinimizationExample": "Making a small mistake feels catastrophic, while achievements feel insignificant.",
+  "@cbtDistortionMagnificationMinimizationExample": {
+    "description": "Example on the Magnification or Minimization cognitive distortion card."
+  },
+  "cbtDistortionEmotionalReasoningTitle": "Emotional Reasoning",
+  "@cbtDistortionEmotionalReasoningTitle": {
+    "description": "Title on the Emotional Reasoning cognitive distortion card."
+  },
+  "cbtDistortionEmotionalReasoningDescription": "Assuming that your negative emotions necessarily reflect the way things really are.",
+  "@cbtDistortionEmotionalReasoningDescription": {
+    "description": "Description on the Emotional Reasoning cognitive distortion card."
+  },
+  "cbtDistortionEmotionalReasoningExample": "I feel anxious, so there must be danger.",
+  "@cbtDistortionEmotionalReasoningExample": {
+    "description": "Example on the Emotional Reasoning cognitive distortion card."
+  },
+  "cbtDistortionShouldStatementsTitle": "Should Statements",
+  "@cbtDistortionShouldStatementsTitle": {
+    "description": "Title on the Should Statements cognitive distortion card."
+  },
+  "cbtDistortionShouldStatementsDescription": "Using \"shoulds,\" \"oughts,\" and \"musts\" to motivate yourself, which often leads to guilt.",
+  "@cbtDistortionShouldStatementsDescription": {
+    "description": "Description on the Should Statements cognitive distortion card."
+  },
+  "cbtDistortionShouldStatementsExample": "I should exercise more. I should be more productive.",
+  "@cbtDistortionShouldStatementsExample": {
+    "description": "Example on the Should Statements cognitive distortion card."
+  },
+  "cbtDistortionLabelingTitle": "Labeling and Mislabeling",
+  "@cbtDistortionLabelingTitle": {
+    "description": "Title on the Labeling and Mislabeling cognitive distortion card."
+  },
+  "cbtDistortionLabelingDescription": "An extreme form of overgeneralization. Instead of describing your error, you attach a negative label to yourself.",
+  "@cbtDistortionLabelingDescription": {
+    "description": "Description on the Labeling and Mislabeling cognitive distortion card."
+  },
+  "cbtDistortionLabelingExample": "I made a mistake, so I'm an idiot.",
+  "@cbtDistortionLabelingExample": {
+    "description": "Example on the Labeling and Mislabeling cognitive distortion card."
+  },
+  "cbtDistortionPersonalizationTitle": "Personalization",
+  "@cbtDistortionPersonalizationTitle": {
+    "description": "Title on the Personalization cognitive distortion card."
+  },
+  "cbtDistortionPersonalizationDescription": "Seeing yourself as the cause of some negative external event for which you were not, in fact, primarily responsible.",
+  "@cbtDistortionPersonalizationDescription": {
+    "description": "Description on the Personalization cognitive distortion card."
+  },
+  "cbtDistortionPersonalizationExample": "My child got bad grades, so I must be a terrible parent.",
+  "@cbtDistortionPersonalizationExample": {
+    "description": "Example on the Personalization cognitive distortion card."
+  },
+  "reportBugDialogMessage": "Report bugs or provide feedback at:",
+  "@reportBugDialogMessage": {
+    "description": "Instruction above the issue tracker address in the feedback dialog."
+  },
+  "dialogEdit": "Edit",
+  "@dialogEdit": {
+    "description": "Button to edit a completed entry."
+  },
+  "cbtGoodThingsCount": "{count, plural, one{{count} good thing} other{{count} good things}}",
+  "@cbtGoodThingsCount": {
+    "description": "Number of positive moments recorded today.",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "developerTimeFormatLabel": "Time Format",
+  "@developerTimeFormatLabel": {
+    "description": "Label for the time format reported by the device."
+  },
+  "developerTimeFormat24Hour": "24-hour",
+  "@developerTimeFormat24Hour": {
+    "description": "Value shown when the device uses a 24-hour clock."
+  },
+  "developerTimeFormat12Hour": "12-hour",
+  "@developerTimeFormat12Hour": {
+    "description": "Value shown when the device uses a 12-hour clock."
+  },
+  "developerSnoozeInterval": "Snooze interval: {duration}",
+  "@developerSnoozeInterval": {
+    "description": "Label showing the selected snooze interval, including its unit.",
+    "placeholders": {
+      "duration": {
+        "type": "String"
+      }
+    }
+  },
+  "developerTestAlarmLabel": "Test Alarm (3s)",
+  "@developerTestAlarmLabel": {
+    "description": "Button that schedules a test medication alarm after three seconds."
+  },
+  "developerTestAlarmTitle": "TEST Medication",
+  "@developerTestAlarmTitle": {
+    "description": "Title of the test medication notification."
+  },
+  "developerTestAlarmBody": "This is a test notification",
+  "@developerTestAlarmBody": {
+    "description": "Body of the test medication notification."
+  },
+  "developerTestAlarmUnavailable": "Service not available: {status}",
+  "@developerTestAlarmUnavailable": {
+    "description": "Diagnostic shown when the test alarm cannot be scheduled.",
+    "placeholders": {
+      "status": {
+        "type": "String"
+      }
+    }
+  },
+  "developerTestAlarmNotPending": "Scheduled for {time} BUT not in pending list!",
+  "@developerTestAlarmNotPending": {
+    "description": "Diagnostic shown when the test alarm is missing from the pending list.",
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "developerTestAlarmScheduled": "Scheduled for {time} ({count} in pending)",
+  "@developerTestAlarmScheduled": {
+    "description": "Diagnostic showing the scheduled time and the number of matching pending test alarms.",
+    "placeholders": {
+      "time": {
+        "type": "String"
+      },
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "medsNotificationChannelName": "Medication alarms",
+  "@medsNotificationChannelName": {
+    "description": "Android notification channel name for medication alarms."
+  },
+  "medsNotificationChannelDescription": "Daily alarm-like reminders for medication check-ins.",
+  "@medsNotificationChannelDescription": {
+    "description": "Android notification channel description for medication alarms."
+  },
+  "medsNotificationSnooze": "Snooze",
+  "@medsNotificationSnooze": {
+    "description": "Android notification action that delays a medication reminder."
+  },
+  "medsNotificationMarkTaken": "Mark Taken",
+  "@medsNotificationMarkTaken": {
+    "description": "Android notification action that marks the medication as taken."
   }
 }

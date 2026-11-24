@@ -61,9 +61,11 @@ class DeveloperSettingsSection extends StatelessWidget {
           const SizedBox(height: 12),
           ListTile(
             contentPadding: EdgeInsets.zero,
-            title: const Text('Time Format'),
+            title: Text(l10n.developerTimeFormatLabel),
             subtitle: Text(
-              MediaQuery.of(context).alwaysUse24HourFormat ? '24-hour' : '12-hour',
+              MediaQuery.of(context).alwaysUse24HourFormat
+                  ? l10n.developerTimeFormat24Hour
+                  : l10n.developerTimeFormat12Hour,
               style: Theme.of(context).textTheme.bodySmall,
             ),
           ),
@@ -72,14 +74,15 @@ class DeveloperSettingsSection extends StatelessWidget {
           const SizedBox(height: 12),
           OutlinedButton(
             onPressed: () async {
-              final result = await MedsNotificationsService.instance.scheduleTestNotificationWithDelay();
+              final result = await MedsNotificationsService.instance
+                  .scheduleTestNotificationWithDelay(l10n);
               if (context.mounted) {
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(content: Text(result)),
                 );
               }
             },
-            child: const Text('Test Alarm (3s)'),
+            child: Text(l10n.developerTestAlarmLabel),
           ),
           const SizedBox(height: 12),
           OutlinedButton(
@@ -161,11 +164,12 @@ class _SnoozeIntervalRow extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final current = settings.medsSnoozeIntervalMinutes;
+    final l10n = AppLocalizations.of(context)!;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          'Snooze interval: ${current}m',
+          l10n.developerSnoozeInterval('$current${l10n.sleepMinutesAbbreviation}'),
           style: Theme.of(context).textTheme.bodySmall,
         ),
         const SizedBox(height: 6),
@@ -186,7 +190,7 @@ class _SnoozeIntervalRow extends StatelessWidget {
                       s.medsSnoozeIntervalMinutes = minutes;
                     });
                   },
-                  child: Text('${minutes}m'),
+                  child: Text('$minutes${l10n.sleepMinutesAbbreviation}'),
                 ),
               ),
           ],
